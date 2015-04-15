@@ -8,7 +8,7 @@
 #ifndef IMATRIXITERATOR_H_
 #define IMATRIXITERATOR_H_
 
-#include "IMatrix.h"
+#include "../math_concept/IMatrix.h"
 
 class IMatrixIterator {
 public:

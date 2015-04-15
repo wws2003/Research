@@ -8,7 +8,7 @@
 #ifndef IMATRIXCOLLECTION_H_
 #define IMATRIXCOLLECTION_H_
 
-#include "IMatrix.h"
+#include "../math_concept/IMatrix.h"
 
 class IMatrixCollection {
 

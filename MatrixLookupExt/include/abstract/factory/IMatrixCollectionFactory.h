@@ -8,7 +8,7 @@
 #ifndef IMATRIXCOLLECTIONFACTORY_H_
 #define IMATRIXCOLLECTIONFACTORY_H_
 
-#include "abstract/basic/IMatrixCollection.h"
+#include "abstract/basic/algo/IMatrixCollection.h"
 
 class IMatrixCollectionFactory {
 public:

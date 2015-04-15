@@ -8,8 +8,8 @@
 #ifndef SEARCHSPACECONSTRUCTOR_H_
 #define SEARCHSPACECONSTRUCTOR_H_
 
-#include "abstract/basic/IMatrixOperator.h"
-#include "abstract/basic/IMatrixIterator.h"
+#include "abstract/basic/algo/IMatrixOperator.h"
+#include "abstract/basic/algo/IMatrixIterator.h"
 #include "abstract/factory/IMatrixCollectionFactory.h"
 #include "abstract/factory/IPersistableMatrixCollectionFactory.h"
 

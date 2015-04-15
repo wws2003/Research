@@ -8,7 +8,7 @@
 #ifndef IMATRIXOPERATOR_H_
 #define IMATRIXOPERATOR_H_
 
-#include "IMatrix.h"
+#include "../math_concept/IMatrix.h"
 
 class IMatrixOperator {
 public:

@@ -5,7 +5,7 @@
  *      Author: pham
  */
 
-#include "abstract/basic/ISquareMatrix.h"
+#include "abstract/basic/math_concept/ISquareMatrix.h"
 
 void ISquareMatrix::getSize(int& row, int& columns) {
 	int size = getSize();

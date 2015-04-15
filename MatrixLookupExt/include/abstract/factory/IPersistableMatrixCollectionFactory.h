@@ -8,7 +8,7 @@
 #ifndef IPERSISTABLEMATRIXCOLLECTIONFACTORY_H_
 #define IPERSISTABLEMATRIXCOLLECTIONFACTORY_H_
 
-#include "abstract/basic/IPersistableMatrixCollection.h"
+#include "abstract/basic/algo/IPersistableMatrixCollection.h"
 
 class IPersistableMatrixCollectionFactory {
 public:

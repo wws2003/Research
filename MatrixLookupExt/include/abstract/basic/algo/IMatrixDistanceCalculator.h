@@ -8,7 +8,7 @@
 #ifndef IMATRIXDISTANCECALCULATOR_H_
 #define IMATRIXDISTANCECALCULATOR_H_
 
-#include "IMatrix.h"
+#include "../math_concept/IMatrix.h"
 
 class IMatrixDistanceCalculator {
 public:

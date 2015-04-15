@@ -9,9 +9,9 @@
 #include "implement/evaluate/SearchEvaluator.h"
 #include "abstract/inout/IMatrixWriter.h"
 #include "abstract/factory/ITargetMatrixFactory.h"
-#include "abstract/basic/IMatrixCollection.h"
-#include "abstract/basic/IMatrixDistanceCalculator.h"
-#include "abstract/basic/IMatrixIterator.h"
+#include "abstract/basic/algo/IMatrixCollection.h"
+#include "abstract/basic/algo/IMatrixDistanceCalculator.h"
+#include "abstract/basic/algo/IMatrixIterator.h"
 #include "abstract/timer/ITimer.h"
 
 void logSearchResult(MatrixPtr pQuery, MatrixPtr pResult, double searchTime, double precision, double epsilon,  MatrixWriterPtr pMatrixWriter, std::ostream& outputStream);
