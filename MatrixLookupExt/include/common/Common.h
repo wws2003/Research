@@ -15,6 +15,7 @@ typedef struct ComplexVal {
 ComplexVal;
 
 #define NullPtr NULL
+#define _destroy(a) delete a
 
 typedef ComplexVal& ComplexValRef;
 
@@ -22,6 +23,11 @@ class IMatrix;
 
 typedef IMatrix* MatrixPtr;
 typedef MatrixPtr& MatrixPtrRef;
+
+class ISquareMatrix;
+
+typedef ISquareMatrix* SquareMatrixPtr;
+typedef ISquareMatrix& SquareMatrixPtrRef;
 
 class IMatrixIterator;
 
@@ -53,5 +59,13 @@ class IMatrixCollectionFactory;
 
 typedef IMatrixCollectionFactory* MatrixCollectionFactoryPtr;
 
+class ITargetMatrixFactory;
+typedef ITargetMatrixFactory* TargetMatrixFactoryPtr;
+
+class IMatrixWriter;
+typedef IMatrixWriter* MatrixWriterPtr;
+
+class ITimer;
+typedef ITimer* TimerPtr;
 
 #endif /* COMMON_H_ */

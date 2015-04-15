@@ -1,9 +1,10 @@
-src/search/SearchSpaceConstructor.d: \
- ../src/search/SearchSpaceConstructor.cpp \
+src/implement/search/SearchSpaceConstructor.d: \
+ ../src/implement/search/SearchSpaceConstructor.cpp \
  /home/pham/workspace-c/MatrixLookupExt/include/implement/search/SearchSpaceConstructor.h \
  /home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/IMatrixOperator.h \
  /home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/IMatrix.h \
  /home/pham/workspace-c/MatrixLookupExt/include/common/Common.h \
+ /home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/ILabelable.h \
  /home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/IMatrixIterator.h \
  /home/pham/workspace-c/MatrixLookupExt/include/abstract/factory/IMatrixCollectionFactory.h \
  /home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/IMatrixCollection.h \
@@ -18,6 +19,8 @@ src/search/SearchSpaceConstructor.d: \
 /home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/IMatrix.h:
 
 /home/pham/workspace-c/MatrixLookupExt/include/common/Common.h:
+
+/home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/ILabelable.h:
 
 /home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/IMatrixIterator.h:
 

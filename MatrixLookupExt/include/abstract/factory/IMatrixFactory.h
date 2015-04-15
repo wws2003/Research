@@ -9,14 +9,15 @@
 #define IMATRIXFACTORY_H_
 
 #include "abstract/basic/IMatrix.h"
+#include "abstract/basic/ISquareMatrix.h"
 
 class IMatrixFactory {
 public:
 	virtual ~IMatrixFactory(){};
 
-	virtual MatrixPtr getMatrix(int row, int columns, const ComplexVal** ppVals) = 0;
+	virtual MatrixPtr getMatrixFromValues(int row, int columns, const ComplexVal** ppVals = NullPtr) = 0;
 
-	virtual MatrixPtr getIdentityMatrix(int dimension) = 0;
+	virtual SquareMatrixPtr getIdentityMatrix(int dimension) = 0;
 };
 
 #endif /* IMATRIXFACTORY_H_ */

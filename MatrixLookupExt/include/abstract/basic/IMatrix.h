@@ -9,9 +9,10 @@
 #define IMATRIX_H_
 
 #include "common/Common.h"
+#include "ILabelable.h"
 #include "string"
 
-class IMatrix {
+class IMatrix : public ILabelable {
 public:
 	virtual ~IMatrix(){};
 
@@ -19,7 +20,6 @@ public:
 
 	virtual ComplexVal getValue(int row, int column) = 0;
 
-	virtual std::string getLabel() = 0;
 };
 
 

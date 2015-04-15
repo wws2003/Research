@@ -20,7 +20,7 @@ public:
 
 	virtual void inverse(MatrixPtr pm, MatrixPtrRef inverseMatrix) = 0;
 
-	virtual void exponential(MatrixPtr pm, MatrixPtrRef expMatrix) = 0;
+	virtual void exponential(SquareMatrixPtr pm, SquareMatrixPtr expMatrix) = 0;
 
 	virtual ComplexVal det(MatrixPtr pm) = 0;
 };
