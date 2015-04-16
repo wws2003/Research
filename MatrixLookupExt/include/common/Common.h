@@ -8,11 +8,17 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
-typedef struct ComplexVal {
+#include <complex>
+
+/*typedef struct ComplexVal {
 	double real;
 	double imf;
 }
-ComplexVal;
+ComplexVal;*/
+
+typedef std::complex<double> ComplexVal;
+typedef ComplexVal* ComplexValArray;
+typedef ComplexValArray& ComplexValArrayRef;
 
 #define NullPtr NULL
 #define _destroy(a) delete a
@@ -20,52 +26,60 @@ ComplexVal;
 typedef ComplexVal& ComplexValRef;
 
 class IMatrix;
+class IVector;
+class ISquareMatrix;
+template<typename T> class IIterator;
+
+class IMatrixOperator;
+
+class IMatrixDistanceCalculator;
+
+class IMatrixCollection;
+class IMatrixCollectionFactory;
+
+class IPersistableMatrixCollection;
+class IPersistableMatrixCollectionFactory;
+
+class ITargetMatrixFactory;
+
+class IMatrixWriter;
+
+class ITimer;
+
+class IMatrixVectorMapper;
 
 typedef IMatrix* MatrixPtr;
 typedef MatrixPtr& MatrixPtrRef;
 
-class ISquareMatrix;
+typedef IVector* VectorPtr;
+typedef VectorPtr& VectorPtrRef;
 
 typedef ISquareMatrix* SquareMatrixPtr;
 typedef ISquareMatrix& SquareMatrixPtrRef;
 
-class IMatrixIterator;
-
-typedef IMatrixIterator* MatrixIteratorPtr;
-
-class IMatrixOperator;
+typedef IIterator<MatrixPtr>* MatrixIteratorPtr;
+typedef IIterator<VectorPtr>* VectorItertatorPtr;
 
 typedef IMatrixOperator* MatrixOperatorPtr;
 
-class IMatrixDistanceCalculator;
-
 typedef IMatrixDistanceCalculator* MatrixDistanceCalculatorPtr;
 
-class IMatrixCollection;
-
 typedef IMatrixCollection* MatrixCollectionPtr;
-
-class IPersistableMatrixCollection;
 
 typedef IPersistableMatrixCollection* PersistableMatrixCollectionPtr;
 
 typedef long long MatrixCollectionSize_t;
 
-class IPersistableMatrixCollectionFactory;
-
 typedef IPersistableMatrixCollectionFactory* PersistableMatrixCollectionFactoryPtr;
-
-class IMatrixCollectionFactory;
 
 typedef IMatrixCollectionFactory* MatrixCollectionFactoryPtr;
 
-class ITargetMatrixFactory;
 typedef ITargetMatrixFactory* TargetMatrixFactoryPtr;
 
-class IMatrixWriter;
 typedef IMatrixWriter* MatrixWriterPtr;
 
-class ITimer;
 typedef ITimer* TimerPtr;
+
+typedef IMatrixVectorMapper* MatrixVectorMapperPtr;
 
 #endif /* COMMON_H_ */

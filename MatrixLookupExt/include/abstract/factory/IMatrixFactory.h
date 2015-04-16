@@ -8,14 +8,14 @@
 #ifndef IMATRIXFACTORY_H_
 #define IMATRIXFACTORY_H_
 
-#include "abstract/basic/IMatrix.h"
-#include "abstract/basic/ISquareMatrix.h"
+#include "abstract/basic/math_concept/IMatrix.h"
+#include "abstract/basic/math_concept/ISquareMatrix.h"
 
 class IMatrixFactory {
 public:
 	virtual ~IMatrixFactory(){};
 
-	virtual MatrixPtr getMatrixFromValues(int row, int columns, const ComplexVal** ppVals = NullPtr) = 0;
+	virtual MatrixPtr getMatrixFromValues(int row, int columns, const ComplexVal** ppVals = NullPtr, const std::string label = "") = 0;
 
 	virtual SquareMatrixPtr getIdentityMatrix(int dimension) = 0;
 };

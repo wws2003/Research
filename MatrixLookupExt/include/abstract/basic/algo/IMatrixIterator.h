@@ -9,22 +9,9 @@
 #define IMATRIXITERATOR_H_
 
 #include "../math_concept/IMatrix.h"
+#include "IIterator.h"
 
-class IMatrixIterator {
-public:
-	virtual ~IMatrixIterator(){};
-
-	virtual void toBegin() = 0;
-
-	virtual void next() = 0;
-
-	virtual void prev() = 0;
-
-	virtual bool isDone() = 0;
-
-	virtual MatrixPtr getMatrixObj() = 0;
-
-};
+typedef IIterator<MatrixPtr> IMatrixIterator;
 
 
 #endif /* IMATRIXITERATOR_H_ */

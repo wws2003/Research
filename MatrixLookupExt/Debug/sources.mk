@@ -23,8 +23,11 @@ C_UPPER_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+src/main \
+src/implement/timer \
 src/implement/search \
 src/implement/evaluate \
+src/implement/basic/math_concept \
+src/abstract/basic/algo \
 src/abstract/basic \
-src \
 

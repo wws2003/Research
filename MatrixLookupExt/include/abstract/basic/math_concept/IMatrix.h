@@ -20,6 +20,8 @@ public:
 
 	virtual ComplexVal getValue(int row, int column) = 0;
 
+	virtual void toArray(ComplexValArrayRef array) = 0;
+
 };
 
 

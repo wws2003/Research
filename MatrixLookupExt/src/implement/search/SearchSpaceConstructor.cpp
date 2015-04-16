@@ -34,13 +34,13 @@ PersistableMatrixCollectionPtr SearchSpaceConstructor::createPersistableSearchSp
 		while(!pCurrentSearchSetIter->isDone()) {
 			MatrixCollectionPtr pNewProductsCollection = m_pMatrixCollectionFactory->generateEmptyMatrixCollectionPtr();
 
-			MatrixPtr pInstruction = pCurrentSearchSetIter->getMatrixObj();
+			MatrixPtr pInstruction = pCurrentSearchSetIter->getObj();
 
 			pUniversalSetIterator->toBegin();
 
 			//Tranverse through the universal matrices
 			while(!pUniversalSetIterator->isDone()) {
-				MatrixPtr pUniversalMatrix = pUniversalSetIterator->getMatrixObj();
+				MatrixPtr pUniversalMatrix = pUniversalSetIterator->getObj();
 				MatrixPtr pProduct = NullPtr;
 
 				m_pMatrixOperatorPtr->multiply(pInstruction, pUniversalMatrix, pProduct);
@@ -68,7 +68,7 @@ void addMatricesFromIteratorToCollection(MatrixCollectionPtr pCollection, Matrix
 	pIter->toBegin();
 
 	while(!pIter->isDone()) {
-		pCollection->addMatrix(pIter->getMatrixObj());
+		pCollection->addMatrix(pIter->getObj());
 		pIter->next();
 	}
 

@@ -8,10 +8,13 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include src/main/subdir.mk
+-include src/implement/timer/subdir.mk
 -include src/implement/search/subdir.mk
 -include src/implement/evaluate/subdir.mk
+-include src/implement/basic/math_concept/subdir.mk
+-include src/abstract/basic/algo/subdir.mk
 -include src/abstract/basic/subdir.mk
--include src/subdir.mk
 -include subdir.mk
 -include objects.mk
 

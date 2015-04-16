@@ -6,6 +6,7 @@ src/implement/search/SearchSpaceConstructor.d: \
  /home/pham/workspace-c/MatrixLookupExt/include/common/Common.h \
  /home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/algo/../math_concept/ILabelable.h \
  /home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/algo/IMatrixIterator.h \
+ /home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/algo/IIterator.h \
  /home/pham/workspace-c/MatrixLookupExt/include/abstract/factory/IMatrixCollectionFactory.h \
  /home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/algo/IMatrixCollection.h \
  /home/pham/workspace-c/MatrixLookupExt/include/abstract/factory/IPersistableMatrixCollectionFactory.h \
@@ -23,6 +24,8 @@ src/implement/search/SearchSpaceConstructor.d: \
 /home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/algo/../math_concept/ILabelable.h:
 
 /home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/algo/IMatrixIterator.h:
+
+/home/pham/workspace-c/MatrixLookupExt/include/abstract/basic/algo/IIterator.h:
 
 /home/pham/workspace-c/MatrixLookupExt/include/abstract/factory/IMatrixCollectionFactory.h:
 
