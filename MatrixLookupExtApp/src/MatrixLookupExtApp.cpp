@@ -10,6 +10,7 @@
 #include "AlgoCommon.h"
 #include "EvaluateCommon.h"
 #include "IMatrixCollection.h"
+#include "IMatrixApproximator.h"
 #include "IPersistableMatrixCollection.h"
 #include "ISearchSpaceConstructor.h"
 #include "ISearchSpaceEvaluator.h"
@@ -54,7 +55,11 @@ int main(int argc, char* argv[]) {
 		pPersistableMatrixCollection->load(params._searchSpaceSavedLocation);
 
 		//Evaluate
-		pSearchSpaceEvaluator->evaluate(pPersistableMatrixCollection);
+		pSearchSpaceEvaluator->evaluateCollection(pPersistableMatrixCollection);
+
+		//TODO Wire to concrete instance
+		MatrixApproximatorPtr pMatrixApproximator = NullPtr;
+		pSearchSpaceEvaluator->evaluateApproximator(pMatrixApproximator, pPersistableMatrixCollection);
 
 		break;
 	}
@@ -70,7 +75,11 @@ int main(int argc, char* argv[]) {
 		pSearchSpaceConstructor->constructSearchSpace(pMatrixCollection, pUniversalSet, params._maxSequenceLength);
 
 		//Evaluate
-		pSearchSpaceEvaluator->evaluate(pMatrixCollection);
+		pSearchSpaceEvaluator->evaluateCollection(pMatrixCollection);
+
+		//TODO Wire to concrete instance
+		MatrixApproximatorPtr pMatrixApproximator = NullPtr;
+		pSearchSpaceEvaluator->evaluateApproximator(pMatrixApproximator, pMatrixCollection);
 
 		break;
 	}

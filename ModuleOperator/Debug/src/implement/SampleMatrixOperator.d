@@ -1,10 +1,10 @@
 src/implement/SampleMatrixOperator.d: \
  ../src/implement/SampleMatrixOperator.cpp \
  ../include/implement/SampleMatrixOperator.h \
- ../include/abstract/IMatrixOperator.h \
- ../../ModuleMathConcepts/include/abstract/IMatrix.h \
- ../../ModuleMathConcepts/include/common/MathConceptsCommon.h \
- ../../ModuleMathConcepts/include/abstract/ILabelable.h \
+ ../include/interface/abstract/IMatrixOperator.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../third-parties/eigen3/Eigen/Dense ../third-parties/eigen3/Eigen/Core \
  ../third-parties/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h \
  ../third-parties/eigen3/Eigen/src/Core/util/Macros.h \
@@ -153,19 +153,19 @@ src/implement/SampleMatrixOperator.d: \
  ../third-parties/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h \
  ../third-parties/eigen3/Eigen/src/Eigenvalues/./RealQZ.h \
  ../third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
- ../../ModuleMathConcepts/include/abstract/IMatrixFactory.h \
- ../../ModuleMathConcepts/include/abstract/IMatrix.h \
- ../../ModuleMathConcepts/include/abstract/ISquareMatrix.h
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
+ ../../ModuleMathConcepts/include/interface/abstract/ISquareMatrix.h
 
 ../include/implement/SampleMatrixOperator.h:
 
-../include/abstract/IMatrixOperator.h:
+../include/interface/abstract/IMatrixOperator.h:
 
-../../ModuleMathConcepts/include/abstract/IMatrix.h:
+../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
-../../ModuleMathConcepts/include/common/MathConceptsCommon.h:
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
 
-../../ModuleMathConcepts/include/abstract/ILabelable.h:
+../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
 
 ../third-parties/eigen3/Eigen/Dense:
 
@@ -467,8 +467,8 @@ src/implement/SampleMatrixOperator.d: \
 
 ../third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h:
 
-../../ModuleMathConcepts/include/abstract/IMatrixFactory.h:
+../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h:
 
-../../ModuleMathConcepts/include/abstract/IMatrix.h:
+../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
-../../ModuleMathConcepts/include/abstract/ISquareMatrix.h:
+../../ModuleMathConcepts/include/interface/abstract/ISquareMatrix.h:

@@ -17,7 +17,7 @@ CPP_DEPS += \
 src/%.o: ../src/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -I../../ModuleMathConcepts/include/abstract -I../../ModuleMathConcepts/include/common -I../../ModuleAlgorithm/include/abstract -I../../ModuleAlgorithm/include/common -I../../ModuleOperator/include/abstract -I../../ModuleOperator/include/common -I../../ModuleIO/include/abstract -I../../ModuleIO/include/common -I../../ModuleEvaluate/include/abstract -I../../ModuleEvaluate/include/common -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	g++ -I../../ModuleMathConcepts/include/interface/abstract -I../../ModuleMathConcepts/include/interface/common -I../../ModuleAlgorithm/include/interface/abstract -I../../ModuleAlgorithm/include/interface/common -I../../ModuleOperator/include/interface/abstract -I../../ModuleOperator/include/interface/common -I../../ModuleIO/include/interface/abstract -I../../ModuleIO/include/interface/common -I../../ModuleEvaluate/include/interface/abstract -I../../ModuleEvaluate/include/interface/common -O0 -g3 -Wall -c -fmessage-length=0 -std=c++11 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

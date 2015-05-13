@@ -1,40 +1,43 @@
 src/MatrixLookupExtApp.d: ../src/MatrixLookupExtApp.cpp \
- ../../ModuleAlgorithm/include/common/AlgoCommon.h \
- ../../ModuleMathConcepts/include/common/MathConceptsCommon.h \
- ../../ModuleEvaluate/include/common/EvaluateCommon.h \
- ../../ModuleAlgorithm/include/abstract/IMatrixCollection.h \
- ../../ModuleMathConcepts/include/abstract/IMatrix.h \
- ../../ModuleMathConcepts/include/abstract/ILabelable.h \
- ../../ModuleOperator/include/common/OperatorCommon.h \
- ../../ModuleAlgorithm/include/abstract/IPersistableMatrixCollection.h \
- ../../ModuleAlgorithm/include/abstract/IMatrixCollection.h \
- ../../ModuleAlgorithm/include/abstract/IPersistable.h \
- ../../ModuleEvaluate/include/abstract/ISearchSpaceConstructor.h \
- ../../ModuleEvaluate/include/abstract/ISearchSpaceEvaluator.h \
+ ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
+ ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
+ ../../ModuleOperator/include/interface/common/OperatorCommon.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IMatrixApproximator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IPersistableMatrixCollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
+ ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
+ ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
  ../src/MatrixLookupExtApp.h
 
-../../ModuleAlgorithm/include/common/AlgoCommon.h:
+../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
 
-../../ModuleMathConcepts/include/common/MathConceptsCommon.h:
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
 
-../../ModuleEvaluate/include/common/EvaluateCommon.h:
+../../ModuleEvaluate/include/interface/common/EvaluateCommon.h:
 
-../../ModuleAlgorithm/include/abstract/IMatrixCollection.h:
+../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h:
 
-../../ModuleMathConcepts/include/abstract/IMatrix.h:
+../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
-../../ModuleMathConcepts/include/abstract/ILabelable.h:
+../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
 
-../../ModuleOperator/include/common/OperatorCommon.h:
+../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
-../../ModuleAlgorithm/include/abstract/IPersistableMatrixCollection.h:
+../../ModuleAlgorithm/include/interface/abstract/IMatrixApproximator.h:
 
-../../ModuleAlgorithm/include/abstract/IMatrixCollection.h:
+../../ModuleAlgorithm/include/interface/abstract/IPersistableMatrixCollection.h:
 
-../../ModuleAlgorithm/include/abstract/IPersistable.h:
+../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h:
 
-../../ModuleEvaluate/include/abstract/ISearchSpaceConstructor.h:
+../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
 
-../../ModuleEvaluate/include/abstract/ISearchSpaceEvaluator.h:
+../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h:
+
+../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h:
 
 ../src/MatrixLookupExtApp.h:

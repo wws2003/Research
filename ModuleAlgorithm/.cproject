@@ -30,15 +30,15 @@
 								<option id="gnu.cpp.compiler.so.debug.option.optimization.level.1563311999" name="Optimization Level" superClass="gnu.cpp.compiler.so.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.so.debug.option.debugging.level.304511256" name="Debug Level" superClass="gnu.cpp.compiler.so.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.390270459" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/abstract"/>
-									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/common"/>
-									<listOptionValue builtIn="false" value="../../ModuleOperator/include/abstract"/>
-									<listOptionValue builtIn="false" value="../../ModuleOperator/include/common"/>
-									<listOptionValue builtIn="false" value="../include/abstract"/>
-									<listOptionValue builtIn="false" value="../include/common"/>
+									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/common"/>
+									<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/common"/>
+									<listOptionValue builtIn="false" value="../include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../include/interface/common"/>
 									<listOptionValue builtIn="false" value="../include/implement"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.1870982613" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.1870982613" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1094081949" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.so.debug.1592131961" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.so.debug">

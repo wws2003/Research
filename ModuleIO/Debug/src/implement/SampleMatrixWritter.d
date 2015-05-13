@@ -1,11 +1,11 @@
 src/implement/SampleMatrixWritter.d: \
  ../src/implement/SampleMatrixWritter.cpp \
  ../include/implement/SampleMatrixWriter.h \
- ../include/abstract/IMatrixWriter.h \
- ../../ModuleMathConcepts/include/common/MathConceptsCommon.h
+ ../include/interface/abstract/IMatrixWriter.h \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h
 
 ../include/implement/SampleMatrixWriter.h:
 
-../include/abstract/IMatrixWriter.h:
+../include/interface/abstract/IMatrixWriter.h:
 
-../../ModuleMathConcepts/include/common/MathConceptsCommon.h:
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:

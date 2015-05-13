@@ -4,12 +4,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/implement/NINAMatrixApproximator.cpp \
 ../src/implement/SampleMatrixCollectionImpl.cpp 
 
 OBJS += \
+./src/implement/NINAMatrixApproximator.o \
 ./src/implement/SampleMatrixCollectionImpl.o 
 
 CPP_DEPS += \
+./src/implement/NINAMatrixApproximator.d \
 ./src/implement/SampleMatrixCollectionImpl.d 
 
 
@@ -17,7 +20,7 @@ CPP_DEPS += \
 src/implement/%.o: ../src/implement/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -I../../ModuleMathConcepts/include/abstract -I../../ModuleMathConcepts/include/common -I../../ModuleOperator/include/abstract -I../../ModuleOperator/include/common -I../include/abstract -I../include/common -I../include/implement -O0 -g3 -Wall -c -fmessage-length=0 -std=c++11 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	g++ -I../../ModuleMathConcepts/include/interface/abstract -I../../ModuleMathConcepts/include/interface/common -I../../ModuleOperator/include/interface/abstract -I../../ModuleOperator/include/interface/common -I../include/interface/abstract -I../include/interface/common -I../include/implement -O0 -g3 -Wall -c -fmessage-length=0 -std=c++11 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

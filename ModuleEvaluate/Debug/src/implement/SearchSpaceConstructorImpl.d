@@ -1,32 +1,32 @@
 src/implement/SearchSpaceConstructorImpl.d: \
  ../src/implement/SearchSpaceConstructorImpl.cpp \
  ../include/implement/SearchSpaceConstructorImpl.h \
- ../../ModuleMathConcepts/include/common/MathConceptsCommon.h \
- ../../ModuleAlgorithm/include/common/AlgoCommon.h \
- ../../ModuleOperator/include/common/OperatorCommon.h \
- ../include/abstract/ISearchSpaceConstructor.h \
- ../../ModuleAlgorithm/include/abstract/IMatrixCollection.h \
- ../../ModuleMathConcepts/include/abstract/IMatrix.h \
- ../../ModuleMathConcepts/include/abstract/ILabelable.h \
- ../../ModuleAlgorithm/include/abstract/IIterator.h \
- ../../ModuleOperator/include/abstract/IMatrixOperator.h
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
+ ../../ModuleOperator/include/interface/common/OperatorCommon.h \
+ ../include/interface/abstract/ISearchSpaceConstructor.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
+ ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h
 
 ../include/implement/SearchSpaceConstructorImpl.h:
 
-../../ModuleMathConcepts/include/common/MathConceptsCommon.h:
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
 
-../../ModuleAlgorithm/include/common/AlgoCommon.h:
+../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
 
-../../ModuleOperator/include/common/OperatorCommon.h:
+../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
-../include/abstract/ISearchSpaceConstructor.h:
+../include/interface/abstract/ISearchSpaceConstructor.h:
 
-../../ModuleAlgorithm/include/abstract/IMatrixCollection.h:
+../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h:
 
-../../ModuleMathConcepts/include/abstract/IMatrix.h:
+../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
-../../ModuleMathConcepts/include/abstract/ILabelable.h:
+../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
 
-../../ModuleAlgorithm/include/abstract/IIterator.h:
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
-../../ModuleOperator/include/abstract/IMatrixOperator.h:
+../../ModuleOperator/include/interface/abstract/IMatrixOperator.h:

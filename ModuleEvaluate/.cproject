@@ -32,16 +32,16 @@
 								<option id="gnu.cpp.compiler.so.debug.option.optimization.level.1163284923" name="Optimization Level" superClass="gnu.cpp.compiler.so.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.so.debug.option.debugging.level.621504332" name="Debug Level" superClass="gnu.cpp.compiler.so.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.732838978" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/abstract"/>
-									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/common"/>
-									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/abstract"/>
-									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/common"/>
-									<listOptionValue builtIn="false" value="../../ModuleOperator/include/abstract"/>
-									<listOptionValue builtIn="false" value="../../ModuleOperator/include/common"/>
-									<listOptionValue builtIn="false" value="../../ModuleIO/include/abstract"/>
-									<listOptionValue builtIn="false" value="../../ModuleIO/include/common"/>
-									<listOptionValue builtIn="false" value="../include/abstract"/>
-									<listOptionValue builtIn="false" value="../include/common"/>
+									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/common"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/interface/common"/>
+									<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/common"/>
+									<listOptionValue builtIn="false" value="../../ModuleIO/include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../../ModuleIO/include/interface/common"/>
+									<listOptionValue builtIn="false" value="../include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../include/interface/common"/>
 									<listOptionValue builtIn="false" value="../include/implement"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.452953130" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11" valueType="string"/>

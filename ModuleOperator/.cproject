@@ -33,10 +33,10 @@
 								<option id="gnu.cpp.compiler.so.debug.option.optimization.level.447677856" name="Optimization Level" superClass="gnu.cpp.compiler.so.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.so.debug.option.debugging.level.869435567" name="Debug Level" superClass="gnu.cpp.compiler.so.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1577282929" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/abstract"/>
-									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/common"/>
-									<listOptionValue builtIn="false" value="../include/abstract"/>
-									<listOptionValue builtIn="false" value="../include/common"/>
+									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/common"/>
+									<listOptionValue builtIn="false" value="../include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../include/interface/common"/>
 									<listOptionValue builtIn="false" value="../include/implement"/>
 									<listOptionValue builtIn="false" value="../third-parties"/>
 								</option>

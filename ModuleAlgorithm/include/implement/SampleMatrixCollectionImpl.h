@@ -9,7 +9,7 @@
 #define SAMPLEMATRIXCOLLECTIONIMPL_H_
 
 #include "IMatrixCollection.h"
-#include "IMatrixDistanceCalculator.h"
+#include "IDistanceCalculator.h"
 #include "IIterator.h"
 #include "AlgoCommon.h"
 #include <vector>

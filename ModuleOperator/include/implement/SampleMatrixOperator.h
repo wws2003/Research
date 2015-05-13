@@ -21,19 +21,15 @@ public:
 	virtual void subtract(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef pSubtract) ;
 	virtual ComplexVal det(MatrixPtr pm) ;
 
-	virtual void inverse(SquareMatrixPtr pm, SquareMatrixPtrRef ppInverseMatrix) ;
-	virtual void exponential(SquareMatrixPtr pm, SquareMatrixPtrRef ppExpMatrix) ;
-	virtual void log(SquareMatrixPtr pm, SquareMatrixPtr prLog);
-	virtual void eig(SquareMatrixPtr pm, VectorPtrRef ppEigVals, SquareMatrixPtrRef ppEigVects);
+	virtual void inverse(MatrixPtr pm, MatrixPtrRef ppInverseMatrix) ;
+	virtual void exponential(MatrixPtr pm, MatrixPtrRef ppExpMatrix) ;
+	virtual void log(MatrixPtr pm, MatrixPtrRef prLog);
+	virtual void eig(MatrixPtr pm, VectorPtrRef ppEigVals, MatrixPtrRef ppEigVects);
 
 
 private:
 	Eigen::MatrixXcd toEigenMatrix(MatrixPtr pMatrix);
 	MatrixPtr fromEigenMatrix(Eigen::MatrixXcd eigenMatrix);
-
-	Eigen::MatrixXcd toEigenSquareMatrix(SquareMatrixPtr pMatrix);
-	SquareMatrixPtr fromEigenSquareMatrix(Eigen::MatrixXcd eigenMatrix);
-
 
 	MatrixFactoryPtr m_pMatrixFactory;
 };

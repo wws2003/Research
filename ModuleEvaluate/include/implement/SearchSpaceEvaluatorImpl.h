@@ -25,7 +25,10 @@ public:
 	virtual ~SearchSpaceTimerEvaluatorImpl(){};
 
 	//Override
-	virtual void evaluate(MatrixCollectionPtr pMatrixCollection);
+	virtual void evaluateCollection(MatrixCollectionPtr pMatrixCollection);
+
+	//Override
+	virtual void evaluateApproximator(MatrixApproximatorPtr pMatrixApproximator, MatrixCollectionPtr pCoreMatrixCollection);
 
 private:
 	TargetMatrices m_targetMatrices;

@@ -46,27 +46,27 @@ ComplexVal SampleMatrixOperator::det(MatrixPtr pm) {
 	return eigenMat.determinant();
 }
 
-void SampleMatrixOperator::inverse(SquareMatrixPtr pm, SquareMatrixPtrRef prInverseMatrix) {
-	MatrixXcd eigenMat = toEigenSquareMatrix(pm);
+void SampleMatrixOperator::inverse(MatrixPtr pm, MatrixPtrRef prInverseMatrix) {
+	MatrixXcd eigenMat = toEigenMatrix(pm);
 	MatrixXcd eigInverse = eigenMat.inverse();
-	prInverseMatrix = fromEigenSquareMatrix(eigInverse);
+	prInverseMatrix = fromEigenMatrix(eigInverse);
 }
 
-void SampleMatrixOperator::exponential(SquareMatrixPtr pm, SquareMatrixPtrRef prExpMatrix) {
-	MatrixXcd eigenMat = toEigenSquareMatrix(pm);
+void SampleMatrixOperator::exponential(MatrixPtr pm, MatrixPtrRef prExpMatrix) {
+	MatrixXcd eigenMat = toEigenMatrix(pm);
 	MatrixXcd eigenExpMat(eigenMat.rows(), eigenMat.cols());
 	eigenExpMat = eigenMat.array().exp();
-	prExpMatrix = fromEigenSquareMatrix(eigenExpMat);
+	prExpMatrix = fromEigenMatrix(eigenExpMat);
 }
 
-void SampleMatrixOperator::log(SquareMatrixPtr pm, SquareMatrixPtr prLog) {
-	MatrixXcd eigenMat = toEigenSquareMatrix(pm);
+void SampleMatrixOperator::log(MatrixPtr pm, MatrixPtrRef prLog) {
+	MatrixXcd eigenMat = toEigenMatrix(pm);
 	MatrixXcd eigenLogMat(eigenMat.rows(), eigenMat.cols());
 	eigenLogMat = eigenMat.array().log();
-	prLog = fromEigenSquareMatrix(eigenLogMat);
+	prLog = fromEigenMatrix(eigenLogMat);
 }
 
-void SampleMatrixOperator::eig(SquareMatrixPtr pm, VectorPtrRef prEigVals, SquareMatrixPtrRef prEigVects) {
+void SampleMatrixOperator::eig(MatrixPtr pm, VectorPtrRef prEigVals, MatrixPtrRef prEigVects) {
 	//TODO Implement
 }
 
@@ -79,19 +79,6 @@ Eigen::MatrixXcd SampleMatrixOperator::toEigenMatrix(MatrixPtr pMatrix) {
 }
 
 MatrixPtr SampleMatrixOperator::fromEigenMatrix(Eigen::MatrixXcd eigenMatrix) {
-	//TODO Implement
-	return NullPtr;
-}
-
-MatrixXcd SampleMatrixOperator::toEigenSquareMatrix(SquareMatrixPtr pMatrix) {
-	//TODO Implement
-	int nbRows, nbColumns;
-	pMatrix->getSize(nbRows, nbColumns);
-	MatrixXcd m(nbRows, nbColumns);
-	return m;
-}
-
-SquareMatrixPtr SampleMatrixOperator::fromEigenSquareMatrix(Eigen::MatrixXcd eigenMatrix) {
 	//TODO Implement
 	return NullPtr;
 }
