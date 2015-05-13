@@ -8,6 +8,9 @@
 #include "SampleMatrixOperator.h"
 #include "IMatrixFactory.h"
 #include "eigen3/Eigen/Dense"
+#include "eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixExponential.h"
+#include "eigen3/unsupported/Eigen/MatrixFunctions"
+#include <iostream>
 
 using namespace Eigen;
 
@@ -16,7 +19,6 @@ SampleMatrixOperator::SampleMatrixOperator(MatrixFactoryPtr pMatrixFactory) : m_
 }
 
 void SampleMatrixOperator::add(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prSum) {
-	//TODO Think over: Should check size here or use a kind of interceptor instead ?
 	MatrixXcd eigenMat1 = toEigenMatrix(pm1);
 	MatrixXcd eigenMat2 = toEigenMatrix(pm2);
 	MatrixXcd eigSum = eigenMat1 + eigenMat2;
@@ -30,7 +32,7 @@ void SampleMatrixOperator::multiply(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef p
 	MatrixXcd eigenMat2 = toEigenMatrix(pm2);
 	MatrixXcd eigProduct = eigenMat1 * eigenMat2;
 
-	prProduct = fromEigenMatrix(eigProduct);
+	prProduct = fromEigenMatrix(eigProduct, pm1->getLabel() + pm2->getLabel());
 }
 
 void SampleMatrixOperator::subtract(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prSubtract) {
@@ -55,14 +57,18 @@ void SampleMatrixOperator::inverse(MatrixPtr pm, MatrixPtrRef prInverseMatrix) {
 void SampleMatrixOperator::exponential(MatrixPtr pm, MatrixPtrRef prExpMatrix) {
 	MatrixXcd eigenMat = toEigenMatrix(pm);
 	MatrixXcd eigenExpMat(eigenMat.rows(), eigenMat.cols());
-	eigenExpMat = eigenMat.array().exp();
+
+	//Wrong implementation. This calculate exponential of each element!
+	//eigenExpMat = eigenMat.array().exp();
+	eigenExpMat = eigenMat.exp();
+
 	prExpMatrix = fromEigenMatrix(eigenExpMat);
 }
 
 void SampleMatrixOperator::log(MatrixPtr pm, MatrixPtrRef prLog) {
 	MatrixXcd eigenMat = toEigenMatrix(pm);
 	MatrixXcd eigenLogMat(eigenMat.rows(), eigenMat.cols());
-	eigenLogMat = eigenMat.array().log();
+	eigenLogMat = eigenMat.log();
 	prLog = fromEigenMatrix(eigenLogMat);
 }
 
@@ -71,17 +77,29 @@ void SampleMatrixOperator::eig(MatrixPtr pm, VectorPtrRef prEigVals, MatrixPtrRe
 }
 
 Eigen::MatrixXcd SampleMatrixOperator::toEigenMatrix(MatrixPtr pMatrix) {
-	//TODO Implement
 	int nbRows, nbColumns;
 	pMatrix->getSize(nbRows, nbColumns);
 	MatrixXcd m(nbRows, nbColumns);
+
+	for(int i = 0; i < nbRows; i++) {
+		for(int j = 0; j < nbColumns; j++) {
+			m(i,j) = pMatrix->getValue(i, j);
+		}
+	}
+
 	return m;
 }
 
-MatrixPtr SampleMatrixOperator::fromEigenMatrix(Eigen::MatrixXcd eigenMatrix) {
-	//TODO Implement
-	return NullPtr;
-}
+MatrixPtr SampleMatrixOperator::fromEigenMatrix(Eigen::MatrixXcd eigenMatrix, std::string label) {
+	int nbRows = eigenMatrix.rows();
+	int nbCols = eigenMatrix.cols();
 
+	ComplexValArray arr = new ComplexVal[nbRows * nbCols];
+	Map<MatrixXcd>(arr, nbRows, nbCols) = eigenMatrix;
+
+	MatrixPtr pMatrix = m_pMatrixFactory->getMatrixFromValues(nbRows, nbCols, arr, label);
+
+	return pMatrix;
+}
 
 

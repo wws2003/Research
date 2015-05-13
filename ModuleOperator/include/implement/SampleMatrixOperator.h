@@ -29,7 +29,7 @@ public:
 
 private:
 	Eigen::MatrixXcd toEigenMatrix(MatrixPtr pMatrix);
-	MatrixPtr fromEigenMatrix(Eigen::MatrixXcd eigenMatrix);
+	MatrixPtr fromEigenMatrix(Eigen::MatrixXcd eigenMatrix, std::string label = "");
 
 	MatrixFactoryPtr m_pMatrixFactory;
 };

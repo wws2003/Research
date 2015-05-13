@@ -4,12 +4,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/implement/SimpleDenseMatrixFactoryImpl.cpp \
 ../src/implement/SimpleDenseMatrixImpl.cpp 
 
 OBJS += \
+./src/implement/SimpleDenseMatrixFactoryImpl.o \
 ./src/implement/SimpleDenseMatrixImpl.o 
 
 CPP_DEPS += \
+./src/implement/SimpleDenseMatrixFactoryImpl.d \
 ./src/implement/SimpleDenseMatrixImpl.d 
 
 

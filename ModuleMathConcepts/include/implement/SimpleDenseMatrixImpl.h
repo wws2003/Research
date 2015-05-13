@@ -12,7 +12,13 @@
 
 class SimpleDenseMatrixImpl: public IMatrix {
 public:
-	SimpleDenseMatrixImpl(ComplexValArray array, int nbRows, int nbColumns, std::string label = "");
+	/**
+	 * Initialize matrix from an array of complex values, given
+	 * - Number of row
+	 * - Number of column
+	 * - Matrix label
+	 */
+	SimpleDenseMatrixImpl(const ComplexVal* array, int nbRows, int nbColumns, std::string label = "");
 
 	virtual ~SimpleDenseMatrixImpl();
 
@@ -29,7 +35,7 @@ public:
 	virtual std::string getLabel();
 
 private:
-	void initArray(ComplexValArray array, int nbRows, int nbColumns);
+	void initArray(const ComplexVal* array,  int nbRows, int nbColumns);
 
 	std::string m_label = "";
 	ComplexValArray m_array;

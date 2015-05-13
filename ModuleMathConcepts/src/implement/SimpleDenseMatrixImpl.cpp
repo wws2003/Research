@@ -7,7 +7,7 @@
 
 #include "SimpleDenseMatrixImpl.h"
 
-SimpleDenseMatrixImpl::SimpleDenseMatrixImpl(ComplexValArray array, int nbRows, int nbColumns, std::string label): m_label(label) {
+SimpleDenseMatrixImpl::SimpleDenseMatrixImpl(const ComplexVal* array, int nbRows, int nbColumns, std::string label): m_label(label) {
 	initArray(array, nbRows, nbColumns);
 }
 
@@ -39,7 +39,7 @@ std::string SimpleDenseMatrixImpl::getLabel() {
 	return m_label;
 }
 
-void SimpleDenseMatrixImpl::initArray(ComplexValArray array, int nbRows, int nbColumns) {
+void SimpleDenseMatrixImpl::initArray(const ComplexVal* array, int nbRows, int nbColumns) {
 	int arraySize = nbRows * nbColumns;
 	m_array = new ComplexVal[arraySize];
 	for(int i = 0; i < arraySize; i++) {

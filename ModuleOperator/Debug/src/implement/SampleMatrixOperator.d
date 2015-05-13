@@ -155,7 +155,18 @@ src/implement/SampleMatrixOperator.d: \
  ../third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
- ../../ModuleMathConcepts/include/interface/abstract/ISquareMatrix.h
+ ../../ModuleMathConcepts/include/interface/abstract/ISquareMatrix.h \
+ ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixExponential.h \
+ ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/StemFunction.h \
+ ../third-parties/eigen3/unsupported/Eigen/MatrixFunctions \
+ ../third-parties/eigen3/Eigen/Core ../third-parties/eigen3/Eigen/LU \
+ ../third-parties/eigen3/Eigen/Eigenvalues \
+ ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixExponential.h \
+ ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixFunction.h \
+ ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixFunctionAtomic.h \
+ ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixSquareRoot.h \
+ ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixLogarithm.h \
+ ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixPower.h
 
 ../include/implement/SampleMatrixOperator.h:
 
@@ -472,3 +483,27 @@ src/implement/SampleMatrixOperator.d: \
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/ISquareMatrix.h:
+
+../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixExponential.h:
+
+../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/StemFunction.h:
+
+../third-parties/eigen3/unsupported/Eigen/MatrixFunctions:
+
+../third-parties/eigen3/Eigen/Core:
+
+../third-parties/eigen3/Eigen/LU:
+
+../third-parties/eigen3/Eigen/Eigenvalues:
+
+../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixExponential.h:
+
+../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixFunction.h:
+
+../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixFunctionAtomic.h:
+
+../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixSquareRoot.h:
+
+../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixLogarithm.h:
+
+../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixPower.h:
