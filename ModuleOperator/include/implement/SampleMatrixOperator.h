@@ -20,7 +20,11 @@ public:
 	virtual void multiply(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef pProduct) ;
 	virtual void multiplyScalar(MatrixPtr pm, ComplexVal scalar, MatrixPtrRef pProduct);
 	virtual void subtract(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef pSubtract) ;
+
 	virtual ComplexVal det(MatrixPtr pm) ;
+	virtual ComplexVal trace(MatrixPtr pm);
+	virtual void power(MatrixPtr pm, int exponent, MatrixPtrRef prPower);
+	virtual void sqrt(MatrixPtr pm, MatrixPtrRef prSqrt);
 
 	virtual void conjugateTranpose(MatrixPtr pm, MatrixPtrRef prConjugate);
 	virtual void transpose(MatrixPtr pm, MatrixPtrRef prTranspose);

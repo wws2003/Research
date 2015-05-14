@@ -42,6 +42,25 @@ public:
 	 */
 	virtual ComplexVal det(MatrixPtr pm) = 0;
 
+	/**
+	 * Return determinant of matrix pm.
+	 * This method is actually a shorthand for manual calculating sum of elements on matrix diagon
+	 */
+	virtual ComplexVal trace(MatrixPtr pm) = 0;
+
+	/**
+	 * Calculate pm ^ exponent and store result to prPower
+	 * Should throw logic exception if matrices size not matched
+	 * exponent should be negative, zero or negative
+	 */
+	virtual void power(MatrixPtr pm, int exponent, MatrixPtrRef prPower) = 0;
+
+	/**
+	 * Calculate sqrt of pm and store result to prSqrt
+	 * Should throw logic exception if matrix has no sqrt (i.e. not a (semi?)positive definitive matrix)
+	 */
+	virtual void sqrt(MatrixPtr pm, MatrixPtrRef prSqrt) = 0;
+
 	/***
 	 * Calculate conjugate tranpose of matrix pm and store to prConjugate
 	 */

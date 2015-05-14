@@ -59,6 +59,27 @@ ComplexVal SampleMatrixOperator::det(MatrixPtr pm) {
 	return eigenMat.determinant();
 }
 
+ComplexVal SampleMatrixOperator::trace(MatrixPtr pm) {
+	MatrixXcd eigenMat;
+	toEigenMatrix(pm, eigenMat);
+	return eigenMat.trace();
+}
+
+void SampleMatrixOperator::power(MatrixPtr pm, int exponent, MatrixPtrRef prPower) {
+	MatrixXcd eigenMat;
+	toEigenMatrix(pm, eigenMat);
+	MatrixXcd eigenPower = eigenMat.pow(exponent);
+	prPower = fromEigenMatrix(eigenPower);
+}
+
+void SampleMatrixOperator::sqrt(MatrixPtr pm, MatrixPtrRef prSqrt) {
+	MatrixXcd eigenMat;
+	toEigenMatrix(pm, eigenMat);
+	MatrixXcd eigenSqrt = eigenMat.sqrt();
+	prSqrt = fromEigenMatrix(eigenSqrt);
+}
+
+
 void SampleMatrixOperator::conjugateTranpose(MatrixPtr pm, MatrixPtrRef prConjugate) {
 	MatrixXcd eigenMat;
 	toEigenMatrix(pm, eigenMat);
