@@ -7,27 +7,29 @@
 
 #include "SimpleDenseMatrixImpl.h"
 
-SimpleDenseMatrixImpl::SimpleDenseMatrixImpl(const ComplexVal* array, int nbRows, int nbColumns, std::string label): m_label(label) {
+SimpleDenseMatrixImpl::SimpleDenseMatrixImpl(const ComplexVal* array, ArraySpliceType arraySpliceType, int nbRows, int nbColumns, std::string label): m_label(label) {
 	initArray(array, nbRows, nbColumns);
+	m_arraySpliceType = arraySpliceType;
 }
 
 SimpleDenseMatrixImpl::~SimpleDenseMatrixImpl() {
-	delete m_array;
+	delete[] m_array;
 }
 
 //Override
-void SimpleDenseMatrixImpl::getSize(int& rows, int& columns) {
+void SimpleDenseMatrixImpl::getSize(int& rows, int& columns) const {
 	rows = m_nbRows;
 	columns = m_nbColumns;
 }
 
 //Override
-ComplexVal SimpleDenseMatrixImpl::getValue(int row, int column) {
-	return m_array[row * m_nbColumns + column];
+ComplexVal SimpleDenseMatrixImpl::getValue(int row, int column) const {
+	int index = (m_arraySpliceType == ROW_SPLICE) ? (row * m_nbColumns + column) : (column * m_nbRows + row);
+	return m_array[index];
 }
 
 //Override
-void SimpleDenseMatrixImpl::toArray(ComplexValArrayRef array) {
+void SimpleDenseMatrixImpl::toArray(ComplexValArrayRef array) const {
 	int arraySize = m_nbRows * m_nbColumns;
 	array = new ComplexVal[arraySize];
 	for(int i = 0; i < arraySize; i++) {
@@ -35,7 +37,7 @@ void SimpleDenseMatrixImpl::toArray(ComplexValArrayRef array) {
 	}
 }
 
-std::string SimpleDenseMatrixImpl::getLabel() {
+std::string SimpleDenseMatrixImpl::getLabel() const {
 	return m_label;
 }
 

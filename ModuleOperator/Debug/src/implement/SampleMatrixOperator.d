@@ -155,7 +155,6 @@ src/implement/SampleMatrixOperator.d: \
  ../third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
- ../../ModuleMathConcepts/include/interface/abstract/ISquareMatrix.h \
  ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixExponential.h \
  ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/StemFunction.h \
  ../third-parties/eigen3/unsupported/Eigen/MatrixFunctions \
@@ -481,8 +480,6 @@ src/implement/SampleMatrixOperator.d: \
 ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
-
-../../ModuleMathConcepts/include/interface/abstract/ISquareMatrix.h:
 
 ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixExponential.h:
 

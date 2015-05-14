@@ -18,8 +18,12 @@ public:
 
 	virtual void add(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef pSum) ;
 	virtual void multiply(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef pProduct) ;
+	virtual void multiplyScalar(MatrixPtr pm, ComplexVal scalar, MatrixPtrRef pProduct);
 	virtual void subtract(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef pSubtract) ;
 	virtual ComplexVal det(MatrixPtr pm) ;
+
+	virtual void conjugateTranpose(MatrixPtr pm, MatrixPtrRef prConjugate);
+	virtual void transpose(MatrixPtr pm, MatrixPtrRef prTranspose);
 
 	virtual void inverse(MatrixPtr pm, MatrixPtrRef ppInverseMatrix) ;
 	virtual void exponential(MatrixPtr pm, MatrixPtrRef ppExpMatrix) ;
@@ -28,8 +32,8 @@ public:
 
 
 private:
-	Eigen::MatrixXcd toEigenMatrix(MatrixPtr pMatrix);
-	MatrixPtr fromEigenMatrix(Eigen::MatrixXcd eigenMatrix, std::string label = "");
+	void toEigenMatrix(MatrixPtr pMatrix, Eigen::MatrixXcd& rEigenMat);
+	MatrixPtr fromEigenMatrix(Eigen::MatrixXcd& eigenMatrix, std::string label = "");
 
 	MatrixFactoryPtr m_pMatrixFactory;
 };
