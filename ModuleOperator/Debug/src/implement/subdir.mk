@@ -4,12 +4,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/implement/MatrixTraceDistanceCalculator.cpp \
 ../src/implement/SampleMatrixOperator.cpp 
 
 OBJS += \
+./src/implement/MatrixTraceDistanceCalculator.o \
 ./src/implement/SampleMatrixOperator.o 
 
 CPP_DEPS += \
+./src/implement/MatrixTraceDistanceCalculator.d \
 ./src/implement/SampleMatrixOperator.d 
 
 

@@ -109,8 +109,6 @@ void SampleMatrixOperator::exponential(MatrixPtr pm, MatrixPtrRef prExpMatrix) {
 	toEigenMatrix(pm, eigenMat);
 	MatrixXcd eigenExpMat(eigenMat.rows(), eigenMat.cols());
 
-	//Wrong implementation. This calculate exponential of each element!
-	//eigenExpMat = eigenMat.array().exp();
 	eigenExpMat = eigenMat.exp();
 
 	prExpMatrix = fromEigenMatrix(eigenExpMat);

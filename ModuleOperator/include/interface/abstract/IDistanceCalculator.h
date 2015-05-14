@@ -11,8 +11,12 @@
 template<typename T>
 class IDistanceCalculator {
 public:
-	virtual ~IDistanceCalculator();
-	virtual double distance(T p1, T p2);
+	virtual ~IDistanceCalculator(){};
+
+	/**
+	 * Calculate distance between to generic-typed element. Possibly vector, matrix or scalar
+	 */
+	virtual double distance(T p1, T p2) = 0;
 };
 
 
