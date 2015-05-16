@@ -4,14 +4,17 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/implement/DummyMatrixApproximator.cpp \
 ../src/implement/NINAMatrixApproximator.cpp \
 ../src/implement/SampleMatrixCollectionImpl.cpp 
 
 OBJS += \
+./src/implement/DummyMatrixApproximator.o \
 ./src/implement/NINAMatrixApproximator.o \
 ./src/implement/SampleMatrixCollectionImpl.o 
 
 CPP_DEPS += \
+./src/implement/DummyMatrixApproximator.d \
 ./src/implement/NINAMatrixApproximator.d \
 ./src/implement/SampleMatrixCollectionImpl.d 
 

@@ -10,6 +10,8 @@
 #include "IMatrixOperator.h"
 #include <stdexcept>
 
+bool isZeroMatrix(MatrixPtr pMatrix);
+
 //Check if trace of matrix is real value, i.e. image part is small enough to be ignored
 void validateRealTrace(const ComplexVal& complexTrace);
 
@@ -23,20 +25,47 @@ double MatrixTraceDistanceCalculator::distance(MatrixPtr p1, MatrixPtr p2) {
 	MatrixPtr pDelta = NullPtr;
 	m_pMatrixOperator->subtract(p1, p2, pDelta);
 
-	MatrixPtr pDeltaConjugateTranspose = NullPtr;
-	m_pMatrixOperator->conjugateTranpose(pDelta, pDeltaConjugateTranspose);
+	ComplexVal distanceTrace = 0.0;
 
-	MatrixPtr pDeltaConjugateTransposeDelta = NullPtr;
-	m_pMatrixOperator->multiply(pDeltaConjugateTranspose, pDelta, pDeltaConjugateTransposeDelta);
+	//Handle the case delta = 0, i.e. sqrt(delta'*delta) can not be determined
+	//FIXME Just a band-aided solution
+	if(!isZeroMatrix(pDelta)) {
+		MatrixPtr pDeltaConjugateTranspose = NullPtr;
+		m_pMatrixOperator->conjugateTranpose(pDelta, pDeltaConjugateTranspose);
 
-	MatrixPtr pSqrtDeltaConjugateTransposeDelta = NullPtr;
-	m_pMatrixOperator->sqrt(pDeltaConjugateTransposeDelta, pSqrtDeltaConjugateTransposeDelta);
+		MatrixPtr pDeltaConjugateTransposeDelta = NullPtr;
+		m_pMatrixOperator->multiply(pDeltaConjugateTranspose, pDelta, pDeltaConjugateTransposeDelta);
 
-	ComplexVal distanceTrace = m_pMatrixOperator->trace(pSqrtDeltaConjugateTransposeDelta).real();
+		MatrixPtr pSqrtDeltaConjugateTransposeDelta = NullPtr;
+		m_pMatrixOperator->sqrt(pDeltaConjugateTransposeDelta, pSqrtDeltaConjugateTransposeDelta);
 
-	validateRealTrace(distanceTrace);
+		distanceTrace = m_pMatrixOperator->trace(pSqrtDeltaConjugateTransposeDelta).real();
+
+		validateRealTrace(distanceTrace);
+
+		//Release intermediate pointers
+		_destroy(pSqrtDeltaConjugateTransposeDelta);
+		_destroy(pDeltaConjugateTransposeDelta);
+		_destroy(pDeltaConjugateTranspose);
+	}
+
+	_destroy(pDelta);
 
 	return distanceTrace.real();
+}
+
+bool isZeroMatrix(MatrixPtr pMatrix) {
+	int nbRows, nbColumns;
+	const double resolution = 2e-15;
+	pMatrix->getSize(nbRows, nbColumns);
+	for(int i = 0; i < nbRows; i++) {
+		for(int j = 0; j < nbRows; j++) {
+			if(std::norm(pMatrix->getValue(i,j)) > resolution) {
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 void validateRealTrace(const ComplexVal& complexTrace) {

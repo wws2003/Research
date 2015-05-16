@@ -4,16 +4,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/implement/CpuTimer.cpp \
 ../src/implement/ScopeTimer.cpp \
 ../src/implement/SearchSpaceConstructorImpl.cpp \
 ../src/implement/SearchSpaceTimerEvaluator.cpp 
 
 OBJS += \
+./src/implement/CpuTimer.o \
 ./src/implement/ScopeTimer.o \
 ./src/implement/SearchSpaceConstructorImpl.o \
 ./src/implement/SearchSpaceTimerEvaluator.o 
 
 CPP_DEPS += \
+./src/implement/CpuTimer.d \
 ./src/implement/ScopeTimer.d \
 ./src/implement/SearchSpaceConstructorImpl.d \
 ./src/implement/SearchSpaceTimerEvaluator.d 

@@ -15,6 +15,8 @@
 #include <vector>
 
 typedef std::vector<MatrixPtr> MatrixPtrVector;
+typedef MatrixPtrVector* MatrixPtrVectorPtr;
+typedef long long counter_t;
 
 class SampleMatrixCollectionImpl : public IMatrixCollection {
 public:
@@ -40,9 +42,9 @@ private:
 
 	class InnerVectorMatrixIterator : public MatrixIterator {
 	public:
-		InnerVectorMatrixIterator(MatrixPtrVector& pMatrices);
+		InnerVectorMatrixIterator(const MatrixPtrVector& pMatrices);
 
-		virtual ~InnerVectorMatrixIterator(){};
+		virtual ~InnerVectorMatrixIterator();
 
 		virtual void toBegin();
 
@@ -54,8 +56,8 @@ private:
 
 		virtual MatrixPtr getObj();
 	private:
-		size_t m_counter;
-		MatrixPtrVector& m_pMatrices;
+		counter_t m_counter;
+		MatrixPtrVector m_pMatrices;
 	};
 
 	typedef InnerVectorMatrixIterator* InnerVectorMatrixIteratorPtr;

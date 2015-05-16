@@ -9,11 +9,11 @@
 #include "ITimer.h"
 
 ScopeTimer::ScopeTimer(TimerPtr pTimer, double* pInterval): m_pTimer(pTimer), m_pInterval(pInterval) {
-	m_startTime = m_pTimer->getTime();
+	m_startTime = m_pTimer->getTimeInMs();
 }
 
 ScopeTimer::~ScopeTimer() {
-	double endTime = m_pTimer->getTime();
+	double endTime = m_pTimer->getTimeInMs();
 	*m_pInterval = endTime - m_startTime;
 }
 

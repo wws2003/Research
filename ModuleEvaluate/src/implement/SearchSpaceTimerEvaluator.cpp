@@ -21,7 +21,7 @@ void getClosestApproximationFromFindIterator(MatrixIteratorPtr pFindResultIter, 
 
 void logSearchResult(MatrixPtr pQuery, MatrixPtr pResult, double searchTime, double precision, double epsilon,  MatrixWriterPtr pMatrixWriter, std::ostream& outputStream);
 
-SearchSpaceTimerEvaluatorImpl::SearchSpaceTimerEvaluatorImpl(TargetMatrices pTargets, double epsilon, MatrixDistanceCalculatorPtr pMatrixDistanceCalculator, MatrixWriterPtr pMatrixWriter, TimerPtr pTimer, std::ostream& outputStream) : m_ostream(outputStream) {
+SearchSpaceTimerEvaluatorImpl::SearchSpaceTimerEvaluatorImpl(const TargetMatrices&  pTargets, double epsilon, MatrixDistanceCalculatorPtr pMatrixDistanceCalculator, MatrixWriterPtr pMatrixWriter, TimerPtr pTimer, std::ostream& outputStream) : m_ostream(outputStream) {
 	m_targetMatrices.insert(m_targetMatrices.end(), pTargets.begin(), pTargets.end());
 	m_epsilon = epsilon;
 	m_pMatrixDistanceCalculator = pMatrixDistanceCalculator;
@@ -101,17 +101,18 @@ void getClosestApproximationFromFindIterator(MatrixIteratorPtr pFindResultIter, 
 }
 
 void logSearchResult(MatrixPtr pQuery, MatrixPtr pResult, double searchTime, double precision, double epsilon,  MatrixWriterPtr pMatrixWriter, std::ostream& outputStream) {
-	const std::string delimeter = ",";
+	const std::string delimeter = ", ";
 	const std::string endLine = "\n";
 
+	outputStream << "Query:" << endLine;
 	pMatrixWriter->writeMatrix(pQuery, outputStream);
-	outputStream << delimeter;
-	outputStream << epsilon;
-	outputStream << delimeter;
+	outputStream << "Epsilon:" << epsilon << endLine;
+	outputStream << "Result:" << endLine;
 	pMatrixWriter->writeMatrix(pResult, outputStream);
-	outputStream << delimeter;
-	outputStream << searchTime;
-	outputStream << delimeter;
+	outputStream << "Info" << endLine;
+	outputStream << "Search time: " ;
+	outputStream << searchTime << delimeter;
+	outputStream << "Precision: ";
 	outputStream << precision;
 	outputStream << endLine;
 }

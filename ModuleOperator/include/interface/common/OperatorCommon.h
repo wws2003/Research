@@ -8,6 +8,8 @@
 #ifndef OPERATORCOMMON_H_
 #define OPERATORCOMMON_H_
 
+#include "MathConceptsCommon.h"
+
 class IMatrixOperator;
 
 class ITargetMatrixFactory;

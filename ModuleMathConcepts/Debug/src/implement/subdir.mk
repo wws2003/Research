@@ -5,15 +5,18 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/implement/SimpleDenseMatrixFactoryImpl.cpp \
-../src/implement/SimpleDenseMatrixImpl.cpp 
+../src/implement/SimpleDenseMatrixImpl.cpp \
+../src/implement/SimpleIdentityMatrixImpl.cpp 
 
 OBJS += \
 ./src/implement/SimpleDenseMatrixFactoryImpl.o \
-./src/implement/SimpleDenseMatrixImpl.o 
+./src/implement/SimpleDenseMatrixImpl.o \
+./src/implement/SimpleIdentityMatrixImpl.o 
 
 CPP_DEPS += \
 ./src/implement/SimpleDenseMatrixFactoryImpl.d \
-./src/implement/SimpleDenseMatrixImpl.d 
+./src/implement/SimpleDenseMatrixImpl.d \
+./src/implement/SimpleIdentityMatrixImpl.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

@@ -12,7 +12,7 @@
 
 class SampleMatrixWriterImpl : public IMatrixWriter {
 public:
-	SampleMatrixWriterImpl(){};
+	SampleMatrixWriterImpl();
 
 	virtual ~SampleMatrixWriterImpl(){};
 	virtual void writeMatrix(MatrixPtr pMatrix, std::ostream& ouputStream);

@@ -21,7 +21,7 @@ typedef std::vector<MatrixPtr> TargetMatrices;
 
 class SearchSpaceTimerEvaluatorImpl : public ISearchSpaceEvaluator {
 public:
-	SearchSpaceTimerEvaluatorImpl(TargetMatrices pTargets, double epsilon, MatrixDistanceCalculatorPtr pMatrixDistanceCalculator, MatrixWriterPtr pMatrixWriter, TimerPtr pTimer, std::ostream& outputStream);
+	SearchSpaceTimerEvaluatorImpl(const TargetMatrices& pTargets, double epsilon, MatrixDistanceCalculatorPtr pMatrixDistanceCalculator, MatrixWriterPtr pMatrixWriter, TimerPtr pTimer, std::ostream& outputStream);
 	virtual ~SearchSpaceTimerEvaluatorImpl(){};
 
 	//Override

@@ -1,4 +1,4 @@
-src/MatrixLookupExtApp.d: ../src/MatrixLookupExtApp.cpp \
+src/app/MatrixLookupExtApp.d: ../src/app/MatrixLookupExtApp.cpp \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
@@ -12,7 +12,7 @@ src/MatrixLookupExtApp.d: ../src/MatrixLookupExtApp.cpp \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
- ../src/MatrixLookupExtApp.h
+ ../src/app/MatrixLookupExtApp.h
 
 ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
 
@@ -40,4 +40,4 @@ src/MatrixLookupExtApp.d: ../src/MatrixLookupExtApp.cpp \
 
 ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h:
 
-../src/MatrixLookupExtApp.h:
+../src/app/MatrixLookupExtApp.h:

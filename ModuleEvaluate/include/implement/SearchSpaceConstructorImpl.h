@@ -19,7 +19,7 @@ typedef MatrixPtr* MatrixPtrArray;
 
 class SearchSpaceConstructorImpl : public ISearchSpaceConstructor {
 public:
-	SearchSpaceConstructorImpl(MatrixOperatorPtr pMatrixOperator, MatrixPtrArray pUniversalMatrices, int universalSetSize);
+	SearchSpaceConstructorImpl(MatrixOperatorPtr pMatrixOperator);
 	virtual ~SearchSpaceConstructorImpl();
 
 	//Override
@@ -27,8 +27,6 @@ public:
 
 private:
 	MatrixOperatorPtr m_pMatrixOperator;
-	MatrixPtrArray m_pUniversalMatrices;
-	int m_unversalSetSize;
 };
 
 

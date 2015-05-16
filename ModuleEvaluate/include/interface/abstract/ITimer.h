@@ -13,7 +13,7 @@ public:
 	virtual ~ITimer(){};
 
 	//Get current time. Different implementation should return different time such as wall time, cpu time
-	virtual double getTime() = 0;
+	virtual double getTimeInMs() = 0;
 };
 
 

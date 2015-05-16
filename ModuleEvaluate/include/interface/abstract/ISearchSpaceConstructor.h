@@ -15,6 +15,11 @@ class ISearchSpaceConstructor {
 public:
 	virtual ~ISearchSpaceConstructor(){};
 
+	/**
+	 * Construct search space (matrix collection) given
+	 * - Collection of universal matrices (such as H,T for SU(2))
+	 * - Maximum sequence length of matrices in search space
+	 */
 	virtual void constructSearchSpace(MatrixCollectionPtr pMatrixCollection, MatrixCollectionPtr pUniversalSet, int maxSequenceLength) = 0;
 };
 

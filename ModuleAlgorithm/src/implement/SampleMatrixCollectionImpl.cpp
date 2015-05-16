@@ -33,6 +33,7 @@ MatrixIteratorPtr SampleMatrixCollectionImpl::getReadonlyIteratorPtr() {
 
 //Return iterator through a set of matrix reflecting the changes in the collection
 MatrixIteratorPtr SampleMatrixCollectionImpl::getIteratorPtr() {
+	//FIXME This is not a correct implementation !
 	return m_pMatrixIterator;
 }
 
@@ -42,7 +43,6 @@ MatrixCollectionSize_t SampleMatrixCollectionImpl::size() const {
 
 MatrixIteratorPtr SampleMatrixCollectionImpl::findApproxMatrices(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const {
 	MatrixPtrVector pResults;
-	MatrixIteratorPtr pResultIter = MatrixIteratorPtr(new InnerVectorMatrixIterator(pResults));
 
 	size_t collectionSize = m_pMatrices.size();
 	for(size_t j = 0; j < collectionSize; j++) {
@@ -52,10 +52,16 @@ MatrixIteratorPtr SampleMatrixCollectionImpl::findApproxMatrices(MatrixPtr pQuer
 		}
 	}
 
+	MatrixIteratorPtr pResultIter = MatrixIteratorPtr(new InnerVectorMatrixIterator(pResults));
 	return pResultIter;
 }
 
-SampleMatrixCollectionImpl::InnerVectorMatrixIterator::InnerVectorMatrixIterator(MatrixPtrVector& pMatrices) : m_counter(0), m_pMatrices(pMatrices) {
+SampleMatrixCollectionImpl::InnerVectorMatrixIterator::InnerVectorMatrixIterator(const MatrixPtrVector& pMatrices) : m_counter(0) {
+	m_pMatrices.clear();
+	m_pMatrices.insert(m_pMatrices.end(), pMatrices.begin(), pMatrices.end());
+}
+
+SampleMatrixCollectionImpl::InnerVectorMatrixIterator::~InnerVectorMatrixIterator() {
 
 }
 
@@ -72,7 +78,7 @@ void SampleMatrixCollectionImpl::InnerVectorMatrixIterator::prev() {
 }
 
 bool SampleMatrixCollectionImpl::InnerVectorMatrixIterator::isDone() {
-	return m_counter >= (m_pMatrices.size() - 1);
+	return m_counter > (counter_t)m_pMatrices.size() - 1;
 }
 
 MatrixPtr SampleMatrixCollectionImpl::InnerVectorMatrixIterator::getObj() {
