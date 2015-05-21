@@ -1,7 +1,7 @@
 MAKE_DIR = $(PWD)
 
 MATH_CONCEPT_DIR := $(MAKE_DIR)/ModuleMathConcepts/Debug
-MATRIX_OPERATOR_DIR := $(MAKE_DIR)/ModuleMatrixOperator/Debug
+MATRIX_OPERATOR_DIR := $(MAKE_DIR)/ModuleOperator/Debug
 IO_DIR := $(MAKE_DIR)/ModuleIO/Debug
 ALGORITHM_DIR := $(MAKE_DIR)/ModuleAlgorithm/Debug
 EVALUATE_DIR := $(MAKE_DIR)/ModuleEvaluate/Debug
