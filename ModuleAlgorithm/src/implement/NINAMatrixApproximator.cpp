@@ -67,8 +67,16 @@ MatrixPtr NINAMatrixApproximator::calculateOneStepCloserToTarget(MatrixPtr pCurr
 }
 
 MatrixPtr NINAMatrixApproximator::calculateStepMatrix(MatrixPtr pCurrentApproximateMatrix, MatrixPtr pOneStepCloserToQueryMatrix) const {
-	//TODO Implement
-	return NullPtr;
+	//StepMatrix = CurrentApproximateMatrix^-1 * pOneStepCloserToQueryMatrix
+	MatrixPtr pStepMatrix = NullPtr;
+	MatrixPtr pCurrentApproximateMatrixInverse = NullPtr;
+	m_pMatrixOperator->inverse(pCurrentApproximateMatrix, pCurrentApproximateMatrixInverse);
+	m_pMatrixOperator->multiply(pCurrentApproximateMatrixInverse, pOneStepCloserToQueryMatrix, pStepMatrix);
+
+	//Release intermediate pointer
+	_destroy(pCurrentApproximateMatrixInverse);
+
+	return pStepMatrix;
 }
 
 MatrixPtr NINAMatrixApproximator::findMatrixToFitStep(MatrixPtr pStepMatrix) const {

@@ -14,7 +14,7 @@ class IMatrixOperator;
 
 class ITargetMatrixFactory;
 
-class IMatrixVectorMapper;
+class IMatrixCoordinateMapper;
 
 template<typename T> class IDistanceCalculator;
 typedef IDistanceCalculator<MatrixPtr> IMatrixDistanceCalculator;
@@ -26,6 +26,6 @@ typedef IMatrixOperator* MatrixOperatorPtr;
 
 typedef IMatrixDistanceCalculator* MatrixDistanceCalculatorPtr;
 
-typedef IMatrixVectorMapper* MatrixVectorMapperPtr;
+typedef IMatrixCoordinateMapper MatrixCoordinateMapperPtr;
 
 #endif /* OPERATORCOMMON_H_ */
