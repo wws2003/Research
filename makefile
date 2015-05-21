@@ -1,53 +1,46 @@
-MAKE_DIR = $(PWD
-)
-MATH_CONCEPT_DIR := $(MAKE_DIR)/ModuleMathConcepts
-MATRIX_OPERATOR_DIR := $(MAKE_DIR)/ModuleMatrixOperator
-IO_DIR := $(MAKE_DIR)/ModuleIO
-ALGORITHM_DIR := $(MAKE_DIR)/ModuleAlgorithm
-EVALUATE_DIR := $(MAKE_DIR)/ModuleEvaluate
-TEST_MATRIX_OPERATOR_DIR := $(MAKE_DIR)/TestMatrixOperator
-TEST_EVALUATE_DIR := $(MAKE_DIR)/TestEvaluator
+MAKE_DIR = $(PWD)
 
-MAKE_FILE_PATH = Debug/makefile
+MATH_CONCEPT_DIR := $(MAKE_DIR)/ModuleMathConcepts/Debug
+MATRIX_OPERATOR_DIR := $(MAKE_DIR)/ModuleMatrixOperator/Debug
+IO_DIR := $(MAKE_DIR)/ModuleIO/Debug
+ALGORITHM_DIR := $(MAKE_DIR)/ModuleAlgorithm/Debug
+EVALUATE_DIR := $(MAKE_DIR)/ModuleEvaluate/Debug
+TEST_MATRIX_OPERATOR_DIR := $(MAKE_DIR)/TestMatrixOperator/Debug
+TEST_EVALUATE_DIR := $(MAKE_DIR)/TestEvaluator/Debug
+
+MAKE_FILE_PATH = makefile
 
 all: testMatrixOperator testEvaluate
 
 testMatrixOperator: mathConcept matrixOperator
-	@$(MAKE) -f $(TEST_MATRIX_OPERATOR_DIR)/$(MAKE_FILE_PATH) all	
+	@$(MAKE) -C $(TEST_MATRIX_OPERATOR_DIR) -f $(MAKE_FILE_PATH) all	
 
 mathConcept: 
-	@$(MAKE) -f $(MATH_CONCEPT_DIR)/$(MAKE_FILE_PATH) all	
+	@$(MAKE) -C $(MATH_CONCEPT_DIR) -f $(MAKE_FILE_PATH) all	
 
 matrixOperator:
-	@$(MAKE) -f $(MATRIX_OPERATOR_DIR)/$(MAKE_FILE_PATH) all	
+	@$(MAKE) -C $(MATRIX_OPERATOR_DIR) -f $(MAKE_FILE_PATH) all	
 
 testEvaluate: io algorithm evaluate
-	@$(MAKE) -f $(TEST_EVALUATE_DIR)/$(MAKE_FILE_PATH) all	
+	@$(MAKE) -C $(TEST_EVALUATE_DIR) -f $(MAKE_FILE_PATH) all	
 
 io:
-	@$(MAKE) -f $(IO_DIR)/$(MAKE_FILE_PATH)	all
+	@$(MAKE) -C $(IO_DIR) -f $(MAKE_FILE_PATH)	all
 
 evaluate:
-	@$(MAKE) -f $(EVALUATE_DIR)/$(MAKE_FILE_PATH) all	
+	@$(MAKE) -C $(EVALUATE_DIR) -f $(MAKE_FILE_PATH) all	
 
 algorithm:
-	@$(MAKE) -f $(ALGORITHM_DIR)/$(MAKE_FILE_PATH) all	
+	@$(MAKE) -C $(ALGORITHM_DIR) -f $(MAKE_FILE_PATH) all	
 
 .PHONY: clean
 
 clean:
-	@$(MAKE) -f $(TEST_MATRIX_OPERATOR_DIR)/$(MAKE_FILE_PATH) clean	
-	@$(MAKE) -f $(TEST_EVALUATE_DIR)/$(MAKE_FILE_PATH) clean
-	@$(MAKE) -f $(MATRIX_OPERATOR_DIR)/$(MAKE_FILE_PATH) clean	
-	@$(MAKE) -f $(MATH_CONCEPT_DIR)/$(MAKE_FILE_PATH) clean	
-	@$(MAKE) -f $(ALGORITHM_DIR)/$(MAKE_FILE_PATH) clean	
-	@$(MAKE) -f $(IO_DIR)/$(MAKE_FILE_PATH) clean	
-	@$(MAKE) -f $(EVALUATE_DIR)/$(MAKE_FILE_PATH) clean	
-
-
-
-
-
-
-
+	@$(MAKE) -C $(TEST_MATRIX_OPERATOR_DIR) -f $(MAKE_FILE_PATH) clean	
+	@$(MAKE) -C $(TEST_EVALUATE_DIR) -f $(MAKE_FILE_PATH) clean
+	@$(MAKE) -C $(MATRIX_OPERATOR_DIR) -f $(MAKE_FILE_PATH) clean	
+	@$(MAKE) -C $(MATH_CONCEPT_DIR) -f $(MAKE_FILE_PATH) clean	
+	@$(MAKE) -C $(ALGORITHM_DIR) -f $(MAKE_FILE_PATH) clean	
+	@$(MAKE) -C $(IO_DIR) -f $(MAKE_FILE_PATH) clean	
+	@$(MAKE) -C $(EVALUATE_DIR) -f $(MAKE_FILE_PATH) clean	
 
