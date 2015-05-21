@@ -25,7 +25,7 @@ testEvaluate: io algorithm evaluate
 	@$(MAKE) -C $(TEST_EVALUATE_DIR) -f $(MAKE_FILE_PATH) all	
 
 io:
-	@$(MAKE) -C $(IO_DIR) -f $(MAKE_FILE_PATH)	all
+	@$(MAKE) -C $(IO_DIR) -f $(MAKE_FILE_PATH) all
 
 evaluate:
 	@$(MAKE) -C $(EVALUATE_DIR) -f $(MAKE_FILE_PATH) all	
