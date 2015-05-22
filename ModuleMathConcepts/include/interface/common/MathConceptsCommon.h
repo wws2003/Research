@@ -9,6 +9,7 @@
 #define COMMON_H_
 
 #include <complex>
+#include <vector>
 
 /*typedef struct ComplexVal {
 	double real;
@@ -51,5 +52,10 @@ typedef IMatrixFactory* MatrixFactoryPtr;
 typedef Coordinate<MatrixPtr> MatrixCoordinate;
 typedef MatrixCoordinate* MatrixCoordinatePtr;
 typedef MatrixCoordinatePtr& MatrixCoordinatePtrRef;
+
+typedef IIterator<MatrixCoordinatePtr>* MatrixCoordinateIteratorPtr;
+
+typedef std::vector<MatrixPtr> MatrixPtrVector;
+typedef MatrixPtrVector* MatrixPtrVectorPtr;
 
 #endif /* COMMON_H_ */

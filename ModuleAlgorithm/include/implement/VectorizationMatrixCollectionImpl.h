@@ -1,25 +1,26 @@
 /*
- * SampleMatrixCollection.h
+ * VectorizationMatrixCollectionImpl.h
  *
- *  Created on: Apr 28, 2015
+ *  Created on: May 22, 2015
  *      Author: pham
  */
 
-#ifndef SAMPLEMATRIXCOLLECTIONIMPL_H_
-#define SAMPLEMATRIXCOLLECTIONIMPL_H_
+#ifndef VECTORIZATIONMATRIXCOLLECTIONIMPL_H_
+#define VECTORIZATIONMATRIXCOLLECTIONIMPL_H_
 
 #include "IMatrixCollection.h"
+#include "AlgoCommon.h"
+#include "OperatorCommon.h"
 #include "IDistanceCalculator.h"
 #include "IIterator.h"
-#include "AlgoCommon.h"
-#include "MathConceptsCommon.h"
-#include <vector>
+#include "ICollection.h"
+#include "IMatrixCoordinateMapper.h"
 
-class SampleMatrixCollectionImpl : public IMatrixCollection {
+class VectorizationMatrixCollectionImpl : IMatrixCollection {
 public:
-	SampleMatrixCollectionImpl();
+	VectorizationMatrixCollectionImpl(MatrixCoordinateMapperPtr pMatrixCoordinateMapper, MatrixCoordinateCollectionPtr pInternalMatrixCoordinateCollection, MatrixCoordinateDistanceCalculatorPtr pMatrixCoordinateDistanceCalculator);
 
-	virtual ~SampleMatrixCollectionImpl();
+	virtual ~VectorizationMatrixCollectionImpl(){};
 
 	virtual void addMatrix(MatrixPtr pm) ;
 
@@ -35,7 +36,9 @@ public:
 	virtual MatrixIteratorPtr findApproxMatrices(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const ;
 
 private:
-	MatrixPtrVector m_pMatrices;
+	MatrixCoordinateMapperPtr m_pMatrixCoordinateMapper;
+	MatrixCoordinateCollectionPtr m_pInternalMatrixCoordinateCollection;
+	MatrixCoordinateDistanceCalculatorPtr m_pMatrixCoordinateDistanceCalculator;
 
 	class InnerVectorMatrixIterator : public MatrixIterator {
 	public:
@@ -56,12 +59,8 @@ private:
 		counter_t m_counter;
 		MatrixPtrVector m_pMatrices;
 	};
-
-	typedef InnerVectorMatrixIterator* InnerVectorMatrixIteratorPtr;
-
-	MatrixIteratorPtr m_pMatrixIterator;
 };
 
 
 
-#endif /* SAMPLEMATRIXCOLLECTIONIMPL_H_ */
+#endif /* VECTORIZATIONMATRIXCOLLECTIONIMPL_H_ */

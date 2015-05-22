@@ -10,6 +10,7 @@
 
 #include "MathConceptsCommon.h"
 
+typedef long long counter_t;
 typedef long long CollectionSize_t;
 typedef long long MatrixCollectionSize_t;
 
@@ -20,6 +21,8 @@ class IMatrixApproximator;
 template<typename T> class ICollection;
 template<typename T>
 using CollectionPtr = ICollection<T>*;
+
+typedef ICollection<MatrixCoordinatePtr> MatrixCoordinateCollection;
 
 template<typename T> class IIterator;
 template<typename T>
@@ -38,5 +41,7 @@ typedef IPersistableMatrixCollection* PersitableMatrixCollectionPtr;
 
 typedef IMatrixApproximator* MatrixApproximatorPtr;
 typedef IMatrixApproximator& MatrixApproximatorRef;
+
+typedef MatrixCoordinateCollection* MatrixCoordinateCollectionPtr;
 
 #endif /* ALGOCOMMON_H_ */

@@ -9,6 +9,7 @@
 #include "IIterator.h"
 #include "IMatrixCollection.h"
 #include "IMatrix.h"
+#include "IDistanceCalculator.h"
 
 NINAMatrixApproximator::NINAMatrixApproximator(MatrixCollectionPtr pNearIdentityMatrixCollection, MatrixOperatorPtr pMatrixOperator) {
 	m_pNearIdentityMatrixCollection = pNearIdentityMatrixCollection;
@@ -38,9 +39,9 @@ MatrixIteratorPtr NINAMatrixApproximator::getApproximateMatrices(MatrixCollectio
 		MatrixPtr pStep = calculateStepMatrix(pApproximateCandidate, oneStepCloserToQuery);
 
 		//Find in near-identity matrices candidate to fit "step" matrix
-		MatrixPtr pStepFitMatrix = findMatrixToFitStep(pStep);
+		MatrixPtr pStepFitMatrix = findMatrixToFitStep(pStep, pApproximateCandidate, pQuery, pDistanceCalculator);
 
-		//Calculate current postion
+		//Calculate current position
 		MatrixPtr pNewApproximate = goOneStepToTarget(pApproximateCandidate, pStepFitMatrix);
 
 		//Destroy immediate results
@@ -79,13 +80,43 @@ MatrixPtr NINAMatrixApproximator::calculateStepMatrix(MatrixPtr pCurrentApproxim
 	return pStepMatrix;
 }
 
-MatrixPtr NINAMatrixApproximator::findMatrixToFitStep(MatrixPtr pStepMatrix) const {
-	//TODO Implement
-	return NullPtr;
+MatrixPtr NINAMatrixApproximator::findMatrixToFitStep(MatrixPtr pStepMatrix, MatrixPtr pCurrentApproximateMatrix, MatrixPtr pTarget, MatrixDistanceCalculatorPtr pDistanceCalculator) const {
+	//TODO Modify proper epsilonForStepMatrix
+	double epsilonForStepMatrix = 1e-4;
+
+	MatrixIteratorPtr pNearStepMatrixIterator = m_pNearIdentityMatrixCollection->findApproxMatrices(pStepMatrix, pDistanceCalculator, epsilonForStepMatrix);
+	pNearStepMatrixIterator->toBegin();
+	if(pNearStepMatrixIterator->isDone()) {
+		return NullPtr;
+	}
+
+	//Find in candidates for step matrix the one can move currentApproximateMatrix closest to target
+	MatrixPtr pStepFitCandidate = NullPtr;
+	double minDistanceToTarget = 1e3;
+	while(!pNearStepMatrixIterator->isDone()) {
+		MatrixPtr pStepFitCandidate = pNearStepMatrixIterator->getObj();
+
+		MatrixPtr pTargetCandidate = NullPtr;
+		m_pMatrixOperator->multiply(pCurrentApproximateMatrix, pStepFitCandidate, pTargetCandidate);
+
+		double candidateDistanceToTarget = pDistanceCalculator->distance(pTarget, pTargetCandidate);
+		if(candidateDistanceToTarget < minDistanceToTarget) {
+			minDistanceToTarget = candidateDistanceToTarget;
+			pStepFitCandidate = pTargetCandidate;
+		}
+
+		_destroy(pTargetCandidate);
+
+		pNearStepMatrixIterator->next();
+	}
+
+	return pStepFitCandidate;
 }
 
 MatrixPtr NINAMatrixApproximator::goOneStepToTarget(MatrixPtr pCurrentApproximateMatrix, MatrixPtr pStepFitMatrix) {
-	//TODO Implement
-	return NullPtr;
+	//OneStepCloserToTarget = CurrentApproximateMatrix * StepFitMatrix
+	MatrixPtr pOneStepToTarget = NullPtr;
+	m_pMatrixOperator->multiply(pCurrentApproximateMatrix, pStepFitMatrix, pOneStepToTarget);
+	return pOneStepToTarget;
 }
 

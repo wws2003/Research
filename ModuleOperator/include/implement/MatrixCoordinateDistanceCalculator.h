@@ -11,9 +11,15 @@
 #include "IDistanceCalculator.h"
 #include "MathConceptsCommon.h"
 #include "OperatorCommon.h"
+#include "Coordinate.hpp"
 
 class MatrixCoordinateDistanceCalculator: public IDistanceCalculator<MatrixCoordinatePtr> {
+public:
+	MatrixCoordinateDistanceCalculator(MatrixDistanceCalculatorPtr pMatrixDistanceCalculator);
+	virtual double distance(MatrixCoordinatePtr p1, MatrixCoordinatePtr p2);
 
+private:
+	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
 };
 
 

@@ -41,7 +41,7 @@ protected:
 
 	virtual MatrixPtr calculateStepMatrix(MatrixPtr pCurrentApproximateMatrix, MatrixPtr pOneStepCloserToQueryMatrix) const;
 
-	virtual MatrixPtr findMatrixToFitStep(MatrixPtr pStepMatrix) const;
+	virtual MatrixPtr findMatrixToFitStep(MatrixPtr pStepMatrix, MatrixPtr pCurrentApproximateMatrix, MatrixPtr pTarget, MatrixDistanceCalculatorPtr pDistanceCalculator) const;
 
 	virtual MatrixPtr goOneStepToTarget(MatrixPtr pCurrentApproximateMatrix, MatrixPtr pStepFitMatrix);
 

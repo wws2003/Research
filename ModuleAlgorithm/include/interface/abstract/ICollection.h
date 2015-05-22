@@ -13,7 +13,7 @@
 #include "MathConceptsCommon.h"
 #include "IIterator.h"
 
-//Only for furture purpose. Generic level of current implementation is not enough for this
+//Only for future purpose. Generic level of current implementation is not enough for this
 
 template<typename T>
 class ICollection {
@@ -36,7 +36,7 @@ public:
 	//Get collection size
 	virtual CollectionSize_t size() = 0;
 
-	//Find the neighbour elements to the query, given distance calculator
+	//Find the neighbor elements to the query, given distance calculator
 	virtual IteratorPtr<T> findApproxElements(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const = 0;
 
 };

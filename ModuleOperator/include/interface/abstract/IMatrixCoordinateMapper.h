@@ -14,7 +14,7 @@
 class IMatrixCoordinateMapper {
 public:
 	virtual ~IMatrixCoordinateMapper(){};
-	void mapMatrixToCoordinate(MatrixPtr pMatrix, MatrixCoordinatePtrRef prMatrixCoordinate) const;
+	virtual void mapMatrixToCoordinate(MatrixPtr pMatrix, MatrixCoordinatePtrRef prMatrixCoordinate) const = 0;
 };
 
 
