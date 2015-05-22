@@ -22,11 +22,11 @@
 *.a
 *.lib
 
-# Executable files
-TestEvaluator/Debug/Test* 
-
-# Executable files
+# Executable file 1
 TestMatrixOperator/Debug/TestMatrixOperator
+
+# Executable file 2
+TestEvaluator/Debug/TestEvaluator
 
 # Executables
 *.exe
