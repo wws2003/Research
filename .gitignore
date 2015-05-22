@@ -22,6 +22,12 @@
 *.a
 *.lib
 
+# Executable files
+TestEvaluator/Debug/Test* 
+
+# Executable files
+TestMatrixOperator/Debug/TestMatrixOperator
+
 # Executables
 *.exe
 *.out
@@ -29,10 +35,4 @@
 
 # Misc metadata
 .metadata
-
-# Executable files
-TestEvaluator/Debug/TestEvaluator 
-
-# Executable files
-TestMatrixOperator/Debug/TestMatrixOperator
 
