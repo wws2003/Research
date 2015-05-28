@@ -15,7 +15,7 @@ template<typename E, typename Field>
 class ICoordinateCalculator {
 public:
 	virtual ~ICoordinateCalculator(){};
-	virtual void calulateElementCoordinate(E element, CoordinatePtrRef<E, Field> prCoordinate) = 0;
+	virtual void calulateElementCoordinate(E element, CoordinatePtrRef<E, Field> prCoordinate) const = 0;
 };
 
 

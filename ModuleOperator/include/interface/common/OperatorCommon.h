@@ -14,7 +14,10 @@ class IMatrixOperator;
 
 class ITargetMatrixFactory;
 
-class IMatrixCoordinateMapper;
+template<typename E, typename Field>
+class ICoordinateCalculator;
+
+typedef ICoordinateCalculator<MatrixPtr, double> IMatrixCoordinateCalculator;
 
 template<typename T> class IDistanceCalculator;
 typedef IDistanceCalculator<MatrixPtr> IMatrixDistanceCalculator;
@@ -23,12 +26,18 @@ typedef IDistanceCalculator<MatrixCoordinatePtr> IMatrixCoordinateDistanceCalcul
 template<typename T>
 using DistanceCalculatorPtr = IDistanceCalculator<T>* ;
 
+template<typename E, typename Field>
+class IInnerProductCalculator;
+
 typedef IMatrixOperator* MatrixOperatorPtr;
 
 typedef IMatrixDistanceCalculator* MatrixDistanceCalculatorPtr;
 
 typedef IMatrixCoordinateDistanceCalculator* MatrixCoordinateDistanceCalculatorPtr;
 
-typedef IMatrixCoordinateMapper* MatrixCoordinateMapperPtr;
+typedef IMatrixCoordinateCalculator* MatrixCoordinateCalculatorPtr;
+
+template<typename E, typename Field>
+using InnerProductCalculatorPtr = IInnerProductCalculator<E, Field>*;
 
 #endif /* OPERATORCOMMON_H_ */

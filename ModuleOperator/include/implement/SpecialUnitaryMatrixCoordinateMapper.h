@@ -8,10 +8,10 @@
 #ifndef SPECIALUNITARYMATRIXCOORDINATEMAPPER_H_
 #define SPECIALUNITARYMATRIXCOORDINATEMAPPER_H_
 
-#include "IMatrixCoordinateMapper.h"
 #include "IMatrixOperator.h"
+#include "ICoordinateCalculator.h"
 
-class SpecialUnitaryMatrixCoordinateMapper : public IMatrixCoordinateMapper{
+class SpecialUnitaryMatrixCoordinateMapper : ICoordinateCalculator<MatrixPtr, double> {
 public:
 	SpecialUnitaryMatrixCoordinateMapper(MatrixOperatorPtr pMatrixOperator);
 	virtual ~SpecialUnitaryMatrixCoordinateMapper(){};

@@ -14,11 +14,11 @@
 #include "IDistanceCalculator.h"
 #include "IIterator.h"
 #include "ICollection.h"
-#include "IMatrixCoordinateMapper.h"
+#include "ICoordinateCalculator.h"
 
 class VectorizationMatrixCollectionImpl : IMatrixCollection {
 public:
-	VectorizationMatrixCollectionImpl(MatrixCoordinateMapperPtr pMatrixCoordinateMapper, MatrixCoordinateCollectionPtr pInternalMatrixCoordinateCollection, MatrixCoordinateDistanceCalculatorPtr pMatrixCoordinateDistanceCalculator);
+	VectorizationMatrixCollectionImpl(MatrixCoordinateCalculatorPtr pMatrixCoordinateCalculator, MatrixCoordinateCollectionPtr pInternalMatrixCoordinateCollection, MatrixCoordinateDistanceCalculatorPtr pMatrixCoordinateDistanceCalculator);
 
 	virtual ~VectorizationMatrixCollectionImpl(){};
 
@@ -36,7 +36,7 @@ public:
 	virtual MatrixIteratorPtr findApproxMatrices(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const ;
 
 private:
-	MatrixCoordinateMapperPtr m_pMatrixCoordinateMapper;
+	MatrixCoordinateCalculatorPtr m_pMatrixCoordinateCalculator;
 	MatrixCoordinateCollectionPtr m_pInternalMatrixCoordinateCollection;
 	MatrixCoordinateDistanceCalculatorPtr m_pMatrixCoordinateDistanceCalculator;
 

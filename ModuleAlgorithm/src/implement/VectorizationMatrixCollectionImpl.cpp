@@ -12,15 +12,15 @@
 
 void matrixVectorFromCoordinateIterator(MatrixCoordinateIteratorPtr pMatrixCoordinateIterator, MatrixPtrVector& matrices);
 
-VectorizationMatrixCollectionImpl::VectorizationMatrixCollectionImpl(MatrixCoordinateMapperPtr pMatrixCoordinateMapper, MatrixCoordinateCollectionPtr pInternalMatrixCoordinateCollection, MatrixCoordinateDistanceCalculatorPtr pMatrixCoordinateDistanceCalculator) {
-	m_pMatrixCoordinateMapper = pMatrixCoordinateMapper;
+VectorizationMatrixCollectionImpl::VectorizationMatrixCollectionImpl(MatrixCoordinateCalculatorPtr pMatrixCoordinateCalculator, MatrixCoordinateCollectionPtr pInternalMatrixCoordinateCollection, MatrixCoordinateDistanceCalculatorPtr pMatrixCoordinateDistanceCalculator) {
+	m_pMatrixCoordinateCalculator = pMatrixCoordinateCalculator;
 	m_pInternalMatrixCoordinateCollection = pInternalMatrixCoordinateCollection;
 	m_pMatrixCoordinateDistanceCalculator = pMatrixCoordinateDistanceCalculator;
 }
 
 void VectorizationMatrixCollectionImpl::addMatrix(MatrixPtr pm) {
 	MatrixCoordinatePtr pCoordinate = NullPtr;
-	m_pMatrixCoordinateMapper->calulateElementCoordinate(pm, pCoordinate);
+	m_pMatrixCoordinateCalculator->calulateElementCoordinate(pm, pCoordinate);
 	m_pInternalMatrixCoordinateCollection->addElement(pCoordinate);
 }
 
@@ -52,7 +52,7 @@ MatrixCollectionSize_t VectorizationMatrixCollectionImpl::size() const {
 MatrixIteratorPtr VectorizationMatrixCollectionImpl::findApproxMatrices(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const  {
 
 	MatrixCoordinatePtr pTargetCoordinate = NullPtr;
-	m_pMatrixCoordinateMapper->calulateElementCoordinate(pQuery, pTargetCoordinate);
+	m_pMatrixCoordinateCalculator->calulateElementCoordinate(pQuery, pTargetCoordinate);
 	MatrixCoordinateIteratorPtr pApproxMatrixCoordinateIter = m_pInternalMatrixCoordinateCollection->findApproxElements(pTargetCoordinate, m_pMatrixCoordinateDistanceCalculator, epsilon);
 
 	pApproxMatrixCoordinateIter->toBegin();
