@@ -19,7 +19,7 @@ public:
 	 * Calculate inner product of 2 element (vector) on field Field
 	 * and store result to innerProduct
 	 */
-	virtual void innerProduct(E e1, E e2, Field& innerProduct) = 0;
+	virtual void innerProduct(E e1, E e2, Field& rInnerProduct) = 0;
 };
 
 #endif /* IINNERPRODUCTCALCULATOR_H_ */

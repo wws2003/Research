@@ -4,19 +4,25 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp \
 ../src/implement/MatrixCoordinateDistanceCalculator.cpp \
 ../src/implement/MatrixTraceDistanceCalculator.cpp \
-../src/implement/SampleMatrixOperator.cpp 
+../src/implement/SampleMatrixOperator.cpp \
+../src/implement/SpecialUnitaryMatrixCoordinateMapper.cpp 
 
 OBJS += \
+./src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.o \
 ./src/implement/MatrixCoordinateDistanceCalculator.o \
 ./src/implement/MatrixTraceDistanceCalculator.o \
-./src/implement/SampleMatrixOperator.o 
+./src/implement/SampleMatrixOperator.o \
+./src/implement/SpecialUnitaryMatrixCoordinateMapper.o 
 
 CPP_DEPS += \
+./src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.d \
 ./src/implement/MatrixCoordinateDistanceCalculator.d \
 ./src/implement/MatrixTraceDistanceCalculator.d \
-./src/implement/SampleMatrixOperator.d 
+./src/implement/SampleMatrixOperator.d \
+./src/implement/SpecialUnitaryMatrixCoordinateMapper.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

@@ -11,7 +11,7 @@
 #include "IMatrixOperator.h"
 #include "ICoordinateCalculator.h"
 
-class SpecialUnitaryMatrixCoordinateMapper : ICoordinateCalculator<MatrixPtr, double> {
+class SpecialUnitaryMatrixCoordinateMapper : public ICoordinateCalculator<MatrixPtr, double> {
 public:
 	SpecialUnitaryMatrixCoordinateMapper(MatrixOperatorPtr pMatrixOperator);
 	virtual ~SpecialUnitaryMatrixCoordinateMapper(){};
