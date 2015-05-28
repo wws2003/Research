@@ -11,8 +11,12 @@ SpecialUnitaryMatrixCoordinateMapper::SpecialUnitaryMatrixCoordinateMapper(Matri
 	m_pMatrixOperator = pMatrixOperator;
 }
 
-void SpecialUnitaryMatrixCoordinateMapper::mapMatrixToCoordinate(MatrixPtr pMatrix, MatrixCoordinatePtrRef prMatrixCoordinate) const {
+void SpecialUnitaryMatrixCoordinateMapper::calulateElementCoordinate(MatrixPtr pMatrix, MatrixCoordinatePtrRef prMatrixCoordinate) const {
 	//TODO Implement
+
+	//Trace-less Hermitian convert
+
+	//Calculate coordinate of Trace-less Hermitian
 }
 
 

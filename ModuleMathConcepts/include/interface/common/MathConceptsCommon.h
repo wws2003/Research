@@ -36,7 +36,7 @@ enum ArraySpliceType {
 	COLUMN_SPLICE
 };
 
-template<typename T> class Coordinate;
+template<typename T,typename F> class Coordinate;
 
 typedef IMatrix* MatrixPtr;
 typedef MatrixPtr& MatrixPtrRef;
@@ -49,7 +49,7 @@ typedef IIterator<VectorPtr>* VectorItertatorPtr;
 
 typedef IMatrixFactory* MatrixFactoryPtr;
 
-typedef Coordinate<MatrixPtr> MatrixCoordinate;
+typedef Coordinate<MatrixPtr, double> MatrixCoordinate;
 typedef MatrixCoordinate* MatrixCoordinatePtr;
 typedef MatrixCoordinatePtr& MatrixCoordinatePtrRef;
 
@@ -57,5 +57,11 @@ typedef IIterator<MatrixCoordinatePtr>* MatrixCoordinateIteratorPtr;
 
 typedef std::vector<MatrixPtr> MatrixPtrVector;
 typedef MatrixPtrVector* MatrixPtrVectorPtr;
+
+template<typename T,typename F>
+using CoordinatePtr = Coordinate<T, F>*;
+
+template<typename T,typename F>
+using CoordinatePtrRef = CoordinatePtr<T, F>&;
 
 #endif /* COMMON_H_ */

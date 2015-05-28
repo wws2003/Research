@@ -10,11 +10,12 @@
 
 #include "OperatorCommon.h"
 #include "MathConceptsCommon.h"
+#include "ICoordinateCalculator.h"
 
-class IMatrixCoordinateMapper {
+class IMatrixCoordinateMapper : ICoordinateCalculator<MatrixPtr, double> {
 public:
 	virtual ~IMatrixCoordinateMapper(){};
-	virtual void mapMatrixToCoordinate(MatrixPtr pMatrix, MatrixCoordinatePtrRef prMatrixCoordinate) const = 0;
+	virtual void calulateElementCoordinate(MatrixPtr pMatrix, MatrixCoordinatePtrRef prMatrixCoordinate) const = 0;
 };
 
 

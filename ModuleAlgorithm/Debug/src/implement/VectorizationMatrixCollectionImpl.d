@@ -12,6 +12,7 @@ src/implement/VectorizationMatrixCollectionImpl.d: \
  ../include/interface/abstract/ICollection.h \
  ../include/interface/abstract/IIterator.h \
  ../../ModuleOperator/include/interface/abstract/IMatrixCoordinateMapper.h \
+ ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h
 
@@ -38,6 +39,8 @@ src/implement/VectorizationMatrixCollectionImpl.d: \
 ../include/interface/abstract/IIterator.h:
 
 ../../ModuleOperator/include/interface/abstract/IMatrixCoordinateMapper.h:
+
+../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
 
 ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
 

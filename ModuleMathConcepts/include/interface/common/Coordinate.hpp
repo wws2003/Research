@@ -9,19 +9,23 @@
 #define COORDINATE_H_
 
 #include "MathConceptsCommon.h"
+#include <vector>
 
-template<typename E>
+template<typename E, typename Field>
 class Coordinate {
 public:
-	Coordinate(VectorPtr coordinates, E element):m_pCoordinates(coordinates), m_element(element){};
+	Coordinate(const std::vector<Field>& coordinates, E element):m_element(element){
+		m_coordinates.clear();
+		m_coordinates.insert(m_coordinates.end(), coordinates.begin(), coordinates.end());
+	};
 
 	virtual ~Coordinate(){};
 
-	VectorPtr getCoordinates(){return m_pCoordinates;}
+	const std::vector<Field>& getCoordinates(){return m_coordinates;}
 	E getElement(){return m_element;}
 
 private:
-	VectorPtr m_pCoordinates;
+	std::vector<Field> m_coordinates;
 	E m_element;
 };
 

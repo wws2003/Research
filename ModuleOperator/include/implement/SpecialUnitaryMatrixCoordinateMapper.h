@@ -16,7 +16,7 @@ public:
 	SpecialUnitaryMatrixCoordinateMapper(MatrixOperatorPtr pMatrixOperator);
 	virtual ~SpecialUnitaryMatrixCoordinateMapper(){};
 
-	virtual void mapMatrixToCoordinate(MatrixPtr pMatrix, MatrixCoordinatePtrRef prMatrixCoordinate) const;
+	virtual void calulateElementCoordinate(MatrixPtr pMatrix, MatrixCoordinatePtrRef prMatrixCoordinate) const;
 
 private:
 	MatrixOperatorPtr m_pMatrixOperator;
