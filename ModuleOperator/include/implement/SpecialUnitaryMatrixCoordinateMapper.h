@@ -10,16 +10,20 @@
 
 #include "IMatrixOperator.h"
 #include "ICoordinateCalculator.h"
+#include "OperatorCommon.h"
 
-class SpecialUnitaryMatrixCoordinateMapper : public ICoordinateCalculator<MatrixPtr, double> {
+class SpecialUnitaryMatrixCoordinateMapper : public IMatrixRealCoordinateCalculator {
 public:
-	SpecialUnitaryMatrixCoordinateMapper(MatrixOperatorPtr pMatrixOperator);
+	SpecialUnitaryMatrixCoordinateMapper(MatrixOperatorPtr pMatrixOperator, MatrixRealCoordinateCalculatorPtr pHermitianMatrixCoordinateCalculator);
 	virtual ~SpecialUnitaryMatrixCoordinateMapper(){};
 
-	virtual void calulateElementCoordinate(MatrixPtr pMatrix, MatrixCoordinatePtrRef prMatrixCoordinate) const;
+	virtual void calulateElementCoordinate(MatrixPtr pSpecialUnitaryMatrix, MatrixCoordinatePtrRef prMatrixCoordinate) const;
 
 private:
+	void calculateTracelessHermitianFromSpecialUnitary(MatrixPtr pSpecialUnitaryMatrix, MatrixPtrRef prTracelessHermitianMatrix) const;
+
 	MatrixOperatorPtr m_pMatrixOperator;
+	MatrixRealCoordinateCalculatorPtr m_pHermitianMatrixCoordinateCalculator;
 };
 
 

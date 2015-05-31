@@ -40,4 +40,6 @@ typedef IMatrixRealCoordinateCalculator* MatrixRealCoordinateCalculatorPtr;
 template<typename E, typename Field>
 using InnerProductCalculatorPtr = IInnerProductCalculator<E, Field>*;
 
+typedef IInnerProductCalculator<MatrixPtr, double> IMatrixRealInnerProductCalculator;
+
 #endif /* OPERATORCOMMON_H_ */
