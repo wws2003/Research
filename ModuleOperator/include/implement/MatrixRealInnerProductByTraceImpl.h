@@ -12,7 +12,7 @@
 #include "IMatrixOperator.h"
 #include "IInnerProductCalculator.h"
 
-class MatrixRealInnerProductByTraceImpl : IMatrixRealInnerProductCalculator {
+class MatrixRealInnerProductByTraceImpl : public IMatrixRealInnerProductCalculator {
 public:
 	MatrixRealInnerProductByTraceImpl(MatrixOperatorPtr pMatrixOperator);
 	virtual ~MatrixRealInnerProductByTraceImpl(){};

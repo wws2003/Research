@@ -24,8 +24,8 @@ void CoordinateOnOrthonormalBasisCalculatorImpl<E, Field>::calulateElementCoordi
 	for(int i = 0; i < m_basis.size(); i++) {
 		Field coordinate;
 		Field innerProduct1;
-		m_pInnerProductCalculator->innerProduct(element, m_basis[i]);
-		coordinate = innerProduct1 / coordinate; //This compiles, surprisingly
+		m_pInnerProductCalculator->innerProduct(element, m_basis[i], innerProduct1);
+		coordinate = innerProduct1 / basisSelfInnerProduct; //This compiles, surprisingly
 		coordinates.push_back(coordinate);
 	}
 

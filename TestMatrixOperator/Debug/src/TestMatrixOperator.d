@@ -159,7 +159,8 @@ src/TestMatrixOperator.d: ../src/TestMatrixOperator.cpp \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/./RealQZ.h \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
- ../../ModuleOperator/include/interface/common/OperatorCommon.h
+ ../../ModuleOperator/include/interface/common/OperatorCommon.h \
+ ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h
 
 ../src/TestSuite.h:
 
@@ -482,3 +483,5 @@ src/TestMatrixOperator.d: ../src/TestMatrixOperator.cpp \
 ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h:
 
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
+
+../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h:

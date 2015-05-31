@@ -7,17 +7,30 @@
 
 #include "TestSuite.h"
 #include "MatrixTraceDistanceCalculator.h"
+#include "CoordinateOnOrthonormalBasisCalculatorImpl.h"
+#include "MatrixRealInnerProductByTraceImpl.h"
+#include "CoordinateOnOrthonormalBasisCalculatorImpl.cpp"
+
+void initPauliMatrices(MatrixPtrVector& pPauliMatrices);
+void releasePauliMatrices(MatrixPtrVector& pPauliMatrices);
+
 
 TestSuite::TestSuite() {
 	m_pMatrixFactory = new SimpleDenseMatrixFactoryImpl();
 	m_pMatrixOperator = new SampleMatrixOperator(m_pMatrixFactory);
 	m_pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(m_pMatrixOperator);
+	m_pMatrixRealInnerProductCalculator = new MatrixRealInnerProductByTraceImpl(m_pMatrixOperator);
+	initPauliMatrices(m_pPauliMatrices);
+	m_pMatrixRealCoordinateOnOrthonormalBasisCalculator = new CoordinateOnOrthonormalBasisCalculatorImpl<MatrixPtr, double>(m_pMatrixRealInnerProductCalculator, m_pPauliMatrices);
 }
 
 TestSuite::~TestSuite() {
+	delete m_pMatrixRealCoordinateOnOrthonormalBasisCalculator;
+	releasePauliMatrices(m_pPauliMatrices);
+	delete m_pMatrixRealInnerProductCalculator;
 	delete m_pMatrixDistanceCalculator;
-	delete m_pMatrixFactory;
 	delete m_pMatrixOperator;
+	delete m_pMatrixFactory;
 }
 
 void TestSuite::test() {
@@ -33,6 +46,8 @@ void TestSuite::test() {
 	testPower();
 	testSqrt();
 	testDistanceCalculator();
+	testMatrixTraceInnerProduct();
+	testCoordinateOnOrthonormalBasisCalculator();
 }
 
 void TestSuite::testMatrixGenerator() {
@@ -410,3 +425,121 @@ void TestSuite::testDistanceCalculator() {
 	assert(std::abs(dTI - 0.76537) < 1e-5);
 }
 
+void TestSuite::testMatrixTraceInnerProduct() {
+	ComplexValArray array1 = new ComplexVal[4];
+
+	//[1 4-i; 4 + i 2]
+
+	array1[0] = 1.0;
+	array1[1] = ComplexVal(4, -1);
+	array1[2] = ComplexVal(4, 1);
+	array1[3] = 2.0;
+
+	MatrixPtr pH1 = new SimpleDenseMatrixImpl(array1, ROW_SPLICE, 2, 2, "H1");
+
+	ComplexValArray array2 = new ComplexVal[4];
+
+	//[3 2+i; 2-i 2]
+
+	array2[0] = 3.0;
+	array2[1] = ComplexVal(2, 1);
+	array2[2] = ComplexVal(2, -1);
+	array2[3] = 2.0;
+
+	MatrixPtr pH2 = new SimpleDenseMatrixImpl(array2, ROW_SPLICE, 2, 2, "H1");
+
+	double traceInnerProduct = 0;
+	m_pMatrixRealInnerProductCalculator->innerProduct(pH1, pH2, traceInnerProduct);
+
+	assert(std::abs(traceInnerProduct - 21.0) < 1e-30);
+
+	delete pH2;
+	delete pH1;
+}
+
+void TestSuite::testCoordinateOnOrthonormalBasisCalculator() {
+	ComplexValArray arrayH = new ComplexVal[4];
+
+	//H = 3 * X + 4 *Y -5 *Z
+
+	arrayH[0] = -5.0;
+	arrayH[1] = ComplexVal(3, -4);
+	arrayH[2] = ComplexVal(3, 4);
+	arrayH[3] = 5.0;
+
+	MatrixPtr pH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H1");
+
+	MatrixRealCoordinatePtr pHRealCoordinate = NullPtr;
+	m_pMatrixRealCoordinateOnOrthonormalBasisCalculator->calulateElementCoordinate(pH, pHRealCoordinate);
+
+	std::vector<double> hCoordinates = pHRealCoordinate->getCoordinates();
+
+	assert(hCoordinates.size() == 3);
+	assert(std::abs(hCoordinates[0] - 3) < 1e-30);
+	assert(std::abs(hCoordinates[1] - 4) < 1e-30);
+	assert(std::abs(hCoordinates[2] - -5) < 1e-30);
+
+	delete pHRealCoordinate;
+	delete pH;
+
+	MatrixRealCoordinatePtr pZRealCoordinate = NullPtr;
+	m_pMatrixRealCoordinateOnOrthonormalBasisCalculator->calulateElementCoordinate(m_pPauliMatrices[2], pZRealCoordinate);
+
+	std::vector<double> zCoordinates = pZRealCoordinate->getCoordinates();
+
+	assert(zCoordinates.size() == 3);
+	assert(std::abs(zCoordinates[0] - 0) < 1e-30);
+	assert(std::abs(zCoordinates[1] - 0) < 1e-30);
+	assert(std::abs(zCoordinates[2] - 1) < 1e-30);
+
+	delete pZRealCoordinate;
+}
+
+void initPauliMatrices(MatrixPtrVector& pPauliMatrices) {
+	//Pauli X = [0 1;1 0]
+	//Pauli Y = [0 -i;i 0]
+	//Pauli Z = [1 0;0 -1]
+	ComplexValArray arrayX = new ComplexVal[4];
+
+	//[0 1; 1 0]
+
+	arrayX[0] = 0.0;
+	arrayX[1] = 1.0;
+	arrayX[2] = 1.0;
+	arrayX[3] = 0.0;
+
+	MatrixPtr pX = new SimpleDenseMatrixImpl(arrayX, ROW_SPLICE, 2, 2, "X");
+	pPauliMatrices.push_back(pX);
+
+	ComplexValArray arrayY = new ComplexVal[4];
+
+	//[0 -i;i 0]
+
+	arrayY[0] = 0.0;
+	arrayY[1] = ComplexVal(0, -1);
+	arrayY[2] = ComplexVal(0, 1);
+	arrayY[3] = 0.0;
+
+	MatrixPtr pY = new SimpleDenseMatrixImpl(arrayY, ROW_SPLICE, 2, 2, "Y");
+	pPauliMatrices.push_back(pY);
+
+	ComplexValArray arrayZ = new ComplexVal[4];
+
+	//[1 0;0 -1]
+
+	arrayZ[0] = 1.0;
+	arrayZ[1] = 0.0;
+	arrayZ[2] = 0.0;
+	arrayZ[3] = -1.0;
+
+	MatrixPtr pZ = new SimpleDenseMatrixImpl(arrayZ, ROW_SPLICE, 2, 2, "Z");
+	pPauliMatrices.push_back(pZ);
+}
+
+void releasePauliMatrices(MatrixPtrVector& pPauliMatrices) {
+	for(MatrixPtrVector::iterator pIter = pPauliMatrices.begin(); pIter != pPauliMatrices.end();) {
+		MatrixPtr pMatrix = *pIter;
+		pIter = pPauliMatrices.erase(pIter);
+		delete pMatrix;
+	}
+}

@@ -14,7 +14,7 @@
 template<typename E, typename Field>
 class Coordinate {
 public:
-	Coordinate(const std::vector<Field>& coordinates, E element):m_element(element){
+	Coordinate(E element, const std::vector<Field>& coordinates):m_element(element){
 		m_coordinates.clear();
 		m_coordinates.insert(m_coordinates.end(), coordinates.begin(), coordinates.end());
 	};

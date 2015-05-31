@@ -17,6 +17,7 @@
 #include "SimpleDenseMatrixFactoryImpl.h"
 #include "SampleMatrixOperator.h"
 #include "OperatorCommon.h"
+#include "IInnerProductCalculator.h"
 
 class TestSuite {
 public:
@@ -50,9 +51,16 @@ private:
 
 	void testDistanceCalculator();
 
+	void testMatrixTraceInnerProduct();
+
+	void testCoordinateOnOrthonormalBasisCalculator();
+
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
+	MatrixRealInnerProductCalculatorPtr m_pMatrixRealInnerProductCalculator;
+	MatrixPtrVector m_pPauliMatrices;
+	MatrixRealCoordinateCalculatorPtr m_pMatrixRealCoordinateOnOrthonormalBasisCalculator;
 };
 
 

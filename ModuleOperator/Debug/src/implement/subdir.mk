@@ -6,6 +6,7 @@
 CPP_SRCS += \
 ../src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp \
 ../src/implement/MatrixCoordinateDistanceCalculator.cpp \
+../src/implement/MatrixRealInnerProductByTraceImpl.cpp \
 ../src/implement/MatrixTraceDistanceCalculator.cpp \
 ../src/implement/SampleMatrixOperator.cpp \
 ../src/implement/SpecialUnitaryMatrixCoordinateMapper.cpp 
@@ -13,6 +14,7 @@ CPP_SRCS += \
 OBJS += \
 ./src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.o \
 ./src/implement/MatrixCoordinateDistanceCalculator.o \
+./src/implement/MatrixRealInnerProductByTraceImpl.o \
 ./src/implement/MatrixTraceDistanceCalculator.o \
 ./src/implement/SampleMatrixOperator.o \
 ./src/implement/SpecialUnitaryMatrixCoordinateMapper.o 
@@ -20,6 +22,7 @@ OBJS += \
 CPP_DEPS += \
 ./src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.d \
 ./src/implement/MatrixCoordinateDistanceCalculator.d \
+./src/implement/MatrixRealInnerProductByTraceImpl.d \
 ./src/implement/MatrixTraceDistanceCalculator.d \
 ./src/implement/SampleMatrixOperator.d \
 ./src/implement/SpecialUnitaryMatrixCoordinateMapper.d 

@@ -159,8 +159,15 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/./RealQZ.h \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
+ ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h \
  ../../ModuleOperator/include/implement/MatrixTraceDistanceCalculator.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
+ ../../ModuleOperator/include/implement/CoordinateOnOrthonormalBasisCalculatorImpl.h \
+ ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
+ ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h \
+ ../../ModuleOperator/src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp \
+ ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h
 
 ../src/TestSuite.h:
 
@@ -484,6 +491,20 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
+../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h:
+
 ../../ModuleOperator/include/implement/MatrixTraceDistanceCalculator.h:
 
 ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
+../../ModuleOperator/include/implement/CoordinateOnOrthonormalBasisCalculatorImpl.h:
+
+../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
+
+../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h:
+
+../../ModuleOperator/src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp:
+
+../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
+
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
