@@ -13,10 +13,10 @@
 #include "OperatorCommon.h"
 #include "Coordinate.hpp"
 
-class MatrixCoordinateDistanceCalculator: public IDistanceCalculator<MatrixCoordinatePtr> {
+class MatrixCoordinateDistanceCalculator: public IDistanceCalculator<MatrixRealCoordinatePtr> {
 public:
 	MatrixCoordinateDistanceCalculator(MatrixDistanceCalculatorPtr pMatrixDistanceCalculator);
-	virtual double distance(MatrixCoordinatePtr p1, MatrixCoordinatePtr p2);
+	virtual double distance(MatrixRealCoordinatePtr p1, MatrixRealCoordinatePtr p2);
 
 private:
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;

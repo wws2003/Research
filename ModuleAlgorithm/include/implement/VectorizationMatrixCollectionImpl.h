@@ -18,7 +18,7 @@
 
 class VectorizationMatrixCollectionImpl : IMatrixCollection {
 public:
-	VectorizationMatrixCollectionImpl(MatrixCoordinateCalculatorPtr pMatrixCoordinateCalculator, MatrixCoordinateCollectionPtr pInternalMatrixCoordinateCollection, MatrixCoordinateDistanceCalculatorPtr pMatrixCoordinateDistanceCalculator);
+	VectorizationMatrixCollectionImpl(MatrixRealCoordinateCalculatorPtr pMatrixCoordinateCalculator, MatrixRealCoordinateCollectionPtr pInternalMatrixCoordinateCollection, MatrixRealCoordinateDistanceCalculatorPtr pMatrixCoordinateDistanceCalculator);
 
 	virtual ~VectorizationMatrixCollectionImpl(){};
 
@@ -36,9 +36,9 @@ public:
 	virtual MatrixIteratorPtr findApproxMatrices(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const ;
 
 private:
-	MatrixCoordinateCalculatorPtr m_pMatrixCoordinateCalculator;
-	MatrixCoordinateCollectionPtr m_pInternalMatrixCoordinateCollection;
-	MatrixCoordinateDistanceCalculatorPtr m_pMatrixCoordinateDistanceCalculator;
+	MatrixRealCoordinateCalculatorPtr m_pMatrixCoordinateCalculator;
+	MatrixRealCoordinateCollectionPtr m_pInternalMatrixCoordinateCollection;
+	MatrixRealCoordinateDistanceCalculatorPtr m_pMatrixCoordinateDistanceCalculator;
 
 	class InnerVectorMatrixIterator : public MatrixIterator {
 	public:

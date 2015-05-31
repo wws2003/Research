@@ -28,7 +28,6 @@ typedef ComplexVal& ComplexValRef;
 
 class IMatrix;
 class IVector;
-template<typename T> class IIterator;
 class IMatrixFactory;
 
 enum ArraySpliceType {
@@ -44,16 +43,11 @@ typedef MatrixPtr& MatrixPtrRef;
 typedef IVector* VectorPtr;
 typedef VectorPtr& VectorPtrRef;
 
-typedef IIterator<MatrixPtr>* MatrixIteratorPtr;
-typedef IIterator<VectorPtr>* VectorItertatorPtr;
-
 typedef IMatrixFactory* MatrixFactoryPtr;
 
-typedef Coordinate<MatrixPtr, double> MatrixCoordinate;
-typedef MatrixCoordinate* MatrixCoordinatePtr;
-typedef MatrixCoordinatePtr& MatrixCoordinatePtrRef;
-
-typedef IIterator<MatrixCoordinatePtr>* MatrixCoordinateIteratorPtr;
+typedef Coordinate<MatrixPtr, double> MatrixRealCoordinate;
+typedef MatrixRealCoordinate* MatrixRealCoordinatePtr;
+typedef MatrixRealCoordinatePtr& MatrixCoordinatePtrRef;
 
 typedef std::vector<MatrixPtr> MatrixPtrVector;
 typedef MatrixPtrVector* MatrixPtrVectorPtr;

@@ -22,7 +22,7 @@ template<typename T> class ICollection;
 template<typename T>
 using CollectionPtr = ICollection<T>*;
 
-typedef ICollection<MatrixCoordinatePtr> MatrixCoordinateCollection;
+typedef ICollection<MatrixRealCoordinatePtr> MatrixRealCoordinateCollection;
 
 template<typename T> class IIterator;
 template<typename T>
@@ -34,6 +34,8 @@ typedef IIterator<VectorPtr> VectorIterator;
 typedef MatrixIterator* MatrixIteratorPtr;
 typedef VectorIterator* VectorItertatorPtr;
 
+typedef IIterator<MatrixRealCoordinatePtr>* MatrixRealCoordinateIteratorPtr;
+
 typedef IMatrixCollection& MatrixCollectionRef;
 typedef IMatrixCollection* MatrixCollectionPtr;
 
@@ -42,6 +44,6 @@ typedef IPersistableMatrixCollection* PersitableMatrixCollectionPtr;
 typedef IMatrixApproximator* MatrixApproximatorPtr;
 typedef IMatrixApproximator& MatrixApproximatorRef;
 
-typedef MatrixCoordinateCollection* MatrixCoordinateCollectionPtr;
+typedef MatrixRealCoordinateCollection* MatrixRealCoordinateCollectionPtr;
 
 #endif /* ALGOCOMMON_H_ */

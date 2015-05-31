@@ -10,16 +10,16 @@
 #include "IDistanceCalculator.h"
 #include "Coordinate.hpp"
 
-void matrixVectorFromCoordinateIterator(MatrixCoordinateIteratorPtr pMatrixCoordinateIterator, MatrixPtrVector& matrices);
+void matrixVectorFromCoordinateIterator(MatrixRealCoordinateIteratorPtr pMatrixCoordinateIterator, MatrixPtrVector& matrices);
 
-VectorizationMatrixCollectionImpl::VectorizationMatrixCollectionImpl(MatrixCoordinateCalculatorPtr pMatrixCoordinateCalculator, MatrixCoordinateCollectionPtr pInternalMatrixCoordinateCollection, MatrixCoordinateDistanceCalculatorPtr pMatrixCoordinateDistanceCalculator) {
+VectorizationMatrixCollectionImpl::VectorizationMatrixCollectionImpl(MatrixRealCoordinateCalculatorPtr pMatrixCoordinateCalculator, MatrixRealCoordinateCollectionPtr pInternalMatrixCoordinateCollection, MatrixRealCoordinateDistanceCalculatorPtr pMatrixCoordinateDistanceCalculator) {
 	m_pMatrixCoordinateCalculator = pMatrixCoordinateCalculator;
 	m_pInternalMatrixCoordinateCollection = pInternalMatrixCoordinateCollection;
 	m_pMatrixCoordinateDistanceCalculator = pMatrixCoordinateDistanceCalculator;
 }
 
 void VectorizationMatrixCollectionImpl::addMatrix(MatrixPtr pm) {
-	MatrixCoordinatePtr pCoordinate = NullPtr;
+	MatrixRealCoordinatePtr pCoordinate = NullPtr;
 	m_pMatrixCoordinateCalculator->calulateElementCoordinate(pm, pCoordinate);
 	m_pInternalMatrixCoordinateCollection->addElement(pCoordinate);
 }
@@ -29,7 +29,7 @@ void VectorizationMatrixCollectionImpl::clear() {
 }
 
 MatrixIteratorPtr VectorizationMatrixCollectionImpl::getReadonlyIteratorPtr() {
-	MatrixCoordinateIteratorPtr pMatrixCoordinateIter = m_pInternalMatrixCoordinateCollection->getReadonlyIteratorPtr();
+	MatrixRealCoordinateIteratorPtr pMatrixCoordinateIter = m_pInternalMatrixCoordinateCollection->getReadonlyIteratorPtr();
 	MatrixPtrVector pMatrices;
 	matrixVectorFromCoordinateIterator(pMatrixCoordinateIter, pMatrices);
 
@@ -38,7 +38,7 @@ MatrixIteratorPtr VectorizationMatrixCollectionImpl::getReadonlyIteratorPtr() {
 
 //Return iterator through a set of matrix reflecting the changes in the collection
 MatrixIteratorPtr VectorizationMatrixCollectionImpl::getIteratorPtr() {
-	MatrixCoordinateIteratorPtr pMatrixCoordinateIter = m_pInternalMatrixCoordinateCollection->getIterator();
+	MatrixRealCoordinateIteratorPtr pMatrixCoordinateIter = m_pInternalMatrixCoordinateCollection->getIterator();
 	MatrixPtrVector pMatrices;
 	matrixVectorFromCoordinateIterator(pMatrixCoordinateIter, pMatrices);
 
@@ -51,9 +51,9 @@ MatrixCollectionSize_t VectorizationMatrixCollectionImpl::size() const {
 
 MatrixIteratorPtr VectorizationMatrixCollectionImpl::findApproxMatrices(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const  {
 
-	MatrixCoordinatePtr pTargetCoordinate = NullPtr;
+	MatrixRealCoordinatePtr pTargetCoordinate = NullPtr;
 	m_pMatrixCoordinateCalculator->calulateElementCoordinate(pQuery, pTargetCoordinate);
-	MatrixCoordinateIteratorPtr pApproxMatrixCoordinateIter = m_pInternalMatrixCoordinateCollection->findApproxElements(pTargetCoordinate, m_pMatrixCoordinateDistanceCalculator, epsilon);
+	MatrixRealCoordinateIteratorPtr pApproxMatrixCoordinateIter = m_pInternalMatrixCoordinateCollection->findApproxElements(pTargetCoordinate, m_pMatrixCoordinateDistanceCalculator, epsilon);
 
 	pApproxMatrixCoordinateIter->toBegin();
 
@@ -93,11 +93,11 @@ MatrixPtr VectorizationMatrixCollectionImpl::InnerVectorMatrixIterator::getObj()
 	return m_pMatrices[m_counter];
 }
 
-void matrixVectorFromCoordinateIterator(MatrixCoordinateIteratorPtr pMatrixCoordinateIterator, MatrixPtrVector& pMatrices) {
+void matrixVectorFromCoordinateIterator(MatrixRealCoordinateIteratorPtr pMatrixCoordinateIterator, MatrixPtrVector& pMatrices) {
 	pMatrixCoordinateIterator->toBegin();
 
 	while(!pMatrixCoordinateIterator->isDone()) {
-		MatrixCoordinatePtr pMatrixCoordinate = pMatrixCoordinateIterator->getObj();
+		MatrixRealCoordinatePtr pMatrixCoordinate = pMatrixCoordinateIterator->getObj();
 
 		pMatrices.push_back(pMatrixCoordinate->getElement());
 
