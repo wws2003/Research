@@ -10,6 +10,7 @@
 #include "CoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "MatrixRealInnerProductByTraceImpl.h"
 #include "CoordinateOnOrthonormalBasisCalculatorImpl.cpp"
+#include <iostream>
 
 void initPauliMatrices(MatrixPtrVector& pPauliMatrices);
 void releasePauliMatrices(MatrixPtrVector& pPauliMatrices);
@@ -45,12 +46,14 @@ void TestSuite::test() {
 	testTrace();
 	testPower();
 	testSqrt();
+	testEig();
 	testDistanceCalculator();
 	testMatrixTraceInnerProduct();
 	testCoordinateOnOrthonormalBasisCalculator();
 }
 
 void TestSuite::testMatrixGenerator() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array = new ComplexVal[4];
 	double inverSqrt2 = 1 / sqrt(2);
 	array[0] = ComplexVal(1,0) * inverSqrt2;
@@ -76,10 +79,11 @@ void TestSuite::testMatrixGenerator() {
 
 	delete[] array;
 
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testMatrixAdd() {
-
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array1 = new ComplexVal[4];
 	double inverSqrt2 = 1 / sqrt(2);
 	array1[0] = ComplexVal(1,0) * inverSqrt2;
@@ -117,10 +121,12 @@ void TestSuite::testMatrixAdd() {
 	delete[] array2;
 	delete pMatrix1;
 	delete[] array1;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testMatrixMultiply() {
-
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array1 = new ComplexVal[4];
 	double inverSqrt2 = 1 / sqrt(2);
 	array1[0] = ComplexVal(1,0) * inverSqrt2;
@@ -149,10 +155,12 @@ void TestSuite::testMatrixMultiply() {
 	delete pI;
 	delete pMatrixH;
 	delete[] array1;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testMatrixExp() {
-
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array1 = new ComplexVal[4];
 	ComplexVal i = ComplexVal(0,1);
 
@@ -179,10 +187,12 @@ void TestSuite::testMatrixExp() {
 	delete pExpMatrix;
 	delete pMatrix1;
 	delete[] array1;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testMatrixInverse() {
-
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array1 = new ComplexVal[4];
 	double inverSqrt2 = 1 / sqrt(2);
 	array1[0] = ComplexVal(1,0) * inverSqrt2;
@@ -210,10 +220,12 @@ void TestSuite::testMatrixInverse() {
 	delete pInverseH;
 	delete pMatrixH;
 	delete[] array1;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testMultiplyScalar() {
-
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array0 = new ComplexVal[4];
 
 	array0[0] = 1;
@@ -243,10 +255,12 @@ void TestSuite::testMultiplyScalar() {
 	delete[] array1;
 	delete pMatrix0;
 	delete[] array0;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testConjugate() {
-
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array1 = new ComplexVal[4];
 
 	//[1 3+i; 2+i 4-i] -> [1 2-i;3-i 4+i]
@@ -277,10 +291,12 @@ void TestSuite::testConjugate() {
 	delete pConjugate;
 	delete pMatrix1;
 	delete[] array1;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testTranspose() {
-
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array1 = new ComplexVal[4];
 
 	//[1 3+i; 2+i 4-i] -> [1 2+i;3+i 4-i]
@@ -311,9 +327,12 @@ void TestSuite::testTranspose() {
 	delete pTranspose;
 	delete pMatrix1;
 	delete[] array1;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testTrace() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array1 = new ComplexVal[9];
 
 	//[1 3+i  2+i; 4-i 5 + 2i 1 + 3i; 3 9 10-3i]
@@ -335,9 +354,12 @@ void TestSuite::testTrace() {
 	assert(trace == array1[0] + array1[4] + array1[8]);
 
 	delete pMatrix1;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testPower() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array1 = new ComplexVal[9];
 
 	//[1 3+i  2+i; 4-i 5 + 2i 1 + 3i; 3 9 10-3i]
@@ -370,9 +392,12 @@ void TestSuite::testPower() {
 
 	delete pPower3;
 	delete pMatrix1;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testSqrt() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array1 = new ComplexVal[4];
 
 	//[7 10;15 22]
@@ -396,9 +421,45 @@ void TestSuite::testSqrt() {
 
 	delete pSqrt;
 	delete pMatrix1;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
+}
+
+void TestSuite::testEig() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+	ComplexValArray arrayX = new ComplexVal[4];
+
+	//[0 1; 1 0]
+
+	arrayX[0] = 0.0;
+	arrayX[1] = 1.0;
+	arrayX[2] = 1.0;
+	arrayX[3] = 0.0;
+
+	MatrixPtr pX = new SimpleDenseMatrixImpl(arrayX, ROW_SPLICE, 2, 2, "X");
+
+	ComplexVector eigenValues;
+	MatrixPtr pEigenVectors = NullPtr;
+
+	m_pMatrixOperator->eig(pX, eigenValues, pEigenVectors);
+
+	assert(eigenValues.size() == 2);
+
+	assert(std::abs(eigenValues[0] - 1.0) < 1e-15 || std::abs(eigenValues[0] + 1.0) < 1e-15);
+	assert(std::abs(eigenValues[0] + eigenValues[1]) < 1e-30);
+
+	assert(std::abs(pEigenVectors->getValue(0,0) - 1/sqrt(2.0)) < 1e-15 || std::abs(pEigenVectors->getValue(0,0) + 1/sqrt(2.0))< 1e-15);
+	assert(std::abs(pEigenVectors->getValue(0,0) + pEigenVectors->getValue(0,1)) < 1e-15);
+	assert(std::abs(pEigenVectors->getValue(1,0) - 1/sqrt(2.0)) < 1e-15);
+	assert(std::abs(pEigenVectors->getValue(1,1) - 1/sqrt(2.0)) < 1e-15);
+
+	delete pEigenVectors;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testDistanceCalculator() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray arrayH = new ComplexVal[4];
 	double inverSqrt2 = 1 / sqrt(2);
 	arrayH[0] = ComplexVal(1,0) * inverSqrt2;
@@ -423,9 +484,12 @@ void TestSuite::testDistanceCalculator() {
 	assert(std::abs(dHH) < 1e-30);
 	assert(std::abs(dHI - 2.0) < 1e-30);
 	assert(std::abs(dTI - 0.76537) < 1e-5);
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testMatrixTraceInnerProduct() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array1 = new ComplexVal[4];
 
 	//[1 4-i; 4 + i 2]
@@ -455,9 +519,12 @@ void TestSuite::testMatrixTraceInnerProduct() {
 
 	delete pH2;
 	delete pH1;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testCoordinateOnOrthonormalBasisCalculator() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray arrayH = new ComplexVal[4];
 
 	//H = 3 * X + 4 *Y -5 *Z
@@ -493,6 +560,8 @@ void TestSuite::testCoordinateOnOrthonormalBasisCalculator() {
 	assert(std::abs(zCoordinates[2] - 1) < 1e-30);
 
 	delete pZRealCoordinate;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void initPauliMatrices(MatrixPtrVector& pPauliMatrices) {

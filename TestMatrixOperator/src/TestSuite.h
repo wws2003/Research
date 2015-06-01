@@ -49,6 +49,8 @@ private:
 
 	void testSqrt();
 
+	void testEig();
+
 	void testDistanceCalculator();
 
 	void testMatrixTraceInnerProduct();
