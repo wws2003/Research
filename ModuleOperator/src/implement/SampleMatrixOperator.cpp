@@ -8,6 +8,7 @@
 #include "SampleMatrixOperator.h"
 #include "IMatrixFactory.h"
 #include "eigen3/Eigen/Dense"
+#include "eigen3/Eigen/Eigenvalues"
 #include "eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixExponential.h"
 #include "eigen3/unsupported/Eigen/MatrixFunctions"
 #include <iostream>
@@ -122,8 +123,14 @@ void SampleMatrixOperator::log(MatrixPtr pm, MatrixPtrRef prLog) {
 	prLog = fromEigenMatrix(eigenLogMat);
 }
 
-void SampleMatrixOperator::eig(MatrixPtr pm, VectorPtrRef prEigVals, MatrixPtrRef prEigVects) {
-	//TODO Implement
+void SampleMatrixOperator::eig(MatrixPtr pm, ComplexVectorRef rEigVals, MatrixPtrRef prEigVects) {
+	MatrixXcd eigenMat;
+	toEigenMatrix(pm, eigenMat);
+	ComplexEigenSolver<MatrixXcd> ces(eigenMat, true);
+	MatrixXcd eigenVectors = ces.eigenvectors();
+	MatrixXcd eigenValues = ces.eigenvalues();
+	prEigVects = fromEigenMatrix(eigenVectors);
+	fromEigenMatrix(eigenValues, 0, rEigVals);
 }
 
 void SampleMatrixOperator::toEigenMatrix(MatrixPtr pMatrix, MatrixXcd& rEigenMat) {
@@ -149,6 +156,14 @@ MatrixPtr SampleMatrixOperator::fromEigenMatrix(MatrixXcd& eigenMatrix, std::str
 	MatrixPtr pMatrix = m_pMatrixFactory->getMatrixFromValues(nbRows, nbCols, arr, COLUMN_SPLICE, label);
 
 	return pMatrix;
+}
+
+void SampleMatrixOperator::fromEigenMatrix(MatrixXcd& eigenMatrix, int column, ComplexVectorRef rComplexVector) {
+	int numberOfEigenValues = eigenMatrix.rows();
+	for(int i = 0; i < numberOfEigenValues; i++) {
+		ComplexVal val = eigenMatrix.col(column)[i];
+		rComplexVector.push_back(val);
+	}
 }
 
 

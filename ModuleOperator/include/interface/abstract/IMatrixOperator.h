@@ -95,7 +95,7 @@ public:
 	 * Eigen vectors are stored in prEigVects
 	 * Should throw logic exception if matrix has no eigen value
 	 */
-	virtual void eig(MatrixPtr pm, VectorPtrRef prEigVals, MatrixPtrRef prEigVects) = 0;
+	virtual void eig(MatrixPtr pm, ComplexVectorRef prEigVals, MatrixPtrRef prEigVects) = 0;
 
 };
 

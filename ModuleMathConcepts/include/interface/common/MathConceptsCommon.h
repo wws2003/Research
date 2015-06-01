@@ -43,6 +43,9 @@ typedef MatrixPtr& MatrixPtrRef;
 typedef IVector* VectorPtr;
 typedef VectorPtr& VectorPtrRef;
 
+typedef std::vector<ComplexVal> ComplexVector;
+typedef ComplexVector& ComplexVectorRef;
+
 typedef IMatrixFactory* MatrixFactoryPtr;
 
 typedef Coordinate<MatrixPtr, double> MatrixRealCoordinate;

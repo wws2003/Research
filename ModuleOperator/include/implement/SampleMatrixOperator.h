@@ -32,12 +32,13 @@ public:
 	virtual void inverse(MatrixPtr pm, MatrixPtrRef ppInverseMatrix) ;
 	virtual void exponential(MatrixPtr pm, MatrixPtrRef ppExpMatrix) ;
 	virtual void log(MatrixPtr pm, MatrixPtrRef prLog);
-	virtual void eig(MatrixPtr pm, VectorPtrRef ppEigVals, MatrixPtrRef ppEigVects);
+	virtual void eig(MatrixPtr pm, ComplexVectorRef ppEigVals, MatrixPtrRef ppEigVects);
 
 
 private:
 	void toEigenMatrix(MatrixPtr pMatrix, Eigen::MatrixXcd& rEigenMat);
 	MatrixPtr fromEigenMatrix(Eigen::MatrixXcd& eigenMatrix, std::string label = "");
+	void fromEigenMatrix(Eigen::MatrixXcd& eigenMatrix, int coloumn, ComplexVectorRef rComplexVector);
 
 	MatrixFactoryPtr m_pMatrixFactory;
 };
