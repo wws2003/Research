@@ -22,6 +22,8 @@ public:
 private:
 	void calculateTracelessHermitianFromSpecialUnitary(MatrixPtr pSpecialUnitaryMatrix, MatrixPtrRef prTracelessHermitianMatrix) const;
 
+	void calculateTracelessHermitianFrom2kpiTraceHermitian(MatrixPtrRef prTracelessHermitianMatrix, double intialTrace) const;
+
 	MatrixOperatorPtr m_pMatrixOperator;
 	MatrixRealCoordinateCalculatorPtr m_pHermitianMatrixCoordinateCalculator;
 };

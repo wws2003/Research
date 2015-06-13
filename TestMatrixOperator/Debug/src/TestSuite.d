@@ -167,7 +167,8 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h \
  ../../ModuleOperator/src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
- ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h
 
 ../src/TestSuite.h:
 
@@ -508,3 +509,5 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h:

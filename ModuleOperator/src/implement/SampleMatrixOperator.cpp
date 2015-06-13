@@ -133,6 +133,45 @@ void SampleMatrixOperator::eig(MatrixPtr pm, ComplexVectorRef rEigVals, MatrixPt
 	fromEigenMatrix(eigenValues, 0, rEigVals);
 }
 
+void SampleMatrixOperator::unitaryDediagonalize(MatrixPtr pU, const ComplexVectorRef diag, MatrixPtr prRoot) {
+	int nbRows, nbColumns;
+	pU->getSize(nbRows, nbColumns);
+
+	MatrixXcd eigenU;
+	toEigenMatrix(pU, eigenU);
+
+	MatrixXcd eigenInverseU = eigenU.transpose().conjugate();
+
+	MatrixXcd eigenDiag = MatrixXcd(nbRows, nbColumns);
+
+	for(int i = 0; i < nbRows; i++) {
+		eigenDiag(i,i) = diag[i];
+	}
+
+	MatrixXcd eigenProduct = eigenU * eigenDiag * eigenInverseU;
+
+	prRoot = fromEigenMatrix(eigenProduct, "");
+}
+
+void SampleMatrixOperator::specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef prSU) {
+	MatrixXcd eigenU;
+	toEigenMatrix(pU, eigenU);
+	ComplexVal detU = eigenU.determinant();
+
+	//detU = +-1
+
+	if(detU.real() > 0.0) {
+		prSU = fromEigenMatrix(eigenU, pU->getLabel());
+	}
+	else {
+		int nbRows, nbColumns;
+		pU->getSize(nbRows, nbColumns);
+		ComplexVal c = std::exp(ComplexVal(0,-1) * M_PI / (nbRows + 0.0));
+		MatrixXcd eigenSU = eigenU * c;
+		prSU = fromEigenMatrix(eigenSU, pU->getLabel());
+	}
+}
+
 void SampleMatrixOperator::toEigenMatrix(MatrixPtr pMatrix, MatrixXcd& rEigenMat) {
 	int nbRows, nbColumns;
 	pMatrix->getSize(nbRows, nbColumns);

@@ -34,6 +34,9 @@ public:
 	virtual void log(MatrixPtr pm, MatrixPtrRef prLog);
 	virtual void eig(MatrixPtr pm, ComplexVectorRef ppEigVals, MatrixPtrRef ppEigVects);
 
+	void unitaryDediagonalize(MatrixPtr pU, const ComplexVectorRef diag, MatrixPtr prRoot);
+
+	void specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef prSU);
 
 private:
 	void toEigenMatrix(MatrixPtr pMatrix, Eigen::MatrixXcd& rEigenMat);

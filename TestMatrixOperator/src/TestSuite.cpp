@@ -10,6 +10,7 @@
 #include "CoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "MatrixRealInnerProductByTraceImpl.h"
 #include "CoordinateOnOrthonormalBasisCalculatorImpl.cpp"
+#include "SpecialUnitaryMatrixCoordinateMapper.h"
 #include <iostream>
 
 void initPauliMatrices(MatrixPtrVector& pPauliMatrices);
@@ -23,9 +24,11 @@ TestSuite::TestSuite() {
 	m_pMatrixRealInnerProductCalculator = new MatrixRealInnerProductByTraceImpl(m_pMatrixOperator);
 	initPauliMatrices(m_pPauliMatrices);
 	m_pMatrixRealCoordinateOnOrthonormalBasisCalculator = new CoordinateOnOrthonormalBasisCalculatorImpl<MatrixPtr, double>(m_pMatrixRealInnerProductCalculator, m_pPauliMatrices);
+	m_pSpecialUnitaryCoordinateCalculator = new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, m_pMatrixRealCoordinateOnOrthonormalBasisCalculator);
 }
 
 TestSuite::~TestSuite() {
+	delete m_pSpecialUnitaryCoordinateCalculator;
 	delete m_pMatrixRealCoordinateOnOrthonormalBasisCalculator;
 	releasePauliMatrices(m_pPauliMatrices);
 	delete m_pMatrixRealInnerProductCalculator;
@@ -50,6 +53,8 @@ void TestSuite::test() {
 	testDistanceCalculator();
 	testMatrixTraceInnerProduct();
 	testCoordinateOnOrthonormalBasisCalculator();
+	testSpecializeUnitary();
+	testSimpleUnitaryCoordinateMapper();
 }
 
 void TestSuite::testMatrixGenerator() {
@@ -560,6 +565,76 @@ void TestSuite::testCoordinateOnOrthonormalBasisCalculator() {
 	assert(std::abs(zCoordinates[2] - 1) < 1e-30);
 
 	delete pZRealCoordinate;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
+}
+
+void TestSuite::testSpecializeUnitary() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+	ComplexVal arrayCNOT[] = {1.0, 0.0, 0.0, 0.0
+			, 0.0, 1.0, 0.0, 0.0
+			, 0.0, 0.0, 0.0, 1.0
+			, 0.0, 0.0, 1.0, 0.0};
+
+	MatrixPtr pCNOT = new SimpleDenseMatrixImpl(arrayCNOT, ROW_SPLICE, 4, 4, "CNOT");
+	MatrixPtr pSCNOT = NullPtr;
+	m_pMatrixOperator->specialUnitaryFromUnitary(pCNOT, pSCNOT);
+
+	for(int r = 0; r < 4; r++) {
+		for(int c = 0; c < 4; c++) {
+			ComplexVal v = pSCNOT->getValue(r, c);
+			if((r == 0 && c == 0) || (r == 1 && c == 1) || (r == 2 && c == 3) || (r == 3 && c == 2)) {
+				assert(norm(v -  ComplexVal(1/sqrt(2), -1/sqrt(2))) < 1e-20);
+			}
+			else {
+				assert(norm(v) < 1e-20);
+			}
+		}
+	}
+
+	delete(pCNOT);
+	delete(pSCNOT);
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
+}
+
+void TestSuite::testSimpleUnitaryCoordinateMapper() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+	ComplexValArray arrayH = new ComplexVal[4];
+
+	//H = 0.3 * X + 0.4 *Y - 0.5 *Z
+
+	arrayH[0] = -0.5;
+	arrayH[1] = ComplexVal(0.3, -0.4);
+	arrayH[2] = ComplexVal(0.3, 0.4);
+	arrayH[3] = 0.5;
+
+	MatrixPtr pH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H1");
+
+	MatrixPtr pHi = NullPtr;
+	m_pMatrixOperator->multiplyScalar(pH, ComplexVal(0,1), pHi);
+
+	MatrixPtr pU = NullPtr;
+	m_pMatrixOperator->exponential(pHi, pU);
+
+	MatrixRealCoordinatePtr pURealCoordinate = NullPtr;
+
+	m_pSpecialUnitaryCoordinateCalculator->calulateElementCoordinate(pU, pURealCoordinate);
+	std::vector<double> uCoordinates = pURealCoordinate->getCoordinates();
+
+	assert(uCoordinates.size() == 3);
+	assert(std::abs(uCoordinates[0] - 0.3) < 1e-15);
+	assert(std::abs(uCoordinates[1] - 0.4) < 1e-15);
+	assert(std::abs(uCoordinates[2] - -0.5) < 1e-15);
+
+	delete pURealCoordinate;
+
+	delete pU;
+
+	delete pHi;
+
+	delete[] arrayH;
+	delete pH;
 
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }

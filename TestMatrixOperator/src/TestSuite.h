@@ -57,12 +57,17 @@ private:
 
 	void testCoordinateOnOrthonormalBasisCalculator();
 
+	void testSpecializeUnitary();
+
+	void testSimpleUnitaryCoordinateMapper();
+
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
 	MatrixRealInnerProductCalculatorPtr m_pMatrixRealInnerProductCalculator;
 	MatrixPtrVector m_pPauliMatrices;
 	MatrixRealCoordinateCalculatorPtr m_pMatrixRealCoordinateOnOrthonormalBasisCalculator;
+	MatrixRealCoordinateCalculatorPtr m_pSpecialUnitaryCoordinateCalculator;
 };
 
 

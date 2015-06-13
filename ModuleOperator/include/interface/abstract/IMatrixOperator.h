@@ -97,6 +97,16 @@ public:
 	 */
 	virtual void eig(MatrixPtr pm, ComplexVectorRef prEigVals, MatrixPtrRef prEigVects) = 0;
 
+	/**
+	 * Just an utility operation for U*diag*U'
+	 * return root = U*diag*U'
+	 */
+	virtual void unitaryDediagonalize(MatrixPtr pU, const ComplexVectorRef diag, MatrixPtr prRoot) = 0;
+
+	/**
+	 * Just an utility
+	 */
+	virtual void specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef prSU) = 0;
 };
 
 #endif /* IMATRIXOPERATOR_H_ */
