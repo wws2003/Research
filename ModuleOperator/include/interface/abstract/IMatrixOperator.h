@@ -105,8 +105,16 @@ public:
 
 	/**
 	 * Just an utility
+	 * Transform to unitary matrix into equiivalent special unitary (det = 1), up to global phase
 	 */
 	virtual void specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef prSU) = 0;
+
+	/**
+	 * Just an utility
+	 * Generate basis of vector space on R of d*d Traceless Hermitian matrices
+	 */
+	virtual void getTracelessHermitianMatricesBasis(int dimension, MatrixPtrVector& pBasis) = 0;
+
 };
 
 #endif /* IMATRIXOPERATOR_H_ */

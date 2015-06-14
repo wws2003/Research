@@ -57,9 +57,13 @@ private:
 
 	void testCoordinateOnOrthonormalBasisCalculator();
 
+	void testTracelessHermitianBasis();
+
 	void testSpecializeUnitary();
 
 	void testSimpleUnitaryCoordinateMapper();
+
+	void testSpecialUnitaryCoordinateMapper();
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;

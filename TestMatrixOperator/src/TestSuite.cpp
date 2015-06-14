@@ -12,10 +12,11 @@
 #include "CoordinateOnOrthonormalBasisCalculatorImpl.cpp"
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
 #include <iostream>
+#include <cstdio>
 
 void initPauliMatrices(MatrixPtrVector& pPauliMatrices);
 void releasePauliMatrices(MatrixPtrVector& pPauliMatrices);
-
+void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<double> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU);
 
 TestSuite::TestSuite() {
 	m_pMatrixFactory = new SimpleDenseMatrixFactoryImpl();
@@ -53,8 +54,10 @@ void TestSuite::test() {
 	testDistanceCalculator();
 	testMatrixTraceInnerProduct();
 	testCoordinateOnOrthonormalBasisCalculator();
+	testTracelessHermitianBasis();
 	testSpecializeUnitary();
 	testSimpleUnitaryCoordinateMapper();
+	testSpecialUnitaryCoordinateMapper();
 }
 
 void TestSuite::testMatrixGenerator() {
@@ -569,6 +572,28 @@ void TestSuite::testCoordinateOnOrthonormalBasisCalculator() {
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
+void TestSuite::testTracelessHermitianBasis() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+
+	MatrixPtrVector pBasis2;
+	m_pMatrixOperator->getTracelessHermitianMatricesBasis(2, pBasis2);
+
+	assert(pBasis2.size() == 3);
+
+	//X
+	assert(m_pMatrixDistanceCalculator->distance(pBasis2[0], m_pPauliMatrices[0]) < 1e-8);
+
+	//Y
+	assert(m_pMatrixDistanceCalculator->distance(pBasis2[1], m_pPauliMatrices[1]) < 1e-8);
+
+	//Z
+	assert(m_pMatrixDistanceCalculator->distance(pBasis2[2], m_pPauliMatrices[2]) < 1e-8);
+
+	releasePauliMatrices(pBasis2);
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
+}
+
 void TestSuite::testSpecializeUnitary() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexVal arrayCNOT[] = {1.0, 0.0, 0.0, 0.0
@@ -639,6 +664,63 @@ void TestSuite::testSimpleUnitaryCoordinateMapper() {
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
+void TestSuite::testSpecialUnitaryCoordinateMapper() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+
+	MatrixPtrVector pBasis4;
+	m_pMatrixOperator->getTracelessHermitianMatricesBasis(4, pBasis4);
+
+	assert(pBasis4.size() == 15);
+
+
+	std::vector<double> coordArr = {0.25,0.5,0.5,0.5,0.5,0.2,0.5,0.5,0.3,0.5,0.5,0.1,-0.5,0.5,0.5};
+	//std::vector<double> coordArr = {2.0,1.0,3.0,1.0,-1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+
+	MatrixPtr pU = NullPtr;
+
+	calculateSpecialUnitaryFromTracelessHermitianCoordinates(m_pMatrixOperator, coordArr, pBasis4, pU);
+
+	MatrixRealCoordinateCalculatorPtr pHermitianCoordinateCalculator = new CoordinateOnOrthonormalBasisCalculatorImpl<MatrixPtr, double>(m_pMatrixRealInnerProductCalculator, pBasis4);
+	MatrixRealCoordinateCalculatorPtr pSpecialUnitaryCoordinateCalculator = new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, pHermitianCoordinateCalculator);
+
+	MatrixRealCoordinatePtr pURealCoordinate = NullPtr;
+
+	pSpecialUnitaryCoordinateCalculator->calulateElementCoordinate(pU, pURealCoordinate);
+	std::vector<double> uCoordinates = pURealCoordinate->getCoordinates();
+
+	assert(uCoordinates.size() == 15);
+
+	bool maintainInitialCoordinateFlag = true;
+	for(int i = 0; i < 15; i++) {
+		if(!abs(uCoordinates[i] - coordArr[i]) < 1e-15) {
+			maintainInitialCoordinateFlag = false;
+		}
+	}
+
+	//Handle the case some adjustments have been applied to keep the traceless property
+	if(!maintainInitialCoordinateFlag) {
+		std::cout << "Need further verification..." << std::endl;
+		/*for(int i = 0; i < 15; i++) {
+			printf("uCoord[%d] = %lf\n", i, uCoordinates[i]);
+		}*/
+		MatrixPtr pU1 = NullPtr;
+		calculateSpecialUnitaryFromTracelessHermitianCoordinates(m_pMatrixOperator, uCoordinates, pBasis4, pU1);
+		assert(m_pMatrixDistanceCalculator->distance(pU1, pU) < 1e-8);
+	}
+
+	delete pURealCoordinate;
+
+	delete pSpecialUnitaryCoordinateCalculator;
+
+	delete pHermitianCoordinateCalculator;
+
+	delete pU;
+
+	releasePauliMatrices(pBasis4);
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
+}
+
 void initPauliMatrices(MatrixPtrVector& pPauliMatrices) {
 	//Pauli X = [0 1;1 0]
 	//Pauli Y = [0 -i;i 0]
@@ -686,4 +768,29 @@ void releasePauliMatrices(MatrixPtrVector& pPauliMatrices) {
 		pIter = pPauliMatrices.erase(pIter);
 		delete pMatrix;
 	}
+}
+
+void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<double> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU) {
+	ComplexVal zeroArr[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	MatrixPtr pH = new SimpleDenseMatrixImpl(zeroArr, ROW_SPLICE, 4, 4, "Z");
+
+	//H = 1/2 * (basis4[0]+ basis4[1] + ... + basis4[14])
+	for(int i = 0; i < 15; i++) {
+		MatrixPtr pPartialSum = NullPtr;
+		pMatrixOperator->multiplyScalar(pHermitianBasis[i], ComplexVal(coordinates[i], 0), pPartialSum);
+		MatrixPtr pSum = NullPtr;
+		pMatrixOperator->add(pH, pPartialSum, pSum);
+		delete pPartialSum;
+		delete pH;
+		pH = pSum;
+	}
+
+	MatrixPtr pHi = NullPtr;
+	pMatrixOperator->multiplyScalar(pH, ComplexVal(0,1), pHi);
+
+	pMatrixOperator->exponential(pHi, pU);
+
+	delete pHi;
+
+	delete pH;
 }

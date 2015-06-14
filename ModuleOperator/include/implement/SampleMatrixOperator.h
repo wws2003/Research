@@ -38,6 +38,8 @@ public:
 
 	void specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef prSU);
 
+	void getTracelessHermitianMatricesBasis(int dimension, MatrixPtrVector& pBasis) ;
+
 private:
 	void toEigenMatrix(MatrixPtr pMatrix, Eigen::MatrixXcd& rEigenMat);
 	MatrixPtr fromEigenMatrix(Eigen::MatrixXcd& eigenMatrix, std::string label = "");

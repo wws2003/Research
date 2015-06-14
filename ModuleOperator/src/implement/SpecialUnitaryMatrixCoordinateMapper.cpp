@@ -51,23 +51,25 @@ void SpecialUnitaryMatrixCoordinateMapper::calculateTracelessHermitianFrom2kpiTr
 	short traceSign = gt(initialTrace,0,1e-9) ? 1 : -1;
 	double delta2pi = -traceSign * 2 * M_PI;
 
-	/**
-	 * Question:
-	 * Should apply delta2pi into eigen values in order of magnitude.
-	 * in order to avoid too bias?
-	 *
-	 */
+	while(!apprx(newTrace, 0.0, 1e-9)) {
+		int maxAdjustmentIndex = -1;
+		double maxAdjustment = -1.0;
 
-	for(unsigned int i = 0; i < eigValues.size(); i++) {
-		double eigRealValue = eigValues[i].real();
-		short eigRealSign = gt(eigRealValue,0,1e-9) ? 1 : -1;
+		//Find the highest magnitude in the eigen values, on which adjustment should be applied
+		for(unsigned int i = 0; i < eigValues.size(); i++) {
+			double eigRealValue = eigValues[i].real();
+			short eigRealSign = gt(eigRealValue,0,1e-9) ? 1 : -1;
 
-		if(eigRealSign == traceSign) {
-			eigValues[i] += delta2pi;
-			newTrace += delta2pi;
-			if(apprx(newTrace, 0.0, 1e-9)) {
-				break;
+			if(eigRealSign == traceSign && std::abs(eigRealValue) >= maxAdjustment) {
+				maxAdjustment = std::abs(eigRealValue);
+				maxAdjustmentIndex = i;
 			}
+		}
+
+		//Checking >= 0 for maxAdjustmentIndex is just for carefulness
+		if(maxAdjustmentIndex >= 0) {
+			eigValues[maxAdjustmentIndex] += delta2pi;
+			newTrace += delta2pi;
 		}
 	}
 

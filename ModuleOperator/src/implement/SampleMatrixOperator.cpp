@@ -142,7 +142,7 @@ void SampleMatrixOperator::unitaryDediagonalize(MatrixPtr pU, const ComplexVecto
 
 	MatrixXcd eigenInverseU = eigenU.transpose().conjugate();
 
-	MatrixXcd eigenDiag = MatrixXcd(nbRows, nbColumns);
+	MatrixXcd eigenDiag = MatrixXcd::Zero(nbRows, nbColumns);
 
 	for(int i = 0; i < nbRows; i++) {
 		eigenDiag(i,i) = diag[i];
@@ -170,6 +170,72 @@ void SampleMatrixOperator::specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef 
 		MatrixXcd eigenSU = eigenU * c;
 		prSU = fromEigenMatrix(eigenSU, pU->getLabel());
 	}
+}
+
+void SampleMatrixOperator::getTracelessHermitianMatricesBasis(int dimension, MatrixPtrVector& pBasis) {
+	//Ref. http://mathworld.wolfram.com/GeneralizedGell-MannMatrix.html
+
+	pBasis.clear();
+
+	ComplexValArray pBuffer = new ComplexVal[dimension * dimension];
+	std::fill(pBuffer, pBuffer + dimension * dimension, ComplexVal(0.0, 0.0));
+
+	//Symmetric basis
+	for(int r = 0; r < dimension; r++) {
+		for(int c = r + 1; c < dimension; c++) {
+			//sym[r][c] = sym[c][r] = 1
+			int indexRC = r * dimension + c;
+			int indexCR = c * dimension + r;
+			pBuffer[indexRC] = 1.0;
+			pBuffer[indexCR] = 1.0;
+
+			MatrixPtr pSymmetricBasis = m_pMatrixFactory->getMatrixFromValues(dimension, dimension, pBuffer, ROW_SPLICE, "");
+			pBasis.push_back(pSymmetricBasis);
+
+			//Restore buffer
+			pBuffer[indexRC] = 0.0;
+			pBuffer[indexCR] = 0.0;
+		}
+	}
+	//Asymmetric basis
+	for(int r = 0; r < dimension; r++) {
+		for(int c = r + 1; c < dimension; c++) {
+			//asym[r][c] = -i
+			//asym[c][r] = i
+			int indexRC = r * dimension + c;
+			int indexCR = c * dimension + r;
+			pBuffer[indexRC] = ComplexVal(0, -1);
+			pBuffer[indexCR] = ComplexVal(0, 1);
+
+			MatrixPtr pAsymmetricBasis = m_pMatrixFactory->getMatrixFromValues(dimension, dimension, pBuffer, ROW_SPLICE, "");
+			pBasis.push_back(pAsymmetricBasis);
+
+			//Restore buffer
+			pBuffer[indexRC] = 0.0;
+			pBuffer[indexCR] = 0.0;
+		}
+	}
+	//Diagonal basis
+	for(int l = 0; l < dimension - 1; l++) {
+		//diag(l) = sqrt(2 / ((l + 1) * (l + 2))) * diag(1,1...-(l+1) (at index l),0..0)
+		double pref = std::sqrt(2.0 / ((l + 1) * (l + 2)));
+
+		for(int j = 0; j <= l; j++) {
+			int indexJ = j * dimension + j;
+			pBuffer[indexJ] = ComplexVal(pref, 0.0);
+		}
+
+		int indexL = (l + 1) * dimension + l + 1;
+		pBuffer[indexL] = ComplexVal(-pref * (l + 1.0), 0);
+
+		MatrixPtr pDiagonalBasis = m_pMatrixFactory->getMatrixFromValues(dimension, dimension, pBuffer, ROW_SPLICE, "");
+		pBasis.push_back(pDiagonalBasis);
+
+		//Restore buffer
+		std::fill(pBuffer, pBuffer + dimension * dimension, ComplexVal(0.0, 0.0));
+	}
+
+	delete[] pBuffer;
 }
 
 void SampleMatrixOperator::toEigenMatrix(MatrixPtr pMatrix, MatrixXcd& rEigenMat) {
