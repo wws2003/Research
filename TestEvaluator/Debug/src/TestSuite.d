@@ -170,7 +170,7 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleEvaluate/include/implement/CpuTimer.h \
  ../../ModuleEvaluate/include/interface/abstract/ITimer.h \
- ../../ModuleAlgorithm/include/implement/SampleMatrixCollectionImpl.h \
+ ../../ModuleAlgorithm/include/implement/collection/SampleMatrixCollectionImpl.h \
  ../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
@@ -520,7 +520,7 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleEvaluate/include/interface/abstract/ITimer.h:
 
-../../ModuleAlgorithm/include/implement/SampleMatrixCollectionImpl.h:
+../../ModuleAlgorithm/include/implement/collection/SampleMatrixCollectionImpl.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h:
 
