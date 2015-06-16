@@ -27,5 +27,4 @@ src/implement/iterator \
 src/implement/collection \
 src/implement/bin \
 src/implement/approximator \
-src/implement \
 

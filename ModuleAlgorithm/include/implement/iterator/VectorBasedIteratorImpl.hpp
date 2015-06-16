@@ -41,7 +41,7 @@ private:
 
 template<typename T>
 VectorBasedIteratorImpl<T>::VectorBasedIteratorImpl(std::vector<T>* pElements) {
-	m_pElements->insert(m_pElements->end(), pElements->begin(), pElements->end());
+	m_pElements = pElements;
 	toBegin();
 }
 
