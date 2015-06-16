@@ -1,6 +1,6 @@
-src/implement/SampleMatrixCollectionImpl.d: \
- ../src/implement/SampleMatrixCollectionImpl.cpp \
- ../include/implement/SampleMatrixCollectionImpl.h \
+src/implement/collection/SampleMatrixCollectionImpl.d: \
+ ../src/implement/collection/SampleMatrixCollectionImpl.cpp \
+ ../include/implement/collection/SampleMatrixCollectionImpl.h \
  ../include/interface/abstract/IMatrixCollection.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
@@ -8,9 +8,11 @@ src/implement/SampleMatrixCollectionImpl.d: \
  ../include/interface/common/AlgoCommon.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
- ../include/interface/abstract/IIterator.h
+ ../include/interface/abstract/IIterator.h \
+ ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
+ ../include/implement/iterator/VectorBasedIteratorImpl.hpp
 
-../include/implement/SampleMatrixCollectionImpl.h:
+../include/implement/collection/SampleMatrixCollectionImpl.h:
 
 ../include/interface/abstract/IMatrixCollection.h:
 
@@ -27,3 +29,7 @@ src/implement/SampleMatrixCollectionImpl.d: \
 ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../include/interface/abstract/IIterator.h:
+
+../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
+
+../include/implement/iterator/VectorBasedIteratorImpl.hpp:

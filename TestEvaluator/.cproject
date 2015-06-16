@@ -37,6 +37,7 @@
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/implement"/>
@@ -152,4 +153,5 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

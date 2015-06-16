@@ -1,6 +1,6 @@
-src/implement/DummyMatrixApproximator.d: \
- ../src/implement/DummyMatrixApproximator.cpp \
- ../include/implement/DummyMatrixApproximator.h \
+src/implement/approximator/NINAMatrixApproximator.d: \
+ ../src/implement/approximator/NINAMatrixApproximator.cpp \
+ ../include/implement/approximator/NINAMatrixApproximator.h \
  ../include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../include/interface/abstract/IMatrixApproximator.h \
@@ -9,9 +9,10 @@ src/implement/DummyMatrixApproximator.d: \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../include/interface/abstract/IIterator.h \
- ../include/interface/abstract/IMatrixCollection.h
+ ../include/interface/abstract/IMatrixCollection.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h
 
-../include/implement/DummyMatrixApproximator.h:
+../include/implement/approximator/NINAMatrixApproximator.h:
 
 ../include/interface/common/AlgoCommon.h:
 
@@ -30,3 +31,5 @@ src/implement/DummyMatrixApproximator.d: \
 ../include/interface/abstract/IIterator.h:
 
 ../include/interface/abstract/IMatrixCollection.h:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:

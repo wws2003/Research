@@ -1,6 +1,6 @@
-src/implement/VectorizationMatrixCollectionImpl.d: \
- ../src/implement/VectorizationMatrixCollectionImpl.cpp \
- ../include/implement/VectorizationMatrixCollectionImpl.h \
+src/implement/iterator/VectorizationMatrixCollectionImpl.d: \
+ ../src/implement/iterator/VectorizationMatrixCollectionImpl.cpp \
+ ../include/implement/iterator/VectorizationMatrixCollectionImpl.h \
  ../include/interface/abstract/IMatrixCollection.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
@@ -15,7 +15,7 @@ src/implement/VectorizationMatrixCollectionImpl.d: \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h
 
-../include/implement/VectorizationMatrixCollectionImpl.h:
+../include/implement/iterator/VectorizationMatrixCollectionImpl.h:
 
 ../include/interface/abstract/IMatrixCollection.h:
 

@@ -23,5 +23,9 @@ C_UPPER_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+src/implement/iterator \
+src/implement/collection \
+src/implement/bin \
+src/implement/approximator \
 src/implement \
 

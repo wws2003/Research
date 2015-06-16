@@ -55,9 +55,11 @@ void TestSuite::test(){
 	testSimpleCollection();
 	testSimpleSearchSpaceConstructor();
 	testSimpleEvaluator();
+	testSpecialUnitaryCoordinateCalculator();
 }
 
 void TestSuite::testSimpleWriter() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray arrayH = new ComplexVal[4];
 	double inverSqrt2 = 1 / sqrt(2);
 	arrayH[0] = ComplexVal(1,0) * inverSqrt2;
@@ -88,9 +90,11 @@ void TestSuite::testSimpleWriter() {
 	delete pMatrixHT;
 	delete pMatrixT;
 	delete pMatrixH;
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testSimpleCollection() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	MatrixCollectionPtr pMatrixCollection = new SampleMatrixCollectionImpl();
 	ComplexValArray arrayH = new ComplexVal[4];
 	double inverSqrt2 = 1 / sqrt(2);
@@ -143,9 +147,12 @@ void TestSuite::testSimpleCollection() {
 	delete pMatrixH;
 
 	delete pMatrixCollection;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testSimpleSearchSpaceConstructor() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray arrayH = new ComplexVal[4];
 	double inverSqrt2 = 1 / sqrt(2);
 	arrayH[0] = ComplexVal(1,0) * inverSqrt2;
@@ -213,9 +220,12 @@ void TestSuite::testSimpleSearchSpaceConstructor() {
 	delete pUniversalSet;
 	delete pMatrixT;
 	delete pMatrixH;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
 void TestSuite::testSimpleEvaluator() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray arrayH = new ComplexVal[4];
 	double inverSqrt2 = 1 / sqrt(2);
 	arrayH[0] = ComplexVal(1,0) * inverSqrt2;
@@ -249,4 +259,11 @@ void TestSuite::testSimpleEvaluator() {
 	delete pUniversalSet;
 	delete pMatrixT;
 	delete pMatrixH;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
+}
+
+void TestSuite::testSpecialUnitaryCoordinateCalculator() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }

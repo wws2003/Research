@@ -35,30 +35,7 @@ public:
 	virtual MatrixIteratorPtr findApproxMatrices(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const ;
 
 private:
-	MatrixPtrVector m_pMatrices;
-
-	class InnerVectorMatrixIterator : public MatrixIterator {
-	public:
-		InnerVectorMatrixIterator(const MatrixPtrVector& pMatrices);
-
-		virtual ~InnerVectorMatrixIterator();
-
-		virtual void toBegin();
-
-		virtual void next();
-
-		virtual void prev();
-
-		virtual bool isDone();
-
-		virtual MatrixPtr getObj();
-	private:
-		counter_t m_counter;
-		MatrixPtrVector m_pMatrices;
-	};
-
-	typedef InnerVectorMatrixIterator* InnerVectorMatrixIteratorPtr;
-
+	MatrixPtrVector m_matrices;
 	MatrixIteratorPtr m_pMatrixIterator;
 };
 

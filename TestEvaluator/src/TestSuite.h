@@ -25,6 +25,7 @@ private:
 	void testSimpleCollection();
 	void testSimpleSearchSpaceConstructor();
 	void testSimpleEvaluator();
+	void testSpecialUnitaryCoordinateCalculator();
 
 	//SearchSpaceEvaluatorPtr m_pSearchSpaceEvaluator;
 	MatrixWriterPtr m_pMatrixWriter;

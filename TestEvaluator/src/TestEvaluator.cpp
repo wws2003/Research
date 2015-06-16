@@ -12,7 +12,7 @@
 using namespace std;
 
 int main() {
-	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
+	cout << "!!!Testing algorithm and evaluator!!!" << endl; // prints !!!Hello World!!!
 	TestSuite testSuite;
 	testSuite.test();
 	return 0;
