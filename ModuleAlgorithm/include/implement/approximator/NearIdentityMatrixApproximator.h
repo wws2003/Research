@@ -13,18 +13,19 @@
 #include "IMatrixOperator.h"
 #include "IMatrixCollection.h"
 #include "IMatrixBinCollection.h"
+#include "IMatrixCombiner.h"
+#include "AlgoInternal.h"
 
 class NearIdentityMatrixApproximator: public IMatrixApproximator {
 public:
-	NearIdentityMatrixApproximator(MatrixRealCoordinateCalculatorPtr pMatrixRealCoordinateCalculator, MatrixOperatorPtr pMatrixOperator, MatrixCollectionPtr pResultCollecton, MatrixBinCollectionPtr pMatrixBinCollection);
+	NearIdentityMatrixApproximator(MatrixRealCoordinateCalculatorPtr pMatrixRealCoordinateCalculator, MatrixCombinerPtr pMatrixCombiner, MatrixBinCollectionPtr pMatrixBinCollection);
 	virtual ~NearIdentityMatrixApproximator(){};
 
 	virtual MatrixIteratorPtr getApproximateMatrices(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon);
 
 private:
 	MatrixRealCoordinateCalculatorPtr m_pMatrixRealCoordinateCalculator;
-	MatrixOperatorPtr m_pMatrixOperator;
-	MatrixCollectionPtr m_pResultCollection;
+	MatrixCombinerPtr m_pMatrixCombiner;
 	MatrixBinCollectionPtr m_pMatrixBinCollection;
 };
 

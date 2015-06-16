@@ -12,11 +12,14 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
  ../include/internal-abstract/IMatrixBinCollection.h \
  ../include/implement/bin/MatrixBin.h \
  ../include/interface/abstract/IIterator.h \
+ ../include/internal-abstract/IMatrixCombiner.h \
+ ../include/internal-abstract/AlgoInternal.h \
  ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../include/implement/collection/SampleMatrixCollectionImpl.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
+ ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp
 
 ../include/implement/approximator/NearIdentityMatrixApproximator.h:
 
@@ -42,6 +45,10 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
 
 ../include/interface/abstract/IIterator.h:
 
+../include/internal-abstract/IMatrixCombiner.h:
+
+../include/internal-abstract/AlgoInternal.h:
+
 ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
 
 ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
@@ -51,3 +58,5 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
 ../include/implement/collection/SampleMatrixCollectionImpl.h:
 
 ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
+../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:

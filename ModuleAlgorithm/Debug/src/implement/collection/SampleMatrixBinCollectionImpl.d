@@ -6,7 +6,9 @@ src/implement/collection/SampleMatrixBinCollectionImpl.d: \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
- ../include/interface/abstract/IIterator.h
+ ../include/interface/abstract/IIterator.h \
+ ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
+ ../include/interface/common/AlgoCommon.h
 
 ../include/implement/collection/SampleMatrixBinCollectionImpl.h:
 
@@ -21,3 +23,7 @@ src/implement/collection/SampleMatrixBinCollectionImpl.d: \
 ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
 
 ../include/interface/abstract/IIterator.h:
+
+../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
+
+../include/interface/common/AlgoCommon.h:

@@ -86,7 +86,7 @@ void SampleMatrixOperator::conjugateTranpose(MatrixPtr pm, MatrixPtrRef prConjug
 	toEigenMatrix(pm, eigenMat);
 	eigenMat.transposeInPlace();
 	MatrixXcd conjugateEigenMat = eigenMat.conjugate();
-	prConjugate = fromEigenMatrix(conjugateEigenMat, pm->getLabel() + "'");
+	prConjugate = fromEigenMatrix(conjugateEigenMat);
 }
 
 void SampleMatrixOperator::transpose(MatrixPtr pm, MatrixPtrRef prTranspose) {
@@ -95,7 +95,7 @@ void SampleMatrixOperator::transpose(MatrixPtr pm, MatrixPtrRef prTranspose) {
 
 	eigenMat.transposeInPlace();
 
-	prTranspose = fromEigenMatrix(eigenMat, pm->getLabel() + "*");
+	prTranspose = fromEigenMatrix(eigenMat);
 }
 
 void SampleMatrixOperator::inverse(MatrixPtr pm, MatrixPtrRef prInverseMatrix) {

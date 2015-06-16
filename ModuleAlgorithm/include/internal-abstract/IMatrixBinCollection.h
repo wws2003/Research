@@ -27,6 +27,5 @@ public:
 	virtual MatrixBinIteratorPtr findBinsCloseToBin(MatrixBinPtr pMatrixBin, int distance) = 0;
 };
 
-typedef IMatrixBinCollection* MatrixBinCollectionPtr;
 
 #endif /* IMATRIXBINCOLLECTION_H_ */

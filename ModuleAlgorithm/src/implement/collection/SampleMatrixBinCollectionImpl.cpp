@@ -6,6 +6,7 @@
  */
 
 #include "SampleMatrixBinCollectionImpl.h"
+#include "VectorBasedReadOnlyIteratorImpl.hpp"
 #include <algorithm>
 
 SampleMatrixBinCollectionImpl::SampleMatrixBinCollectionImpl() {
@@ -26,6 +27,11 @@ void SampleMatrixBinCollectionImpl::addMatrix(MatrixPtr pMatrix, BinPattern binP
 }
 
 void SampleMatrixBinCollectionImpl::clear() {
+	for(BinPatternMap::iterator bIter = m_binMap.begin(); bIter != m_binMap.end(); bIter++) {
+		MatrixBinPtr pBin = bIter->second;
+		_destroy(pBin);
+		bIter->second = NullPtr;
+	}
 	m_binMap.clear();
 }
 
@@ -34,8 +40,19 @@ MatrixBinIteratorPtr SampleMatrixBinCollectionImpl::getMatrixBinIteratorPtr() {
 }
 
 MatrixBinIteratorPtr SampleMatrixBinCollectionImpl::findBinsCloseToBin(MatrixBinPtr pMatrixBin, int distance) {
-	//TODO Implement
-	return NullPtr;
+	//TODO Thinking of more efficient algorithm than looping
+
+	MatrixBinPtrVector resultBins;
+
+	for(BinPatternMap::const_iterator bIter = m_binMap.begin(); bIter != m_binMap.end(); bIter++) {
+		MatrixBinPtr pBin = bIter->second;
+		if(pBin->distance(*pMatrixBin) <= distance) {
+			resultBins.push_back(pBin);
+		}
+	}
+	MatrixBinIteratorPtr pMatrixBinIter(new VectorBasedReadOnlyIteratorImpl<MatrixBinPtr>(resultBins));
+
+	return pMatrixBinIter;
 }
 
 void SampleMatrixBinCollectionImpl::InnerMatrixBinIterator::toBegin() {

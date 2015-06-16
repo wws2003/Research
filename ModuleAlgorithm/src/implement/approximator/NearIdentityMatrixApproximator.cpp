@@ -12,6 +12,7 @@
 #include "IIterator.h"
 #include "Coordinate.hpp"
 #include "SampleMatrixCollectionImpl.h"
+#include "VectorBasedReadOnlyIteratorImpl.hpp"
 
 typedef std::vector<double> real_coordinate_t;
 
@@ -19,12 +20,13 @@ void distributeResultsToBins(const real_coordinate_t& queryCoordinate, MatrixIte
 
 void calculateBinPattern(const real_coordinate_t& queryCoordinate, const real_coordinate_t& apprxCoordinate, BinPattern& binPattern);
 
-void findApprxByMerge2Bins(MatrixBinPtr pBin1, MatrixBinPtr pBin2, MatrixPtr pQuery, double epsilon, MatrixOperatorPtr pMatrixOperator, MatrixDistanceCalculatorPtr pDistanceCalculator, MatrixCollectionPtr pResultCollection);
+void findApprxByMerge2Bins(MatrixBinPtr pBin1, MatrixBinPtr pBin2, MatrixPtr pQuery, double epsilon, MatrixCombinerPtr pMatrixCombiner, MatrixDistanceCalculatorPtr pDistanceCalculator, MatrixCollectionPtr pResultCollection);
 
-NearIdentityMatrixApproximator::NearIdentityMatrixApproximator(MatrixRealCoordinateCalculatorPtr pMatrixRealCoordinateCalculator, MatrixOperatorPtr pMatrixOperator, MatrixCollectionPtr pResultCollection, MatrixBinCollectionPtr pMatrixBinCollections) {
+void addApprxResultsToBufferFromCollection(MatrixCollectionPtr pCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon, MatrixPtrVector& rResultBuffer);
+
+NearIdentityMatrixApproximator::NearIdentityMatrixApproximator(MatrixRealCoordinateCalculatorPtr pMatrixRealCoordinateCalculator, MatrixCombinerPtr pMatrixCombiner, MatrixBinCollectionPtr pMatrixBinCollections) {
 	m_pMatrixRealCoordinateCalculator = pMatrixRealCoordinateCalculator;
-	m_pMatrixOperator = pMatrixOperator;
-	m_pResultCollection = pResultCollection;
+	m_pMatrixCombiner = pMatrixCombiner;
 	m_pMatrixBinCollection = pMatrixBinCollections;
 }
 
@@ -46,33 +48,50 @@ MatrixIteratorPtr NearIdentityMatrixApproximator::getApproximateMatrices(MatrixC
 	m_pMatrixBinCollection->clear();
 
 	//Distribute first results into bin collection
-
-	//TODO distributeResultsToBins(queryCoordinate, pFirstRoundApprxMatrixIter, m_pMatrixRealCoordinateCalculator, matrixBins);
+	distributeResultsToBins(queryCoordinate, pFirstRoundApprxMatrixIter, m_pMatrixRealCoordinateCalculator, m_pMatrixBinCollection);
 
 	int stepCounter = 0;
-	int maxStep = 10;
+	int maxStep = 15;
+
+	MatrixCollectionPtr pApprxTempCollection(new SampleMatrixCollectionImpl());
+	MatrixPtrVector apprxResultBuffer;
+
 	while(++stepCounter <= maxStep) {
+		pApprxTempCollection->clear();
+
 		//Thinking of applying SA here
-		int maxMergeDistance = 5;//TODO Don't fix this value
+
+		//TODO Don't fix theses values
+		int maxMergeDistance = 5;
+		double epsilonForMergeCandidate = 3.0 * epsilon;
 
 		MatrixBinIteratorPtr pBinIter = m_pMatrixBinCollection->getMatrixBinIteratorPtr();
 
 		while(!pBinIter->isDone()) {
-			MatrixBinPtr pBin =  pBinIter->getObj();
+			MatrixBinPtr pBin = pBinIter->getObj();
 			MatrixBinIteratorPtr pMergableBinIter = m_pMatrixBinCollection->findBinsCloseToBin(pBin, maxMergeDistance);
+
 			while(!pMergableBinIter->isDone()) {
 				MatrixBinPtr pMergableBin = pMergableBinIter->getObj();
-				findApprxByMerge2Bins(pBin, pMergableBin, pQuery, epsilon, m_pMatrixOperator, pDistanceCalculator, m_pResultCollection);
+				findApprxByMerge2Bins(pBin, pMergableBin, pQuery, epsilonForMergeCandidate, m_pMatrixCombiner, pDistanceCalculator, pApprxTempCollection);
 				pMergableBinIter->next();
 			}
+
 			pBinIter->next();
 		}
-		//TODO distributeResultsToBins(queryCoordinate, m_pResultCollection->getIteratorPtr(), m_pMatrixRealCoordinateCalculator, matrixBins);
+
+		//Distribute newly generated matrices to bin collection
+		distributeResultsToBins(queryCoordinate, pApprxTempCollection->getIteratorPtr(), m_pMatrixRealCoordinateCalculator, m_pMatrixBinCollection);
+
+		//Collect new results
+		addApprxResultsToBufferFromCollection(pApprxTempCollection, pQuery, pDistanceCalculator, epsilon, apprxResultBuffer);
 	}
+
+	_destroy(pApprxTempCollection);
 
 	m_pMatrixBinCollection->clear();
 
-	return m_pResultCollection->getReadonlyIteratorPtr();
+	return MatrixIteratorPtr(new VectorBasedReadOnlyIteratorImpl<MatrixPtr>(apprxResultBuffer)) ;
 }
 
 void distributeResultsToBins(const real_coordinate_t& queryCoordinate, MatrixIteratorPtr pApprxMatrixIter, MatrixRealCoordinateCalculatorPtr pMatrixRealCoordinateCalculator, MatrixBinCollectionPtr pMatrixBinCollection) {
@@ -113,20 +132,32 @@ void calculateBinPattern(const real_coordinate_t& queryCoordinate, const real_co
 	}
 }
 
-void findApprxByMerge2Bins(MatrixBinPtr pBin1, MatrixBinPtr pBin2, MatrixPtr pQuery, double epsilon, MatrixOperatorPtr pMatrixOperator, MatrixDistanceCalculatorPtr pDistanceCalculator, MatrixCollectionPtr pResultCollection) {
+void findApprxByMerge2Bins(MatrixBinPtr pBin1, MatrixBinPtr pBin2, MatrixPtr pQuery, double epsilon, MatrixCombinerPtr pMatrixCombiner, MatrixDistanceCalculatorPtr pDistanceCalculator, MatrixCollectionPtr pResultCollection) {
 	unsigned int sizeBin1 = pBin1->getMatrices().size();
 	unsigned int sizeBin2 = pBin2->getMatrices().size();
 
 	for(unsigned int i = 0; i < sizeBin1; i++) {
 		for(unsigned int j = 0; j < sizeBin2; j++) {
 
-			//TODO How to avoid duplicate
 			MatrixPtr pProduct1 = NullPtr;
-			pMatrixOperator->multiply(pBin1->getMatrices()[i], pBin2->getMatrices()[j], pProduct1);
+			pMatrixCombiner->combine(pBin1->getMatrices()[i], pBin2->getMatrices()[j], pProduct1);
 
-			if(pDistanceCalculator->distance(pProduct1, pQuery) <= epsilon) {
+			if(pProduct1 != NullPtr && pDistanceCalculator->distance(pProduct1, pQuery) <= epsilon) {
 				pResultCollection->addMatrix(pProduct1);
 			}
+			else {
+				_destroy(pProduct1);
+			}
+		}
+	}
+}
+
+void addApprxResultsToBufferFromCollection(MatrixCollectionPtr pCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon, MatrixPtrVector& rResultBuffer) {
+	MatrixIteratorPtr pApprxResultIter = pCollection->findApproxMatrices(pQuery, pDistanceCalculator, epsilon);
+	if(pApprxResultIter != NullPtr) {
+		while(!pApprxResultIter->isDone()) {
+			rResultBuffer.push_back(pApprxResultIter->getObj());
+			pApprxResultIter->next();
 		}
 	}
 }

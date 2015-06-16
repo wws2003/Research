@@ -37,6 +37,7 @@
 									<listOptionValue builtIn="false" value="../include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../include/interface/common"/>
 									<listOptionValue builtIn="false" value="../include/implement"/>
+									<listOptionValue builtIn="false" value="../include/implement/combiner"/>
 									<listOptionValue builtIn="false" value="../include/implement/iterator"/>
 									<listOptionValue builtIn="false" value="../include/implement/collection"/>
 									<listOptionValue builtIn="false" value="../include/implement/approximator"/>
