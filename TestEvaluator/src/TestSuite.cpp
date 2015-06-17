@@ -21,6 +21,10 @@
 #include "InverseCancelationMultiplierMatrixCombinerImpl.h"
 #include "SampleMatrixBinCollectionImpl.h"
 #include "AlgoInternal.h"
+#include "MatrixRealInnerProductByTraceImpl.h"
+#include "CoordinateOnOrthonormalBasisCalculatorImpl.cpp"
+#include "SpecialUnitaryMatrixCoordinateMapper.h"
+
 #include <iostream>
 #include <cmath>
 #include <cassert>
@@ -63,6 +67,7 @@ void TestSuite::test(){
 	testSimpleEvaluator();
 	testInverseCancelingSearchSpaceConstructor();
 	testSampleMatrixBinCollection();
+	freeTestShowCoordinatesInSearchSpace();
 }
 
 void TestSuite::testSimpleWriter() {
@@ -367,4 +372,25 @@ void TestSuite::testSampleMatrixBinCollection() {
 	delete pMatrixBin1;
 
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
+}
+
+void TestSuite::freeTestShowCoordinatesInSearchSpace() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+
+	/*MatrixPtrVector pBasis4;
+	m_pMatrixOperator->getTracelessHermitianMatricesBasis(4, pBasis4);
+
+	ComplexVal arrayCNOT[] = {1.0, 0.0, 0.0, 0.0
+			, 0.0, 1.0, 0.0, 0.0
+			, 0.0, 0.0, 0.0, 1.0
+			, 0.0, 0.0, 1.0, 0.0};
+
+	MatrixPtr pCNOT = new SimpleDenseMatrixImpl(arrayCNOT, ROW_SPLICE, 4, 4, "C");
+	MatrixPtr pSCNOT = NullPtr;
+	m_pMatrixOperator->specialUnitaryFromUnitary(pCNOT, pSCNOT);*/
+
+
+
+
+	std::cout << __func__ << " under construction " << std::endl << "--------------------------"<<  std::endl ;
 }

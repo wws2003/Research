@@ -30,6 +30,7 @@
 									<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleOperator/include/implement"/>
+									<listOptionValue builtIn="false" value="../../ModuleOperator/src/implement"/>
 									<listOptionValue builtIn="false" value="../../ModuleOperator/third-parties"/>
 									<listOptionValue builtIn="false" value="../../ModuleIO/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleIO/include/interface/common"/>

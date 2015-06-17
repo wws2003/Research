@@ -4,15 +4,12 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../src/implement/LabelOnlyMatrixWriterImpl.cpp \
 ../src/implement/SampleMatrixWritter.cpp 
 
 OBJS += \
-./src/implement/LabelOnlyMatrixWriterImpl.o \
 ./src/implement/SampleMatrixWritter.o 
 
 CPP_DEPS += \
-./src/implement/LabelOnlyMatrixWriterImpl.d \
 ./src/implement/SampleMatrixWritter.d 
 
 

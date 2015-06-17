@@ -160,13 +160,15 @@ void SampleMatrixOperator::specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef 
 
 	//detU = +-1
 
-	if(detU.real() > 0.0) {
+	if(std::abs(detU.real() - 1.0) < 1e-12) {
 		prSU = fromEigenMatrix(eigenU, pU->getLabel());
 	}
 	else {
 		int nbRows, nbColumns;
 		pU->getSize(nbRows, nbColumns);
-		ComplexVal c = std::exp(ComplexVal(0,-1) * M_PI / (nbRows + 0.0));
+		ComplexVal detU = det(pU);
+		ComplexVal c = std::pow(detU, -1.0 / (nbRows));
+		//ComplexVal c = std::exp(ComplexVal(0,-1) * M_PI / (nbRows + 0.0));
 		MatrixXcd eigenSU = eigenU * c;
 		prSU = fromEigenMatrix(eigenSU, pU->getLabel());
 	}

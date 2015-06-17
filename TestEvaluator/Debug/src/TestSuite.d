@@ -187,7 +187,15 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleAlgorithm/include/implement/collection/SampleMatrixBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/IMatrixBinCollection.h \
  ../../ModuleAlgorithm/include/implement/bin/MatrixBin.h \
- ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h
+ ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
+ ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h \
+ ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h \
+ ../../ModuleOperator/src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp \
+ ../../ModuleOperator/include/implement/CoordinateOnOrthonormalBasisCalculatorImpl.h \
+ ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
+ ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h
 
 ../src/TestSuite.h:
 
@@ -568,3 +576,19 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../../ModuleAlgorithm/include/implement/bin/MatrixBin.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
+
+../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h:
+
+../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h:
+
+../../ModuleOperator/src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp:
+
+../../ModuleOperator/include/implement/CoordinateOnOrthonormalBasisCalculatorImpl.h:
+
+../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
+
+../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
+
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h:

@@ -468,19 +468,11 @@ void TestSuite::testEig() {
 
 void TestSuite::testDistanceCalculator() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
-	ComplexValArray arrayH = new ComplexVal[4];
 	double inverSqrt2 = 1 / sqrt(2);
-	arrayH[0] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[1] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[2] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[3] = ComplexVal(-1,0) * inverSqrt2;
+	ComplexVal arrayH[] = {ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(-1,0) * inverSqrt2};
 	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
 
-	ComplexValArray arrayT = new ComplexVal[4];
-	arrayT[0] = ComplexVal(1,0);
-	arrayT[1] = 0.0;
-	arrayT[2] = 0.0;
-	arrayT[3] = std::exp(ComplexVal(0,1) * M_PI / 4.0);
+	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
 	MatrixPtr pI = m_pMatrixFactory->getIdentityMatrix(2);
@@ -619,6 +611,25 @@ void TestSuite::testSpecializeUnitary() {
 
 	delete(pCNOT);
 	delete(pSCNOT);
+
+	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
+	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
+	MatrixPtr pMatrixST = NullPtr;
+
+	m_pMatrixOperator->specialUnitaryFromUnitary(pMatrixT, pMatrixST);
+
+	ComplexVal st00 = pMatrixST->getValue(0,0);
+	ComplexVal st01 = pMatrixST->getValue(0,1);
+	ComplexVal st10 = pMatrixST->getValue(1,0);
+	ComplexVal st11 = pMatrixST->getValue(1,1);
+
+	assert(norm(st00 -  std::exp(ComplexVal(0,-1) * M_PI / 8.0)) < 1e-20);
+	assert(norm(st01 -  0.0) < 1e-20);
+	assert(norm(st10 -  0.0) < 1e-20);
+	assert(norm(st11 -  std::exp(ComplexVal(0,1) * M_PI / 8.0)) < 1e-20);
+
+	delete pMatrixST;
+	delete pMatrixT;
 
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
