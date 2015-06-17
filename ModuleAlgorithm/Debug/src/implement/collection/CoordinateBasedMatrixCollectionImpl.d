@@ -1,6 +1,6 @@
-src/implement/collection/VectorizationMatrixCollectionImpl.d: \
- ../src/implement/collection/VectorizationMatrixCollectionImpl.cpp \
- ../include/implement/collection/VectorizationMatrixCollectionImpl.h \
+src/implement/collection/CoordinateBasedMatrixCollectionImpl.d: \
+ ../src/implement/collection/CoordinateBasedMatrixCollectionImpl.cpp \
+ ../include/implement/collection/CoordinateBasedMatrixCollectionImpl.h \
  ../include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
@@ -12,7 +12,7 @@ src/implement/collection/VectorizationMatrixCollectionImpl.d: \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h
 
-../include/implement/collection/VectorizationMatrixCollectionImpl.h:
+../include/implement/collection/CoordinateBasedMatrixCollectionImpl.h:
 
 ../include/interface/common/AlgoCommon.h:
 

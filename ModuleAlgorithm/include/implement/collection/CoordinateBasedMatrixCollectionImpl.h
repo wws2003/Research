@@ -5,8 +5,8 @@
  *      Author: pham
  */
 
-#ifndef VECTORIZATIONMATRIXCOLLECTIONIMPL_H_
-#define VECTORIZATIONMATRIXCOLLECTIONIMPL_H_
+#ifndef COORDINATEBASEDMATRIXCOLLECTIONIMPL_H_
+#define COORDINATEBASEDMATRIXCOLLECTIONIMPL_H_
 
 #include "AlgoCommon.h"
 #include "OperatorCommon.h"
@@ -15,11 +15,11 @@
 #include "ICollection.h"
 #include "ICoordinateCalculator.h"
 
-class VectorizationMatrixCollectionImpl : IMatrixCollection {
+class CoordinateBasedMatrixCollectionImpl : IMatrixCollection {
 public:
-	VectorizationMatrixCollectionImpl(MatrixRealCoordinateCalculatorPtr pMatrixCoordinateCalculator, MatrixRealCoordinateCollectionPtr pInternalMatrixCoordinateCollection, MatrixRealCoordinateDistanceCalculatorPtr pMatrixCoordinateDistanceCalculator);
+	CoordinateBasedMatrixCollectionImpl(MatrixRealCoordinateCalculatorPtr pMatrixCoordinateCalculator, MatrixRealCoordinateCollectionPtr pInternalMatrixCoordinateCollection, MatrixRealCoordinateDistanceCalculatorPtr pMatrixCoordinateDistanceCalculator);
 
-	virtual ~VectorizationMatrixCollectionImpl(){};
+	virtual ~CoordinateBasedMatrixCollectionImpl(){};
 
 	virtual void addElement(MatrixPtr pm) ;
 
