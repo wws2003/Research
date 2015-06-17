@@ -27,7 +27,6 @@ typedef ComplexValArray& ComplexValArrayRef;
 typedef ComplexVal& ComplexValRef;
 
 class IMatrix;
-class IVector;
 class IMatrixFactory;
 
 enum ArraySpliceType {
@@ -39,9 +38,6 @@ template<typename T,typename F> class Coordinate;
 
 typedef IMatrix* MatrixPtr;
 typedef MatrixPtr& MatrixPtrRef;
-
-typedef IVector* VectorPtr;
-typedef VectorPtr& VectorPtrRef;
 
 typedef std::vector<ComplexVal> ComplexVector;
 typedef ComplexVector& ComplexVectorRef;

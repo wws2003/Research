@@ -2,7 +2,7 @@ src/implement/combiner/DuplicateCancelationMultiplierMatrixCombinerImpl.d: \
  ../src/implement/combiner/DuplicateCancelationMultiplierMatrixCombinerImpl.cpp \
  ../include/implement/combiner/DuplicateCancelationMultiplierMatrixCombinerImpl.h \
  ../include/internal-abstract/AbstractMultiplierMatrixCombiner.h \
- ../include/internal-abstract/IMatrixCombiner.h \
+ ../include/interface/abstract/IMatrixCombiner.h \
  ../include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
@@ -14,7 +14,7 @@ src/implement/combiner/DuplicateCancelationMultiplierMatrixCombinerImpl.d: \
 
 ../include/internal-abstract/AbstractMultiplierMatrixCombiner.h:
 
-../include/internal-abstract/IMatrixCombiner.h:
+../include/interface/abstract/IMatrixCombiner.h:
 
 ../include/interface/common/AlgoCommon.h:
 
