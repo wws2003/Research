@@ -19,6 +19,8 @@
 #include "SearchSpaceConstructorImpl.h"
 #include "AlwaysTrueMultiplierMatrixCombinerImpl.h"
 #include "InverseCancelationMultiplierMatrixCombinerImpl.h"
+#include "SampleMatrixBinCollectionImpl.h"
+#include "AlgoInternal.h"
 #include <iostream>
 #include <cmath>
 #include <cassert>
@@ -60,6 +62,7 @@ void TestSuite::test(){
 	testSimpleSearchSpaceConstructor();
 	testSimpleEvaluator();
 	testInverseCancelingSearchSpaceConstructor();
+	testSampleMatrixBinCollection();
 }
 
 void TestSuite::testSimpleWriter() {
@@ -306,6 +309,62 @@ void TestSuite::testInverseCancelingSearchSpaceConstructor() {
 	delete pMatrixH;
 	delete pSearchSpaceConstructor;
 	delete pMatrixCombiner;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
+}
+
+void TestSuite::testSampleMatrixBinCollection() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+
+	BinPattern binPattern1 = "0011";
+	MatrixBinPtr pMatrixBin1 = new MatrixBin(binPattern1);
+
+	BinPattern binPattern2= "1000";
+	MatrixBinPtr pMatrixBin2 = new MatrixBin(binPattern2);
+
+	//distance bin1 -> bin2 = number of same digital in same position = 1 (the second digital of both is '0')
+	int expectedBinDistance = 1;
+
+	assert(pMatrixBin1->distance(*pMatrixBin2) == expectedBinDistance);
+
+	MatrixBinCollectionPtr pBinCollection = new SampleMatrixBinCollectionImpl();
+
+	//Add to collection a matrix with bin pattern = binPattern2
+	ComplexVal arrayH[] = {ComplexVal(1,0), ComplexVal(1,0), ComplexVal(1,0), ComplexVal(-1,0)};
+	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
+	pBinCollection->addMatrix(pMatrixH, binPattern2);
+
+	//Add to collection twice a matrix with bin pattern = binPattern1
+	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
+	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
+	pBinCollection->addMatrix(pMatrixT, binPattern1);
+	pBinCollection->addMatrix(pMatrixT, binPattern1);
+
+	//Expect collection size is 2
+	assert(pBinCollection->size() == 2);
+
+	//Find in the bin collection the bins having distance to bin 2 no more than 2.
+	int maxDistance = 2;
+	MatrixBinIteratorPtr pBinIter = pBinCollection->findBinsCloseToBin(pMatrixBin2, maxDistance);
+
+	//Expected to find bin 1
+	assert(!pBinIter->isDone());
+
+	//In the found bin 1, expected to have matrix T twice
+	MatrixBinPtr pFoundBin = pBinIter->getObj();
+	assert(pFoundBin->getMatrices().size() == 2);
+	assert(pFoundBin->getMatrices()[0] == pMatrixT);
+	assert(pFoundBin->getMatrices()[1] == pMatrixT);
+
+	//And no more than bin 1
+	pBinIter->next();
+	assert(pBinIter->isDone());
+
+	delete pMatrixT;
+	delete pMatrixH;
+	delete pBinCollection;
+	delete pMatrixBin2;
+	delete pMatrixBin1;
 
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }

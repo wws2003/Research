@@ -20,7 +20,7 @@ MatrixBin::~MatrixBin() {
 int MatrixBin::distance(const MatrixBin& otherBin) const {
 	int distance = m_pattern.size();
 	for(unsigned int i = 0; i < m_pattern.size(); i++) {
-		if(m_pattern[i] + otherBin.m_pattern[i] == 0) {
+		if(m_pattern[i] != otherBin.m_pattern[i]) {
 			distance--;
 		}
 	}

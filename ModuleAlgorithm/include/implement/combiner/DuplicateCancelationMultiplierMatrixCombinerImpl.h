@@ -17,6 +17,8 @@ typedef std::set<std::string> MatrixLabelSet;
 class DuplicateCancelationMultiplierMatrixCombinerImpl : public AbstractMultiplierMatrixCombiner {
 public:
 
+	DuplicateCancelationMultiplierMatrixCombinerImpl(MatrixOperatorPtr pMatrixOperator) : AbstractMultiplierMatrixCombiner(pMatrixOperator){};
+
 	//Override
 	/**
 	 * Do not combine if the 2 input matrices have been combined once before by this combiner

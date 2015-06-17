@@ -10,6 +10,7 @@
 
 #include "MatrixBin.h"
 #include "IIterator.h"
+#include "AlgoCommon.h"
 
 typedef IIterator<MatrixBinPtr> MatrixBinIterator;
 typedef MatrixBinIterator* MatrixBinIteratorPtr;
@@ -21,6 +22,8 @@ public:
 	virtual void addMatrix(MatrixPtr pMatrix, BinPattern binPattern) = 0;
 
 	virtual void clear() = 0;
+
+	virtual CollectionSize_t size() = 0;
 
 	virtual MatrixBinIteratorPtr getMatrixBinIteratorPtr() = 0;
 

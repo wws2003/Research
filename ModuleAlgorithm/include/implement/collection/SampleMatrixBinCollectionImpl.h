@@ -16,13 +16,15 @@ typedef std::map<BinPattern, MatrixBinPtr> BinPatternMap;
 typedef BinPatternMap* BinPatternMapPtr;
 typedef std::pair<BinPattern, MatrixBinPtr> PatternBinPair;
 
-class SampleMatrixBinCollectionImpl : IMatrixBinCollection {
+class SampleMatrixBinCollectionImpl : public IMatrixBinCollection {
 public:
 	SampleMatrixBinCollectionImpl();
 
 	virtual ~SampleMatrixBinCollectionImpl();
 
 	virtual void addMatrix(MatrixPtr pMatrix, BinPattern binPattern);
+
+	virtual CollectionSize_t size();
 
 	virtual void clear();
 

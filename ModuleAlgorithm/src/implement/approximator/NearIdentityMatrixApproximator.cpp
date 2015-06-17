@@ -122,7 +122,7 @@ void distributeResultsToBins(const real_coordinate_t& queryCoordinate, MatrixIte
 void calculateBinPattern(const real_coordinate_t& queryCoordinate, const real_coordinate_t& apprxCoordinate, BinPattern& binPattern) {
 	unsigned int nbCoordinates = queryCoordinate.size();
 	for(unsigned int i = 0; i < nbCoordinates; i++) {
-		if(queryCoordinate[i] < apprxCoordinate[i]) {
+		if(queryCoordinate[i] < apprxCoordinate[i] / 2) {
 			binPattern[i] = '1';
 		}
 		else {

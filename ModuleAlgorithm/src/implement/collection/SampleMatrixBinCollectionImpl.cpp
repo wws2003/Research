@@ -26,6 +26,10 @@ void SampleMatrixBinCollectionImpl::addMatrix(MatrixPtr pMatrix, BinPattern binP
 	m_binMap[binPattern]->addMatrix(pMatrix);
 }
 
+CollectionSize_t SampleMatrixBinCollectionImpl::size() {
+	return m_binMap.size();
+}
+
 void SampleMatrixBinCollectionImpl::clear() {
 	for(BinPatternMap::iterator bIter = m_binMap.begin(); bIter != m_binMap.end(); bIter++) {
 		MatrixBinPtr pBin = bIter->second;

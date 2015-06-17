@@ -27,6 +27,7 @@ private:
 	void testSimpleSearchSpaceConstructor();
 	void testSimpleEvaluator();
 	void testInverseCancelingSearchSpaceConstructor();
+	void testSampleMatrixBinCollection();
 
 	//SearchSpaceEvaluatorPtr m_pSearchSpaceEvaluator;
 	MatrixWriterPtr m_pMatrixWriter;

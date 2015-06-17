@@ -183,7 +183,11 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleAlgorithm/include/interface/abstract/IMatrixCombiner.h \
  ../../ModuleAlgorithm/include/implement/combiner/AlwaysTrueMultiplierMatrixCombinerImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/AbstractMultiplierMatrixCombiner.h \
- ../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h
+ ../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h \
+ ../../ModuleAlgorithm/include/implement/collection/SampleMatrixBinCollectionImpl.h \
+ ../../ModuleAlgorithm/include/internal-abstract/IMatrixBinCollection.h \
+ ../../ModuleAlgorithm/include/implement/bin/MatrixBin.h \
+ ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h
 
 ../src/TestSuite.h:
 
@@ -556,3 +560,11 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../../ModuleAlgorithm/include/internal-abstract/AbstractMultiplierMatrixCombiner.h:
 
 ../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h:
+
+../../ModuleAlgorithm/include/implement/collection/SampleMatrixBinCollectionImpl.h:
+
+../../ModuleAlgorithm/include/internal-abstract/IMatrixBinCollection.h:
+
+../../ModuleAlgorithm/include/implement/bin/MatrixBin.h:
+
+../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
