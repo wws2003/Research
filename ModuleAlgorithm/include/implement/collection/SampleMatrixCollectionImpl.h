@@ -8,10 +8,10 @@
 #ifndef SAMPLEMATRIXCOLLECTIONIMPL_H_
 #define SAMPLEMATRIXCOLLECTIONIMPL_H_
 
-#include "IMatrixCollection.h"
 #include "IDistanceCalculator.h"
 #include "IIterator.h"
 #include "AlgoCommon.h"
+#include "ICollection.h"
 #include "MathConceptsCommon.h"
 #include <vector>
 
@@ -21,7 +21,7 @@ public:
 
 	virtual ~SampleMatrixCollectionImpl();
 
-	virtual void addMatrix(MatrixPtr pm) ;
+	virtual void addElement(MatrixPtr pm) ;
 
 	virtual void clear() ;
 
@@ -32,7 +32,7 @@ public:
 
 	virtual MatrixCollectionSize_t size() const ;
 
-	virtual MatrixIteratorPtr findApproxMatrices(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const ;
+	virtual MatrixIteratorPtr findApproxElements(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const ;
 
 private:
 	MatrixPtrVector m_matrices;

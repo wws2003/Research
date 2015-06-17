@@ -5,15 +5,18 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/implement/collection/SampleMatrixBinCollectionImpl.cpp \
-../src/implement/collection/SampleMatrixCollectionImpl.cpp 
+../src/implement/collection/SampleMatrixCollectionImpl.cpp \
+../src/implement/collection/VectorizationMatrixCollectionImpl.cpp 
 
 OBJS += \
 ./src/implement/collection/SampleMatrixBinCollectionImpl.o \
-./src/implement/collection/SampleMatrixCollectionImpl.o 
+./src/implement/collection/SampleMatrixCollectionImpl.o \
+./src/implement/collection/VectorizationMatrixCollectionImpl.o 
 
 CPP_DEPS += \
 ./src/implement/collection/SampleMatrixBinCollectionImpl.d \
-./src/implement/collection/SampleMatrixCollectionImpl.d 
+./src/implement/collection/SampleMatrixCollectionImpl.d \
+./src/implement/collection/VectorizationMatrixCollectionImpl.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

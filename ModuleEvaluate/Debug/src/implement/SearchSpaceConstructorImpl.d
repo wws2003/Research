@@ -8,7 +8,8 @@ src/implement/SearchSpaceConstructorImpl.d: \
  ../../ModuleAlgorithm/include/interface/abstract/IMatrixCombiner.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
- ../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h
 
@@ -28,7 +29,9 @@ src/implement/SearchSpaceConstructorImpl.d: \
 
 ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
 
-../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h:
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 

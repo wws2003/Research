@@ -7,8 +7,8 @@
 
 #include "NINAMatrixApproximator.h"
 #include "IIterator.h"
-#include "IMatrixCollection.h"
 #include "IMatrix.h"
+#include "ICollection.h"
 #include "IDistanceCalculator.h"
 
 NINAMatrixApproximator::NINAMatrixApproximator(MatrixCollectionPtr pNearIdentityMatrixCollection, MatrixOperatorPtr pMatrixOperator) {
@@ -22,7 +22,7 @@ MatrixIteratorPtr NINAMatrixApproximator::getApproximateMatrices(MatrixCollectio
 
 	//Find first step approximate matrix from core collection
 
-	MatrixIteratorPtr pFirstApproximationMatrixIter = pCoreCollection->findApproxMatrices(pQuery, pDistanceCalculator, epsilon);
+	MatrixIteratorPtr pFirstApproximationMatrixIter = pCoreCollection->findApproxElements(pQuery, pDistanceCalculator, epsilon);
 	if(pFirstApproximationMatrixIter == NullPtr || pFirstApproximationMatrixIter->isDone()) {
 		return pFirstApproximationMatrixIter;
 	}
@@ -84,7 +84,7 @@ MatrixPtr NINAMatrixApproximator::findMatrixToFitStep(MatrixPtr pStepMatrix, Mat
 	//TODO Modify proper epsilonForStepMatrix
 	double epsilonForStepMatrix = 1e-4;
 
-	MatrixIteratorPtr pNearStepMatrixIterator = m_pNearIdentityMatrixCollection->findApproxMatrices(pStepMatrix, pDistanceCalculator, epsilonForStepMatrix);
+	MatrixIteratorPtr pNearStepMatrixIterator = m_pNearIdentityMatrixCollection->findApproxElements(pStepMatrix, pDistanceCalculator, epsilonForStepMatrix);
 	pNearStepMatrixIterator->toBegin();
 	if(pNearStepMatrixIterator->isDone()) {
 		return NullPtr;

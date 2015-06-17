@@ -6,7 +6,6 @@
  */
 
 #include "NearIdentityMatrixApproximator.h"
-#include "IMatrixCollection.h"
 #include "ICoordinateCalculator.h"
 #include "MatrixBin.h"
 #include "IIterator.h"
@@ -33,7 +32,7 @@ NearIdentityMatrixApproximator::NearIdentityMatrixApproximator(MatrixRealCoordin
 MatrixIteratorPtr NearIdentityMatrixApproximator::getApproximateMatrices(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) {
 	//Find first round results
 	double firstRoundEpsilon = 10 * epsilon;
-	MatrixIteratorPtr pFirstRoundApprxMatrixIter = pCoreCollection->findApproxMatrices(pQuery, pDistanceCalculator, firstRoundEpsilon);
+	MatrixIteratorPtr pFirstRoundApprxMatrixIter = pCoreCollection->findApproxElements(pQuery, pDistanceCalculator, firstRoundEpsilon);
 
 	if(pFirstRoundApprxMatrixIter == NullPtr || pFirstRoundApprxMatrixIter->isDone()) {
 		return pFirstRoundApprxMatrixIter;
@@ -143,7 +142,7 @@ void findApprxByMerge2Bins(MatrixBinPtr pBin1, MatrixBinPtr pBin2, MatrixPtr pQu
 			pMatrixCombiner->combine(pBin1->getMatrices()[i], pBin2->getMatrices()[j], pProduct1);
 
 			if(pProduct1 != NullPtr && pDistanceCalculator->distance(pProduct1, pQuery) <= epsilon) {
-				pResultCollection->addMatrix(pProduct1);
+				pResultCollection->addElement(pProduct1);
 			}
 			else {
 				_destroy(pProduct1);
@@ -153,7 +152,7 @@ void findApprxByMerge2Bins(MatrixBinPtr pBin1, MatrixBinPtr pBin2, MatrixPtr pQu
 }
 
 void addApprxResultsToBufferFromCollection(MatrixCollectionPtr pCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon, MatrixPtrVector& rResultBuffer) {
-	MatrixIteratorPtr pApprxResultIter = pCollection->findApproxMatrices(pQuery, pDistanceCalculator, epsilon);
+	MatrixIteratorPtr pApprxResultIter = pCollection->findApproxElements(pQuery, pDistanceCalculator, epsilon);
 	if(pApprxResultIter != NullPtr) {
 		while(!pApprxResultIter->isDone()) {
 			rResultBuffer.push_back(pApprxResultIter->getObj());

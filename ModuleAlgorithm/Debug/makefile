@@ -9,7 +9,6 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include src/internal-abstract/subdir.mk
--include src/implement/iterator/subdir.mk
 -include src/implement/combiner/subdir.mk
 -include src/implement/collection/subdir.mk
 -include src/implement/bin/subdir.mk

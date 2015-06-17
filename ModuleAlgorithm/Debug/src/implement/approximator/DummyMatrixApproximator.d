@@ -9,7 +9,8 @@ src/implement/approximator/DummyMatrixApproximator.d: \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../include/interface/abstract/IIterator.h \
- ../include/interface/abstract/IMatrixCollection.h
+ ../include/interface/abstract/ICollection.h \
+ ../include/interface/abstract/IIterator.h
 
 ../include/implement/approximator/DummyMatrixApproximator.h:
 
@@ -29,4 +30,6 @@ src/implement/approximator/DummyMatrixApproximator.d: \
 
 ../include/interface/abstract/IIterator.h:
 
-../include/interface/abstract/IMatrixCollection.h:
+../include/interface/abstract/ICollection.h:
+
+../include/interface/abstract/IIterator.h:

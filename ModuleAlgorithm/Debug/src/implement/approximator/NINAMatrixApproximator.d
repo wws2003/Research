@@ -9,7 +9,8 @@ src/implement/approximator/NINAMatrixApproximator.d: \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../include/interface/abstract/IIterator.h \
- ../include/interface/abstract/IMatrixCollection.h \
+ ../include/interface/abstract/ICollection.h \
+ ../include/interface/abstract/IIterator.h \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h
 
 ../include/implement/approximator/NINAMatrixApproximator.h:
@@ -30,6 +31,8 @@ src/implement/approximator/NINAMatrixApproximator.d: \
 
 ../include/interface/abstract/IIterator.h:
 
-../include/interface/abstract/IMatrixCollection.h:
+../include/interface/abstract/ICollection.h:
+
+../include/interface/abstract/IIterator.h:
 
 ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:

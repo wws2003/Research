@@ -18,7 +18,7 @@
 template<typename T>
 class ICollection {
 public:
-	virtual ~ICollection();
+	virtual ~ICollection(){};
 
 	//Add one element to the collection
 	virtual void addElement(T pElement) = 0;
@@ -27,14 +27,14 @@ public:
 	virtual void clear() = 0;
 
 	//Return iterator through a set of element reflecting the changes in the collection
-	virtual IteratorPtr<T> getIterator() = 0;
+	virtual IteratorPtr<T> getIteratorPtr() = 0;
 
 	//Return iterator through a fixed set of elements, regardless the collection
 	//should be modified later
 	virtual IteratorPtr<T> getReadonlyIteratorPtr() = 0;
 
 	//Get collection size
-	virtual CollectionSize_t size() = 0;
+	virtual CollectionSize_t size() const = 0;
 
 	//Find the neighbor elements to the query, given distance calculator
 	virtual IteratorPtr<T> findApproxElements(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const = 0;

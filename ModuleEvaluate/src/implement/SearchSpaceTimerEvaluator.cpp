@@ -10,7 +10,7 @@
 #include "IDistanceCalculator.h"
 #include "IMatrixWriter.h"
 #include "ScopeTimer.h"
-#include "IMatrixCollection.h"
+#include "ICollection.h"
 #include "IMatrixApproximator.h"
 #include "IIterator.h"
 #include <exception>
@@ -80,7 +80,7 @@ void findTargetAndMeasureTime(MatrixApproximatorPtr pMatrixApproximator, MatrixC
 			prFindIter = pMatrixApproximator->getApproximateMatrices(pCollection, pTarget, pDistanceCalculator, epsilon);
 		}
 		else {
-			prFindIter = pCollection->findApproxMatrices(pTarget, pDistanceCalculator, epsilon);
+			prFindIter = pCollection->findApproxElements(pTarget, pDistanceCalculator, epsilon);
 		}
 	}
 	catch (std::exception & e) {

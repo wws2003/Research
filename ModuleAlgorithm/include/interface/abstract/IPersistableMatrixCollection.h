@@ -8,7 +8,8 @@
 #ifndef IPERSISTABLEMATRIXCOLLECTION_H_
 #define IPERSISTABLEMATRIXCOLLECTION_H_
 
-#include "IMatrixCollection.h"
+#include "ICollection.h"
+#include "AlgoCommon.h"
 #include "IPersistable.h"
 
 class IPersistableMatrixCollection: public IMatrixCollection, public IPersistable {

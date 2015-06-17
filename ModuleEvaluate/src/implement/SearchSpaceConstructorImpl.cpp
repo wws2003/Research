@@ -6,7 +6,7 @@
  */
 
 #include "SearchSpaceConstructorImpl.h"
-#include "IMatrixCollection.h"
+#include "ICollection.h"
 #include "IIterator.h"
 #include "IMatrixOperator.h"
 #include <vector>
@@ -73,7 +73,7 @@ void addNewSequencesByApplyingUniversalMatrices(MatrixPtr pSequence, MatrixItera
 
 		if(pAppendedSequence != NullPtr) {
 			//Add the newly generated sequence 's matrix to the collection
-			pMatrixCollection->addMatrix(pAppendedSequence);
+			pMatrixCollection->addElement(pAppendedSequence);
 
 			//Also add newly generated sequence's matrix to buffer of current-max length sequences
 			ppCurrentMaxLengthSequencesBuffer->push_back(pAppendedSequence);

@@ -12,9 +12,9 @@
 
 typedef long long counter_t;
 typedef long long CollectionSize_t;
-typedef long long MatrixCollectionSize_t;
+typedef CollectionSize_t MatrixCollectionSize_t;
 
-class IMatrixCollection;
+//class IMatrixCollection;
 class IPersistableMatrixCollection;
 class IMatrixApproximator;
 class IMatrixCombiner;
@@ -24,6 +24,7 @@ template<typename T>
 using CollectionPtr = ICollection<T>*;
 
 typedef ICollection<MatrixRealCoordinatePtr> MatrixRealCoordinateCollection;
+typedef ICollection<MatrixPtr> IMatrixCollection;
 
 template<typename T> class IIterator;
 template<typename T>

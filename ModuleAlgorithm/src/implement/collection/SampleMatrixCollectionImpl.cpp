@@ -18,7 +18,7 @@ SampleMatrixCollectionImpl::~SampleMatrixCollectionImpl() {
 	_destroy(m_pMatrixIterator);
 }
 
-void SampleMatrixCollectionImpl::addMatrix(MatrixPtr pm) {
+void SampleMatrixCollectionImpl::addElement(MatrixPtr pm) {
 	m_matrices.push_back(pm);
 }
 
@@ -42,7 +42,7 @@ MatrixCollectionSize_t SampleMatrixCollectionImpl::size() const {
 	return (MatrixCollectionSize_t)m_matrices.size();
 }
 
-MatrixIteratorPtr SampleMatrixCollectionImpl::findApproxMatrices(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const {
+MatrixIteratorPtr SampleMatrixCollectionImpl::findApproxElements(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const {
 	MatrixPtrVector pResults;
 
 	size_t collectionSize = m_matrices.size();

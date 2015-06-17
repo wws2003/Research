@@ -11,9 +11,8 @@ src/implement/SearchSpaceTimerEvaluator.d: \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleIO/include/interface/abstract/IMatrixWriter.h \
  ../include/implement/ScopeTimer.h \
- ../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h \
- ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
- ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IMatrixApproximator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h
 
@@ -39,11 +38,9 @@ src/implement/SearchSpaceTimerEvaluator.d: \
 
 ../include/implement/ScopeTimer.h:
 
-../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h:
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
-../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
-
-../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IMatrixApproximator.h:
 

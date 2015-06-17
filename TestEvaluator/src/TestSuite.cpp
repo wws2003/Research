@@ -111,15 +111,15 @@ void TestSuite::testSimpleCollection() {
 
 	m_pMatrixOperator->multiply(pMatrixH, pMatrixT, pMatrixHT);
 
-	pMatrixCollection->addMatrix(pMatrixH);
-	pMatrixCollection->addMatrix(pMatrixT);
+	pMatrixCollection->addElement(pMatrixH);
+	pMatrixCollection->addElement(pMatrixT);
 
 	assert(pMatrixCollection->size() == 2);
 
 	MatrixPtr pI = m_pMatrixFactory->getIdentityMatrix(2);
 	double epsilon = 1;
 
-	MatrixIteratorPtr pResultIter = pMatrixCollection->findApproxMatrices(pI, m_pMatrixDistanceCalculator, epsilon);
+	MatrixIteratorPtr pResultIter = pMatrixCollection->findApproxElements(pI, m_pMatrixDistanceCalculator, epsilon);
 	pResultIter->toBegin();
 
 	//Must find T because d(T,I) ~ 0.76537 < epsilon = 1
@@ -159,8 +159,8 @@ void TestSuite::testSimpleSearchSpaceConstructor() {
 
 	int universalSetSize = 2;
 	MatrixCollectionPtr pUniversalSet = new SampleMatrixCollectionImpl();
-	pUniversalSet->addMatrix(pMatrixH);
-	pUniversalSet->addMatrix(pMatrixT);
+	pUniversalSet->addElement(pMatrixH);
+	pUniversalSet->addElement(pMatrixT);
 	assert(pUniversalSet->size() == universalSetSize);
 
 	MatrixCollectionPtr pMatrixCollection = new SampleMatrixCollectionImpl();
@@ -182,7 +182,7 @@ void TestSuite::testSimpleSearchSpaceConstructor() {
 	MatrixPtr pHTHTH = NullPtr;
 	m_pMatrixOperator->multiply(pHTHT, pMatrixT, pHTHTH);
 
-	MatrixIteratorPtr pResultIter = pMatrixCollection->findApproxMatrices(pHTHTH, m_pMatrixDistanceCalculator, 0);
+	MatrixIteratorPtr pResultIter = pMatrixCollection->findApproxElements(pHTHTH, m_pMatrixDistanceCalculator, 0);
 	assert(pResultIter != NullPtr);
 	pResultIter->toBegin();
 	assert(!pResultIter->isDone());
@@ -190,7 +190,7 @@ void TestSuite::testSimpleSearchSpaceConstructor() {
 	//I = H*H
 	MatrixPtr pHH = NullPtr;
 	m_pMatrixOperator->multiply(pMatrixH, pMatrixH, pHH);
-	pResultIter = pMatrixCollection->findApproxMatrices(pHH, m_pMatrixDistanceCalculator, 0);
+	pResultIter = pMatrixCollection->findApproxElements(pHH, m_pMatrixDistanceCalculator, 0);
 	assert(pResultIter != NullPtr);
 	pResultIter->toBegin();
 	assert(!pResultIter->isDone());
@@ -225,8 +225,8 @@ void TestSuite::testSimpleEvaluator() {
 
 	int universalSetSize = 2;
 	MatrixCollectionPtr pUniversalSet = new SampleMatrixCollectionImpl();
-	pUniversalSet->addMatrix(pMatrixH);
-	pUniversalSet->addMatrix(pMatrixT);
+	pUniversalSet->addElement(pMatrixH);
+	pUniversalSet->addElement(pMatrixT);
 	assert(pUniversalSet->size() == universalSetSize);
 
 	MatrixCollectionPtr pMatrixCollection = new SampleMatrixCollectionImpl();
@@ -267,8 +267,8 @@ void TestSuite::testInverseCancelingSearchSpaceConstructor() {
 
 	int universalSetSize = 4;
 	MatrixCollectionPtr pUniversalSet = new SampleMatrixCollectionImpl();
-	pUniversalSet->addMatrix(pMatrixH);
-	pUniversalSet->addMatrix(pMatrixT);
+	pUniversalSet->addElement(pMatrixH);
+	pUniversalSet->addElement(pMatrixT);
 	//assert(pUniversalSet->size() == universalSetSize);
 
 	MatrixCollectionPtr pMatrixCollection = new SampleMatrixCollectionImpl();

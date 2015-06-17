@@ -8,7 +8,6 @@
 #ifndef VECTORIZATIONMATRIXCOLLECTIONIMPL_H_
 #define VECTORIZATIONMATRIXCOLLECTIONIMPL_H_
 
-#include "IMatrixCollection.h"
 #include "AlgoCommon.h"
 #include "OperatorCommon.h"
 #include "IDistanceCalculator.h"
@@ -22,7 +21,7 @@ public:
 
 	virtual ~VectorizationMatrixCollectionImpl(){};
 
-	virtual void addMatrix(MatrixPtr pm) ;
+	virtual void addElement(MatrixPtr pm) ;
 
 	virtual void clear() ;
 
@@ -33,7 +32,7 @@ public:
 
 	virtual MatrixCollectionSize_t size() const ;
 
-	virtual MatrixIteratorPtr findApproxMatrices(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const ;
+	virtual MatrixIteratorPtr findApproxElements(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const ;
 
 private:
 	MatrixRealCoordinateCalculatorPtr m_pMatrixCoordinateCalculator;

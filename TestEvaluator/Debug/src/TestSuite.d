@@ -171,7 +171,8 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleEvaluate/include/implement/CpuTimer.h \
  ../../ModuleEvaluate/include/interface/abstract/ITimer.h \
  ../../ModuleAlgorithm/include/implement/collection/SampleMatrixCollectionImpl.h \
- ../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
@@ -526,7 +527,9 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleAlgorithm/include/implement/collection/SampleMatrixCollectionImpl.h:
 
-../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h:
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 

@@ -28,6 +28,7 @@ typedef ComplexVal& ComplexValRef;
 
 class IMatrix;
 class IMatrixFactory;
+class Gate;
 
 enum ArraySpliceType {
 	ROW_SPLICE,
@@ -56,5 +57,7 @@ using CoordinatePtr = Coordinate<T, F>*;
 
 template<typename T,typename F>
 using CoordinatePtrRef = CoordinatePtr<T, F>&;
+
+typedef Gate* GatePtr;
 
 #endif /* COMMON_H_ */

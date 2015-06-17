@@ -11,7 +11,6 @@
 #include "IMatrixApproximator.h"
 #include "OperatorCommon.h"
 #include "IMatrixOperator.h"
-#include "IMatrixCollection.h"
 #include "IMatrixBinCollection.h"
 #include "IMatrixCombiner.h"
 #include "AlgoInternal.h"
