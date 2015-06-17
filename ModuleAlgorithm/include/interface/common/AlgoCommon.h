@@ -17,6 +17,7 @@ typedef long long MatrixCollectionSize_t;
 class IMatrixCollection;
 class IPersistableMatrixCollection;
 class IMatrixApproximator;
+class IMatrixCombiner;
 
 template<typename T> class ICollection;
 template<typename T>
@@ -45,5 +46,7 @@ typedef IMatrixApproximator* MatrixApproximatorPtr;
 typedef IMatrixApproximator& MatrixApproximatorRef;
 
 typedef MatrixRealCoordinateCollection* MatrixRealCoordinateCollectionPtr;
+
+typedef IMatrixCombiner* MatrixCombinerPtr;
 
 #endif /* ALGOCOMMON_H_ */

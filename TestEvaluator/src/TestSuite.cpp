@@ -16,6 +16,8 @@
 #include "SimpleDenseMatrixFactoryImpl.h"
 #include "SampleMatrixCollectionImpl.h"
 #include "SearchSpaceConstructorImpl.h"
+#include "AlwaysTrueMultiplierMatrixCombinerImpl.h"
+#include "InverseCancelationMultiplierMatrixCombinerImpl.h"
 #include <iostream>
 #include <cmath>
 #include <cassert>
@@ -31,12 +33,13 @@ TestSuite::TestSuite() {
 	m_pTimer = new CpuTimer();
 	m_pSearchSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl(m_pTargets, epsilon, m_pMatrixDistanceCalculator, m_pMatrixWriter, m_pTimer, std::cout);
 
-	m_pSearchSpaceConstructor = new SearchSpaceConstructorImpl(m_pMatrixOperator);
+	m_pMatrixCombiner = new MultiplierMatrixCombinerImpl(m_pMatrixOperator);
+	m_pSearchSpaceConstructor = new SearchSpaceConstructorImpl(m_pMatrixCombiner);
 }
 
 TestSuite::~TestSuite() {
 	delete m_pSearchSpaceConstructor;
-
+	delete m_pMatrixCombiner;
 	delete m_pSearchSpaceEvaluator;
 	delete m_pTimer;
 	delete m_pMatrixDistanceCalculator;
@@ -55,7 +58,7 @@ void TestSuite::test(){
 	testSimpleCollection();
 	testSimpleSearchSpaceConstructor();
 	testSimpleEvaluator();
-	testSpecialUnitaryCoordinateCalculator();
+	testInverseCancelingSearchSpaceConstructor();
 }
 
 void TestSuite::testSimpleWriter() {
@@ -96,19 +99,12 @@ void TestSuite::testSimpleWriter() {
 void TestSuite::testSimpleCollection() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	MatrixCollectionPtr pMatrixCollection = new SampleMatrixCollectionImpl();
-	ComplexValArray arrayH = new ComplexVal[4];
+
 	double inverSqrt2 = 1 / sqrt(2);
-	arrayH[0] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[1] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[2] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[3] = ComplexVal(-1,0) * inverSqrt2;
+	ComplexVal arrayH[] = {ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(-1,0) * inverSqrt2};
 	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
 
-	ComplexValArray arrayT = new ComplexVal[4];
-	arrayT[0] = ComplexVal(1,0);
-	arrayT[1] = 0.0;
-	arrayT[2] = 0.0;
-	arrayT[3] = std::exp(ComplexVal(0,1) * M_PI / 4.0);
+	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
 	MatrixPtr pMatrixHT = NullPtr;
@@ -153,19 +149,12 @@ void TestSuite::testSimpleCollection() {
 
 void TestSuite::testSimpleSearchSpaceConstructor() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
-	ComplexValArray arrayH = new ComplexVal[4];
+
 	double inverSqrt2 = 1 / sqrt(2);
-	arrayH[0] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[1] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[2] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[3] = ComplexVal(-1,0) * inverSqrt2;
+	ComplexVal arrayH[] = {ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(-1,0) * inverSqrt2};
 	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
 
-	ComplexValArray arrayT = new ComplexVal[4];
-	arrayT[0] = ComplexVal(1,0);
-	arrayT[1] = 0.0;
-	arrayT[2] = 0.0;
-	arrayT[3] = std::exp(ComplexVal(0,1) * M_PI / 4.0);
+	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
 	int universalSetSize = 2;
@@ -226,19 +215,12 @@ void TestSuite::testSimpleSearchSpaceConstructor() {
 
 void TestSuite::testSimpleEvaluator() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
-	ComplexValArray arrayH = new ComplexVal[4];
+
 	double inverSqrt2 = 1 / sqrt(2);
-	arrayH[0] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[1] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[2] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[3] = ComplexVal(-1,0) * inverSqrt2;
+	ComplexVal arrayH[] = {ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(-1,0) * inverSqrt2};
 	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
 
-	ComplexValArray arrayT = new ComplexVal[4];
-	arrayT[0] = ComplexVal(1,0);
-	arrayT[1] = 0.0;
-	arrayT[2] = 0.0;
-	arrayT[3] = std::exp(ComplexVal(0,1) * M_PI / 4.0);
+	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
 	int universalSetSize = 2;
@@ -263,7 +245,43 @@ void TestSuite::testSimpleEvaluator() {
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
-void TestSuite::testSpecialUnitaryCoordinateCalculator() {
+void TestSuite::testInverseCancelingSearchSpaceConstructor() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+
+	MatrixCombinerPtr pMatrixCombiner = new InverseCancelationMultiplierMatrixCombinerImpl(m_pMatrixOperator);
+	SearchSpaceConstructorPtr pSearchSpaceConstructor = new SearchSpaceConstructorImpl(pMatrixCombiner);
+
+	double inverSqrt2 = 1 / sqrt(2);
+
+	ComplexVal arrayH[] = {ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(-1,0) * inverSqrt2};
+	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
+
+	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
+	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
+
+	MatrixPtr pMatrixInverseH = NullPtr;
+	m_pMatrixOperator->conjugateTranpose(pMatrixH, pMatrixInverseH);
+
+	MatrixPtr pMatrixInverseT = NullPtr;
+	m_pMatrixOperator->conjugateTranpose(pMatrixT, pMatrixInverseT);
+
+	int universalSetSize = 4;
+	MatrixCollectionPtr pUniversalSet = new SampleMatrixCollectionImpl();
+	pUniversalSet->addMatrix(pMatrixH);
+	pUniversalSet->addMatrix(pMatrixT);
+	assert(pUniversalSet->size() == universalSetSize);
+
+	MatrixCollectionPtr pMatrixCollection = new SampleMatrixCollectionImpl();
+	int maxSequenceLength = 5;
+	int expectedSearchSpaceSize = universalSetSize * (std::pow(universalSetSize - 1, maxSequenceLength) - 1) / (universalSetSize - 2);
+
+
+	delete pMatrixInverseT;
+	delete pMatrixInverseH;
+	delete pMatrixT;
+	delete pMatrixH;
+	delete pSearchSpaceConstructor;
+	delete pMatrixCombiner;
+
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }

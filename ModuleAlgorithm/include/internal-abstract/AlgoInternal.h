@@ -8,10 +8,8 @@
 #ifndef ALGOINTERNAL_H_
 #define ALGOINTERNAL_H_
 
-class IMatrixCombiner;
 class IMatrixBinCollection;
 
-typedef IMatrixCombiner* MatrixCombinerPtr;
 typedef IMatrixBinCollection* MatrixBinCollectionPtr;
 
 

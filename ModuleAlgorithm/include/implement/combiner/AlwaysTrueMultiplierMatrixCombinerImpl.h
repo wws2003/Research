@@ -10,8 +10,10 @@
 
 #include "AbstractMultiplierMatrixCombiner.h"
 
-class AlwaysTrueMultiplierMatrixCombinerImpl: public AbstractMultiplierMatrixCombiner {
+class MultiplierMatrixCombinerImpl: public AbstractMultiplierMatrixCombiner {
 public:
+	MultiplierMatrixCombinerImpl(MatrixOperatorPtr pMatrixOperator):AbstractMultiplierMatrixCombiner(pMatrixOperator){};
+
 	//Override
 
 	/**

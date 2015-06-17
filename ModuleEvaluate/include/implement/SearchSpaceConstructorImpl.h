@@ -12,6 +12,7 @@
 #include "AlgoCommon.h"
 #include "OperatorCommon.h"
 #include "ISearchSpaceConstructor.h"
+#include "IMatrixCombiner.h"
 
 #ifndef MatrixPtrArray
 typedef MatrixPtr* MatrixPtrArray;
@@ -19,14 +20,14 @@ typedef MatrixPtr* MatrixPtrArray;
 
 class SearchSpaceConstructorImpl : public ISearchSpaceConstructor {
 public:
-	SearchSpaceConstructorImpl(MatrixOperatorPtr pMatrixOperator);
+	SearchSpaceConstructorImpl(MatrixCombinerPtr pMatrixCombiner);
 	virtual ~SearchSpaceConstructorImpl();
 
 	//Override
 	virtual void constructSearchSpace(MatrixCollectionPtr pMatrixCollection, MatrixCollectionPtr pUniversalSet, int maxSequenceLength);
 
 private:
-	MatrixOperatorPtr m_pMatrixOperator;
+	MatrixCombinerPtr m_pMatrixCombiner;
 };
 
 

@@ -12,7 +12,7 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
  ../include/internal-abstract/IMatrixBinCollection.h \
  ../include/implement/bin/MatrixBin.h \
  ../include/interface/abstract/IIterator.h \
- ../include/internal-abstract/IMatrixCombiner.h \
+ ../include/interface/abstract/IMatrixCombiner.h \
  ../include/internal-abstract/AlgoInternal.h \
  ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
@@ -45,7 +45,7 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
 
 ../include/interface/abstract/IIterator.h:
 
-../include/internal-abstract/IMatrixCombiner.h:
+../include/interface/abstract/IMatrixCombiner.h:
 
 ../include/internal-abstract/AlgoInternal.h:
 

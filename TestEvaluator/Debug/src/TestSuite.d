@@ -3,6 +3,7 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
+ ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleIO/include/implement/SampleMatrixWriter.h \
  ../../ModuleIO/include/interface/abstract/IMatrixWriter.h \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixImpl.h \
@@ -165,7 +166,6 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
- ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleOperator/include/implement/MatrixTraceDistanceCalculator.h \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleEvaluate/include/implement/CpuTimer.h \
@@ -174,7 +174,11 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleAlgorithm/include/interface/abstract/IMatrixCollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
- ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h
+ ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IMatrixCombiner.h \
+ ../../ModuleAlgorithm/include/implement/combiner/AlwaysTrueMultiplierMatrixCombinerImpl.h \
+ ../../ModuleAlgorithm/include/internal-abstract/AbstractMultiplierMatrixCombiner.h \
+ ../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h
 
 ../src/TestSuite.h:
 
@@ -185,6 +189,8 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
 
 ../../ModuleIO/include/interface/common/IOCommon.h:
+
+../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
 
 ../../ModuleIO/include/implement/SampleMatrixWriter.h:
 
@@ -510,8 +516,6 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h:
 
-../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
-
 ../../ModuleOperator/include/implement/MatrixTraceDistanceCalculator.h:
 
 ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
@@ -529,3 +533,11 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h:
 
 ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IMatrixCombiner.h:
+
+../../ModuleAlgorithm/include/implement/combiner/AlwaysTrueMultiplierMatrixCombinerImpl.h:
+
+../../ModuleAlgorithm/include/internal-abstract/AbstractMultiplierMatrixCombiner.h:
+
+../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h:

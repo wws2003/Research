@@ -13,6 +13,8 @@
 class InverseCancelationMultiplierMatrixCombinerImpl: public AbstractMultiplierMatrixCombiner {
 public:
 
+	InverseCancelationMultiplierMatrixCombinerImpl(MatrixOperatorPtr pMatrixOperator):AbstractMultiplierMatrixCombiner(pMatrixOperator){};
+
 	//Override
 	/**
 	 * Do not combine if sequence 2 starting from inverse matrix of the last one in sequence 1

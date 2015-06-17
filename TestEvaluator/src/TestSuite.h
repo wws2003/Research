@@ -12,6 +12,7 @@
 #include "OperatorCommon.h"
 #include "IOCommon.h"
 #include "MathConceptsCommon.h"
+#include "AlgoCommon.h"
 #include <vector>
 
 class TestSuite {
@@ -25,7 +26,7 @@ private:
 	void testSimpleCollection();
 	void testSimpleSearchSpaceConstructor();
 	void testSimpleEvaluator();
-	void testSpecialUnitaryCoordinateCalculator();
+	void testInverseCancelingSearchSpaceConstructor();
 
 	//SearchSpaceEvaluatorPtr m_pSearchSpaceEvaluator;
 	MatrixWriterPtr m_pMatrixWriter;
@@ -37,6 +38,7 @@ private:
 	TimerPtr m_pTimer;
 	SearchSpaceEvaluatorPtr m_pSearchSpaceEvaluator;
 
+	MatrixCombinerPtr m_pMatrixCombiner;
 	SearchSpaceConstructorPtr m_pSearchSpaceConstructor;
 };
 
