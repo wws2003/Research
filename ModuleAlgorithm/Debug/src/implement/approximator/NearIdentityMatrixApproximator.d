@@ -20,6 +20,8 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/interface/abstract/ICollection.h \
  ../include/interface/abstract/IIterator.h \
+ ../include/implement/collection/VectorBasedCollectionImpl.hpp \
+ ../include/implement/iterator/VectorBasedIteratorImpl.hpp \
  ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp
 
 ../include/implement/approximator/NearIdentityMatrixApproximator.h:
@@ -61,5 +63,9 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
 ../include/interface/abstract/ICollection.h:
 
 ../include/interface/abstract/IIterator.h:
+
+../include/implement/collection/VectorBasedCollectionImpl.hpp:
+
+../include/implement/iterator/VectorBasedIteratorImpl.hpp:
 
 ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:

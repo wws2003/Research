@@ -13,6 +13,16 @@
 #include "AlgoCommon.h"
 #include "ICollection.h"
 #include "MathConceptsCommon.h"
+#include "VectorBasedCollectionImpl.hpp"
+
+typedef VectorBasedCollectionImpl<MatrixPtr> SampleMatrixCollectionImpl;
+
+#if 0
+#include "IDistanceCalculator.h"
+#include "IIterator.h"
+#include "AlgoCommon.h"
+#include "ICollection.h"
+#include "MathConceptsCommon.h"
 #include <vector>
 
 class SampleMatrixCollectionImpl : public IMatrixCollection {
@@ -39,6 +49,6 @@ private:
 	MatrixIteratorPtr m_pMatrixIterator;
 };
 
-
+#endif
 
 #endif /* SAMPLEMATRIXCOLLECTIONIMPL_H_ */

@@ -5,6 +5,8 @@
  *      Author: pham
  */
 
+#if 0
+
 #include "SampleMatrixCollectionImpl.h"
 #include "VectorBasedReadOnlyIteratorImpl.hpp"
 #include "VectorBasedIteratorImpl.hpp"
@@ -57,3 +59,4 @@ MatrixIteratorPtr SampleMatrixCollectionImpl::findApproxElements(MatrixPtr pQuer
 	return pResultIter;
 }
 
+#endif

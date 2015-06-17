@@ -174,6 +174,9 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleAlgorithm/include/implement/collection/VectorBasedCollectionImpl.hpp \
+ ../../ModuleAlgorithm/include/implement/iterator/VectorBasedIteratorImpl.hpp \
+ ../../ModuleAlgorithm/include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
  ../../ModuleAlgorithm/include/interface/abstract/IMatrixCombiner.h \
@@ -532,6 +535,12 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleAlgorithm/include/implement/collection/VectorBasedCollectionImpl.hpp:
+
+../../ModuleAlgorithm/include/implement/iterator/VectorBasedIteratorImpl.hpp:
+
+../../ModuleAlgorithm/include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
 
 ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h:
 
