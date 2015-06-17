@@ -7,6 +7,7 @@
 
 #include "TestSuite.h"
 #include "SampleMatrixWriter.h"
+#include "LabelOnlyMatrixWriterImpl.h"
 #include "SimpleDenseMatrixImpl.h"
 #include "SampleMatrixOperator.h"
 #include "SimpleDenseMatrixFactoryImpl.h"
@@ -23,7 +24,7 @@
 #include <cassert>
 
 TestSuite::TestSuite() {
-	m_pMatrixWriter = new SampleMatrixWriterImpl();
+	m_pMatrixWriter = new LabelOnlyMatrixWriterImpl();
 	m_pMatrixFactory = new SimpleDenseMatrixFactoryImpl();
 	m_pMatrixOperator = new SampleMatrixOperator(m_pMatrixFactory);
 
@@ -259,22 +260,45 @@ void TestSuite::testInverseCancelingSearchSpaceConstructor() {
 	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
-	MatrixPtr pMatrixInverseH = NullPtr;
-	m_pMatrixOperator->conjugateTranpose(pMatrixH, pMatrixInverseH);
+	MatrixPtr pTmpMatrixInverseH = NullPtr;
+	m_pMatrixOperator->conjugateTranpose(pMatrixH, pTmpMatrixInverseH);
+	ComplexValArray inverseArrayH = NullPtr;
+	pTmpMatrixInverseH->toArray(inverseArrayH);
+	MatrixPtr pMatrixInverseH = new SimpleDenseMatrixImpl(inverseArrayH, ROW_SPLICE, 2, 2, "h");
+	delete[] inverseArrayH;
+	delete pTmpMatrixInverseH;
 
-	MatrixPtr pMatrixInverseT = NullPtr;
-	m_pMatrixOperator->conjugateTranpose(pMatrixT, pMatrixInverseT);
-
+	MatrixPtr pTmpMatrixInverseT = NullPtr;
+	m_pMatrixOperator->conjugateTranpose(pMatrixT, pTmpMatrixInverseT);
+	ComplexValArray inverseArrayT = NullPtr;
+	pTmpMatrixInverseT->toArray(inverseArrayT);
+	MatrixPtr pMatrixInverseT = new SimpleDenseMatrixImpl(inverseArrayT, ROW_SPLICE, 2, 2, "t");
+	delete[] inverseArrayT;
+	delete pTmpMatrixInverseT;
 	int universalSetSize = 4;
+
 	MatrixCollectionPtr pUniversalSet = new SampleMatrixCollectionImpl();
 	pUniversalSet->addElement(pMatrixH);
 	pUniversalSet->addElement(pMatrixT);
-	//assert(pUniversalSet->size() == universalSetSize);
+	pUniversalSet->addElement(pMatrixInverseH);
+	pUniversalSet->addElement(pMatrixInverseT);
+
+	assert(pUniversalSet->size() == universalSetSize);
 
 	MatrixCollectionPtr pMatrixCollection = new SampleMatrixCollectionImpl();
 	int maxSequenceLength = 5;
 	int expectedSearchSpaceSize = universalSetSize * (std::pow(universalSetSize - 1, maxSequenceLength) - 1) / (universalSetSize - 2);
 
+	pSearchSpaceConstructor->constructSearchSpace(pMatrixCollection, pUniversalSet, maxSequenceLength);
+
+	/*MatrixIteratorPtr pSearchSpaceMatrixIter = pMatrixCollection->getIteratorPtr();
+
+	while(!pSearchSpaceMatrixIter->isDone()) {
+		m_pMatrixWriter->writeMatrix(pSearchSpaceMatrixIter->getObj(), std::cout);
+		pSearchSpaceMatrixIter->next();
+	}*/
+
+	assert(pMatrixCollection->size() == expectedSearchSpaceSize);
 
 	delete pMatrixInverseT;
 	delete pMatrixInverseH;
@@ -283,5 +307,5 @@ void TestSuite::testInverseCancelingSearchSpaceConstructor() {
 	delete pSearchSpaceConstructor;
 	delete pMatrixCombiner;
 
-	std::cout << __func__ << " Under construction... " << std::endl << "--------------------------"<<  std::endl ;
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }

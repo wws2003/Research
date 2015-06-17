@@ -21,10 +21,10 @@ bool InverseCancelationMultiplierMatrixCombinerImpl::shouldCombine(MatrixPtr pMa
 	}
 
 	char lastGateLabel1 = label1[seqLength1 - 1];
-	char firstGateLabel2 = label1[0];
+	char firstGateLabel2 = label2[0];
 
 	//Apply the rule presenting inverse gates by corresponding lower-upper case
-	return (lastGateLabel1 != firstGateLabel2 && toupper(lastGateLabel1) == toupper(firstGateLabel2));
+	return !(lastGateLabel1 != firstGateLabel2 && toupper(lastGateLabel1) == toupper(firstGateLabel2));
 }
 
 

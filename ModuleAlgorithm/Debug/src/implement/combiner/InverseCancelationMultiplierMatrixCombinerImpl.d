@@ -1,5 +1,5 @@
-src/implement/combiner/InverseCancelationMultiplierMatrixCombiner.d: \
- ../src/implement/combiner/InverseCancelationMultiplierMatrixCombiner.cpp \
+src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.d: \
+ ../src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.cpp \
  ../include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h \
  ../include/internal-abstract/AbstractMultiplierMatrixCombiner.h \
  ../include/interface/abstract/IMatrixCombiner.h \

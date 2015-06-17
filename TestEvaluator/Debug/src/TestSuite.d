@@ -6,6 +6,7 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleIO/include/implement/SampleMatrixWriter.h \
  ../../ModuleIO/include/interface/abstract/IMatrixWriter.h \
+ ../../ModuleIO/include/implement/LabelOnlyMatrixWriterImpl.h \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixImpl.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
@@ -199,6 +200,8 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../../ModuleIO/include/implement/SampleMatrixWriter.h:
 
 ../../ModuleIO/include/interface/abstract/IMatrixWriter.h:
+
+../../ModuleIO/include/implement/LabelOnlyMatrixWriterImpl.h:
 
 ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixImpl.h:
 

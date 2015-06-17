@@ -8,7 +8,7 @@
 #include "SampleMatrixWriter.h"
 #include "IMatrix.h"
 
- SampleMatrixWriterImpl::SampleMatrixWriterImpl() {
+SampleMatrixWriterImpl::SampleMatrixWriterImpl() {
 
 }
 
