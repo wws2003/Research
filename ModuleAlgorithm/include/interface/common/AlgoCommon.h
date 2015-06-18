@@ -18,8 +18,11 @@ class IPersistableMatrixCollection;
 
 template<typename T> class IApproximator;
 typedef IApproximator<MatrixPtr> IMatrixApproximator;
+typedef IApproximator<GatePtr> IGateApproximator;
 
-class IMatrixCombiner;
+template<typename T> class ICombiner;
+typedef ICombiner<MatrixPtr> IMatrixCombiner;
+typedef ICombiner<GatePtr> IGateCombiner;
 
 template<typename T> class ICollection;
 template<typename T>
@@ -45,6 +48,9 @@ typedef IPersistableMatrixCollection* PersitableMatrixCollectionPtr;
 
 typedef IMatrixApproximator* MatrixApproximatorPtr;
 typedef IMatrixApproximator& MatrixApproximatorRef;
+
+typedef IGateApproximator* GateApproximatorPtr;
+typedef GateApproximatorPtr& GateApproximatorPtrRef;
 
 typedef MatrixRealCoordinateCollection* MatrixRealCoordinateCollectionPtr;
 

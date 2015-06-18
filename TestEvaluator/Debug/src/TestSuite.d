@@ -180,7 +180,7 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleAlgorithm/include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
- ../../ModuleAlgorithm/include/interface/abstract/IMatrixCombiner.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
  ../../ModuleAlgorithm/include/implement/combiner/AlwaysTrueMultiplierMatrixCombinerImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/AbstractMultiplierMatrixCombiner.h \
  ../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h \
@@ -561,7 +561,7 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h:
 
-../../ModuleAlgorithm/include/interface/abstract/IMatrixCombiner.h:
+../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
 
 ../../ModuleAlgorithm/include/implement/combiner/AlwaysTrueMultiplierMatrixCombinerImpl.h:
 

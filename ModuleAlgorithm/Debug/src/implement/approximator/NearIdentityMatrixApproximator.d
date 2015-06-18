@@ -10,7 +10,7 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
  ../include/implement/bin/MatrixBin.h \
  ../include/interface/abstract/IIterator.h \
  ../include/interface/common/AlgoCommon.h \
- ../include/interface/abstract/IMatrixCombiner.h \
+ ../include/interface/abstract/ICombiner.h \
  ../include/internal-abstract/AlgoInternal.h \
  ../include/interface/abstract/IApproximator.h \
  ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
@@ -44,7 +44,7 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
 
 ../include/interface/common/AlgoCommon.h:
 
-../include/interface/abstract/IMatrixCombiner.h:
+../include/interface/abstract/ICombiner.h:
 
 ../include/internal-abstract/AlgoInternal.h:
 

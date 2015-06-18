@@ -8,7 +8,7 @@
 #ifndef ABSTRACTMULTIPLIERMATRIXCOMBINER_H_
 #define ABSTRACTMULTIPLIERMATRIXCOMBINER_H_
 
-#include "IMatrixCombiner.h"
+#include "ICombiner.h"
 #include "OperatorCommon.h"
 #include "IMatrixOperator.h"
 

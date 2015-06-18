@@ -5,13 +5,13 @@ src/implement/SearchSpaceConstructorImpl.d: \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../include/interface/abstract/ISearchSpaceConstructor.h \
- ../../ModuleAlgorithm/include/interface/abstract/IMatrixCombiner.h \
- ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
- ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
- ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h
+ ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
+ ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h
 
 ../include/implement/SearchSpaceConstructorImpl.h:
 
@@ -23,11 +23,7 @@ src/implement/SearchSpaceConstructorImpl.d: \
 
 ../include/interface/abstract/ISearchSpaceConstructor.h:
 
-../../ModuleAlgorithm/include/interface/abstract/IMatrixCombiner.h:
-
-../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
-
-../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
+../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
@@ -36,3 +32,7 @@ src/implement/SearchSpaceConstructorImpl.d: \
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
 ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h:
+
+../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
+
+../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:

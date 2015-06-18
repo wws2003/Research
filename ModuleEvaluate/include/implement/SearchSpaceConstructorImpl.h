@@ -12,7 +12,7 @@
 #include "AlgoCommon.h"
 #include "OperatorCommon.h"
 #include "ISearchSpaceConstructor.h"
-#include "IMatrixCombiner.h"
+#include "ICombiner.h"
 
 #ifndef MatrixPtrArray
 typedef MatrixPtr* MatrixPtrArray;
