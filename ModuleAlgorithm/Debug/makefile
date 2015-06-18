@@ -11,7 +11,6 @@ RM := rm -rf
 -include src/internal-abstract/subdir.mk
 -include src/implement/combiner/subdir.mk
 -include src/implement/collection/subdir.mk
--include src/implement/bin/subdir.mk
 -include src/implement/approximator/subdir.mk
 -include subdir.mk
 -include objects.mk

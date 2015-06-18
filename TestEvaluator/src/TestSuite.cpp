@@ -24,6 +24,7 @@
 #include "MatrixRealInnerProductByTraceImpl.h"
 #include "CoordinateOnOrthonormalBasisCalculatorImpl.cpp"
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
+#include "Bin.hpp"
 
 #include <iostream>
 #include <cmath>
@@ -357,9 +358,9 @@ void TestSuite::testSampleMatrixBinCollection() {
 
 	//In the found bin 1, expected to have matrix T twice
 	MatrixBinPtr pFoundBin = pBinIter->getObj();
-	assert(pFoundBin->getMatrices().size() == 2);
-	assert(pFoundBin->getMatrices()[0] == pMatrixT);
-	assert(pFoundBin->getMatrices()[1] == pMatrixT);
+	assert(pFoundBin->getElements().size() == 2);
+	assert(pFoundBin->getElements()[0] == pMatrixT);
+	assert(pFoundBin->getElements()[1] == pMatrixT);
 
 	//And no more than bin 1
 	pBinIter->next();

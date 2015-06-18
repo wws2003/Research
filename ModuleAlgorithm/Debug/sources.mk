@@ -26,6 +26,5 @@ SUBDIRS := \
 src/internal-abstract \
 src/implement/combiner \
 src/implement/collection \
-src/implement/bin \
 src/implement/approximator \
 

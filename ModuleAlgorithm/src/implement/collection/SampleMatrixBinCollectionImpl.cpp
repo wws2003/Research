@@ -7,6 +7,7 @@
 
 #include "SampleMatrixBinCollectionImpl.h"
 #include "VectorBasedReadOnlyIteratorImpl.hpp"
+#include "Bin.hpp"
 #include <algorithm>
 
 SampleMatrixBinCollectionImpl::SampleMatrixBinCollectionImpl() {
@@ -21,9 +22,9 @@ SampleMatrixBinCollectionImpl::~SampleMatrixBinCollectionImpl() {
 void SampleMatrixBinCollectionImpl::addMatrix(MatrixPtr pMatrix, BinPattern binPattern) {
 	//This if statement is not really required
 	if(m_binMap.find(binPattern) == m_binMap.end()) {
-		m_binMap.insert(PatternBinPair(binPattern, new MatrixBin(binPattern)));
+		m_binMap.insert(PatternBinPair(binPattern, MatrixBinPtr(new MatrixBin(binPattern))));
 	}
-	m_binMap[binPattern]->addMatrix(pMatrix);
+	m_binMap[binPattern]->addElement(pMatrix);
 }
 
 CollectionSize_t SampleMatrixBinCollectionImpl::size() {

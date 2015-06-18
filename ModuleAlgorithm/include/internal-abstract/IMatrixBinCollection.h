@@ -8,12 +8,9 @@
 #ifndef IMATRIXBINCOLLECTION_H_
 #define IMATRIXBINCOLLECTION_H_
 
-#include "MatrixBin.h"
 #include "IIterator.h"
 #include "AlgoCommon.h"
-
-typedef IIterator<MatrixBinPtr> MatrixBinIterator;
-typedef MatrixBinIterator* MatrixBinIteratorPtr;
+#include "AlgoInternal.h"
 
 class IMatrixBinCollection {
 public:

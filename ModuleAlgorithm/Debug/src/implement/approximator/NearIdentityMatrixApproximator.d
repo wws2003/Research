@@ -7,13 +7,14 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../include/internal-abstract/IMatrixBinCollection.h \
- ../include/implement/bin/MatrixBin.h \
  ../include/interface/abstract/IIterator.h \
  ../include/interface/common/AlgoCommon.h \
+ ../include/internal-abstract/AlgoInternal.h \
  ../include/interface/abstract/ICombiner.h \
  ../include/internal-abstract/AlgoInternal.h \
  ../include/interface/abstract/IApproximator.h \
  ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
+ ../include/implement/bin/Bin.hpp \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../include/implement/collection/SampleMatrixCollectionImpl.h \
@@ -38,11 +39,11 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
 
 ../include/internal-abstract/IMatrixBinCollection.h:
 
-../include/implement/bin/MatrixBin.h:
-
 ../include/interface/abstract/IIterator.h:
 
 ../include/interface/common/AlgoCommon.h:
+
+../include/internal-abstract/AlgoInternal.h:
 
 ../include/interface/abstract/ICombiner.h:
 
@@ -51,6 +52,8 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
 ../include/interface/abstract/IApproximator.h:
 
 ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
+
+../include/implement/bin/Bin.hpp:
 
 ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
 

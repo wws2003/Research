@@ -7,7 +7,7 @@
 
 #include "NearIdentityMatrixApproximator.h"
 #include "ICoordinateCalculator.h"
-#include "MatrixBin.h"
+#include "Bin.hpp"
 #include "IIterator.h"
 #include "Coordinate.hpp"
 #include "SampleMatrixCollectionImpl.h"
@@ -132,14 +132,14 @@ void calculateBinPattern(const real_coordinate_t& queryCoordinate, const real_co
 }
 
 void findApprxByMerge2Bins(MatrixBinPtr pBin1, MatrixBinPtr pBin2, MatrixPtr pQuery, double epsilon, MatrixCombinerPtr pMatrixCombiner, MatrixDistanceCalculatorPtr pDistanceCalculator, MatrixCollectionPtr pResultCollection) {
-	unsigned int sizeBin1 = pBin1->getMatrices().size();
-	unsigned int sizeBin2 = pBin2->getMatrices().size();
+	unsigned int sizeBin1 = pBin1->getElements().size();
+	unsigned int sizeBin2 = pBin2->getElements().size();
 
 	for(unsigned int i = 0; i < sizeBin1; i++) {
 		for(unsigned int j = 0; j < sizeBin2; j++) {
 
 			MatrixPtr pProduct1 = NullPtr;
-			pMatrixCombiner->combine(pBin1->getMatrices()[i], pBin2->getMatrices()[j], pProduct1);
+			pMatrixCombiner->combine(pBin1->getElements()[i], pBin2->getElements()[j], pProduct1);
 
 			if(pProduct1 != NullPtr && pDistanceCalculator->distance(pProduct1, pQuery) <= epsilon) {
 				pResultCollection->addElement(pProduct1);

@@ -186,7 +186,7 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/SampleMatrixBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/IMatrixBinCollection.h \
- ../../ModuleAlgorithm/include/implement/bin/MatrixBin.h \
+ ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
  ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h \
  ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h \
@@ -195,7 +195,8 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
- ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h
+ ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h \
+ ../../ModuleAlgorithm/include/implement/bin/Bin.hpp
 
 ../src/TestSuite.h:
 
@@ -573,7 +574,7 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleAlgorithm/include/internal-abstract/IMatrixBinCollection.h:
 
-../../ModuleAlgorithm/include/implement/bin/MatrixBin.h:
+../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
 
@@ -592,3 +593,5 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
 
 ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h:
+
+../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
