@@ -13,6 +13,16 @@
 #include "OperatorCommon.h"
 #include "Coordinate.hpp"
 
+#define USE_TEMPLATE 1
+
+#include "CoordinateDistanceCalculatorByElementImpl.hpp"
+
+#if USE_TEMPLATE
+
+typedef CoordinateDistanceCalculatorByElementImpl<MatrixPtr, double> MatrixCoordinateDistanceCalculator;
+
+#else
+
 class MatrixCoordinateDistanceCalculator: public IDistanceCalculator<MatrixRealCoordinatePtr> {
 public:
 	MatrixCoordinateDistanceCalculator(MatrixDistanceCalculatorPtr pMatrixDistanceCalculator);
@@ -21,6 +31,6 @@ public:
 private:
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
 };
-
+#endif
 
 #endif /* MATRIXCOORDINATEDISTANCECALCULATOR_H_ */

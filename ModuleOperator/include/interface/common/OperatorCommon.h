@@ -19,10 +19,14 @@ class ICoordinateCalculator;
 
 typedef ICoordinateCalculator<MatrixPtr, double> IMatrixRealCoordinateCalculator;
 typedef IMatrixRealCoordinateCalculator* MatrixRealCoordinateCalculatorPtr;
+typedef ICoordinateCalculator<GatePtr, double> IGateRealCoordinateCalculator;
+typedef IGateRealCoordinateCalculator* IGateRealCoordinateCalculatorPtr;
 
 template<typename T> class IDistanceCalculator;
 typedef IDistanceCalculator<MatrixPtr> IMatrixDistanceCalculator;
 typedef IDistanceCalculator<MatrixRealCoordinatePtr> IMatrixRealCoordinateDistanceCalculator;
+typedef IDistanceCalculator<GatePtr> IGateDistanceCalculator;
+typedef IDistanceCalculator<GateRealCoordinatePtr> IGateRealCoordinateDistanceCalculator;
 
 template<typename T>
 using DistanceCalculatorPtr = IDistanceCalculator<T>* ;

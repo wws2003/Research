@@ -5,7 +5,8 @@ src/implement/MatrixCoordinateDistanceCalculator.d: \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../include/interface/common/OperatorCommon.h \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
- ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../include/implement/CoordinateDistanceCalculatorByElementImpl.hpp
 
 ../include/implement/MatrixCoordinateDistanceCalculator.h:
 
@@ -18,3 +19,5 @@ src/implement/MatrixCoordinateDistanceCalculator.d: \
 ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../include/implement/CoordinateDistanceCalculatorByElementImpl.hpp:

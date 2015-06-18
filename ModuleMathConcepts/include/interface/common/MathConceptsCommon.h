@@ -59,5 +59,10 @@ template<typename T,typename F>
 using CoordinatePtrRef = CoordinatePtr<T, F>&;
 
 typedef Gate* GatePtr;
+typedef Coordinate<GatePtr, double> GateRealCoordinate;
+typedef GateRealCoordinate* GateRealCoordinatePtr;
+
+typedef std::vector<GatePtr> GatePtrVector;
+typedef GatePtrVector* GatePtrVectorPtr;
 
 #endif /* COMMON_H_ */
