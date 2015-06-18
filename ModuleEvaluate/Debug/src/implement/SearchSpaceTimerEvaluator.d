@@ -13,8 +13,8 @@ src/implement/SearchSpaceTimerEvaluator.d: \
  ../include/implement/ScopeTimer.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
- ../../ModuleAlgorithm/include/interface/abstract/IMatrixApproximator.h \
- ../../ModuleAlgorithm/include/interface/abstract/IIterator.h
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h
 
 ../include/implement/SearchSpaceEvaluatorImpl.h:
 
@@ -42,6 +42,6 @@ src/implement/SearchSpaceTimerEvaluator.d: \
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
-../../ModuleAlgorithm/include/interface/abstract/IMatrixApproximator.h:
-
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:

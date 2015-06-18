@@ -17,7 +17,7 @@ NINAMatrixApproximator::NINAMatrixApproximator(MatrixCollectionPtr pNearIdentity
 }
 
 
-MatrixIteratorPtr NINAMatrixApproximator::getApproximateMatrices(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) {
+MatrixIteratorPtr NINAMatrixApproximator::getApproximateElements(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) {
 	int stepCount = 0;
 
 	//Find first step approximate matrix from core collection

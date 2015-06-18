@@ -29,7 +29,7 @@ NearIdentityMatrixApproximator::NearIdentityMatrixApproximator(MatrixRealCoordin
 	m_pMatrixBinCollection = pMatrixBinCollections;
 }
 
-MatrixIteratorPtr NearIdentityMatrixApproximator::getApproximateMatrices(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) {
+MatrixIteratorPtr NearIdentityMatrixApproximator::getApproximateElements(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) {
 	//Find first round results
 	double firstRoundEpsilon = 10 * epsilon;
 	MatrixIteratorPtr pFirstRoundApprxMatrixIter = pCoreCollection->findApproxElements(pQuery, pDistanceCalculator, firstRoundEpsilon);

@@ -14,9 +14,11 @@ typedef long long counter_t;
 typedef long long CollectionSize_t;
 typedef CollectionSize_t MatrixCollectionSize_t;
 
-//class IMatrixCollection;
 class IPersistableMatrixCollection;
-class IMatrixApproximator;
+
+template<typename T> class IApproximator;
+typedef IApproximator<MatrixPtr> IMatrixApproximator;
+
 class IMatrixCombiner;
 
 template<typename T> class ICollection;

@@ -10,7 +10,7 @@
 #include "ICollection.h"
 #include "IMatrix.h"
 
-MatrixIteratorPtr DummyMatrixApproximator::getApproximateMatrices(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) {
+MatrixIteratorPtr DummyMatrixApproximator::getApproximateElements(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) {
 	return pCoreCollection->findApproxElements(pQuery, pDistanceCalculator, epsilon);
 }
 

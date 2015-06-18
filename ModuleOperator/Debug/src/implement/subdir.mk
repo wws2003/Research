@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp \
+../src/implement/GateDistanceCalculatorByMatrixImpl.cpp \
 ../src/implement/MatrixCoordinateDistanceCalculator.cpp \
 ../src/implement/MatrixRealInnerProductByTraceImpl.cpp \
 ../src/implement/MatrixTraceDistanceCalculator.cpp \
@@ -13,6 +14,7 @@ CPP_SRCS += \
 
 OBJS += \
 ./src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.o \
+./src/implement/GateDistanceCalculatorByMatrixImpl.o \
 ./src/implement/MatrixCoordinateDistanceCalculator.o \
 ./src/implement/MatrixRealInnerProductByTraceImpl.o \
 ./src/implement/MatrixTraceDistanceCalculator.o \
@@ -21,6 +23,7 @@ OBJS += \
 
 CPP_DEPS += \
 ./src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.d \
+./src/implement/GateDistanceCalculatorByMatrixImpl.d \
 ./src/implement/MatrixCoordinateDistanceCalculator.d \
 ./src/implement/MatrixRealInnerProductByTraceImpl.d \
 ./src/implement/MatrixTraceDistanceCalculator.d \

@@ -11,8 +11,9 @@
 #include "IMatrixWriter.h"
 #include "ScopeTimer.h"
 #include "ICollection.h"
-#include "IMatrixApproximator.h"
+#include "AlgoCommon.h"
 #include "IIterator.h"
+#include "IApproximator.h"
 #include <exception>
 
 void findTargetAndMeasureTime(MatrixApproximatorPtr pMatrixApproximator, MatrixCollectionPtr pCollection, MatrixPtr pTarget, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon, MatrixIteratorPtr&  prFindIter, TimerPtr pTimer, double* pSearchTime);
@@ -77,7 +78,7 @@ void findTargetAndMeasureTime(MatrixApproximatorPtr pMatrixApproximator, MatrixC
 
 		//Start the lookup routine for the newly generated target
 		if(pMatrixApproximator != NullPtr) {
-			prFindIter = pMatrixApproximator->getApproximateMatrices(pCollection, pTarget, pDistanceCalculator, epsilon);
+			prFindIter = pMatrixApproximator->getApproximateElements(pCollection, pTarget, pDistanceCalculator, epsilon);
 		}
 		else {
 			prFindIter = pCollection->findApproxElements(pTarget, pDistanceCalculator, epsilon);

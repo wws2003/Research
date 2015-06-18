@@ -9,9 +9,9 @@
 #define NINAMATRIXAPPROXIMATOR_H_
 
 #include "AlgoCommon.h"
-#include "IMatrixApproximator.h"
 #include "OperatorCommon.h"
 #include "IMatrixOperator.h"
+#include "IApproximator.h"
 
 //NINA = Near Indentity Nearbour Analysis
 
@@ -31,7 +31,7 @@ public:
 	 * Find in given collection, and moreover, if possible generate from it
 		 approximate matrices to query (distance smaller than epsilon)
 	 */
-	virtual MatrixIteratorPtr getApproximateMatrices(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon);
+	virtual MatrixIteratorPtr getApproximateElements(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon);
 
 protected:
 

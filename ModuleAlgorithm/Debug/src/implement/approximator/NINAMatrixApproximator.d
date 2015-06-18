@@ -3,11 +3,11 @@ src/implement/approximator/NINAMatrixApproximator.d: \
  ../include/implement/approximator/NINAMatrixApproximator.h \
  ../include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
- ../include/interface/abstract/IMatrixApproximator.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
+ ../include/interface/abstract/IApproximator.h \
  ../include/interface/abstract/IIterator.h \
  ../include/interface/abstract/ICollection.h \
  ../include/interface/abstract/IIterator.h \
@@ -19,8 +19,6 @@ src/implement/approximator/NINAMatrixApproximator.d: \
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
 
-../include/interface/abstract/IMatrixApproximator.h:
-
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
 ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h:
@@ -28,6 +26,8 @@ src/implement/approximator/NINAMatrixApproximator.d: \
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
+
+../include/interface/abstract/IApproximator.h:
 
 ../include/interface/abstract/IIterator.h:
 
