@@ -5,17 +5,17 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/implement/collection/CoordinateBasedMatrixCollectionImpl.cpp \
-../src/implement/collection/SampleMatrixBinCollectionImpl.cpp \
+../src/implement/collection/MapBasedBinCollectionImpl.cpp \
 ../src/implement/collection/SampleMatrixCollectionImpl.cpp 
 
 OBJS += \
 ./src/implement/collection/CoordinateBasedMatrixCollectionImpl.o \
-./src/implement/collection/SampleMatrixBinCollectionImpl.o \
+./src/implement/collection/MapBasedBinCollectionImpl.o \
 ./src/implement/collection/SampleMatrixCollectionImpl.o 
 
 CPP_DEPS += \
 ./src/implement/collection/CoordinateBasedMatrixCollectionImpl.d \
-./src/implement/collection/SampleMatrixBinCollectionImpl.d \
+./src/implement/collection/MapBasedBinCollectionImpl.d \
 ./src/implement/collection/SampleMatrixCollectionImpl.d 
 
 

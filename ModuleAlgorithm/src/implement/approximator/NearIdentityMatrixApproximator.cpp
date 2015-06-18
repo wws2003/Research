@@ -64,7 +64,7 @@ MatrixIteratorPtr NearIdentityMatrixApproximator::getApproximateElements(MatrixC
 		int maxMergeDistance = 5;
 		double epsilonForMergeCandidate = 3.0 * epsilon;
 
-		MatrixBinIteratorPtr pBinIter = m_pMatrixBinCollection->getMatrixBinIteratorPtr();
+		MatrixBinIteratorPtr pBinIter = m_pMatrixBinCollection->getBinIteratorPtr();
 
 		while(!pBinIter->isDone()) {
 			MatrixBinPtr pBin = pBinIter->getObj();
@@ -110,7 +110,7 @@ void distributeResultsToBins(const real_coordinate_t& queryCoordinate, MatrixIte
 		calculateBinPattern(queryCoordinate, pApprxCoord->getCoordinates(), binPattern);
 
 		//Add matrix to bin collection (may generate a new bin or add to existed one)
-		pMatrixBinCollection->addMatrix(pApprxMatrix, binPattern);
+		pMatrixBinCollection->addElement(pApprxMatrix, binPattern);
 
 		_destroy(pApprxCoord);
 		pApprxMatrixIter->next();

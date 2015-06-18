@@ -10,12 +10,14 @@
 
 #include "IMatrix.h"
 #include <string>
+#include <vector>
 
 typedef unsigned int cost_t;
+typedef std::vector<std::string> label_t;
 
 class Gate {
 public:
-	Gate(MatrixPtr pMatrix, cost_t cost, std::string label);
+	Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label);
 
 	virtual ~Gate();
 
@@ -23,12 +25,12 @@ public:
 
 	cost_t getCost();
 
-	std::string getLabel();
+	const label_t& getLabel();
 
 private:
 	MatrixPtr m_pMatrix;
 	cost_t m_cost;
-	std::string m_label;
+	label_t m_label;
 };
 
 

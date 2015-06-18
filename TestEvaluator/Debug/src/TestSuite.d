@@ -184,9 +184,11 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleAlgorithm/include/implement/combiner/AlwaysTrueMultiplierMatrixCombinerImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/AbstractMultiplierMatrixCombiner.h \
  ../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h \
- ../../ModuleAlgorithm/include/implement/collection/SampleMatrixBinCollectionImpl.h \
- ../../ModuleAlgorithm/include/internal-abstract/IMatrixBinCollection.h \
+ ../../ModuleAlgorithm/src/implement/collection/MapBasedBinCollectionImpl.cpp \
+ ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
+ ../../ModuleAlgorithm/include/internal-abstract/IBinCollection.h \
+ ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
  ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h \
  ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h \
@@ -195,8 +197,7 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
- ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h \
- ../../ModuleAlgorithm/include/implement/bin/Bin.hpp
+ ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h
 
 ../src/TestSuite.h:
 
@@ -570,11 +571,15 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h:
 
-../../ModuleAlgorithm/include/implement/collection/SampleMatrixBinCollectionImpl.h:
+../../ModuleAlgorithm/src/implement/collection/MapBasedBinCollectionImpl.cpp:
 
-../../ModuleAlgorithm/include/internal-abstract/IMatrixBinCollection.h:
+../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
+
+../../ModuleAlgorithm/include/internal-abstract/IBinCollection.h:
+
+../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
 
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
 
@@ -593,5 +598,3 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
 
 ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h:
-
-../../ModuleAlgorithm/include/implement/bin/Bin.hpp:

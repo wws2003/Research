@@ -7,7 +7,7 @@
 
 #include "Gate.h"
 
-Gate::Gate(MatrixPtr pMatrix, cost_t cost, std::string label) {
+Gate::Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label) {
 	m_pMatrix = pMatrix;
 	m_cost = cost;
 	m_label = label;
@@ -25,7 +25,7 @@ cost_t Gate::getCost() {
 	return m_cost;
 }
 
-std::string Gate::getLabel() {
+const label_t& Gate::getLabel() {
 	return m_label;
 }
 

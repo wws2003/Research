@@ -23,6 +23,8 @@ typedef IApproximator<GatePtr> IGateApproximator;
 template<typename T> class ICombiner;
 typedef ICombiner<MatrixPtr> IMatrixCombiner;
 typedef ICombiner<GatePtr> IGateCombiner;
+template<typename T>
+using CombinerPtr = ICombiner<T>*;
 
 template<typename T> class ICollection;
 template<typename T>

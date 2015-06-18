@@ -19,7 +19,7 @@
 #include "SearchSpaceConstructorImpl.h"
 #include "AlwaysTrueMultiplierMatrixCombinerImpl.h"
 #include "InverseCancelationMultiplierMatrixCombinerImpl.h"
-#include "SampleMatrixBinCollectionImpl.h"
+#include "MapBasedBinCollectionImpl.cpp"
 #include "AlgoInternal.h"
 #include "MatrixRealInnerProductByTraceImpl.h"
 #include "CoordinateOnOrthonormalBasisCalculatorImpl.cpp"
@@ -333,18 +333,18 @@ void TestSuite::testSampleMatrixBinCollection() {
 
 	assert(pMatrixBin1->distance(*pMatrixBin2) == expectedBinDistance);
 
-	MatrixBinCollectionPtr pBinCollection = new SampleMatrixBinCollectionImpl();
+	MatrixBinCollectionPtr pBinCollection = new MapBasedBinCollectionImpl<MatrixPtr>();
 
 	//Add to collection a matrix with bin pattern = binPattern2
 	ComplexVal arrayH[] = {ComplexVal(1,0), ComplexVal(1,0), ComplexVal(1,0), ComplexVal(-1,0)};
 	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
-	pBinCollection->addMatrix(pMatrixH, binPattern2);
+	pBinCollection->addElement(pMatrixH, binPattern2);
 
 	//Add to collection twice a matrix with bin pattern = binPattern1
 	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
-	pBinCollection->addMatrix(pMatrixT, binPattern1);
-	pBinCollection->addMatrix(pMatrixT, binPattern1);
+	pBinCollection->addElement(pMatrixT, binPattern1);
+	pBinCollection->addElement(pMatrixT, binPattern1);
 
 	//Expect collection size is 2
 	assert(pBinCollection->size() == 2);
