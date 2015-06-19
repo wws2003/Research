@@ -29,6 +29,9 @@ template<typename T> class IBinCollection;
 typedef IBinCollection<MatrixPtr> IMatrixBinCollection;
 
 template<typename T>
+using BinCollectionPtr = IBinCollection<T>*;
+
+template<typename T>
 using BinIteratorPtr =  IIterator<BinPtr<T> >*;
 
 typedef IIterator<MatrixBinPtr> MatrixBinIterator;

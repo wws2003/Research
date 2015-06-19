@@ -15,7 +15,7 @@
 #include "MathConceptsCommon.h"
 #include "VectorBasedCollectionImpl.hpp"
 
-typedef VectorBasedCollectionImpl<MatrixPtr> SampleMatrixCollectionImpl;
+typedef VectorBasedCollectionImpl<MatrixPtr> VectorBasedMatrixCollectionImpl;
 
 #if 0
 #include "IDistanceCalculator.h"
@@ -25,11 +25,11 @@ typedef VectorBasedCollectionImpl<MatrixPtr> SampleMatrixCollectionImpl;
 #include "MathConceptsCommon.h"
 #include <vector>
 
-class SampleMatrixCollectionImpl : public IMatrixCollection {
+class VectorBasedMatrixCollectionImpl : public IMatrixCollection {
 public:
-	SampleMatrixCollectionImpl();
+	VectorBasedMatrixCollectionImpl();
 
-	virtual ~SampleMatrixCollectionImpl();
+	virtual ~VectorBasedMatrixCollectionImpl();
 
 	virtual void addElement(MatrixPtr pm) ;
 

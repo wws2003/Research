@@ -1,6 +1,5 @@
-src/implement/approximator/NearIdentityMatrixApproximator.d: \
- ../src/implement/approximator/NearIdentityMatrixApproximator.cpp \
- ../include/implement/approximator/NearIdentityMatrixApproximator.h \
+src/implement/approximator/NearIdentityElementApproximator.d: \
+ ../src/implement/approximator/NearIdentityElementApproximator.cpp \
  ../include/implement/approximator/NearIdentityElementApproximator.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
@@ -10,8 +9,6 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
  ../include/interface/abstract/ICombiner.h \
  ../include/internal-abstract/AlgoInternal.h \
  ../include/interface/abstract/IApproximator.h \
- ../src/implement/approximator/NearIdentityElementApproximator.cpp \
- ../include/implement/approximator/NearIdentityElementApproximator.h \
  ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
  ../include/implement/bin/Bin.hpp \
  ../include/interface/abstract/IIterator.h \
@@ -19,12 +16,7 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../include/implement/collection/VectorBasedCollectionImpl.hpp \
  ../include/implement/iterator/VectorBasedIteratorImpl.hpp \
- ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
- ../include/implement/collection/VectorBasedMatrixCollectionImpl.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
- ../include/implement/collection/VectorBasedCollectionImpl.hpp
-
-../include/implement/approximator/NearIdentityMatrixApproximator.h:
+ ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp
 
 ../include/implement/approximator/NearIdentityElementApproximator.h:
 
@@ -44,10 +36,6 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
 
 ../include/interface/abstract/IApproximator.h:
 
-../src/implement/approximator/NearIdentityElementApproximator.cpp:
-
-../include/implement/approximator/NearIdentityElementApproximator.h:
-
 ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
 
 ../include/implement/bin/Bin.hpp:
@@ -63,9 +51,3 @@ src/implement/approximator/NearIdentityMatrixApproximator.d: \
 ../include/implement/iterator/VectorBasedIteratorImpl.hpp:
 
 ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
-
-../include/implement/collection/VectorBasedMatrixCollectionImpl.h:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
-
-../include/implement/collection/VectorBasedCollectionImpl.hpp:

@@ -45,6 +45,12 @@ typedef ComplexVector& ComplexVectorRef;
 
 typedef IMatrixFactory* MatrixFactoryPtr;
 
+template<typename T>
+using RealCoordinate = Coordinate<T, double>;
+
+template<typename T>
+using RealCoordinatePtr = RealCoordinate<T>*;
+
 typedef Coordinate<MatrixPtr, double> MatrixRealCoordinate;
 typedef MatrixRealCoordinate* MatrixRealCoordinatePtr;
 typedef MatrixRealCoordinatePtr& MatrixCoordinatePtrRef;

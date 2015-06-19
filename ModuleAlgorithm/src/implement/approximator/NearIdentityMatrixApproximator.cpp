@@ -6,18 +6,25 @@
  */
 
 #include "NearIdentityMatrixApproximator.h"
+
+#if USE_NEAR_IDENTITY_TEMPLATE
+
+#include "NearIdentityElementApproximator.cpp"
+#include "VectorBasedMatrixCollectionImpl.h"
+
+#else
 #include "ICoordinateCalculator.h"
 #include "Bin.hpp"
 #include "IIterator.h"
 #include "Coordinate.hpp"
-#include "SampleMatrixCollectionImpl.h"
+#include "VectorBasedMatrixCollectionImpl.h"
 #include "VectorBasedReadOnlyIteratorImpl.hpp"
 
 typedef std::vector<double> real_coordinate_t;
 
 void distributeResultsToBins(const real_coordinate_t& queryCoordinate, MatrixIteratorPtr pApprxMatrixIter, MatrixRealCoordinateCalculatorPtr pMatrixRealCoordinateCalculator, MatrixBinCollectionPtr pMatrixBinCollection);
 
-void calculateBinPattern(const real_coordinate_t& queryCoordinate, const real_coordinate_t& apprxCoordinate, BinPattern& binPattern);
+void calculateBinsPattern(const real_coordinate_t& queryCoordinate, const real_coordinate_t& apprxCoordinate, BinPattern& binPattern);
 
 void findApprxByMerge2Bins(MatrixBinPtr pBin1, MatrixBinPtr pBin2, MatrixPtr pQuery, double epsilon, MatrixCombinerPtr pMatrixCombiner, MatrixDistanceCalculatorPtr pDistanceCalculator, MatrixCollectionPtr pResultCollection);
 
@@ -52,7 +59,7 @@ MatrixIteratorPtr NearIdentityMatrixApproximator::getApproximateElements(MatrixC
 	int stepCounter = 0;
 	int maxStep = 15;
 
-	MatrixCollectionPtr pApprxTempCollection(new SampleMatrixCollectionImpl());
+	MatrixCollectionPtr pApprxTempCollection(new VectorBasedMatrixCollectionImpl());
 	MatrixPtrVector apprxResultBuffer;
 
 	while(++stepCounter <= maxStep) {
@@ -119,7 +126,7 @@ void distributeResultsToBins(const real_coordinate_t& queryCoordinate, MatrixIte
 	pApprxMatrixIter->toBegin();
 }
 
-void calculateBinPattern(const real_coordinate_t& queryCoordinate, const real_coordinate_t& apprxCoordinate, BinPattern& binPattern) {
+void calculateBinsPattern(const real_coordinate_t& queryCoordinate, const real_coordinate_t& apprxCoordinate, BinPattern& binPattern) {
 	unsigned int nbCoordinates = queryCoordinate.size();
 	for(unsigned int i = 0; i < nbCoordinates; i++) {
 		if(queryCoordinate[i] < apprxCoordinate[i] / 2) {
@@ -161,3 +168,4 @@ void addApprxResultsToBufferFromCollection(MatrixCollectionPtr pCollection, Matr
 	}
 }
 
+#endif

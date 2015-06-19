@@ -17,8 +17,8 @@ class ITargetMatrixFactory;
 template<typename E, typename Field>
 class ICoordinateCalculator;
 
-/*template<typename T>
-typedef ICoordinateCalculator<T, double> IRealCoordinateCalculator;*/
+template<typename T>
+using IRealCoordinateCalculator = ICoordinateCalculator<T, double> ;
 
 typedef ICoordinateCalculator<MatrixPtr, double> IMatrixRealCoordinateCalculator;
 typedef IMatrixRealCoordinateCalculator* MatrixRealCoordinateCalculatorPtr;
@@ -46,8 +46,8 @@ typedef IMatrixRealCoordinateDistanceCalculator* MatrixRealCoordinateDistanceCal
 template<typename E, typename Field>
 using InnerProductCalculatorPtr = IInnerProductCalculator<E, Field>*;
 
-/*template<typename T>
-using RealCoordinateCalculatorPtr = IRealCoordinateCalculator<T>*;*/
+template<typename T>
+using RealCoordinateCalculatorPtr = IRealCoordinateCalculator<T>*;
 
 typedef IInnerProductCalculator<MatrixPtr, double> IMatrixRealInnerProductCalculator;
 typedef IMatrixRealInnerProductCalculator* MatrixRealInnerProductCalculatorPtr;

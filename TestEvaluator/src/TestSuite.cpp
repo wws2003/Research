@@ -15,7 +15,7 @@
 #include "MatrixTraceDistanceCalculator.h"
 #include "CpuTimer.h"
 #include "SimpleDenseMatrixFactoryImpl.h"
-#include "SampleMatrixCollectionImpl.h"
+#include "VectorBasedMatrixCollectionImpl.h"
 #include "SearchSpaceConstructorImpl.h"
 #include "AlwaysTrueMultiplierMatrixCombinerImpl.h"
 #include "InverseCancelationMultiplierMatrixCombinerImpl.h"
@@ -108,7 +108,7 @@ void TestSuite::testSimpleWriter() {
 
 void TestSuite::testSimpleCollection() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
-	MatrixCollectionPtr pMatrixCollection = new SampleMatrixCollectionImpl();
+	MatrixCollectionPtr pMatrixCollection = new VectorBasedMatrixCollectionImpl();
 
 	double inverSqrt2 = 1 / sqrt(2);
 	ComplexVal arrayH[] = {ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(-1,0) * inverSqrt2};
@@ -168,12 +168,12 @@ void TestSuite::testSimpleSearchSpaceConstructor() {
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
 	int universalSetSize = 2;
-	MatrixCollectionPtr pUniversalSet = new SampleMatrixCollectionImpl();
+	MatrixCollectionPtr pUniversalSet = new VectorBasedMatrixCollectionImpl();
 	pUniversalSet->addElement(pMatrixH);
 	pUniversalSet->addElement(pMatrixT);
 	assert(pUniversalSet->size() == universalSetSize);
 
-	MatrixCollectionPtr pMatrixCollection = new SampleMatrixCollectionImpl();
+	MatrixCollectionPtr pMatrixCollection = new VectorBasedMatrixCollectionImpl();
 
 	int maxSequenceLength = 5;
 	int expectedSearchSpaceSize = universalSetSize * (std::pow(universalSetSize, maxSequenceLength) - 1) / (universalSetSize - 1);
@@ -234,12 +234,12 @@ void TestSuite::testSimpleEvaluator() {
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
 	int universalSetSize = 2;
-	MatrixCollectionPtr pUniversalSet = new SampleMatrixCollectionImpl();
+	MatrixCollectionPtr pUniversalSet = new VectorBasedMatrixCollectionImpl();
 	pUniversalSet->addElement(pMatrixH);
 	pUniversalSet->addElement(pMatrixT);
 	assert(pUniversalSet->size() == universalSetSize);
 
-	MatrixCollectionPtr pMatrixCollection = new SampleMatrixCollectionImpl();
+	MatrixCollectionPtr pMatrixCollection = new VectorBasedMatrixCollectionImpl();
 
 	int maxSequenceLength = 5;
 
@@ -286,7 +286,7 @@ void TestSuite::testInverseCancelingSearchSpaceConstructor() {
 	delete pTmpMatrixInverseT;
 	int universalSetSize = 4;
 
-	MatrixCollectionPtr pUniversalSet = new SampleMatrixCollectionImpl();
+	MatrixCollectionPtr pUniversalSet = new VectorBasedMatrixCollectionImpl();
 	pUniversalSet->addElement(pMatrixH);
 	pUniversalSet->addElement(pMatrixT);
 	pUniversalSet->addElement(pMatrixInverseH);
@@ -294,7 +294,7 @@ void TestSuite::testInverseCancelingSearchSpaceConstructor() {
 
 	assert(pUniversalSet->size() == universalSetSize);
 
-	MatrixCollectionPtr pMatrixCollection = new SampleMatrixCollectionImpl();
+	MatrixCollectionPtr pMatrixCollection = new VectorBasedMatrixCollectionImpl();
 	int maxSequenceLength = 5;
 	int expectedSearchSpaceSize = universalSetSize * (std::pow(universalSetSize - 1, maxSequenceLength) - 1) / (universalSetSize - 2);
 
