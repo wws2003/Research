@@ -19,18 +19,31 @@ class Gate {
 public:
 	Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label);
 
+	Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label, const std::string& labelStr);
+
 	virtual ~Gate();
 
-	MatrixPtr getMatrix();
+	inline MatrixPtr getMatrix() {
+		return m_pMatrix;
+	}
 
-	cost_t getCost();
+	inline cost_t getCost() {
+		return m_cost;
+	}
 
-	const label_t& getLabel();
+	inline const label_t& getLabel() {
+		return m_label;
+	}
+
+	inline const std::string& getLabelStr() {
+		return m_labelStr;
+	}
 
 private:
 	MatrixPtr m_pMatrix;
 	cost_t m_cost;
 	label_t m_label;
+	std::string m_labelStr;
 };
 
 

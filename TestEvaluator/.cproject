@@ -49,6 +49,7 @@
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/implement"/>
+									<listOptionValue builtIn="false" value="../../ModuleEvaluate/src/implement"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.1969211016" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.other.pic.1738298609" name="Position Independent Code (-fPIC)" superClass="gnu.cpp.compiler.option.other.pic" value="false" valueType="boolean"/>

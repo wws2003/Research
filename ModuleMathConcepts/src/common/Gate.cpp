@@ -11,22 +11,18 @@ Gate::Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label) {
 	m_pMatrix = pMatrix;
 	m_cost = cost;
 	m_label = label;
+	for(unsigned int i = 0; i < m_label.size(); i++) {
+		m_labelStr += m_label[i];
+	}
+}
+
+Gate::Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label, const std::string& labelStr) {
+	m_pMatrix = pMatrix;
+	m_cost = cost;
+	m_label = label;
+	m_labelStr = labelStr;
 }
 
 Gate::~Gate() {
 
 }
-
-MatrixPtr Gate::getMatrix() {
-	return m_pMatrix;
-}
-
-cost_t Gate::getCost() {
-	return m_cost;
-}
-
-const label_t& Gate::getLabel() {
-	return m_label;
-}
-
-

@@ -14,20 +14,17 @@
 #include "ISearchSpaceConstructor.h"
 #include "ICombiner.h"
 
-#ifndef MatrixPtrArray
-typedef MatrixPtr* MatrixPtrArray;
-#endif
-
-class SearchSpaceConstructorImpl : public ISearchSpaceConstructor {
+template<typename T>
+class SearchSpaceConstructorImpl : public ISearchSpaceConstructor<T> {
 public:
-	SearchSpaceConstructorImpl(MatrixCombinerPtr pMatrixCombiner);
-	virtual ~SearchSpaceConstructorImpl();
+	SearchSpaceConstructorImpl(CombinerPtr<T> pCombiner);
+	virtual ~SearchSpaceConstructorImpl(){};
 
 	//Override
-	virtual void constructSearchSpace(MatrixCollectionPtr pMatrixCollection, MatrixCollectionPtr pUniversalSet, int maxSequenceLength);
+	virtual void constructSearchSpace(CollectionPtr<T> pCollection, CollectionPtr<T> pUniversalSet, int maxSequenceLength);
 
 private:
-	MatrixCombinerPtr m_pMatrixCombiner;
+	CombinerPtr<T> m_pCombiner;
 };
 
 

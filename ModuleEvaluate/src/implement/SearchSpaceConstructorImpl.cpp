@@ -7,43 +7,40 @@
 
 #include "SearchSpaceConstructorImpl.h"
 #include "ICollection.h"
+#include "ICombiner.h"
 #include "IIterator.h"
-#include "IMatrixOperator.h"
+#include "AlgoCommon.h"
 #include <vector>
 
-typedef std::vector<MatrixPtr> MatrixPtrVector;
-typedef std::vector<MatrixPtr>* MatrixPtrVectorPtr;
+template<typename T>
+void addNewSequencesByApplyingUniversalElements(T pSequence, IteratorPtr<T> pUniversalSetIter, CombinerPtr<T> pCombiner, std::vector<T>* ppCurrentMaxLengthSequencesBuffer, CollectionPtr<T> pCollection);
 
-void addNewSequencesByApplyingUniversalMatrices(MatrixPtr pSequence, MatrixIteratorPtr pUniversalSetIter, MatrixCombinerPtr pMatrixCombiner, MatrixPtrVectorPtr ppCurrentMaxLengthSequencesBuffer, MatrixCollectionPtr pMatrixCollection);
-
-SearchSpaceConstructorImpl::SearchSpaceConstructorImpl(MatrixCombinerPtr pMatrixCombiner) {
-	m_pMatrixCombiner = pMatrixCombiner;
+template<typename T>
+SearchSpaceConstructorImpl<T>::SearchSpaceConstructorImpl(CombinerPtr<T> pCombiner) {
+	m_pCombiner = pCombiner;
 }
 
-SearchSpaceConstructorImpl::~SearchSpaceConstructorImpl() {
-
-}
-
-void SearchSpaceConstructorImpl::constructSearchSpace(MatrixCollectionPtr pMatrixCollection, MatrixCollectionPtr pUniversalSet, int maxSequenceLength) {
+template<typename T>
+void SearchSpaceConstructorImpl<T>::constructSearchSpace(CollectionPtr<T> pCollection, CollectionPtr<T> pUniversalSet, int maxSequenceLength) {
 	//Firstly add all single matrices in universal set into the persistable collection
-	pMatrixCollection->clear();
+	pCollection->clear();
 
-	MatrixIteratorPtr pUniversalSetIter = pUniversalSet->getReadonlyIteratorPtr();
+	IteratorPtr<T> pUniversalSetIter = pUniversalSet->getReadonlyIteratorPtr();
 
-	MatrixPtrVectorPtr pCurrentMaxLengthSequences = NullPtr;
+	std::vector<T>* pCurrentMaxLengthSequences = NullPtr;
 
 	//Compose matrix sequences from universal matrices up to sequence length max
 	for(int i = 0; i < maxSequenceLength; i++) {
 		//Use a buffer to update current max length sequences (i.e. sequences length = i)
-		MatrixPtrVectorPtr pCurrentMaxLengthSequencesBuffer = new MatrixPtrVector();
+		std::vector<T>* pCurrentMaxLengthSequencesBuffer = new std::vector<T>();
 
-		//Calculate buffer of current max length sequences along with search space (matrix collection)
+		//Calculate buffer of current max length sequences along with search space (matrix/gate collection)
 		if(pCurrentMaxLengthSequences == NullPtr) {
-			addNewSequencesByApplyingUniversalMatrices(NullPtr, pUniversalSetIter, m_pMatrixCombiner, pCurrentMaxLengthSequencesBuffer, pMatrixCollection);
+			addNewSequencesByApplyingUniversalElements<T>(NullPtr, pUniversalSetIter, m_pCombiner, pCurrentMaxLengthSequencesBuffer, pCollection);
 		}
 		else {
-			for(MatrixPtr pSequence: *(pCurrentMaxLengthSequences)) {
-				addNewSequencesByApplyingUniversalMatrices(pSequence, pUniversalSetIter, m_pMatrixCombiner, pCurrentMaxLengthSequencesBuffer, pMatrixCollection);
+			for(T pSequence: *(pCurrentMaxLengthSequences)) {
+				addNewSequencesByApplyingUniversalElements<T>(pSequence, pUniversalSetIter, m_pCombiner, pCurrentMaxLengthSequencesBuffer, pCollection);
 			}
 			delete pCurrentMaxLengthSequences;
 		}
@@ -55,35 +52,36 @@ void SearchSpaceConstructorImpl::constructSearchSpace(MatrixCollectionPtr pMatri
 	}
 }
 
-void addNewSequencesByApplyingUniversalMatrices(MatrixPtr pSequence, MatrixIteratorPtr pUniversalSetIter, MatrixCombinerPtr pMatrixCombiner, MatrixPtrVectorPtr ppCurrentMaxLengthSequencesBuffer, MatrixCollectionPtr pMatrixCollection) {
+template<typename T>
+void addNewSequencesByApplyingUniversalElements(T pSequence, IteratorPtr<T> pUniversalSetIter, CombinerPtr<T> pCombiner, std::vector<T>* ppCurrentMaxLengthSequencesBuffer, CollectionPtr<T> pCollection) {
 	pUniversalSetIter->toBegin();
 
 	while(!pUniversalSetIter->isDone()) {
-		MatrixPtr pUniversalMatrix = pUniversalSetIter->getObj();
-		MatrixPtr pAppendedSequence = NullPtr;
+		T pUniversalElement = pUniversalSetIter->getObj();
+		T pAppendedSequence = NullPtr;
 
 		if(pSequence == NullPtr) {
-			//If current sequence is null, i.e. empty sequence, add the universal matrix it self to collection
-			pAppendedSequence = pUniversalMatrix;
+			//If current sequence is null, i.e. empty sequence, add the universal matrix/gate it self to collection
+			pAppendedSequence = pUniversalElement;
 		}
 		else {
 			//Otherwise apply multiply operator presenting the append of universal matrix to the sequence
-			pMatrixCombiner->combine(pSequence, pUniversalMatrix, pAppendedSequence);
+			pCombiner->combine(pSequence, pUniversalElement, pAppendedSequence);
 		}
 
 		if(pAppendedSequence != NullPtr) {
-			//Add the newly generated sequence 's matrix to the collection
-			pMatrixCollection->addElement(pAppendedSequence);
+			//Add the newly generated sequence 's matrix/gate to the collection
+			pCollection->addElement(pAppendedSequence);
 
-			//Also add newly generated sequence's matrix to buffer of current-max length sequences
+			//Also add newly generated sequence's matrix/gate to buffer of current-max length sequences
 			ppCurrentMaxLengthSequencesBuffer->push_back(pAppendedSequence);
 		}
 
-		//Go to next universal matrix
+		//Go to next universal matrix/gate
 		pUniversalSetIter->next();
 	}
 
-	//Rewind universal matrix iterator to begin
+	//Rewind universal matrix/gate iterator to begin
 	pUniversalSetIter->toBegin();
 }
 

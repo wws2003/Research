@@ -5,15 +5,18 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/implement/combiner/DuplicateCancelationMultiplierMatrixCombinerImpl.cpp \
-../src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.cpp 
+../src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.cpp \
+../src/implement/combiner/SampleGateCombinerImpl.cpp 
 
 OBJS += \
 ./src/implement/combiner/DuplicateCancelationMultiplierMatrixCombinerImpl.o \
-./src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.o 
+./src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.o \
+./src/implement/combiner/SampleGateCombinerImpl.o 
 
 CPP_DEPS += \
 ./src/implement/combiner/DuplicateCancelationMultiplierMatrixCombinerImpl.d \
-./src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.d 
+./src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.d \
+./src/implement/combiner/SampleGateCombinerImpl.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

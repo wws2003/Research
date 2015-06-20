@@ -16,7 +16,7 @@
 #include "CpuTimer.h"
 #include "SimpleDenseMatrixFactoryImpl.h"
 #include "VectorBasedMatrixCollectionImpl.h"
-#include "SearchSpaceConstructorImpl.h"
+#include "SearchSpaceConstructorImpl.cpp"
 #include "AlwaysTrueMultiplierMatrixCombinerImpl.h"
 #include "InverseCancelationMultiplierMatrixCombinerImpl.h"
 #include "MapBasedBinCollectionImpl.cpp"
@@ -42,7 +42,7 @@ TestSuite::TestSuite() {
 	m_pSearchSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl(m_pTargets, epsilon, m_pMatrixDistanceCalculator, m_pMatrixWriter, m_pTimer, std::cout);
 
 	m_pMatrixCombiner = new MultiplierMatrixCombinerImpl(m_pMatrixOperator);
-	m_pSearchSpaceConstructor = new SearchSpaceConstructorImpl(m_pMatrixCombiner);
+	m_pSearchSpaceConstructor = new SearchSpaceConstructorImpl<MatrixPtr>(m_pMatrixCombiner);
 }
 
 TestSuite::~TestSuite() {
@@ -259,7 +259,7 @@ void TestSuite::testInverseCancelingSearchSpaceConstructor() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
 	MatrixCombinerPtr pMatrixCombiner = new InverseCancelationMultiplierMatrixCombinerImpl(m_pMatrixOperator);
-	SearchSpaceConstructorPtr pSearchSpaceConstructor = new SearchSpaceConstructorImpl(pMatrixCombiner);
+	MatrixSearchSpaceConstructorPtr pSearchSpaceConstructor = new SearchSpaceConstructorImpl<MatrixPtr>(pMatrixCombiner);
 
 	double inverSqrt2 = 1 / sqrt(2);
 

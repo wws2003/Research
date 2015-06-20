@@ -41,7 +41,7 @@ private:
 	SearchSpaceEvaluatorPtr m_pSearchSpaceEvaluator;
 
 	MatrixCombinerPtr m_pMatrixCombiner;
-	SearchSpaceConstructorPtr m_pSearchSpaceConstructor;
+	MatrixSearchSpaceConstructorPtr m_pSearchSpaceConstructor;
 };
 
 
