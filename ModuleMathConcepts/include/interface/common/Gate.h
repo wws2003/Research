@@ -17,6 +17,8 @@ typedef std::vector<std::string> label_t;
 
 class Gate {
 public:
+	Gate(MatrixPtr pMatrix, cost_t cost, std::string singleLabel);
+
 	Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label);
 
 	Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label, const std::string& labelStr);

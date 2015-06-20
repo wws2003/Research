@@ -35,7 +35,12 @@ void SpecialUnitaryMatrixCoordinateMapper::calculateTracelessHermitianFromSpecia
 	double hermitianInitialTrace = m_pMatrixOperator->trace(prTracelessHermitianMatrix).real();
 
 	if(!apprx(hermitianInitialTrace, 0.0, 1e-9)) {
-		calculateTracelessHermitianFrom2kpiTraceHermitian(prTracelessHermitianMatrix, hermitianInitialTrace);
+		MatrixPtr pTracelessHermitian = prTracelessHermitianMatrix;
+		addGlobalPhaseToSpecialUnitaryForTracelessHermitian(pSpecialUnitaryMatrix, prTracelessHermitianMatrix, hermitianInitialTrace);
+		//calculateTracelessHermitianFrom2kpiTraceHermitian(pTracelessHermitian, hermitianInitialTrace);
+
+		_destroy(prTracelessHermitianMatrix);
+		prTracelessHermitianMatrix = pTracelessHermitian;
 	}
 
 	_destroy(pSpecialUnitaryLog);
@@ -73,10 +78,26 @@ void SpecialUnitaryMatrixCoordinateMapper::calculateTracelessHermitianFrom2kpiTr
 		}
 	}
 
-	_destroy(prTracelessHermitianMatrix);
-
 	m_pMatrixOperator->unitaryDediagonalize(eigVectors, eigValues, prTracelessHermitianMatrix);
+
 }
 
+void SpecialUnitaryMatrixCoordinateMapper::addGlobalPhaseToSpecialUnitaryForTracelessHermitian(MatrixPtr pSpecialUnitaryMatrix, MatrixPtrRef prTracelessHermitianMatrix, double initialTrace) const {
+	int nbRows, nbColumns;
+	pSpecialUnitaryMatrix->getSize(nbRows, nbColumns);
 
+	short traceSign = gt(initialTrace,0,1e-9) ? 1 : -1;
+	double delta2pi = -traceSign * 2 * M_PI / (nbRows + 0.0);
 
+	ComplexVal phase = std::exp(ComplexVal(0, delta2pi));
+
+	MatrixPtr pAdjustedUntitary = NullPtr;
+	m_pMatrixOperator->multiplyScalar(pSpecialUnitaryMatrix, phase, pAdjustedUntitary);
+
+	MatrixPtr pSpecialUnitaryLog = NullPtr;
+	m_pMatrixOperator->log(pAdjustedUntitary, pSpecialUnitaryLog);
+	m_pMatrixOperator->multiplyScalar(pSpecialUnitaryLog, ComplexVal(0, -1), prTracelessHermitianMatrix);
+
+	_destroy(pSpecialUnitaryLog);
+	_destroy(pAdjustedUntitary);
+}

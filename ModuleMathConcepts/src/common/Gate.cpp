@@ -7,6 +7,13 @@
 
 #include "Gate.h"
 
+Gate::Gate(MatrixPtr pMatrix, cost_t cost, std::string singleLabel) {
+	m_pMatrix = pMatrix;
+	m_cost = cost;
+	m_label.push_back(singleLabel);
+	m_labelStr = singleLabel;
+}
+
 Gate::Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label) {
 	m_pMatrix = pMatrix;
 	m_cost = cost;

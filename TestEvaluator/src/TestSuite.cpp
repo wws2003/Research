@@ -25,13 +25,19 @@
 #include "CoordinateOnOrthonormalBasisCalculatorImpl.cpp"
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
 #include "Bin.hpp"
-
+#include "Gate.h"
+#include "SampleGateCombinerImpl.h"
+#include "LabelOnlyGateWriterImpl.h"
+#include "SampleRealCoordinateWriterImpl.hpp"
 #include <iostream>
 #include <cmath>
 #include <cassert>
 
+void init2QubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT, GatePtr& pH1, GatePtr& pH2, GatePtr& pT1, GatePtr& pT2);
+void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<double> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU);
+
 TestSuite::TestSuite() {
-	m_pMatrixWriter = new LabelOnlyMatrixWriterImpl();
+	m_pMatrixWriter = new SampleMatrixWriterImpl();
 	m_pMatrixFactory = new SimpleDenseMatrixFactoryImpl();
 	m_pMatrixOperator = new SampleMatrixOperator(m_pMatrixFactory);
 
@@ -378,20 +384,205 @@ void TestSuite::testSampleMatrixBinCollection() {
 void TestSuite::freeTestShowCoordinatesInSearchSpace() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
-	/*MatrixPtrVector pBasis4;
+	MatrixPtrVector pBasis4;
 	m_pMatrixOperator->getTracelessHermitianMatricesBasis(4, pBasis4);
 
+	assert(pBasis4.size() == 15);
+
+	GatePtr pCNOTGate = NullPtr;
+	GatePtr pH1Gate = NullPtr;
+	GatePtr pH2Gate = NullPtr;
+	GatePtr pT1Gate = NullPtr;
+	GatePtr pT2Gate = NullPtr;
+
+	init2QubitsLibGates(m_pMatrixOperator, pCNOTGate, pH1Gate, pH2Gate, pT1Gate, pT2Gate);
+
+	GateLabelCancelationMap cancelationMap;
+
+	/*cancelationMap.insert(GateLabelPair("CNOT", "CNOT"));
+	cancelationMap.insert(GateLabelPair("H1", "H1"));
+	cancelationMap.insert(GateLabelPair("H2", "H2"));*/
+
+	GateLabelIdentityCycleMap identityCycleMap;
+	identityCycleMap.insert(GateLabelIdentityCyclePair("CNOT", 2));
+	identityCycleMap.insert(GateLabelIdentityCyclePair("H1", 2));
+	identityCycleMap.insert(GateLabelIdentityCyclePair("H2", 2));
+	identityCycleMap.insert(GateLabelIdentityCyclePair("T1", 8));
+	identityCycleMap.insert(GateLabelIdentityCyclePair("T2", 8));
+
+	CombinerPtr<GatePtr> pGateCombiner = new SampleGateCombinerImpl(999999, cancelationMap, identityCycleMap, m_pMatrixOperator);
+
+	GateCollectionPtr pUniversalSet = new VectorBasedCollectionImpl<GatePtr>();
+	pUniversalSet->addElement(pCNOTGate);
+	pUniversalSet->addElement(pH1Gate);
+	pUniversalSet->addElement(pH2Gate);
+	pUniversalSet->addElement(pT1Gate);
+	pUniversalSet->addElement(pT2Gate);
+
+	GateCollectionPtr pGateCollection = new VectorBasedCollectionImpl<GatePtr>();
+
+	int maxSequenceLength = 4;
+
+	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new SearchSpaceConstructorImpl<GatePtr>(pGateCombiner);
+
+	pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection, pUniversalSet, maxSequenceLength);
+
+	CollectionSize_t gateCounts = pGateCollection->size();
+
+	std::cout << "Number of sequence length = " << maxSequenceLength << " constructed by CNOT, H and T: " << gateCounts << std::endl;
+
+	GateWriterPtr pGateWriter = new LabelOnlyGateWriterImpl();
+	MatrixRealInnerProductCalculatorPtr pMatrixRealInnerProductCalculator = new MatrixRealInnerProductByTraceImpl(m_pMatrixOperator);
+	MatrixRealCoordinateCalculatorPtr pHermitiaRealCoordinateCalculator = new CoordinateOnOrthonormalBasisCalculatorImpl<MatrixPtr, double>(pMatrixRealInnerProductCalculator, pBasis4);
+	MatrixRealCoordinateCalculatorPtr pMatrixRealCoordinateCalculator = new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, pHermitiaRealCoordinateCalculator);
+
+	CoordinateWriterPtr<MatrixPtr, double> pMatrixCoordinateWriter = new SampleRealCoordinateWriterImpl<MatrixPtr>();
+
+	IteratorPtr<GatePtr> pGateIter = pGateCollection->getIteratorPtr();
+
+	int wrongCoordinateCalculateCounter = 0;
+
+	while(!pGateIter->isDone()) {
+		//pGateWriter->writeGate(pGateIter->getObj(), std::cout);
+
+		MatrixRealCoordinatePtr pMatrixRealCoordinate = NullPtr;
+		pMatrixRealCoordinateCalculator->calulateElementCoordinate(pGateIter->getObj()->getMatrix(), pMatrixRealCoordinate);
+
+		const double COORD_ERR_THRESHOLD = 1e-7;
+
+		//Test if coordinates are calculated correctly
+		if(pMatrixRealCoordinate != NullPtr) {
+
+			MatrixPtr pU1 = NullPtr;
+			calculateSpecialUnitaryFromTracelessHermitianCoordinates(m_pMatrixOperator, pMatrixRealCoordinate->getCoordinates(), pBasis4, pU1);
+			double coordinateCalculatorErr = m_pMatrixDistanceCalculator->distance(pU1, pGateIter->getObj()->getMatrix());
+
+			if(coordinateCalculatorErr > COORD_ERR_THRESHOLD) {
+
+				//Confirm with global phase to make sure incorrect coordinate calculation
+
+				//e^(-i * pi / 2)
+				ComplexVal phase1 = std::exp(ComplexVal(0, - M_PI / 2));
+				MatrixPtr pGlobalPhaseAdjusted1 = NullPtr;
+				m_pMatrixOperator->multiplyScalar(pU1, phase1, pGlobalPhaseAdjusted1);
+
+				//e^(i * pi / 2)
+				ComplexVal phase2 = std::exp(ComplexVal(0,  M_PI / 2));
+				MatrixPtr pGlobalPhaseAdjusted2 = NullPtr;
+				m_pMatrixOperator->multiplyScalar(pU1, phase2, pGlobalPhaseAdjusted2);
+
+				double adjustedError1 = m_pMatrixDistanceCalculator->distance(pGlobalPhaseAdjusted1, pGateIter->getObj()->getMatrix());
+				double adjustedError2 = m_pMatrixDistanceCalculator->distance(pGlobalPhaseAdjusted2, pGateIter->getObj()->getMatrix());
+
+				if(adjustedError1 > COORD_ERR_THRESHOLD && adjustedError2 > COORD_ERR_THRESHOLD) {
+					wrongCoordinateCalculateCounter++;
+				}
+
+				delete pGlobalPhaseAdjusted2;
+				delete pGlobalPhaseAdjusted1;
+
+			}
+
+			//assert(coordinateCalculatorErr < COORD_ERR_THRESHOLD);
+			_destroy(pU1);
+		}
+
+		_destroy(pMatrixRealCoordinate);
+
+		pGateIter->next();
+	}
+
+	delete pMatrixCoordinateWriter;
+	delete pMatrixRealCoordinateCalculator;
+	delete pHermitiaRealCoordinateCalculator;
+	delete pMatrixRealInnerProductCalculator;
+	delete pGateWriter;
+	delete pGateSearchSpaceConstructor;
+
+	pGateCollection->purge();
+	delete pGateCollection;
+
+	delete pUniversalSet;
+	delete pGateCombiner;
+
+	std::cout << __func__ << " failed coordinate cases: " << wrongCoordinateCalculateCounter << std::endl << "--------------------------"<<  std::endl ;
+}
+
+void init2QubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT, GatePtr& pH1, GatePtr& pH2, GatePtr& pT1, GatePtr& pT2) {
 	ComplexVal arrayCNOT[] = {1.0, 0.0, 0.0, 0.0
 			, 0.0, 1.0, 0.0, 0.0
 			, 0.0, 0.0, 0.0, 1.0
 			, 0.0, 0.0, 1.0, 0.0};
 
-	MatrixPtr pCNOT = new SimpleDenseMatrixImpl(arrayCNOT, ROW_SPLICE, 4, 4, "C");
-	MatrixPtr pSCNOT = NullPtr;
-	m_pMatrixOperator->specialUnitaryFromUnitary(pCNOT, pSCNOT);*/
+	MatrixPtr pCNOTMat = new SimpleDenseMatrixImpl(arrayCNOT, ROW_SPLICE, 4, 4, "");
+	MatrixPtr pSCNOTMat = NullPtr;
+	pMatrixOperator->specialUnitaryFromUnitary(pCNOTMat, pSCNOTMat);
 
 
+	pCNOT = new Gate(pSCNOTMat, 1, "CNOT");
 
+	double inverseSQRT2 = 1/sqrt(2);
 
-	std::cout << __func__ << " under construction " << std::endl << "--------------------------"<<  std::endl ;
+	ComplexVal arrayH1[] = {ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(inverseSQRT2, 0), 0.0
+			, 0.0, ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(inverseSQRT2, 0)
+			, ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(-inverseSQRT2, 0), 0.0
+			, 0.0, ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(-inverseSQRT2, 0)};
+
+	MatrixPtr pH1Mat = new SimpleDenseMatrixImpl(arrayH1, ROW_SPLICE, 4, 4, "");
+
+	pH1 = new Gate(pH1Mat, 4, "H1");
+
+	ComplexVal arrayH2[] = {ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0), 0.0, 0.0
+			, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0), 0.0, 0.0
+			, 0.0, 0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0)
+			, 0.0, 0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0)};
+
+	MatrixPtr pH2Mat = new SimpleDenseMatrixImpl(arrayH2, ROW_SPLICE, 4, 4, "");
+
+	pH2 = new Gate(pH2Mat, 4, "H2");
+
+	ComplexVal expmPi_8 = std::exp(ComplexVal(0, 1) * M_PI / 8.0);
+	ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, -1) * M_PI / 8.0);
+
+	ComplexVal arrayT1[] = {expm_Pi_8, 0.0, 0.0, 0.0
+			, 0.0, expm_Pi_8, 0.0, 0.0
+			, 0.0, 0.0, expmPi_8, 0.0
+			, 0.0, 0.0, 0.0, expmPi_8};
+
+	MatrixPtr pT1Mat = new SimpleDenseMatrixImpl(arrayT1, ROW_SPLICE, 4, 4, "");
+
+	pT1 = new Gate(pT1Mat, 1, "T1");
+
+	ComplexVal arrayT2[] = {expm_Pi_8, 0.0, 0.0, 0.0
+			, 0.0, expmPi_8, 0.0, 0.0
+			, 0.0, 0.0, expm_Pi_8, 0.0
+			, 0.0, 0.0, 0.0, expmPi_8};
+
+	MatrixPtr pT2Mat = new SimpleDenseMatrixImpl(arrayT2, ROW_SPLICE, 4, 4, "");
+
+	pT2 = new Gate(pT2Mat, 1, "T2");
+}
+
+void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<double> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU) {
+	ComplexVal zeroArr[] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+	MatrixPtr pH = new SimpleDenseMatrixImpl(zeroArr, ROW_SPLICE, 4, 4, "Z");
+
+	for(int i = 0; i < 15; i++) {
+		MatrixPtr pPartialSum = NullPtr;
+		pMatrixOperator->multiplyScalar(pHermitianBasis[i], ComplexVal(coordinates[i], 0.0), pPartialSum);
+		MatrixPtr pSum = NullPtr;
+		pMatrixOperator->add(pH, pPartialSum, pSum);
+		delete pPartialSum;
+		delete pH;
+		pH = pSum;
+	}
+
+	MatrixPtr pHi = NullPtr;
+	pMatrixOperator->multiplyScalar(pH, ComplexVal(0.0,1.0), pHi);
+
+	pMatrixOperator->exponential(pHi, pU);
+
+	delete pHi;
+
+	delete pH;
 }

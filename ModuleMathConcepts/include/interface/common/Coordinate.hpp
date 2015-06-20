@@ -21,7 +21,8 @@ public:
 
 	virtual ~Coordinate(){};
 
-	const std::vector<Field>& getCoordinates(){return m_coordinates;}
+	const std::vector<Field>& getCoordinates() const {return m_coordinates;};
+
 	E getElement(){return m_element;}
 
 private:

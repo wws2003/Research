@@ -26,6 +26,9 @@ public:
 	//Clean the collection
 	virtual void clear() = 0;
 
+	//Deeply clean the collection, i.e. release elements pointer (must be sure elements are pointer type!).
+	virtual void purge() = 0;
+
 	//Return iterator through a set of element reflecting the changes in the collection
 	virtual IteratorPtr<T> getIteratorPtr() = 0;
 

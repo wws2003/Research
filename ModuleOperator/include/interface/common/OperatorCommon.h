@@ -23,7 +23,7 @@ using IRealCoordinateCalculator = ICoordinateCalculator<T, double> ;
 typedef ICoordinateCalculator<MatrixPtr, double> IMatrixRealCoordinateCalculator;
 typedef IMatrixRealCoordinateCalculator* MatrixRealCoordinateCalculatorPtr;
 typedef ICoordinateCalculator<GatePtr, double> IGateRealCoordinateCalculator;
-typedef IGateRealCoordinateCalculator* IGateRealCoordinateCalculatorPtr;
+typedef IGateRealCoordinateCalculator* GateRealCoordinateCalculatorPtr;
 
 template<typename T> class IDistanceCalculator;
 typedef IDistanceCalculator<MatrixPtr> IMatrixDistanceCalculator;

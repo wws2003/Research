@@ -25,6 +25,9 @@ public:
 	//Clean the collection
 	virtual void clear() ;
 
+	//Deeply clean the collection, i.e. release elements pointer (must be sure elements are pointer type!).
+	virtual void purge();
+
 	//Return iterator through a set of element reflecting the changes in the collection
 	virtual IteratorPtr<T> getIteratorPtr() ;
 
@@ -56,6 +59,15 @@ void VectorBasedCollectionImpl<T>::addElement(T element) {
 template<typename T>
 void VectorBasedCollectionImpl<T>::clear() {
 	m_elements.clear();
+}
+
+template<typename T>
+void VectorBasedCollectionImpl<T>::purge() {
+	for(typename std::vector<T>::iterator eIter = m_elements.begin(); eIter != m_elements.end(); ) {
+		T element = *eIter;
+		eIter = m_elements.erase(eIter);
+		_destroy(element);
+	}
 }
 
 template<typename T>

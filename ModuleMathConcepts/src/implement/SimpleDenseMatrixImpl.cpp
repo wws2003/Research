@@ -7,6 +7,11 @@
 
 #include "SimpleDenseMatrixImpl.h"
 
+#define NOISE_THRESHOLD 1e-16
+
+//Erase noised zero value such as 1e-16, 1e-17
+void cleanNoise(ComplexVal* array, int length);
+
 SimpleDenseMatrixImpl::SimpleDenseMatrixImpl(const ComplexVal* array, ArraySpliceType arraySpliceType, int nbRows, int nbColumns, std::string label): m_label(label) {
 	initArray(array, nbRows, nbColumns);
 	m_arraySpliceType = arraySpliceType;
@@ -47,6 +52,18 @@ void SimpleDenseMatrixImpl::initArray(const ComplexVal* array, int nbRows, int n
 	for(int i = 0; i < arraySize; i++) {
 		m_array[i] = array[i];
 	}
+	cleanNoise(m_array, arraySize);
 	m_nbColumns = nbColumns;
 	m_nbRows = nbRows;
+}
+
+void cleanNoise(ComplexVal* array, int length) {
+	for(int i = 0; i < length; i++) {
+		if(std::abs(array[i].real()) < NOISE_THRESHOLD) {
+			array[i].real(0.0);
+		}
+		if(std::abs(array[i].imag()) < NOISE_THRESHOLD) {
+			array[i].imag(0.0);
+		}
+	}
 }

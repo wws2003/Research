@@ -31,7 +31,9 @@ template<typename T>
 using CollectionPtr = ICollection<T>*;
 
 typedef ICollection<MatrixRealCoordinatePtr> MatrixRealCoordinateCollection;
+typedef ICollection<GateRealCoordinatePtr> GateRealCoordinateCollection;
 typedef ICollection<MatrixPtr> IMatrixCollection;
+typedef ICollection<GatePtr> IGateCollection;
 
 template<typename T> class IIterator;
 template<typename T>
@@ -45,6 +47,9 @@ typedef IIterator<MatrixRealCoordinatePtr>* MatrixRealCoordinateIteratorPtr;
 
 typedef IMatrixCollection& MatrixCollectionRef;
 typedef IMatrixCollection* MatrixCollectionPtr;
+
+typedef IGateCollection& GateCollectionRef;
+typedef IGateCollection* GateCollectionPtr;
 
 typedef IPersistableMatrixCollection* PersitableMatrixCollectionPtr;
 

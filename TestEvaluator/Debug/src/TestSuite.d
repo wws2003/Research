@@ -198,7 +198,13 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
- ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h
+ ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h \
+ ../../ModuleMathConcepts/include/interface/common/Gate.h \
+ ../../ModuleAlgorithm/include/implement/combiner/SampleGateCombinerImpl.h \
+ ../../ModuleIO/include/implement/LabelOnlyGateWriterImpl.h \
+ ../../ModuleIO/include/interface/abstract/IGateWriter.h \
+ ../../ModuleIO/include/implement/SampleRealCoordinateWriterImpl.hpp \
+ ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h
 
 ../src/TestSuite.h:
 
@@ -601,3 +607,15 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
 
 ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h:
+
+../../ModuleMathConcepts/include/interface/common/Gate.h:
+
+../../ModuleAlgorithm/include/implement/combiner/SampleGateCombinerImpl.h:
+
+../../ModuleIO/include/implement/LabelOnlyGateWriterImpl.h:
+
+../../ModuleIO/include/interface/abstract/IGateWriter.h:
+
+../../ModuleIO/include/implement/SampleRealCoordinateWriterImpl.hpp:
+
+../../ModuleIO/include/interface/abstract/ICoordinateWriter.h:

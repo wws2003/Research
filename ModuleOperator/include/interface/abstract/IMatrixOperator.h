@@ -101,7 +101,7 @@ public:
 	 * Just an utility operation for U*diag*U'
 	 * return root = U*diag*U'
 	 */
-	virtual void unitaryDediagonalize(MatrixPtr pU, const ComplexVectorRef diag, MatrixPtr prRoot) = 0;
+	virtual void unitaryDediagonalize(MatrixPtr pU, const ComplexVectorRef diag, MatrixPtrRef prRoot) = 0;
 
 	/**
 	 * Just an utility

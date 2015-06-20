@@ -133,7 +133,7 @@ void SampleMatrixOperator::eig(MatrixPtr pm, ComplexVectorRef rEigVals, MatrixPt
 	fromEigenMatrix(eigenValues, 0, rEigVals);
 }
 
-void SampleMatrixOperator::unitaryDediagonalize(MatrixPtr pU, const ComplexVectorRef diag, MatrixPtr prRoot) {
+void SampleMatrixOperator::unitaryDediagonalize(MatrixPtr pU, const ComplexVectorRef diag, MatrixPtrRef prRoot) {
 	int nbRows, nbColumns;
 	pU->getSize(nbRows, nbColumns);
 

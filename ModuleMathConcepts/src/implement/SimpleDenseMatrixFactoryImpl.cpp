@@ -36,4 +36,3 @@ MatrixPtr SimpleDenseMatrixFactoryImpl::getIdentityMatrix(int dimension) {
 	return pMatrix;
 }
 
-
