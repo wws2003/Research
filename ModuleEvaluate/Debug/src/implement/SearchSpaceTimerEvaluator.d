@@ -9,12 +9,12 @@ src/implement/SearchSpaceTimerEvaluator.d: \
  ../../ModuleIO/include/interface/common/IOCommon.h \
  ../include/interface/abstract/ITimer.h \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
- ../../ModuleIO/include/interface/abstract/IMatrixWriter.h \
  ../include/implement/ScopeTimer.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
- ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h
+ ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
+ ../../ModuleIO/include/interface/abstract/IWriter.h
 
 ../include/implement/SearchSpaceEvaluatorImpl.h:
 
@@ -34,8 +34,6 @@ src/implement/SearchSpaceTimerEvaluator.d: \
 
 ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
-../../ModuleIO/include/interface/abstract/IMatrixWriter.h:
-
 ../include/implement/ScopeTimer.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
@@ -45,3 +43,5 @@ src/implement/SearchSpaceTimerEvaluator.d: \
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
+
+../../ModuleIO/include/interface/abstract/IWriter.h:

@@ -9,21 +9,23 @@
 #define ISEARCHSPACEEVALUATOR_H_
 
 #include "AlgoCommon.h"
+#include "MathConceptsCommon.h"
 
+template<typename T>
 class ISearchSpaceEvaluator {
 public:
 
 	virtual ~ISearchSpaceEvaluator(){};
 
 	/**
-	 *Evalulate given matrix collection, possibly about running time to find approximation, etc.
+	 *Evaluate given matrix/gate collection, possibly about running time to find approximation, etc.
 	 */
-	virtual void evaluateCollection(MatrixCollectionPtr pMatrixCollection) = 0;
+	virtual void evaluateCollection(CollectionPtr<T> pCollection) = 0;
 
 	/**
-	 *Evalulate given matrix approximator, possibly about running time to get approximation, etc.
+	 *Evaluate given matrix/gate approximator, possibly about running time to get approximation, etc.
 	 */
-	virtual void evaluateApproximator(MatrixApproximatorPtr pMatrixApproximator, MatrixCollectionPtr pCoreMatrixCollection) = 0;
+	virtual void evaluateApproximator(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCoreCollection) = 0;
 };
 
 

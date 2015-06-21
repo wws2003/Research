@@ -12,7 +12,7 @@ LabelOnlyMatrixWriterImpl::LabelOnlyMatrixWriterImpl() {
 
 }
 
-void LabelOnlyMatrixWriterImpl::writeMatrix(MatrixPtr pMatrix, std::ostream& outputStream) {
+void LabelOnlyMatrixWriterImpl::write(MatrixPtr pMatrix, std::ostream& outputStream) {
 	outputStream << "Matrix label:" << pMatrix->getLabel() << std::endl;
 }
 

@@ -8,14 +8,15 @@
 #ifndef LABELONLYGATEWRITERIMPL_H_
 #define LABELONLYGATEWRITERIMPL_H_
 
-#include "IGateWriter.h"
+#include "IOCommon.h"
+#include "IWriter.h"
 
 class LabelOnlyGateWriterImpl : public IGateWriter {
 public:
 	LabelOnlyGateWriterImpl();
 
 	virtual ~LabelOnlyGateWriterImpl(){};
-	virtual void writeGate(GatePtr pGate, std::ostream& ouputStream);
+	virtual void write(GatePtr pGate, std::ostream& ouputStream);
 };
 
 

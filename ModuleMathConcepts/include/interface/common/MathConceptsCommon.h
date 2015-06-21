@@ -67,6 +67,7 @@ using CoordinatePtrRef = CoordinatePtr<T, F>&;
 typedef Gate* GatePtr;
 typedef Coordinate<GatePtr, double> GateRealCoordinate;
 typedef GateRealCoordinate* GateRealCoordinatePtr;
+typedef GateRealCoordinatePtr& GateRealCoordinatePtrRef;
 
 typedef std::vector<GatePtr> GatePtrVector;
 typedef GatePtrVector* GatePtrVectorPtr;

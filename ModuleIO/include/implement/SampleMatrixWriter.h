@@ -8,14 +8,15 @@
 #ifndef SAMPLEMATRIXWRITER_H_
 #define SAMPLEMATRIXWRITER_H_
 
-#include "IMatrixWriter.h"
+#include "IWriter.h"
+#include "IOCommon.h"
 
 class SampleMatrixWriterImpl : public IMatrixWriter {
 public:
 	SampleMatrixWriterImpl();
 
 	virtual ~SampleMatrixWriterImpl(){};
-	virtual void writeMatrix(MatrixPtr pMatrix, std::ostream& ouputStream);
+	virtual void write(MatrixPtr pMatrix, std::ostream& ouputStream);
 };
 
 

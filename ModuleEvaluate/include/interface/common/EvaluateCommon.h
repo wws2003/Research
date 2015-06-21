@@ -18,15 +18,25 @@ class ISearchSpaceConstructor;
 typedef ISearchSpaceConstructor<MatrixPtr> MatrixSearchSpaceConstructor;
 typedef ISearchSpaceConstructor<GatePtr> GateSearchSpaceConstructor;
 
+template<typename T>
 class ISearchSpaceEvaluator;
+
+typedef ISearchSpaceEvaluator<MatrixPtr> MatrixSearchSpaceEvaluator;
+typedef ISearchSpaceEvaluator<GatePtr> GateSearchSpaceEvaluator;
+
 
 typedef ITimer* TimerPtr;
 
 template<typename T>
 using SearchSpaceConstructorPtr = ISearchSpaceConstructor<T>*;
 
-typedef ISearchSpaceEvaluator* SearchSpaceEvaluatorPtr;
+template<typename T>
+using SearchSpaceEvaluatorPtr = ISearchSpaceEvaluator<T>*;
+
 typedef MatrixSearchSpaceConstructor* MatrixSearchSpaceConstructorPtr;
 typedef GateSearchSpaceConstructor* GateSearchSpaceConstructorPtr;
+
+typedef MatrixSearchSpaceEvaluator* MatrixSearchSpaceEvaluatorPtr;
+typedef GateSearchSpaceEvaluator* GateSearchSpaceEvaluatorPtr;
 
 #endif /* EVALUATECOMMON_H_ */

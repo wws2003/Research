@@ -23,6 +23,8 @@
 #include "AlgoInternal.h"
 #include "MatrixRealInnerProductByTraceImpl.h"
 #include "CoordinateOnOrthonormalBasisCalculatorImpl.cpp"
+#include "ISearchSpaceEvaluator.h"
+#include "SearchSpaceTimerEvaluator.cpp"
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
 #include "Bin.hpp"
 #include "Gate.h"
@@ -45,7 +47,7 @@ TestSuite::TestSuite() {
 	double epsilon = 1e-10;
 	m_pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(m_pMatrixOperator);
 	m_pTimer = new CpuTimer();
-	m_pSearchSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl(m_pTargets, epsilon, m_pMatrixDistanceCalculator, m_pMatrixWriter, m_pTimer, std::cout);
+	m_pSearchSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl<MatrixPtr>(m_pTargets, epsilon, m_pMatrixDistanceCalculator, m_pMatrixWriter, m_pTimer, std::cout);
 
 	m_pMatrixCombiner = new MultiplierMatrixCombinerImpl(m_pMatrixOperator);
 	m_pSearchSpaceConstructor = new SearchSpaceConstructorImpl<MatrixPtr>(m_pMatrixCombiner);
@@ -74,7 +76,7 @@ void TestSuite::test(){
 	testSimpleEvaluator();
 	testInverseCancelingSearchSpaceConstructor();
 	testSampleMatrixBinCollection();
-	freeTestShowCoordinatesInSearchSpace();
+	testCalculateCoordinatesInSearchSpace();
 }
 
 void TestSuite::testSimpleWriter() {
@@ -88,7 +90,7 @@ void TestSuite::testSimpleWriter() {
 
 	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
 
-	m_pMatrixWriter->writeMatrix(pMatrixH, std::cout);
+	m_pMatrixWriter->write(pMatrixH, std::cout);
 
 	ComplexValArray arrayT = new ComplexVal[4];
 	arrayT[0] = ComplexVal(1,0);
@@ -98,13 +100,13 @@ void TestSuite::testSimpleWriter() {
 
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
-	m_pMatrixWriter->writeMatrix(pMatrixT, std::cout);
+	m_pMatrixWriter->write(pMatrixT, std::cout);
 
 	MatrixPtr pMatrixHT = NullPtr;
 
 	m_pMatrixOperator->multiply(pMatrixH, pMatrixT, pMatrixHT);
 
-	m_pMatrixWriter->writeMatrix(pMatrixHT, std::cout);
+	m_pMatrixWriter->write(pMatrixHT, std::cout);
 
 	delete pMatrixHT;
 	delete pMatrixT;
@@ -309,7 +311,7 @@ void TestSuite::testInverseCancelingSearchSpaceConstructor() {
 	/*MatrixIteratorPtr pSearchSpaceMatrixIter = pMatrixCollection->getIteratorPtr();
 
 	while(!pSearchSpaceMatrixIter->isDone()) {
-		m_pMatrixWriter->writeMatrix(pSearchSpaceMatrixIter->getObj(), std::cout);
+		m_pMatrixWriter->write(pSearchSpaceMatrixIter->getObj(), std::cout);
 		pSearchSpaceMatrixIter->next();
 	}*/
 
@@ -381,7 +383,7 @@ void TestSuite::testSampleMatrixBinCollection() {
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
-void TestSuite::freeTestShowCoordinatesInSearchSpace() {
+void TestSuite::testCalculateCoordinatesInSearchSpace() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
 	MatrixPtrVector pBasis4;

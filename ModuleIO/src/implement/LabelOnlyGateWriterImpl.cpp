@@ -12,7 +12,7 @@ LabelOnlyGateWriterImpl::LabelOnlyGateWriterImpl() {
 
 }
 
-void LabelOnlyGateWriterImpl::writeGate(GatePtr pGate, std::ostream& outputStream) {
+void LabelOnlyGateWriterImpl::write(GatePtr pGate, std::ostream& outputStream) {
 	std::string delimeter = ".";
 	outputStream << "Gate:";
 	for(label_t::const_iterator lIter = pGate->getLabel().begin(); lIter != pGate->getLabel().end(); lIter++) {

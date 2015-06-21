@@ -8,80 +8,88 @@
 #include "SearchSpaceEvaluatorImpl.h"
 #include "ITimer.h"
 #include "IDistanceCalculator.h"
-#include "IMatrixWriter.h"
+#include "IOCommon.h"
 #include "ScopeTimer.h"
 #include "ICollection.h"
 #include "AlgoCommon.h"
 #include "IIterator.h"
 #include "IApproximator.h"
+#include "IWriter.h"
 #include <exception>
 
-void findTargetAndMeasureTime(MatrixApproximatorPtr pMatrixApproximator, MatrixCollectionPtr pCollection, MatrixPtr pTarget, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon, MatrixIteratorPtr&  prFindIter, TimerPtr pTimer, double* pSearchTime);
+template<typename T>
+void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCollection, T target, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, IteratorPtr<T>&  prFindIter, TimerPtr pTimer, double* pSearchTime);
 
-void getClosestApproximationFromFindIterator(MatrixIteratorPtr pFindResultIter, MatrixDistanceCalculatorPtr pDistanceCaculator, MatrixPtr pTarget, MatrixPtrRef prClosestApproximation, double& precision);
+template<typename T>
+void getClosestApproximationFromFindIterator(IteratorPtr<T> pFindResultIter, DistanceCalculatorPtr<T> pDistanceCaculator, T pTarget, T& prClosestApproximation, double& precision);
 
-void logSearchResult(MatrixPtr pQuery, MatrixPtr pResult, double searchTime, double precision, double epsilon,  MatrixWriterPtr pMatrixWriter, std::ostream& outputStream);
+template<typename T>
+void logSearchResult(T pQuery, T pResult, double searchTime, double precision, double epsilon, WriterPtr<T> pWriter, std::ostream& outputStream);
 
-SearchSpaceTimerEvaluatorImpl::SearchSpaceTimerEvaluatorImpl(const TargetMatrices&  pTargets, double epsilon, MatrixDistanceCalculatorPtr pMatrixDistanceCalculator, MatrixWriterPtr pMatrixWriter, TimerPtr pTimer, std::ostream& outputStream) : m_ostream(outputStream) {
-	m_targetMatrices.insert(m_targetMatrices.end(), pTargets.begin(), pTargets.end());
+template<typename T>
+SearchSpaceTimerEvaluatorImpl<T>::SearchSpaceTimerEvaluatorImpl(const TargetElements<T>& pTargets, double epsilon, DistanceCalculatorPtr<T> pDistanceCalculator, WriterPtr<T> pWriter, TimerPtr pTimer, std::ostream& outputStream) : m_ostream(outputStream){
+	m_targets.insert(m_targets.end(), pTargets.begin(), pTargets.end());
 	m_epsilon = epsilon;
-	m_pMatrixDistanceCalculator = pMatrixDistanceCalculator;
+	m_pDistanceCalculator = pDistanceCalculator;
 	m_pTimer = pTimer;
-	m_pMatrixWriter = pMatrixWriter;
+	m_pWriter = pWriter;
 }
 
 //Override
-void SearchSpaceTimerEvaluatorImpl::evaluateCollection(MatrixCollectionPtr pMatrixCollection) {
-	size_t numberOfCases = m_targetMatrices.size();
+template<typename T>
+void SearchSpaceTimerEvaluatorImpl<T>::evaluateCollection(CollectionPtr<T> pCollection) {
+	size_t numberOfCases = m_targets.size();
 
 	for(size_t i = 0; i < numberOfCases; i++) {
-		MatrixPtr pTarget = m_targetMatrices[i];
+		T target = m_targets[i];
 
 		double searchTime = 0;
 		double precision = -1; //Imply no result found
-		MatrixPtr closestApproximation = NullPtr; //Imply no result found
-		MatrixIteratorPtr pFindResultIter = NullPtr; //Imply no result found
+		T closestApproximation = NullPtr; //Imply no result found
+		IteratorPtr<T> pFindResultIter = NullPtr; //Imply no result found
 
-		findTargetAndMeasureTime(NullPtr, pMatrixCollection, pTarget, m_pMatrixDistanceCalculator, m_epsilon, pFindResultIter, m_pTimer, &searchTime);
+		findTargetAndMeasureTime<T>(NullPtr, pCollection, target, m_pDistanceCalculator, m_epsilon, pFindResultIter, m_pTimer, &searchTime);
 
-		getClosestApproximationFromFindIterator(pFindResultIter, m_pMatrixDistanceCalculator, pTarget, closestApproximation, precision);
+		getClosestApproximationFromFindIterator(pFindResultIter, m_pDistanceCalculator, target, closestApproximation, precision);
 
 		//Write the result to output stream
-		logSearchResult(pTarget, closestApproximation, searchTime, precision, m_epsilon, m_pMatrixWriter, m_ostream);
+		logSearchResult(target, closestApproximation, searchTime, precision, m_epsilon, m_pWriter, m_ostream);
 	}
 }
 
-void SearchSpaceTimerEvaluatorImpl::evaluateApproximator(MatrixApproximatorPtr pMatrixApproximator, MatrixCollectionPtr pCoreMatrixCollection) {
-	size_t numberOfCases = m_targetMatrices.size();
+template<typename T>
+void SearchSpaceTimerEvaluatorImpl<T>::evaluateApproximator(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCoreCollection) {
+	size_t numberOfCases = m_targets.size();
 
 	for(size_t i = 0; i < numberOfCases; i++) {
-		MatrixPtr pTarget = m_targetMatrices[i];
+		T target = m_targets[i];
 
 		double searchTime = 0;
 		double precision = -1; //Imply no result found
-		MatrixPtr closestApproximation = NullPtr; //Imply no result found
-		MatrixIteratorPtr pFindResultIter = NullPtr; //Imply no result found
+		T closestApproximation = NullPtr; //Imply no result found
+		IteratorPtr<T> pFindResultIter = NullPtr; //Imply no result found
 
-		findTargetAndMeasureTime(pMatrixApproximator, pCoreMatrixCollection, pTarget, m_pMatrixDistanceCalculator, m_epsilon, pFindResultIter, m_pTimer, &searchTime);
+		findTargetAndMeasureTime(pApproximator, pCoreCollection, target, m_pDistanceCalculator, m_epsilon, pFindResultIter, m_pTimer, &searchTime);
 
-		getClosestApproximationFromFindIterator(pFindResultIter, m_pMatrixDistanceCalculator, pTarget, closestApproximation, precision);
+		getClosestApproximationFromFindIterator(pFindResultIter, m_pDistanceCalculator, target, closestApproximation, precision);
 
 		//Write the result to output stream
-		logSearchResult(pTarget, closestApproximation, searchTime, precision, m_epsilon, m_pMatrixWriter, m_ostream);
+		logSearchResult(target, closestApproximation, searchTime, precision, m_epsilon, m_pWriter, m_ostream);
 	}
 }
 
-void findTargetAndMeasureTime(MatrixApproximatorPtr pMatrixApproximator, MatrixCollectionPtr pCollection, MatrixPtr pTarget, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon, MatrixIteratorPtr&  prFindIter, TimerPtr pTimer, double* pSearchTime) {
+template<typename T>
+void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCollection, T target, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, IteratorPtr<T>&  prFindIter, TimerPtr pTimer, double* pSearchTime) {
 	//Use try catch and make use of scope timer
 	try {
 		ScopeTimer scopeTimer(pTimer, pSearchTime);
 
 		//Start the lookup routine for the newly generated target
-		if(pMatrixApproximator != NullPtr) {
-			prFindIter = pMatrixApproximator->getApproximateElements(pCollection, pTarget, pDistanceCalculator, epsilon);
+		if(pApproximator != NullPtr) {
+			prFindIter = pApproximator->getApproximateElements(pCollection, target, pDistanceCalculator, epsilon);
 		}
 		else {
-			prFindIter = pCollection->findApproxElements(pTarget, pDistanceCalculator, epsilon);
+			prFindIter = pCollection->findApproxElements(target, pDistanceCalculator, epsilon);
 		}
 	}
 	catch (std::exception & e) {
@@ -89,7 +97,8 @@ void findTargetAndMeasureTime(MatrixApproximatorPtr pMatrixApproximator, MatrixC
 	}
 }
 
-void getClosestApproximationFromFindIterator(MatrixIteratorPtr pFindResultIter, MatrixDistanceCalculatorPtr pDistanceCaculator, MatrixPtr pTarget, MatrixPtrRef prClosestApproximation, double& precision) {
+template<typename T>
+void getClosestApproximationFromFindIterator(IteratorPtr<T> pFindResultIter, DistanceCalculatorPtr<T> pDistanceCaculator, T pTarget, T& prClosestApproximation, double& precision) {
 	if(pFindResultIter != NullPtr) {
 		pFindResultIter->toBegin();
 		if(!pFindResultIter->isDone()) {
@@ -101,15 +110,16 @@ void getClosestApproximationFromFindIterator(MatrixIteratorPtr pFindResultIter, 
 	}
 }
 
-void logSearchResult(MatrixPtr pQuery, MatrixPtr pResult, double searchTime, double precision, double epsilon,  MatrixWriterPtr pMatrixWriter, std::ostream& outputStream) {
+template<typename T>
+void logSearchResult(T pQuery, T pResult, double searchTime, double precision, double epsilon, WriterPtr<T> pWriter, std::ostream& outputStream) {
 	const std::string delimeter = ", ";
 	const std::string endLine = "\n";
 
 	outputStream << "Query:" << endLine;
-	pMatrixWriter->writeMatrix(pQuery, outputStream);
+	pWriter->write(pQuery, outputStream);
 	outputStream << "Epsilon:" << epsilon << endLine;
 	outputStream << "Result:" << endLine;
-	pMatrixWriter->writeMatrix(pResult, outputStream);
+	pWriter->write(pResult, outputStream);
 	outputStream << "Info" << endLine;
 	outputStream << "Search time: " ;
 	outputStream << searchTime << delimeter;
@@ -117,4 +127,3 @@ void logSearchResult(MatrixPtr pQuery, MatrixPtr pResult, double searchTime, dou
 	outputStream << precision;
 	outputStream << endLine;
 }
-

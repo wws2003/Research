@@ -12,7 +12,7 @@ SampleMatrixWriterImpl::SampleMatrixWriterImpl() {
 
 }
 
-void SampleMatrixWriterImpl::writeMatrix(MatrixPtr pMatrix, std::ostream& outputStream) {
+void SampleMatrixWriterImpl::write(MatrixPtr pMatrix, std::ostream& outputStream) {
 	int nbRows, nbColumns;
 	pMatrix->getSize(nbRows, nbColumns);
 	outputStream << "Matrix label:" << pMatrix->getLabel() << std::endl;

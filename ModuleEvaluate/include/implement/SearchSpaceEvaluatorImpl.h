@@ -15,27 +15,33 @@
 #include <ostream>
 #include <vector>
 
-#ifndef TargetMatrices
-typedef std::vector<MatrixPtr> TargetMatrices;
+#ifndef TargetElements
+template<typename T>
+using TargetElements = std::vector<T>;
 #endif
 
-class SearchSpaceTimerEvaluatorImpl : public ISearchSpaceEvaluator {
+template<typename T>
+class SearchSpaceTimerEvaluatorImpl : public ISearchSpaceEvaluator<T> {
 public:
-	SearchSpaceTimerEvaluatorImpl(const TargetMatrices& pTargets, double epsilon, MatrixDistanceCalculatorPtr pMatrixDistanceCalculator, MatrixWriterPtr pMatrixWriter, TimerPtr pTimer, std::ostream& outputStream);
+	SearchSpaceTimerEvaluatorImpl(const TargetElements<T>& pTargets, double epsilon, DistanceCalculatorPtr<T> pDistanceCalculator, WriterPtr<T> pWriter, TimerPtr pTimer, std::ostream& outputStream);
 	virtual ~SearchSpaceTimerEvaluatorImpl(){};
 
-	//Override
-	virtual void evaluateCollection(MatrixCollectionPtr pMatrixCollection);
+	/**
+	 *Evaluate given matrix/gate collection, possibly about running time to find approximation, etc.
+	 */
+	virtual void evaluateCollection(CollectionPtr<T> pCollection);
 
-	//Override
-	virtual void evaluateApproximator(MatrixApproximatorPtr pMatrixApproximator, MatrixCollectionPtr pCoreMatrixCollection);
+	/**
+	 *Evaluate given matrix/gate approximator, possibly about running time to get approximation, etc.
+	 */
+	virtual void evaluateApproximator(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCoreCollection);
 
 private:
-	TargetMatrices m_targetMatrices;
+	TargetElements<T> m_targets;
 	double m_epsilon;
-	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
+	DistanceCalculatorPtr<T> m_pDistanceCalculator;
 	TimerPtr m_pTimer;
-	MatrixWriterPtr m_pMatrixWriter;
+	WriterPtr<T> m_pWriter;
 	std::ostream& m_ostream;
 };
 

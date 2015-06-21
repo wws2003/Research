@@ -30,6 +30,9 @@ template<typename T> class ICollection;
 template<typename T>
 using CollectionPtr = ICollection<T>*;
 
+template<typename T>
+using ApproximatorPtr = IApproximator<T>*;
+
 typedef ICollection<MatrixRealCoordinatePtr> MatrixRealCoordinateCollection;
 typedef ICollection<GateRealCoordinatePtr> GateRealCoordinateCollection;
 typedef ICollection<MatrixPtr> IMatrixCollection;
