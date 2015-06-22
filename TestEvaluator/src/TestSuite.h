@@ -29,13 +29,14 @@ private:
 	void testInverseCancelingSearchSpaceConstructor();
 	void testSampleMatrixBinCollection();
 	void testCalculateCoordinatesInSearchSpace();
+	void freeTestGateCollectionEvaluator();
 
 	//SearchSpaceEvaluatorPtr m_pSearchSpaceEvaluator;
 	MatrixWriterPtr m_pMatrixWriter;
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
 
-	std::vector<MatrixPtr> m_pTargets;
+	std::vector<MatrixPtr> m_targets;
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
 	TimerPtr m_pTimer;
 	MatrixSearchSpaceEvaluatorPtr m_pSearchSpaceEvaluator;

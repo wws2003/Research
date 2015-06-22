@@ -1,6 +1,6 @@
-src/implement/combiner/SampleGateCombinerImpl.d: \
- ../src/implement/combiner/SampleGateCombinerImpl.cpp \
- ../include/implement/combiner/SampleGateCombinerImpl.h \
+src/implement/combiner/GateCombinerImpl.d: \
+ ../src/implement/combiner/GateCombinerImpl.cpp \
+ ../include/implement/combiner/GateCombinerImpl.h \
  ../include/interface/abstract/ICombiner.h \
  ../include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
@@ -9,9 +9,10 @@ src/implement/combiner/SampleGateCombinerImpl.d: \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h \
- ../../ModuleOperator/include/interface/common/OperatorCommon.h
+ ../../ModuleOperator/include/interface/common/OperatorCommon.h \
+ ../include/internal-abstract/combiner/IGateCombinabilityChecker.h
 
-../include/implement/combiner/SampleGateCombinerImpl.h:
+../include/implement/combiner/GateCombinerImpl.h:
 
 ../include/interface/abstract/ICombiner.h:
 
@@ -30,3 +31,5 @@ src/implement/combiner/SampleGateCombinerImpl.d: \
 ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h:
 
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
+
+../include/internal-abstract/combiner/IGateCombinabilityChecker.h:

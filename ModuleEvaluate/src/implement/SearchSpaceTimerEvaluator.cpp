@@ -119,7 +119,13 @@ void logSearchResult(T pQuery, T pResult, double searchTime, double precision, d
 	pWriter->write(pQuery, outputStream);
 	outputStream << "Epsilon:" << epsilon << endLine;
 	outputStream << "Result:" << endLine;
-	pWriter->write(pResult, outputStream);
+	if(pResult != NullPtr) {
+		pWriter->write(pResult, outputStream);
+	}
+	else {
+		outputStream << "No result found" << endLine;
+	}
+
 	outputStream << "Info" << endLine;
 	outputStream << "Search time: " ;
 	outputStream << searchTime << delimeter;

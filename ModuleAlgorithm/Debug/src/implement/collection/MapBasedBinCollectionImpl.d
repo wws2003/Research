@@ -4,9 +4,8 @@ src/implement/collection/MapBasedBinCollectionImpl.d: \
  ../include/internal-abstract/AlgoInternal.h \
  ../include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
- ../include/internal-abstract/IBinCollection.h \
+ ../include/internal-abstract/collection/IBinCollection.h \
  ../include/implement/bin/Bin.hpp \
- ../include/internal-abstract/AlgoInternal.h \
  ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../include/interface/abstract/IIterator.h
 
@@ -18,11 +17,9 @@ src/implement/collection/MapBasedBinCollectionImpl.d: \
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
 
-../include/internal-abstract/IBinCollection.h:
+../include/internal-abstract/collection/IBinCollection.h:
 
 ../include/implement/bin/Bin.hpp:
-
-../include/internal-abstract/AlgoInternal.h:
 
 ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
 

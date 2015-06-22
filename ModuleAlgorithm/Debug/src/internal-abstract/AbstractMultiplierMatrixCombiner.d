@@ -1,6 +1,6 @@
 src/internal-abstract/AbstractMultiplierMatrixCombiner.d: \
  ../src/internal-abstract/AbstractMultiplierMatrixCombiner.cpp \
- ../include/internal-abstract/AbstractMultiplierMatrixCombiner.h \
+ ../include/internal-abstract/combiner/AbstractMultiplierMatrixCombiner.h \
  ../include/interface/abstract/ICombiner.h \
  ../include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
@@ -9,7 +9,7 @@ src/internal-abstract/AbstractMultiplierMatrixCombiner.d: \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h
 
-../include/internal-abstract/AbstractMultiplierMatrixCombiner.h:
+../include/internal-abstract/combiner/AbstractMultiplierMatrixCombiner.h:
 
 ../include/interface/abstract/ICombiner.h:
 

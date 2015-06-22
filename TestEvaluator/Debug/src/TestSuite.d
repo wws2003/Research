@@ -183,14 +183,13 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
  ../../ModuleAlgorithm/include/implement/combiner/AlwaysTrueMultiplierMatrixCombinerImpl.h \
- ../../ModuleAlgorithm/include/internal-abstract/AbstractMultiplierMatrixCombiner.h \
+ ../../ModuleAlgorithm/include/internal-abstract/combiner/AbstractMultiplierMatrixCombiner.h \
  ../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h \
  ../../ModuleAlgorithm/src/implement/collection/MapBasedBinCollectionImpl.cpp \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
- ../../ModuleAlgorithm/include/internal-abstract/IBinCollection.h \
+ ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
  ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
- ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
  ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h \
  ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h \
  ../../ModuleOperator/src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp \
@@ -203,10 +202,16 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
  ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
- ../../ModuleAlgorithm/include/implement/combiner/SampleGateCombinerImpl.h \
+ ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
+ ../../ModuleAlgorithm/include/implement/combiner/GateSelectiveCombinabilityCheckerImpl.h \
+ ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
+ ../../ModuleAlgorithm/include/implement/combiner/GateIdentityCycleCombinabilityCheckerImpl.h \
+ ../../ModuleOperator/include/implement/GateCoordinateCalculatorImpl.h \
  ../../ModuleIO/include/implement/LabelOnlyGateWriterImpl.h \
  ../../ModuleIO/include/implement/SampleRealCoordinateWriterImpl.hpp \
- ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h
+ ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h \
+ ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h \
+ ../../ModuleIO/include/implement/FullGateWriterImpl.h
 
 ../src/TestSuite.h:
 
@@ -578,7 +583,7 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleAlgorithm/include/implement/combiner/AlwaysTrueMultiplierMatrixCombinerImpl.h:
 
-../../ModuleAlgorithm/include/internal-abstract/AbstractMultiplierMatrixCombiner.h:
+../../ModuleAlgorithm/include/internal-abstract/combiner/AbstractMultiplierMatrixCombiner.h:
 
 ../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h:
 
@@ -588,11 +593,9 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
 
-../../ModuleAlgorithm/include/internal-abstract/IBinCollection.h:
+../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h:
 
 ../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
-
-../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
 
 ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h:
 
@@ -618,10 +621,22 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
 
-../../ModuleAlgorithm/include/implement/combiner/SampleGateCombinerImpl.h:
+../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h:
+
+../../ModuleAlgorithm/include/implement/combiner/GateSelectiveCombinabilityCheckerImpl.h:
+
+../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h:
+
+../../ModuleAlgorithm/include/implement/combiner/GateIdentityCycleCombinabilityCheckerImpl.h:
+
+../../ModuleOperator/include/implement/GateCoordinateCalculatorImpl.h:
 
 ../../ModuleIO/include/implement/LabelOnlyGateWriterImpl.h:
 
 ../../ModuleIO/include/implement/SampleRealCoordinateWriterImpl.hpp:
 
 ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h:
+
+../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:
+
+../../ModuleIO/include/implement/FullGateWriterImpl.h:

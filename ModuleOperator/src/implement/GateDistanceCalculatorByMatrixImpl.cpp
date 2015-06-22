@@ -6,6 +6,7 @@
  */
 #include "GateDistanceCalculatorByMatrixImpl.h"
 #include "Gate.h"
+
 GateDistanceCalculatorByMatrixImpl::GateDistanceCalculatorByMatrixImpl(MatrixDistanceCalculatorPtr pMatrixDistanceCalculator) {
 	m_pMatrixDistanceCalculator = pMatrixDistanceCalculator;
 }

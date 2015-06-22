@@ -44,6 +44,8 @@
 									<listOptionValue builtIn="false" value="../src/implement/approximator"/>
 									<listOptionValue builtIn="false" value="../include/implement/bin"/>
 									<listOptionValue builtIn="false" value="../include/internal-abstract"/>
+									<listOptionValue builtIn="false" value="../include/internal-abstract/collection"/>
+									<listOptionValue builtIn="false" value="../include/internal-abstract/combiner"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.1870982613" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.other.pic.1786971405" name="Position Independent Code (-fPIC)" superClass="gnu.cpp.compiler.option.other.pic" value="false" valueType="boolean"/>

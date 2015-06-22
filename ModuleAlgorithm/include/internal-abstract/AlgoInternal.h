@@ -32,6 +32,14 @@ template<typename T>
 using BinCollectionPtr = IBinCollection<T>*;
 
 template<typename T>
+class IEquivalentQueryGenerator;
+
+typedef IEquivalentQueryGenerator<GatePtr> IEquivalentGateQueryGenerator;
+typedef IEquivalentQueryGenerator<MatrixPtr> IEquivalentMatrixQueryGenerator;
+
+class IGateCombinabilityChecker;
+
+template<typename T>
 using BinIteratorPtr =  IIterator<BinPtr<T> >*;
 
 typedef IIterator<MatrixBinPtr> MatrixBinIterator;
@@ -41,6 +49,12 @@ typedef std::string BinPattern;
 
 typedef IMatrixBinCollection* MatrixBinCollectionPtr;
 
+template<typename T>
+using EquivalentQueryGeneratorPtr = IEquivalentQueryGenerator<T>*;
 
+typedef IEquivalentGateQueryGenerator* EquivalentGateQueryGeneratorPtr;
+typedef IEquivalentMatrixQueryGenerator* EquivalentMatrixQueryGeneratorPtr;
+
+typedef IGateCombinabilityChecker* GateCombinabilityCheckerPtr;
 
 #endif /* ALGOINTERNAL_H_ */

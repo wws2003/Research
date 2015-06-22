@@ -14,7 +14,7 @@ Gate::Gate(MatrixPtr pMatrix, cost_t cost, std::string singleLabel) {
 	m_labelStr = singleLabel;
 }
 
-Gate::Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label) {
+Gate::Gate(MatrixPtr pMatrix, cost_t cost, const LabelSeq& label) {
 	m_pMatrix = pMatrix;
 	m_cost = cost;
 	m_label = label;
@@ -23,7 +23,7 @@ Gate::Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label) {
 	}
 }
 
-Gate::Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label, const std::string& labelStr) {
+Gate::Gate(MatrixPtr pMatrix, cost_t cost, const LabelSeq& label, const std::string& labelStr) {
 	m_pMatrix = pMatrix;
 	m_cost = cost;
 	m_label = label;

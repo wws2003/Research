@@ -66,7 +66,7 @@ void VectorBasedReadOnlyIteratorImpl<T>:: prev() {
 //Check if the last element has been checked]
 template<typename T>
 bool VectorBasedReadOnlyIteratorImpl<T>::isDone() {
-	return (m_counter > m_elements.size() - 1);
+	return (m_counter + 1 > m_elements.size());
 }
 
 //Get currently pointed element

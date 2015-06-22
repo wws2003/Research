@@ -13,15 +13,15 @@
 #include <vector>
 
 typedef unsigned int cost_t;
-typedef std::vector<std::string> label_t;
+typedef std::vector<std::string> LabelSeq;
 
 class Gate {
 public:
 	Gate(MatrixPtr pMatrix, cost_t cost, std::string singleLabel);
 
-	Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label);
+	Gate(MatrixPtr pMatrix, cost_t cost, const LabelSeq& label);
 
-	Gate(MatrixPtr pMatrix, cost_t cost, const label_t& label, const std::string& labelStr);
+	Gate(MatrixPtr pMatrix, cost_t cost, const LabelSeq& label, const std::string& labelStr);
 
 	virtual ~Gate();
 
@@ -33,7 +33,7 @@ public:
 		return m_cost;
 	}
 
-	inline const label_t& getLabel() {
+	inline const LabelSeq& getLabelSeq() {
 		return m_label;
 	}
 
@@ -44,7 +44,7 @@ public:
 private:
 	MatrixPtr m_pMatrix;
 	cost_t m_cost;
-	label_t m_label;
+	LabelSeq m_label;
 	std::string m_labelStr;
 };
 

@@ -40,7 +40,7 @@ class IInnerProductCalculator;
 typedef IMatrixOperator* MatrixOperatorPtr;
 
 typedef IMatrixDistanceCalculator* MatrixDistanceCalculatorPtr;
-
+typedef IGateDistanceCalculator* GateDistanceCalculatorPtr;
 typedef IMatrixRealCoordinateDistanceCalculator* MatrixRealCoordinateDistanceCalculatorPtr;
 
 template<typename E, typename Field>

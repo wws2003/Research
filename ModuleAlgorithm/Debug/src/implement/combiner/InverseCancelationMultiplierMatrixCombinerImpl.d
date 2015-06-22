@@ -1,7 +1,7 @@
 src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.d: \
  ../src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.cpp \
  ../include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h \
- ../include/internal-abstract/AbstractMultiplierMatrixCombiner.h \
+ ../include/internal-abstract/combiner/AbstractMultiplierMatrixCombiner.h \
  ../include/interface/abstract/ICombiner.h \
  ../include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
@@ -12,7 +12,7 @@ src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.d: \
 
 ../include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h:
 
-../include/internal-abstract/AbstractMultiplierMatrixCombiner.h:
+../include/internal-abstract/combiner/AbstractMultiplierMatrixCombiner.h:
 
 ../include/interface/abstract/ICombiner.h:
 
