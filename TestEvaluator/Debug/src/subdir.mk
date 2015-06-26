@@ -4,14 +4,20 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/AssemblerUtil.cpp \
+../src/IntegratingTester.cpp \
 ../src/TestEvaluator.cpp \
 ../src/TestSuite.cpp 
 
 OBJS += \
+./src/AssemblerUtil.o \
+./src/IntegratingTester.o \
 ./src/TestEvaluator.o \
 ./src/TestSuite.o 
 
 CPP_DEPS += \
+./src/AssemblerUtil.d \
+./src/IntegratingTester.d \
 ./src/TestEvaluator.d \
 ./src/TestSuite.d 
 

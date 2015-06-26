@@ -56,5 +56,6 @@ typedef IEquivalentGateQueryGenerator* EquivalentGateQueryGeneratorPtr;
 typedef IEquivalentMatrixQueryGenerator* EquivalentMatrixQueryGeneratorPtr;
 
 typedef IGateCombinabilityChecker* GateCombinabilityCheckerPtr;
+typedef std::vector<GateCombinabilityCheckerPtr> GateCombinabilityCheckers;
 
 #endif /* ALGOINTERNAL_H_ */

@@ -22,7 +22,7 @@ MatrixIteratorPtr NINAMatrixApproximator::getApproximateElements(MatrixCollectio
 
 	//Find first step approximate matrix from core collection
 
-	MatrixIteratorPtr pFirstApproximationMatrixIter = pCoreCollection->findApproxElements(pQuery, pDistanceCalculator, epsilon);
+	MatrixIteratorPtr pFirstApproximationMatrixIter = pCoreCollection->findNearestNeighbour(pQuery, pDistanceCalculator, epsilon);
 	if(pFirstApproximationMatrixIter == NullPtr || pFirstApproximationMatrixIter->isDone()) {
 		return pFirstApproximationMatrixIter;
 	}
@@ -84,7 +84,7 @@ MatrixPtr NINAMatrixApproximator::findMatrixToFitStep(MatrixPtr pStepMatrix, Mat
 	//TODO Modify proper epsilonForStepMatrix
 	double epsilonForStepMatrix = 1e-4;
 
-	MatrixIteratorPtr pNearStepMatrixIterator = m_pNearIdentityMatrixCollection->findApproxElements(pStepMatrix, pDistanceCalculator, epsilonForStepMatrix);
+	MatrixIteratorPtr pNearStepMatrixIterator = m_pNearIdentityMatrixCollection->findNearestNeighbour(pStepMatrix, pDistanceCalculator, epsilonForStepMatrix);
 	pNearStepMatrixIterator->toBegin();
 	if(pNearStepMatrixIterator->isDone()) {
 		return NullPtr;

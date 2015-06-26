@@ -16,7 +16,8 @@ src/implement/approximator/NearIdentityElementApproximator.d: \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../include/implement/collection/VectorBasedCollectionImpl.hpp \
  ../include/implement/iterator/VectorBasedIteratorImpl.hpp \
- ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp
+ ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h
 
 ../include/implement/approximator/NearIdentityElementApproximator.h:
 
@@ -51,3 +52,5 @@ src/implement/approximator/NearIdentityElementApproximator.d: \
 ../include/implement/iterator/VectorBasedIteratorImpl.hpp:
 
 ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:

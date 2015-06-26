@@ -43,8 +43,10 @@ template<typename T>
 using IteratorPtr = IIterator<T>* ;
 
 typedef IIterator<MatrixPtr> MatrixIterator;
+typedef IIterator<GatePtr> GateIterator;
 
 typedef MatrixIterator* MatrixIteratorPtr;
+typedef GateIterator* GateIteratorPtr;
 
 typedef IIterator<MatrixRealCoordinatePtr>* MatrixRealCoordinateIteratorPtr;
 

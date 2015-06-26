@@ -16,8 +16,6 @@
 #include "OperatorCommon.h"
 #include <vector>
 
-typedef std::vector<GateCombinabilityCheckerPtr> GateCombinabilityCheckers;
-
 class GateCombinerImpl: public ICombiner<GatePtr> {
 public:
 	GateCombinerImpl(const GateCombinabilityCheckers& combinabilityCheckers, MatrixOperatorPtr pMatrixOperator);

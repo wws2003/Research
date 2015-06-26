@@ -40,7 +40,7 @@ public:
 	virtual CollectionSize_t size() const = 0;
 
 	//Find the neighbor elements to the query, given distance calculator
-	virtual IteratorPtr<T> findApproxElements(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const = 0;
+	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const = 0;
 
 };
 

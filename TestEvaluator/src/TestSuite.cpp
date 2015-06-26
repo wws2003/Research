@@ -31,6 +31,7 @@
 #include "GateCombinerImpl.h"
 #include "GateSelectiveCombinabilityCheckerImpl.h"
 #include "GateIdentityCycleCombinabilityCheckerImpl.h"
+#include "GateCancelationCombinabilityCheckerImpl.h"
 #include "GateCoordinateCalculatorImpl.h"
 #include "LabelOnlyGateWriterImpl.h"
 #include "SampleRealCoordinateWriterImpl.hpp"
@@ -43,13 +44,15 @@
 
 #define my_small_rand(factor) (double)(rand() - (RAND_MAX / 2)) / (double)RAND_MAX * factor
 
-void init2QubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT, GatePtr& pH1, GatePtr& pH2, GatePtr& pT1, GatePtr& pT2);
+void init2QubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT1, GatePtr& pCNOT2, GatePtr& pH1, GatePtr& pH2, GatePtr& pT1, GatePtr& pT2);
 
 void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<double> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU);
 
 void getGateSelectiveCombinabilityChecker(GateCombinabilityCheckerPtr& pGateSelectiveCombinabilityChecker);
 
 void getGateIdentityCycleCombinabilityChecker(GateCombinabilityCheckerPtr& pGateIdentityCycleCombinabilityChecker);
+
+void getGateCancelationCombinabilityChecker(GateCombinabilityCheckerPtr& pGateCancelationCombinabilityChecker);
 
 void getNearIdentityGate(MatrixOperatorPtr pMatrixOperator, MatrixPtrVector pHermitianBasis, TargetElements<GatePtr>& targets);
 
@@ -153,7 +156,7 @@ void TestSuite::testSimpleCollection() {
 	MatrixPtr pI = m_pMatrixFactory->getIdentityMatrix(2);
 	double epsilon = 1;
 
-	MatrixIteratorPtr pResultIter = pMatrixCollection->findApproxElements(pI, m_pMatrixDistanceCalculator, epsilon);
+	MatrixIteratorPtr pResultIter = pMatrixCollection->findNearestNeighbour(pI, m_pMatrixDistanceCalculator, epsilon);
 	pResultIter->toBegin();
 
 	//Must find T because d(T,I) ~ 0.76537 < epsilon = 1
@@ -216,7 +219,7 @@ void TestSuite::testSimpleSearchSpaceConstructor() {
 	MatrixPtr pHTHTH = NullPtr;
 	m_pMatrixOperator->multiply(pHTHT, pMatrixT, pHTHTH);
 
-	MatrixIteratorPtr pResultIter = pMatrixCollection->findApproxElements(pHTHTH, m_pMatrixDistanceCalculator, 0);
+	MatrixIteratorPtr pResultIter = pMatrixCollection->findNearestNeighbour(pHTHTH, m_pMatrixDistanceCalculator, 0);
 	assert(pResultIter != NullPtr);
 	pResultIter->toBegin();
 	assert(!pResultIter->isDone());
@@ -224,7 +227,7 @@ void TestSuite::testSimpleSearchSpaceConstructor() {
 	//I = H*H
 	MatrixPtr pHH = NullPtr;
 	m_pMatrixOperator->multiply(pMatrixH, pMatrixH, pHH);
-	pResultIter = pMatrixCollection->findApproxElements(pHH, m_pMatrixDistanceCalculator, 0);
+	pResultIter = pMatrixCollection->findNearestNeighbour(pHH, m_pMatrixDistanceCalculator, 0);
 	assert(pResultIter != NullPtr);
 	pResultIter->toBegin();
 	assert(!pResultIter->isDone());
@@ -407,13 +410,14 @@ void TestSuite::testCalculateCoordinatesInSearchSpace() {
 
 	assert(pBasis4.size() == 15);
 
-	GatePtr pCNOTGate = NullPtr;
+	GatePtr pCNOT1Gate = NullPtr;
+	GatePtr pCNOT2Gate = NullPtr;
 	GatePtr pH1Gate = NullPtr;
 	GatePtr pH2Gate = NullPtr;
 	GatePtr pT1Gate = NullPtr;
 	GatePtr pT2Gate = NullPtr;
 
-	init2QubitsLibGates(m_pMatrixOperator, pCNOTGate, pH1Gate, pH2Gate, pT1Gate, pT2Gate);
+	init2QubitsLibGates(m_pMatrixOperator, pCNOT1Gate,pCNOT2Gate,  pH1Gate, pH2Gate, pT1Gate, pT2Gate);
 
 	GateCombinabilityCheckerPtr pIdentityCycleChecker = NullPtr;
 	getGateIdentityCycleCombinabilityChecker(pIdentityCycleChecker);
@@ -421,12 +425,16 @@ void TestSuite::testCalculateCoordinatesInSearchSpace() {
 	GateCombinabilityCheckerPtr pCombinableChecker = NullPtr;
 	getGateSelectiveCombinabilityChecker(pCombinableChecker);
 
-	GateCombinabilityCheckers combinabilityCheckers = {pIdentityCycleChecker, pCombinableChecker};
+	GateCombinabilityCheckerPtr pCancelationChecker = NullPtr;
+	getGateCancelationCombinabilityChecker(pCancelationChecker);
+
+	GateCombinabilityCheckers combinabilityCheckers = {pIdentityCycleChecker, pCombinableChecker, pCancelationChecker};
 
 	CombinerPtr<GatePtr> pGateCombiner = new GateCombinerImpl(combinabilityCheckers, m_pMatrixOperator);
 
 	GateCollectionPtr pUniversalSet = new VectorBasedCollectionImpl<GatePtr>();
-	pUniversalSet->addElement(pCNOTGate);
+	pUniversalSet->addElement(pCNOT1Gate);
+	pUniversalSet->addElement(pCNOT2Gate);
 	pUniversalSet->addElement(pH1Gate);
 	pUniversalSet->addElement(pH2Gate);
 	pUniversalSet->addElement(pT1Gate);
@@ -456,7 +464,7 @@ void TestSuite::testCalculateCoordinatesInSearchSpace() {
 	int wrongCoordinateCalculateCounter = 0;
 
 	while(!pGateIter->isDone()) {
-		pGateWriter->write(pGateIter->getObj(), std::cout);
+		//pGateWriter->write(pGateIter->getObj(), std::cout);
 
 		MatrixRealCoordinatePtr pMatrixRealCoordinate = NullPtr;
 		pMatrixRealCoordinateCalculator->calulateElementCoordinate(pGateIter->getObj()->getMatrix(), pMatrixRealCoordinate);
@@ -529,13 +537,14 @@ void TestSuite::freeTestGateCollectionEvaluator() {
 
 	assert(pBasis4.size() == 15);
 
-	GatePtr pCNOTGate = NullPtr;
+	GatePtr pCNOT1Gate = NullPtr;
+	GatePtr pCNOT2Gate = NullPtr;
 	GatePtr pH1Gate = NullPtr;
 	GatePtr pH2Gate = NullPtr;
 	GatePtr pT1Gate = NullPtr;
 	GatePtr pT2Gate = NullPtr;
 
-	init2QubitsLibGates(m_pMatrixOperator, pCNOTGate, pH1Gate, pH2Gate, pT1Gate, pT2Gate);
+	init2QubitsLibGates(m_pMatrixOperator, pCNOT1Gate,pCNOT2Gate,  pH1Gate, pH2Gate, pT1Gate, pT2Gate);
 
 	GateCombinabilityCheckerPtr pIdentityCycleChecker = NullPtr;
 	getGateIdentityCycleCombinabilityChecker(pIdentityCycleChecker);
@@ -543,12 +552,16 @@ void TestSuite::freeTestGateCollectionEvaluator() {
 	GateCombinabilityCheckerPtr pCombinableChecker = NullPtr;
 	getGateSelectiveCombinabilityChecker(pCombinableChecker);
 
-	GateCombinabilityCheckers combinabilityCheckers = {pIdentityCycleChecker, pCombinableChecker};
+	GateCombinabilityCheckerPtr pCancelationChecker = NullPtr;
+	getGateCancelationCombinabilityChecker(pCancelationChecker);
+
+	GateCombinabilityCheckers combinabilityCheckers = {pIdentityCycleChecker, pCombinableChecker, pCancelationChecker};
 
 	CombinerPtr<GatePtr> pGateCombiner = new GateCombinerImpl(combinabilityCheckers, m_pMatrixOperator);
 
 	GateCollectionPtr pUniversalSet = new VectorBasedCollectionImpl<GatePtr>();
-	pUniversalSet->addElement(pCNOTGate);
+	pUniversalSet->addElement(pCNOT1Gate);
+	pUniversalSet->addElement(pCNOT2Gate);
 	pUniversalSet->addElement(pH1Gate);
 	pUniversalSet->addElement(pH2Gate);
 	pUniversalSet->addElement(pT1Gate);
@@ -556,7 +569,7 @@ void TestSuite::freeTestGateCollectionEvaluator() {
 
 	GateCollectionPtr pGateCollection = new VectorBasedCollectionImpl<GatePtr>();
 
-	int maxSequenceLength = 8;
+	int maxSequenceLength = 5;
 
 	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new SearchSpaceConstructorImpl<GatePtr>(pGateCombiner);
 
@@ -574,7 +587,7 @@ void TestSuite::freeTestGateCollectionEvaluator() {
 
 	CoordinateWriterPtr<MatrixPtr, double> pMatrixCoordinateWriter = new SampleRealCoordinateWriterImpl<MatrixPtr>();
 
-	double epsilon = 3;
+	double epsilon = 2;
 	TargetElements<GatePtr> targets;
 	getNearIdentityGate(m_pMatrixOperator, pBasis4, targets);
 
@@ -602,18 +615,29 @@ void TestSuite::freeTestGateCollectionEvaluator() {
 	std::cout << __func__ << " passed: " << std::endl << "--------------------------"<<  std::endl ;
 }
 
-void init2QubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT, GatePtr& pH1, GatePtr& pH2, GatePtr& pT1, GatePtr& pT2) {
-	ComplexVal arrayCNOT[] = {1.0, 0.0, 0.0, 0.0
+void init2QubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT1, GatePtr& pCNOT2, GatePtr& pH1, GatePtr& pH2, GatePtr& pT1, GatePtr& pT2) {
+	ComplexVal arrayCNOT1[] = {1.0, 0.0, 0.0, 0.0
 			, 0.0, 1.0, 0.0, 0.0
 			, 0.0, 0.0, 0.0, 1.0
 			, 0.0, 0.0, 1.0, 0.0};
 
-	MatrixPtr pCNOTMat = new SimpleDenseMatrixImpl(arrayCNOT, ROW_SPLICE, 4, 4, "");
-	MatrixPtr pSCNOTMat = NullPtr;
-	pMatrixOperator->specialUnitaryFromUnitary(pCNOTMat, pSCNOTMat);
+	MatrixPtr pCNOTMat1 = new SimpleDenseMatrixImpl(arrayCNOT1, ROW_SPLICE, 4, 4, "");
+	MatrixPtr pSCNOTMat1 = NullPtr;
+	pMatrixOperator->specialUnitaryFromUnitary(pCNOTMat1, pSCNOTMat1);
 
 
-	pCNOT = new Gate(pSCNOTMat, 1, "CNOT");
+	pCNOT1 = new Gate(pSCNOTMat1, 1, "CNOT1");
+
+	ComplexVal arrayCNOT2[] = {0.0, 1.0, 0.0, 0.0
+			, 1.0, 0.0, 0.0, 0.0
+			, 0.0, 0.0, 1.0, 0.0
+			, 0.0, 0.0, 0.0, 1.0};
+
+	MatrixPtr pCNOTMat2 = new SimpleDenseMatrixImpl(arrayCNOT2, ROW_SPLICE, 4, 4, "");
+	MatrixPtr pSCNOTMat2 = NullPtr;
+	pMatrixOperator->specialUnitaryFromUnitary(pCNOTMat2, pSCNOTMat2);
+
+	pCNOT2 = new Gate(pSCNOTMat2, 1, "CNOT2");
 
 	double inverseSQRT2 = 1/sqrt(2);
 
@@ -658,10 +682,14 @@ void init2QubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT, Gate
 }
 
 void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<double> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU) {
-	ComplexVal zeroArr[] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
-	MatrixPtr pH = new SimpleDenseMatrixImpl(zeroArr, ROW_SPLICE, 4, 4, "Z");
+	ComplexVal zeroArr[] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+	MatrixPtr pH = new SimpleDenseMatrixImpl(zeroArr, ROW_SPLICE, 4, 4, "Hermitian");
+
+	MatrixWriterPtr pMatrixWriter = new SampleMatrixWriterImpl();
 
 	for(int i = 0; i < 15; i++) {
+		//pMatrixWriter->write(pHermitianBasis[i], std::cout);
+
 		MatrixPtr pPartialSum = NullPtr;
 		pMatrixOperator->multiplyScalar(pHermitianBasis[i], ComplexVal(coordinates[i], 0.0), pPartialSum);
 		MatrixPtr pSum = NullPtr;
@@ -669,12 +697,21 @@ void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr 
 		delete pPartialSum;
 		delete pH;
 		pH = pSum;
+
+		//pMatrixWriter->write(pH, std::cout);
 	}
+
+
+	//pMatrixWriter->write(pH, std::cout);
 
 	MatrixPtr pHi = NullPtr;
 	pMatrixOperator->multiplyScalar(pH, ComplexVal(0.0,1.0), pHi);
 
 	pMatrixOperator->exponential(pHi, pU);
+
+	//pMatrixWriter->write(pU, std::cout);
+
+	delete pMatrixWriter;
 
 	delete pHi;
 
@@ -687,24 +724,35 @@ void getGateSelectiveCombinabilityChecker(GateCombinabilityCheckerPtr& pGateSele
 	combinableLabelMap.insert(CombinableGateLabelPair("T1","H2"));
 	combinableLabelMap.insert(CombinableGateLabelPair("T1","T1"));
 	combinableLabelMap.insert(CombinableGateLabelPair("T1","T2"));
-	combinableLabelMap.insert(CombinableGateLabelPair("T1","CNOT"));
+	combinableLabelMap.insert(CombinableGateLabelPair("T1","CNOT1"));
+	combinableLabelMap.insert(CombinableGateLabelPair("T1","CNOT2"));
 
 	combinableLabelMap.insert(CombinableGateLabelPair("H1","T1"));
 	combinableLabelMap.insert(CombinableGateLabelPair("H1","T2"));
 	combinableLabelMap.insert(CombinableGateLabelPair("H1","H2"));
-	combinableLabelMap.insert(CombinableGateLabelPair("H1","CNOT"));
+	combinableLabelMap.insert(CombinableGateLabelPair("H1","CNOT1"));
+	combinableLabelMap.insert(CombinableGateLabelPair("H1","CNOT2"));
 
 	combinableLabelMap.insert(CombinableGateLabelPair("T2","H2"));
 	combinableLabelMap.insert(CombinableGateLabelPair("T2","T2"));
-	combinableLabelMap.insert(CombinableGateLabelPair("T2","CNOT"));
+	combinableLabelMap.insert(CombinableGateLabelPair("T2","CNOT1"));
+	combinableLabelMap.insert(CombinableGateLabelPair("T2","CNOT2"));
 
 	combinableLabelMap.insert(CombinableGateLabelPair("H2","T2"));
-	combinableLabelMap.insert(CombinableGateLabelPair("H2","CNOT"));
+	combinableLabelMap.insert(CombinableGateLabelPair("H2","CNOT1"));
+	combinableLabelMap.insert(CombinableGateLabelPair("H2","CNOT2"));
 
-	combinableLabelMap.insert(CombinableGateLabelPair("CNOT","H1"));
-	combinableLabelMap.insert(CombinableGateLabelPair("CNOT","H2"));
-	combinableLabelMap.insert(CombinableGateLabelPair("CNOT","T1"));
-	combinableLabelMap.insert(CombinableGateLabelPair("CNOT","T2"));
+	combinableLabelMap.insert(CombinableGateLabelPair("CNOT1","H1"));
+	combinableLabelMap.insert(CombinableGateLabelPair("CNOT1","H2"));
+	combinableLabelMap.insert(CombinableGateLabelPair("CNOT1","T1"));
+	combinableLabelMap.insert(CombinableGateLabelPair("CNOT1","T2"));
+	combinableLabelMap.insert(CombinableGateLabelPair("CNOT1","CNOT2"));
+
+	combinableLabelMap.insert(CombinableGateLabelPair("CNOT2","H1"));
+	combinableLabelMap.insert(CombinableGateLabelPair("CNOT2","H2"));
+	combinableLabelMap.insert(CombinableGateLabelPair("CNOT2","T1"));
+	combinableLabelMap.insert(CombinableGateLabelPair("CNOT2","T2"));
+	combinableLabelMap.insert(CombinableGateLabelPair("CNOT2","CNOT1"));
 
 	pGateSelectiveCombinabilityChecker = new GateSelectiveCombinabilityCheckerImpl(combinableLabelMap);
 }
@@ -716,19 +764,53 @@ void getGateIdentityCycleCombinabilityChecker(GateCombinabilityCheckerPtr& pGate
 
 	pGateIdentityCycleCombinabilityChecker = new GateIdentityCycleCombinabilityCheckerImpl(identityCycleMap);
 }
+
+void getGateCancelationCombinabilityChecker(GateCombinabilityCheckerPtr& pGateCancelationCombinabilityChecker) {
+	GateLabelCancelationMap cancelationMap;
+	cancelationMap.insert(GateLabelPair("CNOT2", "CNOT1CNOT2CNOT1"));
+	cancelationMap.insert(GateLabelPair("CNOT1", "CNOT2CNOT1CNOT2"));
+	pGateCancelationCombinabilityChecker = new GateCancelationCombinabilityCheckerImpl(cancelationMap);
+}
+
+
 void getNearIdentityGate(MatrixOperatorPtr pMatrixOperator, MatrixPtrVector pHermitianBasis, TargetElements<GatePtr>& targets) {
 	/* initialize random seed: */
 	srand (time(NULL));
 
 	std::vector<double> randCoords;
 	for(unsigned int j = 0; j < pHermitianBasis.size(); j++) {
-		randCoords.push_back(my_small_rand(1e-2));
+		randCoords.push_back(my_small_rand(0.0));
 	}
 	MatrixPtr pU = NullPtr;
 
 	calculateSpecialUnitaryFromTracelessHermitianCoordinates(pMatrixOperator, randCoords, pHermitianBasis, pU);
 
+	//Test add global phase to U
+	MatrixPtr pIdentityWithPhasePI_2 = NullPtr;
+	MatrixPtr pIdentityWithPhase_PI_2 = NullPtr;
+	MatrixPtr pIdentityWithPhasePI = NullPtr;
+	MatrixPtr pIdentityWithPhase_PI = NullPtr;
+
+	ComplexVal expmPi_2 = std::exp(ComplexVal(0, 1) * M_PI / 2.0);
+	ComplexVal expm_Pi_2 = std::exp(ComplexVal(0, -1) * M_PI / 2.0);
+	ComplexVal expmPi = std::exp(ComplexVal(0, 1) * M_PI);
+	ComplexVal expm_Pi = std::exp(ComplexVal(0, -1) * M_PI);
+
+	pMatrixOperator->multiplyScalar(pU, expmPi_2, pIdentityWithPhasePI_2);
+	pMatrixOperator->multiplyScalar(pU, expm_Pi_2, pIdentityWithPhase_PI_2);
+	pMatrixOperator->multiplyScalar(pU, expmPi, pIdentityWithPhasePI);
+	pMatrixOperator->multiplyScalar(pU, expm_Pi, pIdentityWithPhase_PI);
+
+
 	GatePtr pTargetGate = new Gate(pU, 999999, "Unknown");
+	GatePtr pTargetGatePI_2 = new Gate(pIdentityWithPhasePI_2, 999999, "Unknown");
+	GatePtr pTargetGate_PI_2 = new Gate(pIdentityWithPhase_PI_2, 999999, "Unknown");
+	GatePtr pTargetGatePI = new Gate(pIdentityWithPhasePI, 999999, "Unknown");
+	GatePtr pTargetGate_PI = new Gate(pIdentityWithPhase_PI, 999999, "Unknown");
 
 	targets.push_back(pTargetGate);
+	targets.push_back(pTargetGatePI_2);
+	targets.push_back(pTargetGate_PI_2);
+	targets.push_back(pTargetGatePI);
+	targets.push_back(pTargetGate_PI);
 }

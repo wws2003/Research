@@ -11,7 +11,7 @@
 #include "IMatrix.h"
 
 MatrixIteratorPtr DummyMatrixApproximator::getApproximateElements(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) {
-	return pCoreCollection->findApproxElements(pQuery, pDistanceCalculator, epsilon);
+	return pCoreCollection->findNearestNeighbour(pQuery, pDistanceCalculator, epsilon);
 }
 
 

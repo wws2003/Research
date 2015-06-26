@@ -40,6 +40,8 @@ template<typename T>
 void SearchSpaceTimerEvaluatorImpl<T>::evaluateCollection(CollectionPtr<T> pCollection) {
 	size_t numberOfCases = m_targets.size();
 
+	m_ostream << "Search space size " << pCollection->size() << "\n";
+
 	for(size_t i = 0; i < numberOfCases; i++) {
 		T target = m_targets[i];
 
@@ -89,7 +91,7 @@ void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T>
 			prFindIter = pApproximator->getApproximateElements(pCollection, target, pDistanceCalculator, epsilon);
 		}
 		else {
-			prFindIter = pCollection->findApproxElements(target, pDistanceCalculator, epsilon);
+			prFindIter = pCollection->findNearestNeighbour(target, pDistanceCalculator, epsilon);
 		}
 	}
 	catch (std::exception & e) {
@@ -99,14 +101,22 @@ void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T>
 
 template<typename T>
 void getClosestApproximationFromFindIterator(IteratorPtr<T> pFindResultIter, DistanceCalculatorPtr<T> pDistanceCaculator, T pTarget, T& prClosestApproximation, double& precision) {
+	double minPrecision = 1e4;
 	if(pFindResultIter != NullPtr) {
 		pFindResultIter->toBegin();
-		if(!pFindResultIter->isDone()) {
-			//Suppose the closest approximation is placed at the beginning of the iterator
-			prClosestApproximation = pFindResultIter->getObj();
+		while(!pFindResultIter->isDone()) {
 
-			precision = pDistanceCaculator->distance(prClosestApproximation, pTarget);
+			precision = pDistanceCaculator->distance(pFindResultIter->getObj(), pTarget);
+
+			if(precision < minPrecision) {
+				prClosestApproximation = pFindResultIter->getObj();
+				minPrecision = precision;
+			}
+
+			pFindResultIter->next();
 		}
+
+		precision = minPrecision;
 	}
 }
 

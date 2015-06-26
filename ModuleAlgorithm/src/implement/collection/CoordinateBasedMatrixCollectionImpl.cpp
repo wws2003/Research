@@ -53,7 +53,7 @@ MatrixIteratorPtr CoordinateBasedMatrixCollectionImpl::findApproxElements(Matrix
 
 	MatrixRealCoordinatePtr pTargetCoordinate = NullPtr;
 	m_pMatrixCoordinateCalculator->calulateElementCoordinate(pQuery, pTargetCoordinate);
-	MatrixRealCoordinateIteratorPtr pApproxMatrixCoordinateIter = m_pInternalMatrixCoordinateCollection->findApproxElements(pTargetCoordinate, m_pMatrixCoordinateDistanceCalculator, epsilon);
+	MatrixRealCoordinateIteratorPtr pApproxMatrixCoordinateIter = m_pInternalMatrixCoordinateCollection->findNearestNeighbour(pTargetCoordinate, m_pMatrixCoordinateDistanceCalculator, epsilon);
 
 	pApproxMatrixCoordinateIter->toBegin();
 

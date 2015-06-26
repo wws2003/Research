@@ -1,15 +1,23 @@
-src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
- ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
- ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
- ../../ModuleOperator/include/interface/common/OperatorCommon.h \
- ../../ModuleIO/include/interface/common/IOCommon.h \
+src/IntegratingTester.d: ../src/IntegratingTester.cpp \
+ ../src/IntegratingTester.h ../src/AssemblerUtil.h \
+ ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
- ../../ModuleIO/include/implement/SampleMatrixWriter.h \
- ../../ModuleIO/include/interface/abstract/IWriter.h \
- ../../ModuleIO/include/implement/LabelOnlyMatrixWriterImpl.h \
- ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixImpl.h \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
+ ../../ModuleOperator/include/interface/common/OperatorCommon.h \
+ ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
+ ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
+ ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
+ ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
+ ../../ModuleIO/include/implement/FullGateWriterImpl.h \
+ ../../ModuleIO/include/interface/common/IOCommon.h \
+ ../../ModuleIO/include/interface/abstract/IWriter.h \
+ ../../ModuleIO/include/implement/LabelOnlyGateWriterImpl.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleOperator/include/implement/SampleMatrixOperator.h \
  ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h \
  ../../ModuleOperator/third-parties/eigen3/Eigen/Dense \
@@ -162,81 +170,52 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/./RealQZ.h \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
- ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
- ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
- ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
- ../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h \
- ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleOperator/include/implement/MatrixTraceDistanceCalculator.h \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
- ../../ModuleEvaluate/include/implement/CpuTimer.h \
- ../../ModuleEvaluate/include/interface/abstract/ITimer.h \
- ../../ModuleAlgorithm/include/implement/collection/VectorBasedMatrixCollectionImpl.h \
- ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
- ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
- ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
- ../../ModuleAlgorithm/include/implement/collection/VectorBasedCollectionImpl.hpp \
- ../../ModuleAlgorithm/include/implement/iterator/VectorBasedIteratorImpl.hpp \
- ../../ModuleAlgorithm/include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
- ../../ModuleEvaluate/src/implement/SearchSpaceConstructorImpl.cpp \
- ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
- ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
- ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
- ../../ModuleAlgorithm/include/implement/combiner/AlwaysTrueMultiplierMatrixCombinerImpl.h \
- ../../ModuleAlgorithm/include/internal-abstract/combiner/AbstractMultiplierMatrixCombiner.h \
- ../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h \
- ../../ModuleAlgorithm/src/implement/collection/MapBasedBinCollectionImpl.cpp \
- ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h \
- ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
- ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
- ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
- ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h \
- ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h \
- ../../ModuleOperator/src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp \
- ../../ModuleOperator/include/implement/CoordinateOnOrthonormalBasisCalculatorImpl.h \
- ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
- ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
- ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
- ../../ModuleEvaluate/src/implement/SearchSpaceTimerEvaluator.cpp \
- ../../ModuleEvaluate/include/implement/ScopeTimer.h \
- ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
- ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h \
- ../../ModuleMathConcepts/include/interface/common/Gate.h \
- ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
- ../../ModuleAlgorithm/include/implement/combiner/GateSelectiveCombinabilityCheckerImpl.h \
- ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
- ../../ModuleAlgorithm/include/implement/combiner/GateIdentityCycleCombinabilityCheckerImpl.h \
- ../../ModuleAlgorithm/include/implement/combiner/GateCancelationCombinabilityCheckerImpl.h \
- ../../ModuleOperator/include/implement/GateCoordinateCalculatorImpl.h \
- ../../ModuleIO/include/implement/LabelOnlyGateWriterImpl.h \
- ../../ModuleIO/include/implement/SampleRealCoordinateWriterImpl.hpp \
- ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h \
  ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h \
- ../../ModuleIO/include/implement/FullGateWriterImpl.h
+ ../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h \
+ ../../ModuleEvaluate/include/implement/CpuTimer.h \
+ ../../ModuleEvaluate/include/interface/abstract/ITimer.h
 
-../src/TestSuite.h:
+../src/IntegratingTester.h:
 
-../../ModuleEvaluate/include/interface/common/EvaluateCommon.h:
+../src/AssemblerUtil.h:
 
-../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
-
-../../ModuleOperator/include/interface/common/OperatorCommon.h:
-
-../../ModuleIO/include/interface/common/IOCommon.h:
+../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h:
 
 ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
 
-../../ModuleIO/include/implement/SampleMatrixWriter.h:
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
 
-../../ModuleIO/include/interface/abstract/IWriter.h:
+../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h:
 
-../../ModuleIO/include/implement/LabelOnlyMatrixWriterImpl.h:
+../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
-../../ModuleMathConcepts/include/implement/SimpleDenseMatrixImpl.h:
+../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
+
+../../ModuleEvaluate/include/interface/common/EvaluateCommon.h:
+
+../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h:
+
+../../ModuleMathConcepts/include/interface/common/Gate.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
+
+../../ModuleIO/include/implement/FullGateWriterImpl.h:
+
+../../ModuleIO/include/interface/common/IOCommon.h:
+
+../../ModuleIO/include/interface/abstract/IWriter.h:
+
+../../ModuleIO/include/implement/LabelOnlyGateWriterImpl.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
 ../../ModuleOperator/include/implement/SampleMatrixOperator.h:
 
@@ -542,104 +521,14 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h:
 
-../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h:
-
-../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h:
-
-../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
-
-../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h:
-
-../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h:
-
 ../../ModuleOperator/include/implement/MatrixTraceDistanceCalculator.h:
 
 ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
+../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:
+
+../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h:
+
 ../../ModuleEvaluate/include/implement/CpuTimer.h:
 
 ../../ModuleEvaluate/include/interface/abstract/ITimer.h:
-
-../../ModuleAlgorithm/include/implement/collection/VectorBasedMatrixCollectionImpl.h:
-
-../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
-
-../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
-
-../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
-
-../../ModuleAlgorithm/include/implement/collection/VectorBasedCollectionImpl.hpp:
-
-../../ModuleAlgorithm/include/implement/iterator/VectorBasedIteratorImpl.hpp:
-
-../../ModuleAlgorithm/include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
-
-../../ModuleEvaluate/src/implement/SearchSpaceConstructorImpl.cpp:
-
-../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h:
-
-../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h:
-
-../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
-
-../../ModuleAlgorithm/include/implement/combiner/AlwaysTrueMultiplierMatrixCombinerImpl.h:
-
-../../ModuleAlgorithm/include/internal-abstract/combiner/AbstractMultiplierMatrixCombiner.h:
-
-../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h:
-
-../../ModuleAlgorithm/src/implement/collection/MapBasedBinCollectionImpl.cpp:
-
-../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h:
-
-../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
-
-../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h:
-
-../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
-
-../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h:
-
-../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h:
-
-../../ModuleOperator/src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp:
-
-../../ModuleOperator/include/implement/CoordinateOnOrthonormalBasisCalculatorImpl.h:
-
-../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
-
-../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
-
-../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
-
-../../ModuleEvaluate/src/implement/SearchSpaceTimerEvaluator.cpp:
-
-../../ModuleEvaluate/include/implement/ScopeTimer.h:
-
-../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
-
-../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h:
-
-../../ModuleMathConcepts/include/interface/common/Gate.h:
-
-../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h:
-
-../../ModuleAlgorithm/include/implement/combiner/GateSelectiveCombinabilityCheckerImpl.h:
-
-../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h:
-
-../../ModuleAlgorithm/include/implement/combiner/GateIdentityCycleCombinabilityCheckerImpl.h:
-
-../../ModuleAlgorithm/include/implement/combiner/GateCancelationCombinabilityCheckerImpl.h:
-
-../../ModuleOperator/include/implement/GateCoordinateCalculatorImpl.h:
-
-../../ModuleIO/include/implement/LabelOnlyGateWriterImpl.h:
-
-../../ModuleIO/include/implement/SampleRealCoordinateWriterImpl.hpp:
-
-../../ModuleIO/include/interface/abstract/ICoordinateWriter.h:
-
-../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:
-
-../../ModuleIO/include/implement/FullGateWriterImpl.h:

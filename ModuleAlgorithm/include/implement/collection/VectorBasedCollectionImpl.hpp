@@ -11,6 +11,7 @@
 #include "ICollection.h"
 #include "VectorBasedIteratorImpl.hpp"
 #include "VectorBasedReadOnlyIteratorImpl.hpp"
+#include "IDistanceCalculator.h"
 #include <vector>
 
 template<typename T>
@@ -39,7 +40,7 @@ public:
 	virtual CollectionSize_t size() const ;
 
 	//Find the neighbor elements to the query, given distance calculator
-	virtual IteratorPtr<T> findApproxElements(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const ;
+	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const ;
 
 private:
 	std::vector<T> m_elements;
@@ -87,7 +88,7 @@ CollectionSize_t VectorBasedCollectionImpl<T>::size() const {
 }
 
 template<typename T>
-IteratorPtr<T> VectorBasedCollectionImpl<T>::findApproxElements(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const {
+IteratorPtr<T> VectorBasedCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const {
 	std::vector<T> results;
 	CollectionSize_t collectionSize = m_elements.size();
 	for(unsigned int i = 0; i < collectionSize; i++) {

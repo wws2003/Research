@@ -8,6 +8,10 @@
 #include "GateCombinerImpl.h"
 #include "IGateCombinabilityChecker.h"
 
+#define IDENTITY_NOISE_THRESOLD 1e-15
+
+bool checkIdentity(MatrixPtr pMatrix);
+
 GateCombinerImpl::GateCombinerImpl(const GateCombinabilityCheckers& combinabilityCheckers, MatrixOperatorPtr pMatrixOperator) {
 	m_combinabilityCheckers = combinabilityCheckers;
 	m_pMatrixOperator = pMatrixOperator;
@@ -25,6 +29,12 @@ void GateCombinerImpl::combine(GatePtr pGate1, GatePtr pGate2, GatePtr& result) 
 	MatrixPtr pCombinedMatrix = NullPtr;
 	m_pMatrixOperator->multiply(pGate1->getMatrix(), pGate2->getMatrix(), pCombinedMatrix);
 
+	//If combined matrix is actually identity, abort the combination
+	if(!checkIdentity(pCombinedMatrix)) {
+		_destroy(pCombinedMatrix);
+		return;
+	}
+
 	cost_t combinedCost = pGate1->getCost() + pGate2->getCost();
 
 	LabelSeq combinedLabel;
@@ -37,4 +47,23 @@ void GateCombinerImpl::combine(GatePtr pGate1, GatePtr pGate2, GatePtr& result) 
 
 }
 
+bool checkIdentity(MatrixPtr pMatrix) {
+	int nbRows, nbColums;
+	pMatrix->getSize(nbRows, nbColums);
+
+	for(int row = 0; row < nbRows; row++) {
+		for(int column = 0; column < nbColums; column++) {
+			ComplexVal v = pMatrix->getValue(row, column);
+
+			ComplexVal identityElement = (row == column) ? 1.0 : 0.0;
+
+			//If matrix[row][column] differs from I[row][column], consider matrix is not identity
+			if(std::norm(v - identityElement) > IDENTITY_NOISE_THRESOLD) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
 
