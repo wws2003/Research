@@ -513,6 +513,8 @@ void TestSuite::testCalculateCoordinatesInSearchSpace() {
 		pGateIter->next();
 	}
 
+	_destroy(pGateIter);
+
 	delete pMatrixCoordinateWriter;
 	delete pMatrixRealCoordinateCalculator;
 	delete pHermitiaRealCoordinateCalculator;

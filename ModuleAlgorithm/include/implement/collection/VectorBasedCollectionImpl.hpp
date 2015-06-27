@@ -39,17 +39,18 @@ public:
 	//Get collection size
 	virtual CollectionSize_t size() const ;
 
+	//(Re)Build the search data structure given distance calculator
+	virtual void rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator);
+
 	//Find the neighbor elements to the query, given distance calculator
 	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const ;
 
 private:
 	std::vector<T> m_elements;
-	IteratorPtr<T> m_pIterator;
 };
 
 template<typename T>
 VectorBasedCollectionImpl<T>::VectorBasedCollectionImpl() {
-	m_pIterator = IteratorPtr<T>(new VectorBasedIteratorImpl<T>(&m_elements));
 }
 
 template<typename T>
@@ -73,7 +74,7 @@ void VectorBasedCollectionImpl<T>::purge() {
 
 template<typename T>
 IteratorPtr<T> VectorBasedCollectionImpl<T>::getIteratorPtr() {
-	return m_pIterator;
+	return IteratorPtr<T>(new VectorBasedIteratorImpl<T>(&m_elements));
 }
 
 template<typename T>
@@ -85,6 +86,11 @@ IteratorPtr<T> VectorBasedCollectionImpl<T>::getReadonlyIteratorPtr() {
 template<typename T>
 CollectionSize_t VectorBasedCollectionImpl<T>::size() const {
 	return m_elements.size();
+}
+
+template<typename T>
+void VectorBasedCollectionImpl<T>::rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator) {
+	//Do nothing
 }
 
 template<typename T>

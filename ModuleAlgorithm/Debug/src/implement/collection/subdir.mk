@@ -5,16 +5,19 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/implement/collection/CoordinateBasedMatrixCollectionImpl.cpp \
+../src/implement/collection/GNATCollectionImpl.cpp \
 ../src/implement/collection/MapBasedBinCollectionImpl.cpp \
 ../src/implement/collection/VectorBasedMatrixCollectionImpl.cpp 
 
 OBJS += \
 ./src/implement/collection/CoordinateBasedMatrixCollectionImpl.o \
+./src/implement/collection/GNATCollectionImpl.o \
 ./src/implement/collection/MapBasedBinCollectionImpl.o \
 ./src/implement/collection/VectorBasedMatrixCollectionImpl.o 
 
 CPP_DEPS += \
 ./src/implement/collection/CoordinateBasedMatrixCollectionImpl.d \
+./src/implement/collection/GNATCollectionImpl.d \
 ./src/implement/collection/MapBasedBinCollectionImpl.d \
 ./src/implement/collection/VectorBasedMatrixCollectionImpl.d 
 

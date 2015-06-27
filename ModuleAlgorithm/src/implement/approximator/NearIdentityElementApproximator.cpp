@@ -117,7 +117,7 @@ void NearIdentityElementApproximator<T>::distributeResultsToBins(const real_coor
 		pApprxIter->next();
 	}
 
-	pApprxIter->toBegin();
+	_destroy(pApprxIter);
 }
 
 template<typename T>

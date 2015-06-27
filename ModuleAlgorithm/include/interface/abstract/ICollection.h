@@ -39,6 +39,9 @@ public:
 	//Get collection size
 	virtual CollectionSize_t size() const = 0;
 
+	//(Re)Build the search data structure given distance calculator
+	virtual void rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator) = 0;
+
 	//Find the neighbor elements to the query, given distance calculator
 	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const = 0;
 
