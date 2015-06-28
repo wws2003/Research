@@ -212,7 +212,10 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleIO/include/implement/SampleRealCoordinateWriterImpl.hpp \
  ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h \
  ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h \
- ../../ModuleIO/include/implement/FullGateWriterImpl.h
+ ../../ModuleIO/include/implement/FullGateWriterImpl.h \
+ ../../ModuleAlgorithm/src/implement/collection/GNATCollectionImpl.cpp \
+ ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
+ ../../ModuleAlgorithm/include/implement/iterator/GNATCollectionIterator.hpp
 
 ../src/TestSuite.h:
 
@@ -643,3 +646,9 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:
 
 ../../ModuleIO/include/implement/FullGateWriterImpl.h:
+
+../../ModuleAlgorithm/src/implement/collection/GNATCollectionImpl.cpp:
+
+../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h:
+
+../../ModuleAlgorithm/include/implement/iterator/GNATCollectionIterator.hpp:

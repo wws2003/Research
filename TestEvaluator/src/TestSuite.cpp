@@ -37,6 +37,7 @@
 #include "SampleRealCoordinateWriterImpl.hpp"
 #include "GateDistanceCalculatorByMatrixImpl.h"
 #include "FullGateWriterImpl.h"
+#include "GNATCollectionImpl.cpp"
 #include <iostream>
 #include <cmath>
 #include <cassert>
@@ -44,9 +45,17 @@
 
 #define my_small_rand(factor) (double)(rand() - (RAND_MAX / 2)) / (double)RAND_MAX * factor
 
-void init2QubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT1, GatePtr& pCNOT2, GatePtr& pH1, GatePtr& pH2, GatePtr& pT1, GatePtr& pT2);
+void initTwoQubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT1, GatePtr& pCNOT2, GatePtr& pH1, GatePtr& pH2, GatePtr& pT1, GatePtr& pT2);
 
 void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<double> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU);
+
+void initTwoQubitsGateUniversalSet(MatrixOperatorPtr pMatrixOperator, GateCollectionPtr& pUniversalSet);
+
+void releaseTwoQubitsGateUniversalSet(GateCollectionPtr& pUniversalSet);
+
+void initTwoQubitsGateCombinabilityCheckers(GateCombinabilityCheckers& checkers);
+
+void releaseTwoQubitsGateCombinabilityCheckers(GateCombinabilityCheckers& checkers);
 
 void getGateSelectiveCombinabilityChecker(GateCombinabilityCheckerPtr& pGateSelectiveCombinabilityChecker);
 
@@ -55,6 +64,8 @@ void getGateIdentityCycleCombinabilityChecker(GateCombinabilityCheckerPtr& pGate
 void getGateCancelationCombinabilityChecker(GateCombinabilityCheckerPtr& pGateCancelationCombinabilityChecker);
 
 void getNearIdentityGate(MatrixOperatorPtr pMatrixOperator, MatrixPtrVector pHermitianBasis, TargetElements<GatePtr>& targets);
+
+void getNumberOfNeighbors(GateCollectionPtr pCollection, const TargetElements<GatePtr>& targets, GateDistanceCalculatorPtr pDistanceCalculator, double epsilon, std::vector<int>& resultNumbers);
 
 TestSuite::TestSuite() {
 	m_pMatrixWriter = new SampleMatrixWriterImpl();
@@ -95,6 +106,8 @@ void TestSuite::test(){
 	testInverseCancelingSearchSpaceConstructor();
 	testSampleMatrixBinCollection();
 	testCalculateCoordinatesInSearchSpace();
+	testGNATCollectionBuild();
+	testGNATSearch();
 	freeTestGateCollectionEvaluator();
 }
 
@@ -410,44 +423,20 @@ void TestSuite::testCalculateCoordinatesInSearchSpace() {
 
 	assert(pBasis4.size() == 15);
 
-	GatePtr pCNOT1Gate = NullPtr;
-	GatePtr pCNOT2Gate = NullPtr;
-	GatePtr pH1Gate = NullPtr;
-	GatePtr pH2Gate = NullPtr;
-	GatePtr pT1Gate = NullPtr;
-	GatePtr pT2Gate = NullPtr;
-
-	init2QubitsLibGates(m_pMatrixOperator, pCNOT1Gate,pCNOT2Gate,  pH1Gate, pH2Gate, pT1Gate, pT2Gate);
-
-	GateCombinabilityCheckerPtr pIdentityCycleChecker = NullPtr;
-	getGateIdentityCycleCombinabilityChecker(pIdentityCycleChecker);
-
-	GateCombinabilityCheckerPtr pCombinableChecker = NullPtr;
-	getGateSelectiveCombinabilityChecker(pCombinableChecker);
-
-	GateCombinabilityCheckerPtr pCancelationChecker = NullPtr;
-	getGateCancelationCombinabilityChecker(pCancelationChecker);
-
-	GateCombinabilityCheckers combinabilityCheckers = {pIdentityCycleChecker, pCombinableChecker, pCancelationChecker};
+	GateCombinabilityCheckers combinabilityCheckers;
+	initTwoQubitsGateCombinabilityCheckers(combinabilityCheckers);
 
 	CombinerPtr<GatePtr> pGateCombiner = new GateCombinerImpl(combinabilityCheckers, m_pMatrixOperator);
 
-	GateCollectionPtr pUniversalSet = new VectorBasedCollectionImpl<GatePtr>();
-	pUniversalSet->addElement(pCNOT1Gate);
-	pUniversalSet->addElement(pCNOT2Gate);
-	pUniversalSet->addElement(pH1Gate);
-	pUniversalSet->addElement(pH2Gate);
-	pUniversalSet->addElement(pT1Gate);
-	pUniversalSet->addElement(pT2Gate);
+	GateCollectionPtr pUniversalSet = NullPtr;
+	initTwoQubitsGateUniversalSet(m_pMatrixOperator, pUniversalSet);
 
 	GateCollectionPtr pGateCollection = new VectorBasedCollectionImpl<GatePtr>();
 
 	int maxSequenceLength = 4;
 
 	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new SearchSpaceConstructorImpl<GatePtr>(pGateCombiner);
-
 	pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection, pUniversalSet, maxSequenceLength);
-
 	CollectionSize_t gateCounts = pGateCollection->size();
 
 	std::cout << "Number of sequence length = " << maxSequenceLength << " constructed by CNOT, H and T: " << gateCounts << std::endl;
@@ -525,10 +514,136 @@ void TestSuite::testCalculateCoordinatesInSearchSpace() {
 	pGateCollection->purge();
 	delete pGateCollection;
 
-	delete pUniversalSet;
+	releaseTwoQubitsGateUniversalSet(pUniversalSet);
 	delete pGateCombiner;
 
+	releaseTwoQubitsGateCombinabilityCheckers(combinabilityCheckers);
+
 	std::cout << __func__ << " failed coordinate cases: " << wrongCoordinateCalculateCounter << std::endl << "--------------------------"<<  std::endl ;
+}
+
+void TestSuite::testGNATCollectionBuild() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+
+	GateCombinabilityCheckers combinabilityCheckers;
+	initTwoQubitsGateCombinabilityCheckers(combinabilityCheckers);
+
+	CombinerPtr<GatePtr> pGateCombiner = new GateCombinerImpl(combinabilityCheckers, m_pMatrixOperator);
+
+	GateCollectionPtr pUniversalSet = NullPtr;
+	initTwoQubitsGateUniversalSet(m_pMatrixOperator, pUniversalSet);
+
+	GateCollectionPtr pGateCollection = new VectorBasedCollectionImpl<GatePtr>();
+
+	int maxSequenceLength = 4;
+
+	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new SearchSpaceConstructorImpl<GatePtr>(pGateCombiner);
+	pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection, pUniversalSet, maxSequenceLength);
+
+	CollectionSize_t gateCounts = pGateCollection->size();
+
+	GateCollectionPtr pGNATCollection = new GNATCollectionImpl<GatePtr>();
+	pGateSearchSpaceConstructor->constructSearchSpace(pGNATCollection, pUniversalSet, maxSequenceLength);
+	assert(pGNATCollection->size() == gateCounts);
+
+	GateIteratorPtr pGateIter = pGNATCollection->getIteratorPtr();
+
+	CollectionSize_t gateCountsFromIterator = 0;
+	while(!pGateIter->isDone()) {
+		gateCountsFromIterator++;
+		pGateIter->next();
+	}
+
+	assert(gateCountsFromIterator == gateCounts);
+	delete pGateIter;
+
+	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(m_pMatrixDistanceCalculator);
+	pGNATCollection->rebuildStructure(pGateDistanceCalculator);
+
+	assert(pGNATCollection->size() == gateCounts);
+
+	pGateIter = pGNATCollection->getIteratorPtr();
+
+	gateCountsFromIterator = 0;
+	while(!pGateIter->isDone()) {
+		gateCountsFromIterator++;
+		pGateIter->next();
+	}
+
+	assert(gateCountsFromIterator == gateCounts);
+
+	delete pGateIter;
+
+	delete pGateDistanceCalculator;
+	delete pGNATCollection;
+	delete pGateCollection;
+
+	releaseTwoQubitsGateUniversalSet(pUniversalSet);
+	delete pGateCombiner;
+	releaseTwoQubitsGateCombinabilityCheckers(combinabilityCheckers);
+
+	std::cout << __func__ << " passed"  <<  std::endl ;
+}
+
+void TestSuite::testGNATSearch() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+	MatrixPtrVector pBasis4;
+	m_pMatrixOperator->getTracelessHermitianMatricesBasis(4, pBasis4);
+
+	assert(pBasis4.size() == 15);
+
+	GateCombinabilityCheckers combinabilityCheckers;
+	initTwoQubitsGateCombinabilityCheckers(combinabilityCheckers);
+
+	CombinerPtr<GatePtr> pGateCombiner = new GateCombinerImpl(combinabilityCheckers, m_pMatrixOperator);
+
+	GateCollectionPtr pUniversalSet = NullPtr;
+	initTwoQubitsGateUniversalSet(m_pMatrixOperator, pUniversalSet);
+
+	GateCollectionPtr pGateVectorCollection = new VectorBasedCollectionImpl<GatePtr>();
+	GateCollectionPtr pGateGNATCollection = new GNATCollectionImpl<GatePtr>();
+
+	int maxSequenceLength = 5;
+
+	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new SearchSpaceConstructorImpl<GatePtr>(pGateCombiner);
+	pGateSearchSpaceConstructor->constructSearchSpace(pGateVectorCollection, pUniversalSet, maxSequenceLength);
+	pGateSearchSpaceConstructor->constructSearchSpace(pGateGNATCollection, pUniversalSet, maxSequenceLength);
+
+	double epsilon = 2;
+	TargetElements<GatePtr> targets;
+	getNearIdentityGate(m_pMatrixOperator, pBasis4, targets);
+
+	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(m_pMatrixDistanceCalculator);
+
+	std::vector<int> vectorCollectionResultNumbers;
+	std::vector<int> gnatCollectionResultNumbers;
+
+	getNumberOfNeighbors(pGateVectorCollection, targets, pGateDistanceCalculator, epsilon, vectorCollectionResultNumbers);
+	getNumberOfNeighbors(pGateGNATCollection, targets, pGateDistanceCalculator, epsilon, gnatCollectionResultNumbers);
+
+	assert(gnatCollectionResultNumbers.size() == vectorCollectionResultNumbers.size());
+
+	for(unsigned int i = 0; i < gnatCollectionResultNumbers.size(); i++) {
+		assert(gnatCollectionResultNumbers[i] == vectorCollectionResultNumbers[i]);
+	}
+
+	pGateGNATCollection->rebuildStructure(pGateDistanceCalculator);
+	getNumberOfNeighbors(pGateGNATCollection, targets, pGateDistanceCalculator, epsilon, gnatCollectionResultNumbers);
+
+	for(unsigned int i = 0; i < gnatCollectionResultNumbers.size(); i++) {
+		assert(gnatCollectionResultNumbers[i] == vectorCollectionResultNumbers[i]);
+	}
+
+	delete pGateDistanceCalculator;
+	delete pGateSearchSpaceConstructor;
+
+	delete pGateGNATCollection;
+
+	delete pGateVectorCollection;
+
+	releaseTwoQubitsGateUniversalSet(pUniversalSet);
+	delete pGateCombiner;
+	std::cout << __func__ << " passed"  <<  std::endl ;
 }
 
 void TestSuite::freeTestGateCollectionEvaluator() {
@@ -539,37 +654,15 @@ void TestSuite::freeTestGateCollectionEvaluator() {
 
 	assert(pBasis4.size() == 15);
 
-	GatePtr pCNOT1Gate = NullPtr;
-	GatePtr pCNOT2Gate = NullPtr;
-	GatePtr pH1Gate = NullPtr;
-	GatePtr pH2Gate = NullPtr;
-	GatePtr pT1Gate = NullPtr;
-	GatePtr pT2Gate = NullPtr;
-
-	init2QubitsLibGates(m_pMatrixOperator, pCNOT1Gate,pCNOT2Gate,  pH1Gate, pH2Gate, pT1Gate, pT2Gate);
-
-	GateCombinabilityCheckerPtr pIdentityCycleChecker = NullPtr;
-	getGateIdentityCycleCombinabilityChecker(pIdentityCycleChecker);
-
-	GateCombinabilityCheckerPtr pCombinableChecker = NullPtr;
-	getGateSelectiveCombinabilityChecker(pCombinableChecker);
-
-	GateCombinabilityCheckerPtr pCancelationChecker = NullPtr;
-	getGateCancelationCombinabilityChecker(pCancelationChecker);
-
-	GateCombinabilityCheckers combinabilityCheckers = {pIdentityCycleChecker, pCombinableChecker, pCancelationChecker};
+	GateCombinabilityCheckers combinabilityCheckers;
+	initTwoQubitsGateCombinabilityCheckers(combinabilityCheckers);
 
 	CombinerPtr<GatePtr> pGateCombiner = new GateCombinerImpl(combinabilityCheckers, m_pMatrixOperator);
 
-	GateCollectionPtr pUniversalSet = new VectorBasedCollectionImpl<GatePtr>();
-	pUniversalSet->addElement(pCNOT1Gate);
-	pUniversalSet->addElement(pCNOT2Gate);
-	pUniversalSet->addElement(pH1Gate);
-	pUniversalSet->addElement(pH2Gate);
-	pUniversalSet->addElement(pT1Gate);
-	pUniversalSet->addElement(pT2Gate);
+	GateCollectionPtr pUniversalSet = NullPtr;
+	initTwoQubitsGateUniversalSet(m_pMatrixOperator, pUniversalSet);
 
-	GateCollectionPtr pGateCollection = new VectorBasedCollectionImpl<GatePtr>();
+	GateCollectionPtr pGateCollection = new GNATCollectionImpl<GatePtr>();
 
 	int maxSequenceLength = 5;
 
@@ -596,6 +689,7 @@ void TestSuite::freeTestGateCollectionEvaluator() {
 	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(m_pMatrixDistanceCalculator);
 	GateSearchSpaceEvaluatorPtr pGateSearchSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl<GatePtr>(targets, epsilon, pGateDistanceCalculator, pGateWriter, m_pTimer, std::cout);
 
+	pGateCollection->rebuildStructure(pGateDistanceCalculator);
 	pGateSearchSpaceEvaluator->evaluateCollection(pGateCollection);
 
 	delete pGateSearchSpaceEvaluator;
@@ -612,12 +706,15 @@ void TestSuite::freeTestGateCollectionEvaluator() {
 	pGateCollection->purge();
 	delete pGateCollection;
 
-	delete pUniversalSet;
+	releaseTwoQubitsGateUniversalSet(pUniversalSet);
 	delete pGateCombiner;
+
+	releaseTwoQubitsGateCombinabilityCheckers(combinabilityCheckers);
+
 	std::cout << __func__ << " passed: " << std::endl << "--------------------------"<<  std::endl ;
 }
 
-void init2QubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT1, GatePtr& pCNOT2, GatePtr& pH1, GatePtr& pH2, GatePtr& pT1, GatePtr& pT2) {
+void initTwoQubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT1, GatePtr& pCNOT2, GatePtr& pH1, GatePtr& pH2, GatePtr& pT1, GatePtr& pT2) {
 	ComplexVal arrayCNOT1[] = {1.0, 0.0, 0.0, 0.0
 			, 0.0, 1.0, 0.0, 0.0
 			, 0.0, 0.0, 0.0, 1.0
@@ -703,7 +800,6 @@ void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr 
 		//pMatrixWriter->write(pH, std::cout);
 	}
 
-
 	//pMatrixWriter->write(pH, std::cout);
 
 	MatrixPtr pHi = NullPtr;
@@ -718,6 +814,54 @@ void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr 
 	delete pHi;
 
 	delete pH;
+}
+
+void initTwoQubitsGateUniversalSet(MatrixOperatorPtr pMatrixOperator, GateCollectionPtr& pUniversalSet) {
+	GatePtr pCNOT1Gate = NullPtr;
+	GatePtr pCNOT2Gate = NullPtr;
+	GatePtr pH1Gate = NullPtr;
+	GatePtr pH2Gate = NullPtr;
+	GatePtr pT1Gate = NullPtr;
+	GatePtr pT2Gate = NullPtr;
+
+	initTwoQubitsLibGates(pMatrixOperator, pCNOT1Gate,pCNOT2Gate,  pH1Gate, pH2Gate, pT1Gate, pT2Gate);
+
+	pUniversalSet = new VectorBasedCollectionImpl<GatePtr>();
+	pUniversalSet->addElement(pCNOT1Gate);
+	pUniversalSet->addElement(pCNOT2Gate);
+	pUniversalSet->addElement(pH1Gate);
+	pUniversalSet->addElement(pH2Gate);
+	pUniversalSet->addElement(pT1Gate);
+	pUniversalSet->addElement(pT2Gate);
+}
+
+void releaseTwoQubitsGateUniversalSet(GateCollectionPtr& pUniversalSet) {
+
+	pUniversalSet->clear();
+	delete pUniversalSet;
+}
+
+
+void initTwoQubitsGateCombinabilityCheckers(GateCombinabilityCheckers& combinabilityCheckers) {
+	combinabilityCheckers.clear();
+
+	GateCombinabilityCheckerPtr pIdentityCycleChecker = NullPtr;
+	getGateIdentityCycleCombinabilityChecker(pIdentityCycleChecker);
+
+	GateCombinabilityCheckerPtr pCombinableChecker = NullPtr;
+	getGateSelectiveCombinabilityChecker(pCombinableChecker);
+
+	GateCombinabilityCheckerPtr pCancelationChecker = NullPtr;
+	getGateCancelationCombinabilityChecker(pCancelationChecker);
+
+	combinabilityCheckers = {pIdentityCycleChecker, pCombinableChecker, pCancelationChecker};
+}
+
+void releaseTwoQubitsGateCombinabilityCheckers(GateCombinabilityCheckers& checkers) {
+	for(GateCombinabilityCheckers::iterator cIter = checkers.begin(); cIter != checkers.end();) {
+		delete *cIter;
+		cIter = checkers.erase(cIter);
+	}
 }
 
 void getGateSelectiveCombinabilityChecker(GateCombinabilityCheckerPtr& pGateSelectiveCombinabilityChecker) {
@@ -816,3 +960,20 @@ void getNearIdentityGate(MatrixOperatorPtr pMatrixOperator, MatrixPtrVector pHer
 	targets.push_back(pTargetGatePI);
 	targets.push_back(pTargetGate_PI);
 }
+
+void getNumberOfNeighbors(GateCollectionPtr pCollection, const TargetElements<GatePtr>& targets, GateDistanceCalculatorPtr pDistanceCalculator, double epsilon, std::vector<int>& resultNumbers) {
+	resultNumbers.clear();
+	for(TargetElements<GatePtr>::const_iterator eIter = targets.begin(); eIter != targets.end(); eIter++) {
+		GatePtr pQuery = *eIter;
+		GateIteratorPtr pGateIter = pCollection->findNearestNeighbour(pQuery, pDistanceCalculator, epsilon);
+		int nbResults = 0;
+		while(pGateIter != NullPtr && !pGateIter->isDone()) {
+			nbResults++;
+			pGateIter->next();
+		}
+		resultNumbers.push_back(nbResults);
+		_destroy(pGateIter);
+	}
+}
+
+

@@ -29,6 +29,9 @@ private:
 	void testInverseCancelingSearchSpaceConstructor();
 	void testSampleMatrixBinCollection();
 	void testCalculateCoordinatesInSearchSpace();
+	void testGNATCollectionBuild();
+	void testGNATSearch();
+
 	void freeTestGateCollectionEvaluator();
 
 	//SearchSpaceEvaluatorPtr m_pSearchSpaceEvaluator;

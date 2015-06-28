@@ -11,8 +11,10 @@
 #include "AlgoCommon.h"
 #include "AlgoInternal.h"
 #include "ICollection.h"
+#include "IIterator.h"
 #include <vector>
 #include <algorithm>
+#include <list>
 
 template<typename T>
 using CollectionVector = std::vector<CollectionPtr<T> >;
@@ -21,13 +23,19 @@ typedef std::pair<double, double> Range;
 
 typedef std::vector<std::vector<Range> > RangeMap;
 
+template<typename T>
+using UnstructuredBuffer = std::list<T>;
+
+template<typename T>
+using SplitPointSet = std::vector<T>;
+
 /**
- * Geometric-nearbour access tree implementation of collection
+ * Geometric-neighbor access tree implementation of collection
  */
 template<typename T>
 class GNATCollectionImpl : public ICollection<T> {
 public:
-	GNATCollectionImpl(int nbSplitPoints);
+	GNATCollectionImpl();
 	virtual ~GNATCollectionImpl();
 
 	//Add one element to the collection
@@ -55,7 +63,7 @@ public:
 	//Find the neighbor elements to the query, given distance calculator
 	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const ;
 
-protected:
+private:
 
 	/*--------------For constructing GNAT data structure--------------*/
 	//Re-call the points in sub collection into unstructured buffer to prepare for restructuring
@@ -65,25 +73,23 @@ protected:
 	virtual void initSplitPoints();
 
 	//Create sub collections (considering use abstract factory / make abstract method)
-	virtual void createSubCollections();
+	virtual void createSubCollections(DistanceCalculatorPtr<T> pDistanceCalculator);
 
 	//Calculate ranges between each split point and each sub collection
 	virtual void calculateRanges(DistanceCalculatorPtr<T> pDistanceCalculator);
 
 	/*--------------For searching on GNAT data structure--------------*/
 	//Get sub collections in those search result can be found
-	virtual void getCandidateSubCollectionIndexes(T query, DistanceCalculatorPtr<T> pDistanceCalculator, std::vector<int>& rCandidateIndexes);
+	virtual void getCandidateSubCollectionIndexes(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<int>& rCandidateIndexes) const;
 
-
-	int m_nbSplitPoints;
-
-	std::vector<T> m_splitPoints;
+	SplitPointSet<T> m_splitPoints;
 	CollectionVector<T> m_subCollections;
 
-	std::vector<T> m_unStructeredBuffer;
+	UnstructuredBuffer<T> m_unStructeredBuffer;
 
 	RangeMap m_splitPointRanges;
 
+	friend class GNATCollectionIterator<T>;
 };
 
 
