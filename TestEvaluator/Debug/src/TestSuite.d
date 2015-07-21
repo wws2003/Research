@@ -215,7 +215,8 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleIO/include/implement/FullGateWriterImpl.h \
  ../../ModuleAlgorithm/src/implement/collection/GNATCollectionImpl.cpp \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
- ../../ModuleAlgorithm/include/implement/iterator/GNATCollectionIterator.hpp
+ ../../ModuleAlgorithm/include/implement/iterator/GNATCollectionIterator.hpp \
+ ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h
 
 ../src/TestSuite.h:
 
@@ -652,3 +653,5 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h:
 
 ../../ModuleAlgorithm/include/implement/iterator/GNATCollectionIterator.hpp:
+
+../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h:

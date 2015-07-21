@@ -14,6 +14,9 @@
 #include <ctime>
 #include <cassert>
 
+#define DEBUGGING
+//#define DEBUGGING_SP
+
 #define MIN_SIZE_TO_BUILD_STRUCTURE 30
 
 template<typename T>
@@ -152,6 +155,10 @@ IteratorPtr<T> GNATCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalc
 	//Then results from split points
 	findClosestElementsInSplitPoints(query, m_splitPoints, pDistanceCalculator, epsilon, results);
 
+	/*if(results.size() > 0) {
+		printf("Results from split points and unstructured buffer %d\n", results.size());
+	}*/
+
 	//Get results from sub collections
 	int nbSubCollections = m_subCollections.size();
 	std::vector<int> subCollectionsCheckMap(nbSubCollections, 1);
@@ -159,19 +166,51 @@ IteratorPtr<T> GNATCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalc
 	getCandidateSubCollections(query, pDistanceCalculator, epsilon, subCollectionsCheckMap);
 
 	for(unsigned int i = 0; i < nbSubCollections; i++) {
-		if(subCollectionsCheckMap[i] != 0) {
 
-			CollectionPtr<T> pCandidateSubCollection = m_subCollections[i];
-			IteratorPtr<T> pSubResultIter = pCandidateSubCollection->findNearestNeighbour(query, pDistanceCalculator, epsilon);
-
-			while(!pSubResultIter->isDone()) {
-				results.push_back(pSubResultIter->getObj());
-				pSubResultIter->next();
-			}
-			_destroy(pSubResultIter);
-
+#ifndef DEBUGGING
+		if(subCollectionsCheckMap[i] == 0) {
 			continue;
 		}
+#endif
+
+		CollectionPtr<T> pCandidateSubCollection = m_subCollections[i];
+		IteratorPtr<T> pSubResultIter = pCandidateSubCollection->findNearestNeighbour(query, pDistanceCalculator, epsilon);
+
+#ifdef DEBUGGING
+		if(subCollectionsCheckMap[i] == 0) {
+			assert(pSubResultIter->isDone());
+		}
+#endif
+
+#ifdef DEBUGGING
+		int nbResultFromSubCollection = 0;
+#endif
+
+		while(!pSubResultIter->isDone()) {
+			results.push_back(pSubResultIter->getObj());
+			pSubResultIter->next();
+
+#ifdef DEBUGGING
+			nbResultFromSubCollection++;
+#endif
+		}
+
+#ifdef DEBUGGING
+		int nbResultFromSubCollectionIter = 0;
+		IteratorPtr<T> pSubCollectionIter = pCandidateSubCollection->getIteratorPtr();
+		while(!pSubCollectionIter->isDone()) {
+			if(pDistanceCalculator->distance(pSubCollectionIter->getObj(), query) <= epsilon) {
+				nbResultFromSubCollectionIter++;
+			}
+			pSubCollectionIter->next();
+		}
+		assert(nbResultFromSubCollectionIter == nbResultFromSubCollection);
+		_destroy(pSubCollectionIter);
+#endif
+
+		_destroy(pSubResultIter);
+
+		continue;
 	}
 
 	return IteratorPtr<T>(new VectorBasedReadOnlyIteratorImpl<T>(results));
@@ -203,17 +242,19 @@ void GNATCollectionImpl<T>::initSplitPoints() {
 
 	int nbSplitPoints = 6; //FIXME May be modified respecting the data size
 
-#ifdef DEBUGGING
+#ifdef DEBUGGING_SP
 	//For debugging purpose, only take first elements from unstructured buffer to split points
 	int nbSplitPointsCounter = 0;
-	for(typename UnstructuredBuffer<T>::iterator eIter = m_unStructeredBuffer.begin(); eIter != m_unStructeredBuffer.end(), nbSplitPointsCounter < nbSplitPoints; nbSplitPointsCounter++) {
+	typename UnstructuredBuffer<T>::iterator firstIter = m_unStructeredBuffer.begin();
+	firstIter++;	//Force case for UT error to happen.
+	for(typename UnstructuredBuffer<T>::iterator eIter = firstIter; eIter != m_unStructeredBuffer.end(), nbSplitPointsCounter < nbSplitPoints; nbSplitPointsCounter++) {
 		T splitPoint = *eIter;
 		m_splitPoints.push_back(splitPoint);
 		eIter = m_unStructeredBuffer.erase(eIter);
 	}
+
 #else
 	//Currently "randomly" choose split points
-	int nbFirstUnstructuredElements = m_unStructeredBuffer.size();
 
 	srand(time(NULL));
 

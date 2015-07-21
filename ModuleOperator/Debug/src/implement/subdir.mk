@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../src/implement/GateCoordinateCalculatorImpl.cpp \
 ../src/implement/GateDistanceCalculatorByMatrixImpl.cpp \
 ../src/implement/MatrixCoordinateDistanceCalculator.cpp \
+../src/implement/MatrixFowlerDistanceCalculator.cpp \
 ../src/implement/MatrixRealInnerProductByTraceImpl.cpp \
 ../src/implement/MatrixTraceDistanceCalculator.cpp \
 ../src/implement/SampleMatrixOperator.cpp \
@@ -18,6 +19,7 @@ OBJS += \
 ./src/implement/GateCoordinateCalculatorImpl.o \
 ./src/implement/GateDistanceCalculatorByMatrixImpl.o \
 ./src/implement/MatrixCoordinateDistanceCalculator.o \
+./src/implement/MatrixFowlerDistanceCalculator.o \
 ./src/implement/MatrixRealInnerProductByTraceImpl.o \
 ./src/implement/MatrixTraceDistanceCalculator.o \
 ./src/implement/SampleMatrixOperator.o \
@@ -28,6 +30,7 @@ CPP_DEPS += \
 ./src/implement/GateCoordinateCalculatorImpl.d \
 ./src/implement/GateDistanceCalculatorByMatrixImpl.d \
 ./src/implement/MatrixCoordinateDistanceCalculator.d \
+./src/implement/MatrixFowlerDistanceCalculator.d \
 ./src/implement/MatrixRealInnerProductByTraceImpl.d \
 ./src/implement/MatrixTraceDistanceCalculator.d \
 ./src/implement/SampleMatrixOperator.d \
