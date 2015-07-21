@@ -80,7 +80,7 @@ private:
 
 	/*--------------For searching on GNAT data structure--------------*/
 	//Get sub collections in those search result can be found
-	virtual void getCandidateSubCollectionIndexes(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<int>& rCandidateIndexes) const;
+	virtual void getCandidateSubCollections(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<int>& rCheckMap) const;
 
 	SplitPointSet<T> m_splitPoints;
 	CollectionVector<T> m_subCollections;

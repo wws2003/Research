@@ -108,7 +108,7 @@ void TestSuite::test(){
 	testCalculateCoordinatesInSearchSpace();
 	testGNATCollectionBuild();
 	testGNATSearch();
-	freeTestGateCollectionEvaluator();
+	//freeTestGateCollectionEvaluator();
 }
 
 void TestSuite::testSimpleWriter() {
@@ -618,6 +618,7 @@ void TestSuite::testGNATSearch() {
 	std::vector<int> vectorCollectionResultNumbers;
 	std::vector<int> gnatCollectionResultNumbers;
 
+	/* Before constructing data structure */
 	getNumberOfNeighbors(pGateVectorCollection, targets, pGateDistanceCalculator, epsilon, vectorCollectionResultNumbers);
 	getNumberOfNeighbors(pGateGNATCollection, targets, pGateDistanceCalculator, epsilon, gnatCollectionResultNumbers);
 
@@ -627,6 +628,7 @@ void TestSuite::testGNATSearch() {
 		assert(gnatCollectionResultNumbers[i] == vectorCollectionResultNumbers[i]);
 	}
 
+	/* After constructing data structure */
 	pGateGNATCollection->rebuildStructure(pGateDistanceCalculator);
 	getNumberOfNeighbors(pGateGNATCollection, targets, pGateDistanceCalculator, epsilon, gnatCollectionResultNumbers);
 

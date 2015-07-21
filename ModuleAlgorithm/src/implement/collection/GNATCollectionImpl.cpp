@@ -139,7 +139,7 @@ void GNATCollectionImpl<T>::rebuildStructure(DistanceCalculatorPtr<T> pDistanceC
 		}
 	}
 
-	//selfTest(this);
+	selfTest(this);
 }
 
 template<typename T>
@@ -153,19 +153,25 @@ IteratorPtr<T> GNATCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalc
 	findClosestElementsInSplitPoints(query, m_splitPoints, pDistanceCalculator, epsilon, results);
 
 	//Get results from sub collections
-	std::vector<int> candidateSubCollectionIndexes;
-	getCandidateSubCollectionIndexes(query, pDistanceCalculator, epsilon, candidateSubCollectionIndexes);
+	int nbSubCollections = m_subCollections.size();
+	std::vector<int> subCollectionsCheckMap(nbSubCollections, 1);
 
-	for(unsigned int i = 0; i < candidateSubCollectionIndexes.size(); i++) {
+	getCandidateSubCollections(query, pDistanceCalculator, epsilon, subCollectionsCheckMap);
 
-		CollectionPtr<T> pCandidateSubCollection = m_subCollections[candidateSubCollectionIndexes[i]];
+	for(unsigned int i = 0; i < nbSubCollections; i++) {
+		if(subCollectionsCheckMap[i] != 0) {
 
-		IteratorPtr<T> pSubResultIter = pCandidateSubCollection->findNearestNeighbour(query, pDistanceCalculator, epsilon);
-		while(!pSubResultIter->isDone()) {
-			results.push_back(pSubResultIter->getObj());
-			pSubResultIter->next();
+			CollectionPtr<T> pCandidateSubCollection = m_subCollections[i];
+			IteratorPtr<T> pSubResultIter = pCandidateSubCollection->findNearestNeighbour(query, pDistanceCalculator, epsilon);
+
+			while(!pSubResultIter->isDone()) {
+				results.push_back(pSubResultIter->getObj());
+				pSubResultIter->next();
+			}
+			_destroy(pSubResultIter);
+
+			continue;
 		}
-		_destroy(pSubResultIter);
 	}
 
 	return IteratorPtr<T>(new VectorBasedReadOnlyIteratorImpl<T>(results));
@@ -197,9 +203,18 @@ void GNATCollectionImpl<T>::initSplitPoints() {
 
 	int nbSplitPoints = 6; //FIXME May be modified respecting the data size
 
+#ifdef DEBUGGING
+	//For debugging purpose, only take first elements from unstructured buffer to split points
+	int nbSplitPointsCounter = 0;
+	for(typename UnstructuredBuffer<T>::iterator eIter = m_unStructeredBuffer.begin(); eIter != m_unStructeredBuffer.end(), nbSplitPointsCounter < nbSplitPoints; nbSplitPointsCounter++) {
+		T splitPoint = *eIter;
+		m_splitPoints.push_back(splitPoint);
+		eIter = m_unStructeredBuffer.erase(eIter);
+	}
+#else
+	//Currently "randomly" choose split points
 	int nbFirstUnstructuredElements = m_unStructeredBuffer.size();
 
-	//Currently "randomly" choose split points
 	srand(time(NULL));
 
 	unsigned int nbRemainUnstructuredElements = m_unStructeredBuffer.size();
@@ -220,9 +235,7 @@ void GNATCollectionImpl<T>::initSplitPoints() {
 			eIter++;
 		}
 	}
-
-	assert(nbFirstUnstructuredElements == m_unStructeredBuffer.size() + m_splitPoints.size());
-
+#endif
 }
 
 template<typename T>
@@ -267,11 +280,9 @@ void GNATCollectionImpl<T>::calculateRanges(DistanceCalculatorPtr<T> pDistanceCa
 }
 
 template<typename T>
-void GNATCollectionImpl<T>::getCandidateSubCollectionIndexes(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<int>& rCandidateIndexes) const {
-	rCandidateIndexes.clear();
+void GNATCollectionImpl<T>::getCandidateSubCollections(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<int>& rCheckMap) const {
 
 	unsigned int nbSubCollections = m_subCollections.size();
-	std::vector<int> checkMap(nbSubCollections, 1);
 
 	for(unsigned int splitPointIndex = 0; splitPointIndex < nbSubCollections; splitPointIndex++) {
 
@@ -281,20 +292,12 @@ void GNATCollectionImpl<T>::getCandidateSubCollectionIndexes(T query, DistanceCa
 		Range solutionDistanceToSplitPointRange(dSplitPointQuery > epsilon ? dSplitPointQuery - epsilon : 0, epsilon + dSplitPointQuery);
 
 		for(unsigned int subCollectionIndex = 0; subCollectionIndex < m_subCollections.size(); subCollectionIndex++) {
-
 			//If range of distance of solution to split point is not in the range of distance between sub collection and split point
 			//, then conclude the sub collection can't contain any solution
-
 			Range subCollectionDistanceToSplitPointRange = m_splitPointRanges[splitPointIndex][subCollectionIndex];
 			if(solutionDistanceToSplitPointRange.second < subCollectionDistanceToSplitPointRange.first || solutionDistanceToSplitPointRange.first > subCollectionDistanceToSplitPointRange.second) {
-				checkMap[subCollectionIndex] = 0;
+				rCheckMap[subCollectionIndex] = 0;
 			}
-		}
-	}
-
-	for(unsigned int subCollectionIndex = 0; subCollectionIndex < m_subCollections.size(); subCollectionIndex++) {
-		if(checkMap[subCollectionIndex] != 0) {
-			rCandidateIndexes.push_back(subCollectionIndex);
 		}
 	}
 }

@@ -81,7 +81,11 @@ void GNATCollectionIterator<T>::toBegin() {
 	m_browsingUnStructuredBufferIter = m_pCollection->m_unStructeredBuffer.begin();
 	m_browsingSplitPointsIter = m_pCollection->m_splitPoints.begin();
 
-	if(!(isAllSubCollectionsDone() & isCurrentSubCollectionDone())) {
+	while(isCurrentSubCollectionDone() && !isAllSubCollectionsDone()) {
+		nextCollection();
+	}
+
+	if(!(isAllSubCollectionsDone() && isCurrentSubCollectionDone())) {
 		m_browsingState = BROWSING_SUB_COLLECTION;
 	}
 	else {
