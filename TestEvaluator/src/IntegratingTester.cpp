@@ -69,7 +69,14 @@ void IntegratingTester::freeTestEvaluateGateSearchSpace(int nbQubits, int maxSeq
 	TimerPtr pTimer = new CpuTimer();
 	GateWriterPtr pGateWriter = new FullGateWriterImpl();
 
-	GateSearchSpaceEvaluatorPtr pGateSeachSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl<GatePtr>(queries, epsilon, pGateDistanceCalculator, pGateWriter, pTimer, std::cout);
+	GateSearchSpaceEvaluatorPtr pGateSeachSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl<GatePtr>(queries,
+			epsilon,
+			pGateDistanceCalculator,
+			NullPtr,
+			NullPtr,
+			pGateWriter,
+			pTimer,
+			std::cout);
 	pGateSeachSpaceEvaluator->evaluateCollection(pSearchSpaceCollection);
 
 	delete pGateSeachSpaceEvaluator;

@@ -200,6 +200,7 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleEvaluate/src/implement/SearchSpaceTimerEvaluator.cpp \
  ../../ModuleEvaluate/include/implement/ScopeTimer.h \
  ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
+ ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h \
  ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
@@ -210,7 +211,6 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleOperator/include/implement/GateCoordinateCalculatorImpl.h \
  ../../ModuleIO/include/implement/LabelOnlyGateWriterImpl.h \
  ../../ModuleIO/include/implement/SampleRealCoordinateWriterImpl.hpp \
- ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h \
  ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h \
  ../../ModuleIO/include/implement/FullGateWriterImpl.h \
  ../../ModuleAlgorithm/src/implement/collection/GNATCollectionImpl.cpp \
@@ -622,6 +622,8 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
 
+../../ModuleIO/include/interface/abstract/ICoordinateWriter.h:
+
 ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h:
 
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
@@ -641,8 +643,6 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../../ModuleIO/include/implement/LabelOnlyGateWriterImpl.h:
 
 ../../ModuleIO/include/implement/SampleRealCoordinateWriterImpl.hpp:
-
-../../ModuleIO/include/interface/abstract/ICoordinateWriter.h:
 
 ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:
 

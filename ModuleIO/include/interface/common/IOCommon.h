@@ -28,4 +28,10 @@ typedef IGateWriter* GateWriterPtr;
 template<typename T, typename F>
 using CoordinateWriterPtr = ICoordinateWriter<T,F>*;
 
+template<typename T>
+using RealCoordinateWriter = ICoordinateWriter<T,double>;
+
+template<typename T>
+using RealCoordinateWriterPtr = RealCoordinateWriter<T>*;
+
 #endif /* IOCOMMON_H_ */

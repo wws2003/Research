@@ -13,10 +13,13 @@
 
 class LabelOnlyGateWriterImpl : public IGateWriter {
 public:
-	LabelOnlyGateWriterImpl();
+	LabelOnlyGateWriterImpl(std::string endStr = "\n");
 
 	virtual ~LabelOnlyGateWriterImpl(){};
 	virtual void write(GatePtr pGate, std::ostream& ouputStream);
+
+private:
+	std::string m_endStr;
 };
 
 

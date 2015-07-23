@@ -38,12 +38,15 @@
 #include "GateDistanceCalculatorByMatrixImpl.h"
 #include "FullGateWriterImpl.h"
 #include "GNATCollectionImpl.cpp"
+#include "SampleRealCoordinateWriterImpl.hpp"
 #include "MatrixFowlerDistanceCalculator.h"
 #include <iostream>
 #include <cmath>
 #include <cstdio>
 #include <cassert>
 #include <cstdlib>
+
+#define IGNORE_PHASE 1
 
 #define my_small_rand(factor) (double)(rand() - (RAND_MAX / 2)) / (double)RAND_MAX * factor
 
@@ -80,7 +83,14 @@ TestSuite::TestSuite() {
 	double epsilon = 1e-10;
 	m_pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(m_pMatrixOperator);
 	m_pTimer = new CpuTimer();
-	m_pSearchSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl<MatrixPtr>(m_targets, epsilon, m_pMatrixDistanceCalculator, m_pMatrixWriter, m_pTimer, std::cout);
+	m_pSearchSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl<MatrixPtr>(m_targets,
+			epsilon,
+			m_pMatrixDistanceCalculator,
+			NullPtr,
+			NullPtr,
+			m_pMatrixWriter,
+			m_pTimer,
+			std::cout);
 
 	m_pMatrixCombiner = new MultiplierMatrixCombinerImpl(m_pMatrixOperator);
 	m_pSearchSpaceConstructor = new SearchSpaceConstructorImpl<MatrixPtr>(m_pMatrixCombiner);
@@ -680,32 +690,34 @@ void TestSuite::freeTestGateCollectionEvaluator() {
 	initTwoQubitsGateUniversalSet(m_pMatrixOperator, pUniversalSet);
 
 	GateCollectionPtr pGateCollection = new GNATCollectionImpl<GatePtr>();
-
-	int maxSequenceLength = 6;
+	int maxSequenceLength = 7;
 
 	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new SearchSpaceConstructorImpl<GatePtr>(pGateCombiner);
-
 	pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection, pUniversalSet, maxSequenceLength);
-
 	CollectionSize_t gateCounts = pGateCollection->size();
-
 	std::cout << "Number of sequence length = " << maxSequenceLength << " constructed by CNOT, H and T: " << gateCounts << std::endl;
 
-	GateWriterPtr pGateWriter = new FullGateWriterImpl();
+	GateWriterPtr pGateWriter = new LabelOnlyGateWriterImpl(",");
 	MatrixRealInnerProductCalculatorPtr pMatrixRealInnerProductCalculator = new MatrixRealInnerProductByTraceImpl(m_pMatrixOperator);
 	MatrixRealCoordinateCalculatorPtr pHermitiaRealCoordinateCalculator = new CoordinateOnOrthonormalBasisCalculatorImpl<MatrixPtr, double>(pMatrixRealInnerProductCalculator, pBasis4);
 	MatrixRealCoordinateCalculatorPtr pMatrixRealCoordinateCalculator = new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, pHermitiaRealCoordinateCalculator);
 	GateRealCoordinateCalculatorPtr pGateRealCoordinateCalculator = new GateCoordinateCalculatorImpl(pMatrixRealCoordinateCalculator);
+	RealCoordinateWriterPtr<GatePtr> pCoordinateWriter = new SampleRealCoordinateWriterImpl<GatePtr>();
 
-	CoordinateWriterPtr<MatrixPtr, double> pMatrixCoordinateWriter = new SampleRealCoordinateWriterImpl<MatrixPtr>();
-
-	double epsilon = 0.5;
+	double epsilon = 0.4;
 	TargetElements<GatePtr> targets;
 	getNearIdentityGate(m_pMatrixOperator, pBasis4, targets);
 
 	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(m_pMatrixOperator);
 	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(pMatrixDistanceCalculator);
-	GateSearchSpaceEvaluatorPtr pGateSearchSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl<GatePtr>(targets, epsilon, pGateDistanceCalculator, pGateWriter, m_pTimer, std::cout);
+	GateSearchSpaceEvaluatorPtr pGateSearchSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl<GatePtr>(targets,
+			epsilon,
+			pGateDistanceCalculator,
+			pGateRealCoordinateCalculator,
+			pCoordinateWriter,
+			pGateWriter,
+			m_pTimer,
+			std::cout);
 
 	pGateCollection->rebuildStructure(pGateDistanceCalculator);
 	pGateSearchSpaceEvaluator->evaluateCollection(pGateCollection);
@@ -714,7 +726,7 @@ void TestSuite::freeTestGateCollectionEvaluator() {
 	delete pMatrixDistanceCalculator;
 	delete pGateDistanceCalculator;
 
-	delete pMatrixCoordinateWriter;
+	delete pCoordinateWriter;
 	delete pGateRealCoordinateCalculator;
 	delete pMatrixRealCoordinateCalculator;
 	delete pHermitiaRealCoordinateCalculator;
@@ -934,6 +946,11 @@ void getGateCancelationCombinabilityChecker(GateCombinabilityCheckerPtr& pGateCa
 	GateLabelCancelationMap cancelationMap;
 	cancelationMap.insert(GateLabelPair("CNOT2", "CNOT1CNOT2CNOT1"));
 	cancelationMap.insert(GateLabelPair("CNOT1", "CNOT2CNOT1CNOT2"));
+	cancelationMap.insert(GateLabelPair("T2", "CNOT1CNOT2T2CNOT1CNOT2"));
+	cancelationMap.insert(GateLabelPair("CNOT1", "CNOT2H1CNOT1CNOT2H1"));
+	cancelationMap.insert(GateLabelPair("H1", "CNOT1CNOT2H1CNOT1CNOT2"));
+	cancelationMap.insert(GateLabelPair("CNOT1", "CNOT2H1CNOT2CNOT1H1"));
+
 	pGateCancelationCombinabilityChecker = new GateCancelationCombinabilityCheckerImpl(cancelationMap);
 }
 
@@ -949,7 +966,10 @@ void getNearIdentityGate(MatrixOperatorPtr pMatrixOperator, MatrixPtrVector pHer
 	MatrixPtr pU = NullPtr;
 
 	calculateSpecialUnitaryFromTracelessHermitianCoordinates(pMatrixOperator, randCoords, pHermitianBasis, pU);
+	GatePtr pTargetGate = new Gate(pU, 999999, "Unknown");
+	targets.push_back(pTargetGate);
 
+#ifndef IGNORE_PHASE
 	//Test add global phase to U
 	MatrixPtr pIdentityWithPhasePI_2 = NullPtr;
 	MatrixPtr pIdentityWithPhase_PI_2 = NullPtr;
@@ -966,18 +986,17 @@ void getNearIdentityGate(MatrixOperatorPtr pMatrixOperator, MatrixPtrVector pHer
 	pMatrixOperator->multiplyScalar(pU, expmPi, pIdentityWithPhasePI);
 	pMatrixOperator->multiplyScalar(pU, expm_Pi, pIdentityWithPhase_PI);
 
-
-	GatePtr pTargetGate = new Gate(pU, 999999, "Unknown");
 	GatePtr pTargetGatePI_2 = new Gate(pIdentityWithPhasePI_2, 999999, "Unknown");
 	GatePtr pTargetGate_PI_2 = new Gate(pIdentityWithPhase_PI_2, 999999, "Unknown");
 	GatePtr pTargetGatePI = new Gate(pIdentityWithPhasePI, 999999, "Unknown");
 	GatePtr pTargetGate_PI = new Gate(pIdentityWithPhase_PI, 999999, "Unknown");
 
-	targets.push_back(pTargetGate);
 	targets.push_back(pTargetGatePI_2);
 	targets.push_back(pTargetGate_PI_2);
 	targets.push_back(pTargetGatePI);
 	targets.push_back(pTargetGate_PI);
+#endif
+
 }
 
 void getNumberOfNeighbors(GateCollectionPtr pCollection, const TargetElements<GatePtr>& targets, GateDistanceCalculatorPtr pDistanceCalculator, double epsilon, std::vector<int>& resultNumbers) {

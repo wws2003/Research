@@ -262,6 +262,8 @@ MatrixPtr SampleMatrixOperator::fromEigenMatrix(MatrixXcd& eigenMatrix, std::str
 
 	MatrixPtr pMatrix = m_pMatrixFactory->getMatrixFromValues(nbRows, nbCols, arr, COLUMN_SPLICE, label);
 
+	delete[] arr;
+
 	return pMatrix;
 }
 

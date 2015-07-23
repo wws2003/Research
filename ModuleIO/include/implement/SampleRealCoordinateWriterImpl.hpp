@@ -21,9 +21,9 @@ public:
 
 template<typename T>
 void SampleRealCoordinateWriterImpl<T>::writeCoordinate(const Coordinate<T,double>& coordinate, std::ostream& outputStream) {
-	outputStream << "Real coordinate:" ;
+	std::string delimeter = ",";
 	for(std::vector<double>::const_iterator cIter = coordinate.getCoordinates().begin(); cIter != coordinate.getCoordinates().end(); cIter++) {
-		outputStream << *cIter << "," ;
+		outputStream << *cIter << delimeter ;
 	}
 	outputStream << std::endl;
 }

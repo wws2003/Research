@@ -14,7 +14,7 @@
 #include <ctime>
 #include <cassert>
 
-#define DEBUGGING
+//#define DEBUGGING
 //#define DEBUGGING_SP
 
 #define MIN_SIZE_TO_BUILD_STRUCTURE 30
@@ -255,7 +255,6 @@ void GNATCollectionImpl<T>::initSplitPoints() {
 
 #else
 	//Currently "randomly" choose split points
-
 	srand(time(NULL));
 
 	unsigned int nbRemainUnstructuredElements = m_unStructeredBuffer.size();

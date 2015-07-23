@@ -23,7 +23,15 @@ using TargetElements = std::vector<T>;
 template<typename T>
 class SearchSpaceTimerEvaluatorImpl : public ISearchSpaceEvaluator<T> {
 public:
-	SearchSpaceTimerEvaluatorImpl(const TargetElements<T>& pTargets, double epsilon, DistanceCalculatorPtr<T> pDistanceCalculator, WriterPtr<T> pWriter, TimerPtr pTimer, std::ostream& outputStream);
+	SearchSpaceTimerEvaluatorImpl(const TargetElements<T>& pTargets,
+			double epsilon,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
+			RealCoordinateWriterPtr<T> pRealCoordinateWritter,
+			WriterPtr<T> pWriter,
+			TimerPtr pTimer,
+			std::ostream& outputStream);
+
 	virtual ~SearchSpaceTimerEvaluatorImpl(){};
 
 	/**
@@ -39,9 +47,13 @@ public:
 private:
 	TargetElements<T> m_targets;
 	double m_epsilon;
+
 	DistanceCalculatorPtr<T> m_pDistanceCalculator;
+	RealCoordinateCalculatorPtr<T> m_pRealCoordinateCalculator;
+	RealCoordinateWriterPtr<T> m_pRealCoordinateWritter;
 	TimerPtr m_pTimer;
 	WriterPtr<T> m_pWriter;
+
 	std::ostream& m_ostream;
 };
 

@@ -8,7 +8,7 @@
 #include "GateCombinerImpl.h"
 #include "IGateCombinabilityChecker.h"
 
-#define IDENTITY_NOISE_THRESOLD 1e-15
+#define IDENTITY_NOISE_THRESOLD 1e-8
 
 bool checkIdentity(MatrixPtr pMatrix);
 
@@ -58,7 +58,8 @@ bool checkIdentity(MatrixPtr pMatrix) {
 			ComplexVal identityElement = (row == column) ? 1.0 : 0.0;
 
 			//If matrix[row][column] differs from I[row][column], consider matrix is not identity
-			if(std::norm(v - identityElement) > IDENTITY_NOISE_THRESOLD) {
+			double err = std::norm(v - identityElement);
+			if(err > IDENTITY_NOISE_THRESOLD) {
 				return true;
 			}
 		}
