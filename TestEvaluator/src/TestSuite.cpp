@@ -16,15 +16,18 @@
 #include "CpuTimer.h"
 #include "SimpleDenseMatrixFactoryImpl.h"
 #include "VectorBasedMatrixCollectionImpl.h"
-#include "SearchSpaceConstructorImpl.cpp"
+#include "SearchSpaceConstructorImpl.h"
+#include "MatrixSearchSpaceConstructorImpl.h"
+#include "GateSearchSpaceConstructorImpl.h"
 #include "AlwaysTrueMultiplierMatrixCombinerImpl.h"
 #include "InverseCancelationMultiplierMatrixCombinerImpl.h"
-#include "MapBasedBinCollectionImpl.cpp"
+#include "MapBasedMatrixBinCollectionImpl.h"
 #include "AlgoInternal.h"
 #include "MatrixRealInnerProductByTraceImpl.h"
-#include "CoordinateOnOrthonormalBasisCalculatorImpl.cpp"
+#include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "ISearchSpaceEvaluator.h"
-#include "SearchSpaceTimerEvaluator.cpp"
+#include "MatrixSearchSpaceTimerEvaluatorImpl.h"
+#include "GateSearchSpaceTimerEvaluatorImpl.h"
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
 #include "Bin.hpp"
 #include "Gate.h"
@@ -37,7 +40,7 @@
 #include "SampleRealCoordinateWriterImpl.hpp"
 #include "GateDistanceCalculatorByMatrixImpl.h"
 #include "FullGateWriterImpl.h"
-#include "GNATCollectionImpl.cpp"
+#include "GNATGateCollectionImpl.h"
 #include "SampleRealCoordinateWriterImpl.hpp"
 #include "MatrixFowlerDistanceCalculator.h"
 #include <iostream>
@@ -46,7 +49,7 @@
 #include <cassert>
 #include <cstdlib>
 
-#define IGNORE_PHASE 1
+//#define IGNORE_PHASE 1
 
 #define my_small_rand(factor) (double)(rand() - (RAND_MAX / 2)) / (double)RAND_MAX * factor
 
@@ -83,7 +86,7 @@ TestSuite::TestSuite() {
 	double epsilon = 1e-10;
 	m_pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(m_pMatrixOperator);
 	m_pTimer = new CpuTimer();
-	m_pSearchSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl<MatrixPtr>(m_targets,
+	m_pSearchSpaceEvaluator = new MatrixSearchSpaceTimerEvaluatorImpl(m_targets,
 			epsilon,
 			m_pMatrixDistanceCalculator,
 			NullPtr,
@@ -93,7 +96,7 @@ TestSuite::TestSuite() {
 			std::cout);
 
 	m_pMatrixCombiner = new MultiplierMatrixCombinerImpl(m_pMatrixOperator);
-	m_pSearchSpaceConstructor = new SearchSpaceConstructorImpl<MatrixPtr>(m_pMatrixCombiner);
+	m_pSearchSpaceConstructor = new MatrixSearchSpaceConstructorImpl(m_pMatrixCombiner);
 }
 
 TestSuite::~TestSuite() {
@@ -313,7 +316,7 @@ void TestSuite::testInverseCancelingSearchSpaceConstructor() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
 	MatrixCombinerPtr pMatrixCombiner = new InverseCancelationMultiplierMatrixCombinerImpl(m_pMatrixOperator);
-	MatrixSearchSpaceConstructorPtr pSearchSpaceConstructor = new SearchSpaceConstructorImpl<MatrixPtr>(pMatrixCombiner);
+	MatrixSearchSpaceConstructorPtr pSearchSpaceConstructor = new MatrixSearchSpaceConstructorImpl(pMatrixCombiner);
 
 	double inverSqrt2 = 1 / sqrt(2);
 
@@ -449,7 +452,7 @@ void TestSuite::testCalculateCoordinatesInSearchSpace() {
 
 	int maxSequenceLength = 4;
 
-	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new SearchSpaceConstructorImpl<GatePtr>(pGateCombiner);
+	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new GateSearchSpaceConstructorImpl(pGateCombiner);
 	pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection, pUniversalSet, maxSequenceLength);
 	CollectionSize_t gateCounts = pGateCollection->size();
 
@@ -457,7 +460,7 @@ void TestSuite::testCalculateCoordinatesInSearchSpace() {
 
 	GateWriterPtr pGateWriter = new LabelOnlyGateWriterImpl();
 	MatrixRealInnerProductCalculatorPtr pMatrixRealInnerProductCalculator = new MatrixRealInnerProductByTraceImpl(m_pMatrixOperator);
-	MatrixRealCoordinateCalculatorPtr pHermitiaRealCoordinateCalculator = new CoordinateOnOrthonormalBasisCalculatorImpl<MatrixPtr, double>(pMatrixRealInnerProductCalculator, pBasis4);
+	MatrixRealCoordinateCalculatorPtr pHermitiaRealCoordinateCalculator = new MatrixCoordinateOnOrthonormalBasisCalculatorImpl(pMatrixRealInnerProductCalculator, pBasis4);
 	MatrixRealCoordinateCalculatorPtr pMatrixRealCoordinateCalculator = new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, pHermitiaRealCoordinateCalculator);
 
 	CoordinateWriterPtr<MatrixPtr, double> pMatrixCoordinateWriter = new SampleRealCoordinateWriterImpl<MatrixPtr>();
@@ -551,12 +554,12 @@ void TestSuite::testGNATCollectionBuild() {
 
 	int maxSequenceLength = 4;
 
-	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new SearchSpaceConstructorImpl<GatePtr>(pGateCombiner);
+	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new GateSearchSpaceConstructorImpl(pGateCombiner);
 	pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection, pUniversalSet, maxSequenceLength);
 
 	CollectionSize_t gateCounts = pGateCollection->size();
 
-	GateCollectionPtr pGNATCollection = new GNATCollectionImpl<GatePtr>();
+	GateCollectionPtr pGNATCollection = new GNATGateCollectionImpl();
 	pGateSearchSpaceConstructor->constructSearchSpace(pGNATCollection, pUniversalSet, maxSequenceLength);
 	assert(pGNATCollection->size() == gateCounts);
 
@@ -618,11 +621,11 @@ void TestSuite::testGNATSearch() {
 	initTwoQubitsGateUniversalSet(m_pMatrixOperator, pUniversalSet);
 
 	GateCollectionPtr pGateVectorCollection = new VectorBasedCollectionImpl<GatePtr>();
-	GateCollectionPtr pGateGNATCollection = new GNATCollectionImpl<GatePtr>();
+	GateCollectionPtr pGateGNATCollection = new GNATGateCollectionImpl();
 
 	int maxSequenceLength = 5;
 
-	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new SearchSpaceConstructorImpl<GatePtr>(pGateCombiner);
+	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new GateSearchSpaceConstructorImpl(pGateCombiner);
 	pGateSearchSpaceConstructor->constructSearchSpace(pGateVectorCollection, pUniversalSet, maxSequenceLength);
 	pGateSearchSpaceConstructor->constructSearchSpace(pGateGNATCollection, pUniversalSet, maxSequenceLength);
 
@@ -689,17 +692,17 @@ void TestSuite::freeTestGateCollectionEvaluator() {
 	GateCollectionPtr pUniversalSet = NullPtr;
 	initTwoQubitsGateUniversalSet(m_pMatrixOperator, pUniversalSet);
 
-	GateCollectionPtr pGateCollection = new GNATCollectionImpl<GatePtr>();
+	GateCollectionPtr pGateCollection = new GNATGateCollectionImpl();
 	int maxSequenceLength = 7;
 
-	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new SearchSpaceConstructorImpl<GatePtr>(pGateCombiner);
+	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new GateSearchSpaceConstructorImpl(pGateCombiner);
 	pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection, pUniversalSet, maxSequenceLength);
 	CollectionSize_t gateCounts = pGateCollection->size();
 	std::cout << "Number of sequence length = " << maxSequenceLength << " constructed by CNOT, H and T: " << gateCounts << std::endl;
 
 	GateWriterPtr pGateWriter = new LabelOnlyGateWriterImpl(",");
 	MatrixRealInnerProductCalculatorPtr pMatrixRealInnerProductCalculator = new MatrixRealInnerProductByTraceImpl(m_pMatrixOperator);
-	MatrixRealCoordinateCalculatorPtr pHermitiaRealCoordinateCalculator = new CoordinateOnOrthonormalBasisCalculatorImpl<MatrixPtr, double>(pMatrixRealInnerProductCalculator, pBasis4);
+	MatrixRealCoordinateCalculatorPtr pHermitiaRealCoordinateCalculator = new MatrixCoordinateOnOrthonormalBasisCalculatorImpl(pMatrixRealInnerProductCalculator, pBasis4);
 	MatrixRealCoordinateCalculatorPtr pMatrixRealCoordinateCalculator = new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, pHermitiaRealCoordinateCalculator);
 	GateRealCoordinateCalculatorPtr pGateRealCoordinateCalculator = new GateCoordinateCalculatorImpl(pMatrixRealCoordinateCalculator);
 	RealCoordinateWriterPtr<GatePtr> pCoordinateWriter = new SampleRealCoordinateWriterImpl<GatePtr>();
@@ -710,7 +713,7 @@ void TestSuite::freeTestGateCollectionEvaluator() {
 
 	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(m_pMatrixOperator);
 	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(pMatrixDistanceCalculator);
-	GateSearchSpaceEvaluatorPtr pGateSearchSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl<GatePtr>(targets,
+	GateSearchSpaceEvaluatorPtr pGateSearchSpaceEvaluator = new GateSearchSpaceTimerEvaluatorImpl(targets,
 			epsilon,
 			pGateDistanceCalculator,
 			pGateRealCoordinateCalculator,

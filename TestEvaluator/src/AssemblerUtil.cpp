@@ -8,7 +8,7 @@
 #include "AssemblerUtil.h"
 #include "IMatrixOperator.h"
 #include "VectorBasedCollectionImpl.hpp"
-#include "SearchSpaceConstructorImpl.cpp"
+#include "GateSearchSpaceConstructorImpl.h"
 #include "GateCombinerImpl.h"
 #include "ICombiner.h"
 #include "SimpleDenseMatrixImpl.h"
@@ -55,10 +55,10 @@ AssemblerUtil::AssemblerUtil() {
 	initTwoQubitGateCombinabilityCheckers(m_twoQubitGateCombinerCheckers);
 
 	m_pSingleQubitGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(m_singleQubitGateCombinerCheckers, m_pMatrixOperator));
-	m_pSingleQubitGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new SearchSpaceConstructorImpl<GatePtr>(m_pSingleQubitGateCombiner));
+	m_pSingleQubitGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorImpl(m_pSingleQubitGateCombiner));
 
 	m_pTwoQubitGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(m_twoQubitGateCombinerCheckers, m_pMatrixOperator));
-	m_pTwoQubitGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new SearchSpaceConstructorImpl<GatePtr>(m_pTwoQubitGateCombiner));
+	m_pTwoQubitGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorImpl(m_pTwoQubitGateCombiner));
 
 }
 

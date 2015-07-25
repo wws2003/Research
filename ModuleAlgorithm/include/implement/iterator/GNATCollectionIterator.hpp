@@ -195,8 +195,6 @@ T GNATCollectionIterator<T>::getObj() {
 		return NullPtr;
 	}
 
-	assert(element != NullPtr);
-
 	return element;
 }
 

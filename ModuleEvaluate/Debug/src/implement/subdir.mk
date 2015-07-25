@@ -5,18 +5,30 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/implement/CpuTimer.cpp \
+../src/implement/GateSearchSpaceConstructorImpl.cpp \
+../src/implement/GateSearchSpaceTimerEvaluatorImpl.cpp \
+../src/implement/MatrixSearchSpaceConstructorImpl.cpp \
+../src/implement/MatrixSearchSpaceTimerEvaluatorImpl.cpp \
 ../src/implement/ScopeTimer.cpp \
 ../src/implement/SearchSpaceConstructorImpl.cpp \
 ../src/implement/SearchSpaceTimerEvaluator.cpp 
 
 OBJS += \
 ./src/implement/CpuTimer.o \
+./src/implement/GateSearchSpaceConstructorImpl.o \
+./src/implement/GateSearchSpaceTimerEvaluatorImpl.o \
+./src/implement/MatrixSearchSpaceConstructorImpl.o \
+./src/implement/MatrixSearchSpaceTimerEvaluatorImpl.o \
 ./src/implement/ScopeTimer.o \
 ./src/implement/SearchSpaceConstructorImpl.o \
 ./src/implement/SearchSpaceTimerEvaluator.o 
 
 CPP_DEPS += \
 ./src/implement/CpuTimer.d \
+./src/implement/GateSearchSpaceConstructorImpl.d \
+./src/implement/GateSearchSpaceTimerEvaluatorImpl.d \
+./src/implement/MatrixSearchSpaceConstructorImpl.d \
+./src/implement/MatrixSearchSpaceTimerEvaluatorImpl.d \
 ./src/implement/ScopeTimer.d \
 ./src/implement/SearchSpaceConstructorImpl.d \
 ./src/implement/SearchSpaceTimerEvaluator.d 

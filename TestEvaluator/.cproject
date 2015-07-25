@@ -30,7 +30,6 @@
 									<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleOperator/include/implement"/>
-									<listOptionValue builtIn="false" value="../../ModuleOperator/src/implement"/>
 									<listOptionValue builtIn="false" value="../../ModuleOperator/third-parties"/>
 									<listOptionValue builtIn="false" value="../../ModuleIO/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleIO/include/interface/common"/>
@@ -40,7 +39,6 @@
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/iterator"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/collection"/>
-									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/src/implement/collection"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/combiner"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/approximator"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/bin"/>
@@ -51,7 +49,6 @@
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/implement"/>
-									<listOptionValue builtIn="false" value="../../ModuleEvaluate/src/implement"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.1969211016" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.other.pic.1738298609" name="Position Independent Code (-fPIC)" superClass="gnu.cpp.compiler.option.other.pic" value="false" valueType="boolean"/>

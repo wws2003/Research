@@ -18,7 +18,7 @@ src/AssemblerUtil.d: ../src/AssemblerUtil.cpp ../src/AssemblerUtil.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
- ../../ModuleEvaluate/src/implement/SearchSpaceConstructorImpl.cpp \
+ ../../ModuleEvaluate/include/implement/GateSearchSpaceConstructorImpl.h \
  ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
@@ -221,7 +221,7 @@ src/AssemblerUtil.d: ../src/AssemblerUtil.cpp ../src/AssemblerUtil.h \
 
 ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
-../../ModuleEvaluate/src/implement/SearchSpaceConstructorImpl.cpp:
+../../ModuleEvaluate/include/implement/GateSearchSpaceConstructorImpl.h:
 
 ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h:
 

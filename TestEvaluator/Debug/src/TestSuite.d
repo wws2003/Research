@@ -178,31 +178,30 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleAlgorithm/include/implement/collection/VectorBasedCollectionImpl.hpp \
  ../../ModuleAlgorithm/include/implement/iterator/VectorBasedIteratorImpl.hpp \
  ../../ModuleAlgorithm/include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
- ../../ModuleEvaluate/src/implement/SearchSpaceConstructorImpl.cpp \
  ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
+ ../../ModuleEvaluate/include/implement/MatrixSearchSpaceConstructorImpl.h \
+ ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
+ ../../ModuleEvaluate/include/implement/GateSearchSpaceConstructorImpl.h \
+ ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleAlgorithm/include/implement/combiner/AlwaysTrueMultiplierMatrixCombinerImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/combiner/AbstractMultiplierMatrixCombiner.h \
  ../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h \
- ../../ModuleAlgorithm/src/implement/collection/MapBasedBinCollectionImpl.cpp \
+ ../../ModuleAlgorithm/include/implement/collection/MapBasedMatrixBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
  ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
  ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
  ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h \
  ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h \
- ../../ModuleOperator/src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp \
+ ../../ModuleOperator/include/implement/MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h \
  ../../ModuleOperator/include/implement/CoordinateOnOrthonormalBasisCalculatorImpl.h \
  ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
- ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
- ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
- ../../ModuleEvaluate/src/implement/SearchSpaceTimerEvaluator.cpp \
- ../../ModuleEvaluate/include/implement/ScopeTimer.h \
- ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
- ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h \
+ ../../ModuleEvaluate/include/implement/MatrixSearchSpaceTimerEvaluatorImpl.h \
+ ../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h \
+ ../../ModuleEvaluate/include/implement/GateSearchSpaceTimerEvaluatorImpl.h \
  ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h \
- ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateSelectiveCombinabilityCheckerImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
@@ -211,11 +210,13 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleOperator/include/implement/GateCoordinateCalculatorImpl.h \
  ../../ModuleIO/include/implement/LabelOnlyGateWriterImpl.h \
  ../../ModuleIO/include/implement/SampleRealCoordinateWriterImpl.hpp \
+ ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h \
+ ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h \
  ../../ModuleIO/include/implement/FullGateWriterImpl.h \
- ../../ModuleAlgorithm/src/implement/collection/GNATCollectionImpl.cpp \
+ ../../ModuleAlgorithm/include/implement/collection/GNATGateCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
- ../../ModuleAlgorithm/include/implement/iterator/GNATCollectionIterator.hpp \
  ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h
 
 ../src/TestSuite.h:
@@ -578,13 +579,19 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleAlgorithm/include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
 
-../../ModuleEvaluate/src/implement/SearchSpaceConstructorImpl.cpp:
-
 ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h:
 
 ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
+
+../../ModuleEvaluate/include/implement/MatrixSearchSpaceConstructorImpl.h:
+
+../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h:
+
+../../ModuleEvaluate/include/implement/GateSearchSpaceConstructorImpl.h:
+
+../../ModuleMathConcepts/include/interface/common/Gate.h:
 
 ../../ModuleAlgorithm/include/implement/combiner/AlwaysTrueMultiplierMatrixCombinerImpl.h:
 
@@ -592,7 +599,7 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleAlgorithm/include/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.h:
 
-../../ModuleAlgorithm/src/implement/collection/MapBasedBinCollectionImpl.cpp:
+../../ModuleAlgorithm/include/implement/collection/MapBasedMatrixBinCollectionImpl.h:
 
 ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h:
 
@@ -606,27 +613,19 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h:
 
-../../ModuleOperator/src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp:
+../../ModuleOperator/include/implement/MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h:
 
 ../../ModuleOperator/include/implement/CoordinateOnOrthonormalBasisCalculatorImpl.h:
 
 ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
 
-../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
+../../ModuleEvaluate/include/implement/MatrixSearchSpaceTimerEvaluatorImpl.h:
 
-../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h:
 
-../../ModuleEvaluate/src/implement/SearchSpaceTimerEvaluator.cpp:
-
-../../ModuleEvaluate/include/implement/ScopeTimer.h:
-
-../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
-
-../../ModuleIO/include/interface/abstract/ICoordinateWriter.h:
+../../ModuleEvaluate/include/implement/GateSearchSpaceTimerEvaluatorImpl.h:
 
 ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h:
-
-../../ModuleMathConcepts/include/interface/common/Gate.h:
 
 ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h:
 
@@ -644,14 +643,18 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 
 ../../ModuleIO/include/implement/SampleRealCoordinateWriterImpl.hpp:
 
+../../ModuleIO/include/interface/abstract/ICoordinateWriter.h:
+
+../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
+
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
 ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:
 
 ../../ModuleIO/include/implement/FullGateWriterImpl.h:
 
-../../ModuleAlgorithm/src/implement/collection/GNATCollectionImpl.cpp:
+../../ModuleAlgorithm/include/implement/collection/GNATGateCollectionImpl.h:
 
 ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h:
-
-../../ModuleAlgorithm/include/implement/iterator/GNATCollectionIterator.hpp:
 
 ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h:

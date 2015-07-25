@@ -9,7 +9,8 @@
 #include "MatrixTraceDistanceCalculator.h"
 #include "CoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "MatrixRealInnerProductByTraceImpl.h"
-#include "CoordinateOnOrthonormalBasisCalculatorImpl.cpp"
+#include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
+#include "Coordinate.hpp"
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
 #include <iostream>
 #include <cstdio>
@@ -24,7 +25,7 @@ TestSuite::TestSuite() {
 	m_pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(m_pMatrixOperator);
 	m_pMatrixRealInnerProductCalculator = new MatrixRealInnerProductByTraceImpl(m_pMatrixOperator);
 	initPauliMatrices(m_pPauliMatrices);
-	m_pMatrixRealCoordinateOnOrthonormalBasisCalculator = new CoordinateOnOrthonormalBasisCalculatorImpl<MatrixPtr, double>(m_pMatrixRealInnerProductCalculator, m_pPauliMatrices);
+	m_pMatrixRealCoordinateOnOrthonormalBasisCalculator = new MatrixCoordinateOnOrthonormalBasisCalculatorImpl(m_pMatrixRealInnerProductCalculator, m_pPauliMatrices);
 	m_pSpecialUnitaryCoordinateCalculator = new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, m_pMatrixRealCoordinateOnOrthonormalBasisCalculator);
 }
 
@@ -691,7 +692,7 @@ void TestSuite::testSpecialUnitaryCoordinateMapper() {
 
 	calculateSpecialUnitaryFromTracelessHermitianCoordinates(m_pMatrixOperator, coordArr, pBasis4, pU);
 
-	MatrixRealCoordinateCalculatorPtr pHermitianCoordinateCalculator = new CoordinateOnOrthonormalBasisCalculatorImpl<MatrixPtr, double>(m_pMatrixRealInnerProductCalculator, pBasis4);
+	MatrixRealCoordinateCalculatorPtr pHermitianCoordinateCalculator = new MatrixCoordinateOnOrthonormalBasisCalculatorImpl(m_pMatrixRealInnerProductCalculator, pBasis4);
 	MatrixRealCoordinateCalculatorPtr pSpecialUnitaryCoordinateCalculator = new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, pHermitianCoordinateCalculator);
 
 	MatrixRealCoordinatePtr pURealCoordinate = NullPtr;

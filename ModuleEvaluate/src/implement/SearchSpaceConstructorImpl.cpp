@@ -84,4 +84,3 @@ void addNewSequencesByApplyingUniversalElements(T pSequence, IteratorPtr<T> pUni
 	//Rewind universal matrix/gate iterator to begin
 	pUniversalSetIter->toBegin();
 }
-

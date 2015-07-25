@@ -155,10 +155,6 @@ IteratorPtr<T> GNATCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalc
 	//Then results from split points
 	findClosestElementsInSplitPoints(query, m_splitPoints, pDistanceCalculator, epsilon, results);
 
-	/*if(results.size() > 0) {
-		printf("Results from split points and unstructured buffer %d\n", results.size());
-	}*/
-
 	//Get results from sub collections
 	int nbSubCollections = m_subCollections.size();
 	std::vector<int> subCollectionsCheckMap(nbSubCollections, 1);
@@ -172,7 +168,6 @@ IteratorPtr<T> GNATCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalc
 			continue;
 		}
 #endif
-
 		CollectionPtr<T> pCandidateSubCollection = m_subCollections[i];
 		IteratorPtr<T> pSubResultIter = pCandidateSubCollection->findNearestNeighbour(query, pDistanceCalculator, epsilon);
 
@@ -189,7 +184,6 @@ IteratorPtr<T> GNATCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalc
 		while(!pSubResultIter->isDone()) {
 			results.push_back(pSubResultIter->getObj());
 			pSubResultIter->next();
-
 #ifdef DEBUGGING
 			nbResultFromSubCollection++;
 #endif
@@ -207,12 +201,9 @@ IteratorPtr<T> GNATCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalc
 		assert(nbResultFromSubCollectionIter == nbResultFromSubCollection);
 		_destroy(pSubCollectionIter);
 #endif
-
 		_destroy(pSubResultIter);
-
 		continue;
 	}
-
 	return IteratorPtr<T>(new VectorBasedReadOnlyIteratorImpl<T>(results));
 }
 
