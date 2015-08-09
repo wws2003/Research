@@ -34,6 +34,8 @@
 									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/common"/>
+									<listOptionValue builtIn="false" value="../../ModuleIO/include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../../ModuleIO/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../include/interface/common"/>
 									<listOptionValue builtIn="false" value="../include/implement"/>

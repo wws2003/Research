@@ -13,8 +13,14 @@
 template<typename T>
 class IWriter;
 
+template<typename T>
+class IReader;
+
 typedef IWriter<MatrixPtr> IMatrixWriter;
 typedef IWriter<GatePtr> IGateWriter;
+
+typedef IReader<MatrixPtr> IMatrixReader;
+typedef IReader<GatePtr> IGateReader;
 
 template<typename T, typename F>
 class ICoordinateWriter;
@@ -22,8 +28,14 @@ class ICoordinateWriter;
 template<typename T>
 using WriterPtr = IWriter<T>*;
 
+template<typename T>
+using ReaderPtr = IReader<T>*;
+
 typedef IMatrixWriter* MatrixWriterPtr;
 typedef IGateWriter* GateWriterPtr;
+
+typedef IMatrixReader* MatrixReaderPtr;
+typedef IGateReader* GateReaderPtr;
 
 template<typename T, typename F>
 using CoordinateWriterPtr = ICoordinateWriter<T,F>*;

@@ -63,6 +63,12 @@ public:
 	//Find the neighbor elements to the query, given distance calculator
 	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const ;
 
+protected:
+	SplitPointSet<T> m_splitPoints;
+	CollectionVector<T> m_subCollections;
+	UnstructuredBuffer<T> m_unStructeredBuffer;
+	RangeMap m_splitPointRanges;
+
 private:
 
 	/*--------------For constructing GNAT data structure--------------*/
@@ -81,13 +87,6 @@ private:
 	/*--------------For searching on GNAT data structure--------------*/
 	//Get sub collections in those search result can be found
 	virtual void getCandidateSubCollections(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<int>& rCheckMap) const;
-
-	SplitPointSet<T> m_splitPoints;
-	CollectionVector<T> m_subCollections;
-
-	UnstructuredBuffer<T> m_unStructeredBuffer;
-
-	RangeMap m_splitPointRanges;
 
 	friend class GNATCollectionIterator<T>;
 };
