@@ -35,12 +35,12 @@ void BinaryMatrixReaderImpl::read(MatrixPtr& rpMatrix, std::istream &inputStream
 	int arraySize = nbRows * nbColumns;
 	ComplexValArray matrixArray = new ComplexVal[arraySize];
 	for(int i = 0; i < arraySize; i++) {
-		inputStream.read((char*)matrixArray + i, sizeof(ComplexVal));
+		inputStream.read((char*)(&matrixArray[i]), sizeof(ComplexVal));
 	}
 
 	//Generate matrix instance
 	std::string labelStr(label, labelLength);
-	m_pMatrixFactory->getMatrixFromValues(nbRows, nbColumns, matrixArray, ROW_SPLICE, label);
+	rpMatrix = m_pMatrixFactory->getMatrixFromValues(nbRows, nbColumns, matrixArray, ROW_SPLICE, labelStr);
 
 	//Release read matrix array
 	delete[] matrixArray;

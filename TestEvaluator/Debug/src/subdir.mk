@@ -5,21 +5,24 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/AssemblerUtil.cpp \
+../src/FullTestSuite.cpp \
+../src/IOTestSuite.cpp \
 ../src/IntegratingTester.cpp \
-../src/TestEvaluator.cpp \
-../src/TestSuite.cpp 
+../src/TestEvaluator.cpp 
 
 OBJS += \
 ./src/AssemblerUtil.o \
+./src/FullTestSuite.o \
+./src/IOTestSuite.o \
 ./src/IntegratingTester.o \
-./src/TestEvaluator.o \
-./src/TestSuite.o 
+./src/TestEvaluator.o 
 
 CPP_DEPS += \
 ./src/AssemblerUtil.d \
+./src/FullTestSuite.d \
+./src/IOTestSuite.d \
 ./src/IntegratingTester.d \
-./src/TestEvaluator.d \
-./src/TestSuite.d 
+./src/TestEvaluator.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

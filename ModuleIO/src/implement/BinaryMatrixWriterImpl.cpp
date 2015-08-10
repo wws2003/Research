@@ -37,11 +37,13 @@ void BinaryMatrixWriterImpl::write(MatrixPtr pMatrix, std::ostream& outputStream
 	pMatrix->toArray(matrixArray);
 	int arraySize = nbRows * nbColumns;
 	for(int i = 0; i < arraySize; i++) {
-		outputStream.write((const char*)matrixArray + i, sizeof(ComplexVal));
+		outputStream.write((const char*)(&matrixArray[i]), sizeof(ComplexVal));
 	}
 
 	//Release array
 	delete[] matrixArray;
+
+	outputStream.flush();
 }
 
 

@@ -5,7 +5,7 @@
  *      Author: pham
  */
 
-#include "TestSuite.h"
+#include "FullTestSuite.h"
 #include "SampleMatrixWriter.h"
 #include "LabelOnlyMatrixWriterImpl.h"
 #include "SimpleDenseMatrixImpl.h"
@@ -77,7 +77,7 @@ void getNumberOfNeighbors(GateCollectionPtr pCollection, const TargetElements<Ga
 
 void getNumberOfNeighborsFromIterator(GateCollectionPtr pCollection, const TargetElements<GatePtr>& targets, GateDistanceCalculatorPtr pDistanceCalculator, double epsilon, std::vector<int>& resultNumbers);
 
-TestSuite::TestSuite() {
+FullTestSuite::FullTestSuite() {
 	m_pMatrixWriter = new SampleMatrixWriterImpl();
 	m_pMatrixFactory = new SimpleDenseMatrixFactoryImpl();
 	m_pMatrixOperator = new SampleMatrixOperator(m_pMatrixFactory);
@@ -99,7 +99,7 @@ TestSuite::TestSuite() {
 	m_pSearchSpaceConstructor = new MatrixSearchSpaceConstructorImpl(m_pMatrixCombiner);
 }
 
-TestSuite::~TestSuite() {
+FullTestSuite::~FullTestSuite() {
 	delete m_pSearchSpaceConstructor;
 	delete m_pMatrixCombiner;
 	delete m_pSearchSpaceEvaluator;
@@ -115,7 +115,7 @@ TestSuite::~TestSuite() {
 	delete m_pMatrixFactory;
 	delete m_pMatrixWriter;
 }
-void TestSuite::test(){
+void FullTestSuite::test(){
 	//testSimpleWriter();
 	testSimpleCollection();
 	testSimpleSearchSpaceConstructor();
@@ -128,7 +128,7 @@ void TestSuite::test(){
 	freeTestGateCollectionEvaluator();
 }
 
-void TestSuite::testSimpleWriter() {
+void FullTestSuite::testSimpleWriter() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray arrayH = new ComplexVal[4];
 	double inverSqrt2 = 1 / sqrt(2);
@@ -163,7 +163,7 @@ void TestSuite::testSimpleWriter() {
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
-void TestSuite::testSimpleCollection() {
+void FullTestSuite::testSimpleCollection() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	MatrixCollectionPtr pMatrixCollection = new VectorBasedMatrixCollectionImpl();
 
@@ -214,7 +214,7 @@ void TestSuite::testSimpleCollection() {
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
-void TestSuite::testSimpleSearchSpaceConstructor() {
+void FullTestSuite::testSimpleSearchSpaceConstructor() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
 	double inverSqrt2 = 1 / sqrt(2);
@@ -280,7 +280,7 @@ void TestSuite::testSimpleSearchSpaceConstructor() {
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
-void TestSuite::testSimpleEvaluator() {
+void FullTestSuite::testSimpleEvaluator() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
 	double inverSqrt2 = 1 / sqrt(2);
@@ -312,7 +312,7 @@ void TestSuite::testSimpleEvaluator() {
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
-void TestSuite::testInverseCancelingSearchSpaceConstructor() {
+void FullTestSuite::testInverseCancelingSearchSpaceConstructor() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
 	MatrixCombinerPtr pMatrixCombiner = new InverseCancelationMultiplierMatrixCombinerImpl(m_pMatrixOperator);
@@ -376,7 +376,7 @@ void TestSuite::testInverseCancelingSearchSpaceConstructor() {
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
-void TestSuite::testSampleMatrixBinCollection() {
+void FullTestSuite::testSampleMatrixBinCollection() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
 	BinPattern binPattern1 = "0011";
@@ -432,7 +432,7 @@ void TestSuite::testSampleMatrixBinCollection() {
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
-void TestSuite::testCalculateCoordinatesInSearchSpace() {
+void FullTestSuite::testCalculateCoordinatesInSearchSpace() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
 	MatrixPtrVector pBasis4;
@@ -539,7 +539,7 @@ void TestSuite::testCalculateCoordinatesInSearchSpace() {
 	std::cout << __func__ << " failed coordinate cases: " << wrongCoordinateCalculateCounter << std::endl << "--------------------------"<<  std::endl ;
 }
 
-void TestSuite::testGNATCollectionBuild() {
+void FullTestSuite::testGNATCollectionBuild() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
 	GateCombinabilityCheckers combinabilityCheckers;
@@ -605,7 +605,7 @@ void TestSuite::testGNATCollectionBuild() {
 	std::cout << __func__ << " passed"  <<  std::endl ;
 }
 
-void TestSuite::testGNATSearch() {
+void FullTestSuite::testGNATSearch() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	MatrixPtrVector pBasis4;
 	m_pMatrixOperator->getTracelessHermitianMatricesBasis(4, pBasis4);
@@ -676,7 +676,7 @@ void TestSuite::testGNATSearch() {
 	std::cout << __func__ << " passed"  <<  std::endl ;
 }
 
-void TestSuite::freeTestGateCollectionEvaluator() {
+void FullTestSuite::freeTestGateCollectionEvaluator() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
 	MatrixPtrVector pBasis4;

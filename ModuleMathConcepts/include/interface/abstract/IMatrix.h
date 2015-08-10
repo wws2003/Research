@@ -22,6 +22,8 @@ public:
 
 	virtual void toArray(ComplexValArrayRef array) const = 0;
 
+	//Overload
+	bool operator==(const IMatrix& rhs);
 };
 
 

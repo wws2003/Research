@@ -15,10 +15,10 @@
 #include "AlgoCommon.h"
 #include <vector>
 
-class TestSuite {
+class FullTestSuite {
 public:
-	TestSuite();
-	virtual ~TestSuite();
+	FullTestSuite();
+	virtual ~FullTestSuite();
 	void test();
 
 private:

@@ -11,7 +11,12 @@ src/TestEvaluator.d: ../src/TestEvaluator.cpp ../src/IntegratingTester.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
- ../src/TestSuite.h ../../ModuleIO/include/interface/common/IOCommon.h
+ ../src/FullTestSuite.h \
+ ../../ModuleIO/include/interface/common/IOCommon.h ../src/IOTestSuite.h \
+ ../../ModuleIO/include/interface/abstract/IWriter.h \
+ ../../ModuleIO/include/interface/abstract/IReader.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h
 
 ../src/IntegratingTester.h:
 
@@ -39,6 +44,16 @@ src/TestEvaluator.d: ../src/TestEvaluator.cpp ../src/IntegratingTester.h \
 
 ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
 
-../src/TestSuite.h:
+../src/FullTestSuite.h:
 
 ../../ModuleIO/include/interface/common/IOCommon.h:
+
+../src/IOTestSuite.h:
+
+../../ModuleIO/include/interface/abstract/IWriter.h:
+
+../../ModuleIO/include/interface/abstract/IReader.h:
+
+../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h:
+
+../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:

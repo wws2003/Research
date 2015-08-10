@@ -23,7 +23,7 @@ public:
 
 	Gate(MatrixPtr pMatrix, cost_t cost, const LabelSeq& label, const std::string& labelStr);
 
-	virtual ~Gate();
+	virtual ~Gate(){};
 
 	inline MatrixPtr getMatrix() {
 		return m_pMatrix;
@@ -40,6 +40,8 @@ public:
 	inline const std::string& getLabelStr() {
 		return m_labelStr;
 	}
+
+	bool operator==(const Gate& rhs);
 
 private:
 	MatrixPtr m_pMatrix;

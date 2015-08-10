@@ -9,7 +9,8 @@
 #include <iostream>
 
 #include "IntegratingTester.h"
-#include "TestSuite.h"
+#include "FullTestSuite.h"
+#include "IOTestSuite.h"
 
 using namespace std;
 
@@ -18,8 +19,11 @@ using namespace std;
 int main() {
 	cout << "!!!Testing algorithm and evaluator!!!" << endl; // prints !!!Hello World!!!
 #if UT
-	TestSuite testSuite;
+	IOTestSuite testSuite;
 	testSuite.test();
+
+	//FullTestSuite testSuite;
+	//testSuite.test();
 #else
 	IntegratingTester tester;
 	//tester.freeTestShowGateSearchSpace(1, 4);

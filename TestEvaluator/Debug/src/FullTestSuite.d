@@ -1,4 +1,4 @@
-src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
+src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
@@ -219,7 +219,7 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
  ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h
 
-../src/TestSuite.h:
+../src/FullTestSuite.h:
 
 ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h:
 
