@@ -64,6 +64,9 @@ public:
 	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const ;
 
 protected:
+	//Generate instance of a sub-collection. Subject to be overridden in sub-classes
+	virtual CollectionPtr<T> generateSubCollection();
+
 	SplitPointSet<T> m_splitPoints;
 	CollectionVector<T> m_subCollections;
 	UnstructuredBuffer<T> m_unStructeredBuffer;

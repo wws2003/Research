@@ -12,6 +12,7 @@
 #include "BinaryGateReaderImpl.h"
 #include "BinaryGateWriterImpl.h"
 #include "SimpleDenseMatrixFactoryImpl.h"
+#include "PersistableGNATGateCollectionImpl.h"
 #include <fstream>
 #include <iostream>
 #include <cstdio>
@@ -20,11 +21,13 @@
 template<typename TPtr>
 void getSampleElement(TPtr& rSampleElement);
 
-void getSampleElement(MatrixPtrRef rpSampleMatrix);
+void getSampleElement(MatrixPtr& rpSampleMatrix);
 void getSampleElement(GatePtr& rpSampleGate);
+void constructSampleGNATCollection(PersistableGNATGateCollectionImpl* pSampleCollection);
 
 const std::string IOTestSuite::MATRIX_FILE_NAME = "matrix.dat";
 const std::string IOTestSuite::GATE_FILE_NAME = "gate.dat";
+const std::string IOTestSuite::GNAT_COLLECTION_FILE = "gnat_collection.dat";
 
 IOTestSuite::IOTestSuite(): m_matrixOutputStream(MATRIX_FILE_NAME, std::ofstream::out | std::ofstream::binary),
 		m_matrixInputStream(MATRIX_FILE_NAME, std::ifstream::in | std::ifstream::binary),
@@ -62,13 +65,15 @@ IOTestSuite::~IOTestSuite() {
 }
 
 void IOTestSuite::test() {
-	assert(m_matrixOutputStream.is_open());
-	assert(m_matrixInputStream.is_open());
+
+	//Test write matrix to file and read back
 	testMatrixReadWrite();
 
-	assert(m_gateOutputStream.is_open());
-	assert(m_gateInputStream.is_open());
+	//Test write gate to file and read back
 	testGateReadWrite();
+
+	//Test write PersitableGNATCollection to file and read back
+	testGNATCollectionPersistence();
 }
 
 template<typename TPtr>
@@ -95,6 +100,12 @@ void IOTestSuite::testReadWriteElement(WriterPtr<TPtr> pWriter, ReaderPtr<TPtr> 
 	delete pSampleElment;
 }
 
+void IOTestSuite::assertFilesOpen() {
+	assert(m_matrixOutputStream.is_open());
+	assert(m_matrixInputStream.is_open());
+	assert(m_gateOutputStream.is_open());
+	assert(m_gateInputStream.is_open());
+}
 
 void IOTestSuite::testMatrixReadWrite() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
@@ -108,9 +119,29 @@ void IOTestSuite::testGateReadWrite() {
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
 
+void IOTestSuite::testGNATCollectionPersistence() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+	PersistableGNATGateCollectionImpl* pSampleCollection = new PersistableGNATGateCollectionImpl(m_pGateWriter, m_pGateReader);
+
+	constructSampleGNATCollection(pSampleCollection);
+
+	pSampleCollection->save(GNAT_COLLECTION_FILE);
+
+	PersistableGNATGateCollectionImpl* pReadCollection = new PersistableGNATGateCollectionImpl(m_pGateWriter, m_pGateReader);
+	pReadCollection->load(GNAT_COLLECTION_FILE);
+
+	assert(*pSampleCollection == *pReadCollection);
+
+	delete pReadCollection;
+	delete pSampleCollection;
+
+	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
+}
+
 void IOTestSuite::clearFiles() {
 	std::remove(GATE_FILE_NAME.c_str());
 	std::remove(MATRIX_FILE_NAME.c_str());
+	std::remove(GNAT_COLLECTION_FILE.c_str());
 }
 
 void getSampleElement(MatrixPtrRef rpSampleMatrix) {
@@ -140,4 +171,66 @@ void getSampleElement(GatePtr& rpSampleGate) {
 	rpSampleGate = new Gate(pT2Mat, 1, labelSeq);
 
 }
+
+void constructSampleGNATCollection(PersistableGNATGateCollectionImpl* pSampleCollection) {
+	unsigned int nbGates = 13;
+	GatePtr* pGates = new GatePtr[nbGates];
+	for(unsigned int i = 0; i < nbGates; i++) {
+		getSampleElement(pGates[i]);
+	}
+
+	int gateCounter = 0;
+	//Split points: 2 splits points
+	SplitPointSet<GatePtr> splitPoints = {pGates[gateCounter++],
+			pGates[gateCounter++]};
+
+	//Unstructured buffer: 3 points
+	UnstructuredBuffer<GatePtr> unStructeredBuffer = {pGates[gateCounter++],
+			pGates[gateCounter++],
+			pGates[gateCounter++]};
+
+	//RangeMap: Sample
+	RangeMap splitPointRanges = {{Range(1,2), Range(2,3)},
+			{Range(-1,2), Range(21,3)},
+			{Range(1,5)}};
+
+	//Sub Collection 1
+	PersistableGNATGateCollectionImpl* pSubCollection1 = new PersistableGNATGateCollectionImpl(NullPtr, NullPtr);
+
+	//---Unstructured buffer: 3 points
+	UnstructuredBuffer<GatePtr> subUnStructeredBuffer1 = {pGates[gateCounter++],
+			pGates[gateCounter++],
+			pGates[gateCounter++]};
+
+	//---Split points: 2 splits points
+	SplitPointSet<GatePtr> subSplitPoints1 = {pGates[gateCounter++],
+			pGates[gateCounter++]};
+
+	//---RangeMap: Sample
+	RangeMap subSplitPointRanges1 = {{Range(10,2), Range(0,3)},
+			{Range(-1,2), Range(21,3)}};
+
+	pSubCollection1->init(subSplitPoints1, subUnStructeredBuffer1, subSplitPointRanges1);
+
+	//Sub Collection 2
+	PersistableGNATGateCollectionImpl* pSubCollection2 = new PersistableGNATGateCollectionImpl(NullPtr, NullPtr);
+
+	//---Unstructured buffer: 3 points
+	UnstructuredBuffer<GatePtr> subUnStructeredBuffer2 = {pGates[gateCounter++],
+		pGates[gateCounter++],
+		pGates[gateCounter++]};
+
+	//---Split points: 0 splits points
+	SplitPointSet<GatePtr> subSplitPoints2;
+
+	//---RangeMap: Empty
+	RangeMap subSplitPointRanges2;
+
+	pSubCollection2->init(subSplitPoints2, subUnStructeredBuffer2, subSplitPointRanges2);
+
+	pSampleCollection->init(splitPoints, unStructeredBuffer, splitPointRanges);
+	pSampleCollection->addSubCollection(pSubCollection1);
+	pSampleCollection->addSubCollection(pSubCollection2);
+}
+
 

@@ -13,7 +13,18 @@ src/IOTestSuite.d: ../src/IOTestSuite.cpp ../src/IOTestSuite.h \
  ../../ModuleIO/include/implement/BinaryGateReaderImpl.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleIO/include/implement/BinaryGateWriterImpl.h \
- ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h
+ ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
+ ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h \
+ ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h \
+ ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
+ ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
+ ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
+ ../../ModuleOperator/include/interface/common/OperatorCommon.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
+ ../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h
 
 ../src/IOTestSuite.h:
 
@@ -46,3 +57,25 @@ src/IOTestSuite.d: ../src/IOTestSuite.cpp ../src/IOTestSuite.h \
 ../../ModuleIO/include/implement/BinaryGateWriterImpl.h:
 
 ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h:
+
+../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h:
+
+../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h:
+
+../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h:
+
+../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
+
+../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
+
+../../ModuleOperator/include/interface/common/OperatorCommon.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
+
+../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h:

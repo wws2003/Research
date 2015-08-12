@@ -12,33 +12,19 @@
 #include <exception>
 #include <map>
 
-/*--------------------For saving--------------------*/
-template<typename T>
-void saveGNATCollection(GNATCollectionImpl<T>* pCollection, GNATCollectionIdType parentId, GNATCollectionIdType *pCurrentMaxId, WriterPtr<T> pWritter, std::ostream& outputStream);
-
-template<typename T>
-void fillWriteBlockFromCollection(const GNATCollectionImpl<T>* pCollection, GNATCollectionWriteBlock<T>* pWriteBlock);
-
-template<typename T>
-void writeBlock(const GNATCollectionWriteBlock<T>* pWriteBlock, WriterPtr<T> pWriter, std::ostream& outputStream);
-/*---------------------------------------------------*/
+template<typename EPtr>
+void releasePointerVector(std::vector<EPtr> vect);
 
 /*--------------------For loading--------------------*/
 template<typename T>
-using GNATCollectionMap = std::map<GNATCollectionIdType, GNATCollectionImpl<T>* >;
-
-template<typename T>
-void loadGNATCollection(GNATCollectionImpl<T>* pCollection, int id, ReaderPtr<T> pReader, std::ifstream& inputStream);
-
-template<typename T>
-void readCollectionBlocks(std::vector<GNATCollectionReadBlock<T>* >& rBlocks, ReaderPtr<T> pReader, std::ifstream& inputStream);
-
-template<typename T>
-void fillCollectionFromReadBlock(const GNATCollectionReadBlock<T>* pReadBlock, GNATCollectionImpl<T>* pCollection);
-
-template<typename T>
-void readBlock(const GNATCollectionReadBlock<T>* pReadBlock, ReaderPtr<T> pReader, std::istream& inputStream);
+using GNATCollectionMap = std::map<GNATCollectionIdType, PersistableGNATCollectionImpl<T>* >;
 /*---------------------------------------------------*/
+
+template<typename T>
+PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl() : GNATCollectionImpl<T>() {
+	m_pWriter = NullPtr;
+	m_pReader = NullPtr;
+}
 
 template<typename T>
 PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader) : GNATCollectionImpl<T>() {
@@ -47,19 +33,31 @@ PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl(WriterPtr<T> pWr
 }
 
 template<typename T>
-void PersistableGNATCollectionImpl<T>::save(std::string fileName) {
-	//Open file in binary write mode
-	std::ofstream outputStream(fileName, std::ofstream::binary);
+CollectionPtr<T> PersistableGNATCollectionImpl<T>::generateSubCollection() {
+	return new PersistableGNATCollectionImpl<T>();
+}
 
+template<typename T>
+void PersistableGNATCollectionImpl<T>::save(std::string fileName) {
+	GNATCollectionIdType parentId = -1;
+	GNATCollectionIdType currentMaxId = 0;
+	std::vector<GNATCollectionWriteBlock<T>* > blocks;
+
+	//Construct blocks from collection (Recursively save the collection, given parent id and id)
+	saveGNATCollection(parentId, &currentMaxId, blocks);
+
+	//Open file in binary write mode
+	std::ofstream outputStream(fileName,  std::ofstream::out | std::ofstream::binary);
+	//Write blocks to files
 	if(outputStream.is_open()) {
-		//Recursively save the collection, given parent id and id
-		GNATCollectionIdType parentId = -1;
-		GNATCollectionIdType currentMaxId = 0;
-		saveGNATCollection(this, parentId, &currentMaxId, m_pWriter, outputStream);
+		writeCollectionBlocks(blocks, m_pWriter, outputStream);
 	}
 	else {
 		throw std::runtime_error("Can't open file to save collection");
 	}
+
+	//Release write blocks
+	releasePointerVector(blocks);
 
 	//Closing file output stream is not really necessary as it is called by destructor automatically
 }
@@ -67,9 +65,12 @@ void PersistableGNATCollectionImpl<T>::save(std::string fileName) {
 template<typename T>
 void PersistableGNATCollectionImpl<T>::load(std::string fileName) {
 	//Open file in binary write mode
-	std::ifstream inputStream(fileName, std::ifstream::binary);
+	std::ifstream inputStream(fileName, std::ifstream::in | std::ifstream::binary);
 
 	if(inputStream.is_open()) {
+		//Self-emptize
+		GNATCollectionImpl<T>::purge();
+
 		std::vector<GNATCollectionReadBlock<T>* > blocks;
 
 		//Read blocks from input stream
@@ -78,14 +79,10 @@ void PersistableGNATCollectionImpl<T>::load(std::string fileName) {
 		//Close input stream soon after reading blocks
 		inputStream.close();
 
-		loadGNATCollection(this, 1, blocks);
+		loadGNATCollection(1, blocks);
 
 		//Release read blocks
-		for(typename std::vector<GNATCollectionReadBlock<T>* >::iterator bIter = blocks.begin(); bIter != blocks.end();) {
-			GNATCollectionReadBlock<T>* pCollectionReadBlock = *bIter;
-			delete pCollectionReadBlock;
-			bIter = blocks.erase(bIter);
-		}
+		releasePointerVector(blocks);
 	}
 	else {
 		throw std::runtime_error("Can't open file to load collection");
@@ -95,80 +92,50 @@ void PersistableGNATCollectionImpl<T>::load(std::string fileName) {
 }
 
 template<typename T>
-void saveGNATCollection(GNATCollectionImpl<T>* pCollection, GNATCollectionIdType parentId, GNATCollectionIdType *pCurrentMaxId, WriterPtr<T> pWritter, std::ostream& outputStream) {
-	GNATCollectionWriteBlock<T> block;
+void PersistableGNATCollectionImpl<T>::init(const SplitPointSet<T>& splitPoints,
+		const UnstructuredBuffer<T>& unStructeredBuffer,
+		const RangeMap& splitPointRanges) {
+
+	GNATCollectionImpl<T>::m_splitPoints = splitPoints;
+	GNATCollectionImpl<T>::m_unStructeredBuffer = unStructeredBuffer;
+	GNATCollectionImpl<T>::m_splitPointRanges = splitPointRanges;
+}
+
+template<typename T>
+void PersistableGNATCollectionImpl<T>::addSubCollection(CollectionPtr<T> pSubCollection) {
+	GNATCollectionImpl<T>::m_subCollections.push_back(pSubCollection);
+}
+
+template<typename T>
+void PersistableGNATCollectionImpl<T>::saveGNATCollection(GNATCollectionIdType parentId, GNATCollectionIdType *pCurrentMaxId, std::vector<GNATCollectionWriteBlock<T>* >& rBlocks) {
+	GNATCollectionWriteBlock<T>* pBlock = new GNATCollectionWriteBlock<T>();
 
 	//Fill data to the block
-	block.m_id = ++*pCurrentMaxId;
-	block.m_parentId = parentId;
-	fillWriteBlockFromCollection(pCollection, &block);
+	GNATCollectionIdType nextId = ++*pCurrentMaxId;
+	fillWriteBlockFromCollection(nextId, parentId, pBlock);
 
 	//Write the block to output stream
-	writeBlock(&block, pWritter, outputStream);
+	rBlocks.push_back(pBlock);
 
 	//Recursively make sub-blocks and write to output stream
-	GNATCollectionIdType subBlockParentId = block.m_id;
-	for(typename CollectionVector<T>::const_iterator cIter = pCollection->m_subCollections.begin(); cIter != pCollection->m_subCollections.end(); cIter++) {
-		GNATCollectionImpl<T>* pSubCollection = (GNATCollectionImpl<T>*)*cIter;
-		GNATCollectionWriteBlock<T> subBlock;
-
-		saveGNATCollection(pSubCollection, subBlockParentId, *pCurrentMaxId, pWritter, outputStream);
+	GNATCollectionIdType subBlockParentId = pBlock->m_id;
+	for(typename CollectionVector<T>::const_iterator cIter = GNATCollectionImpl<T>::m_subCollections.begin(); cIter != GNATCollectionImpl<T>::m_subCollections.end(); cIter++) {
+		PersistableGNATCollectionImpl<T>* pSubCollection = dynamic_cast<PersistableGNATCollectionImpl<T>*>(*cIter);
+		pSubCollection->saveGNATCollection(subBlockParentId, pCurrentMaxId, rBlocks);
 	}
 }
 
 template<typename T>
-void fillWriteBlockFromCollection(const GNATCollectionImpl<T>* pCollection, GNATCollectionWriteBlock<T>* pWriteBlock) {
-	pWriteBlock->m_splitPointRanges = pCollection->m_splitPointRanges;
-	pWriteBlock->m_splitPoints = pCollection->m_splitPoints;
-	pWriteBlock->m_unStructeredBuffer = pCollection->m_unStructeredBuffer;
+void PersistableGNATCollectionImpl<T>::fillWriteBlockFromCollection(GNATCollectionIdType blockId, GNATCollectionIdType parentBlockId, GNATCollectionWriteBlock<T>* pWriteBlock) const {
+	pWriteBlock->m_id = blockId;
+	pWriteBlock->m_parentId = parentBlockId;
+	pWriteBlock->m_pSplitPointRanges = &(GNATCollectionImpl<T>::m_splitPointRanges);
+	pWriteBlock->m_pSplitPoints = &(GNATCollectionImpl<T>::m_splitPoints);
+	pWriteBlock->m_pUnStructeredBuffer = &(GNATCollectionImpl<T>::m_unStructeredBuffer);
 }
 
 template<typename T>
-void writeBlock(const GNATCollectionWriteBlock<T>* pWriteBlock, WriterPtr<T> pWriter, std::ostream& outputStream) {
-	//Write collection id
-	outputStream.write((const char*)&(pWriteBlock->m_id), sizeof(GNATCollectionIdType));
-
-	//Write parent collection id
-	outputStream.write((const char*)&(pWriteBlock->m_parentId), sizeof(GNATCollectionIdType));
-
-	//Write split points of collection
-	outputStream.write((const char*)&(pWriteBlock->m_splitPoints.size()), sizeof(size_t));
-	for(typename SplitPointSet<T>::iterator eIter = pWriteBlock->m_splitPoints.begin(); eIter != pWriteBlock->m_splitPoints.end(); ) {
-		T element = *eIter;
-		pWriter->write(element, outputStream);
-	}
-
-	//Write unstructured of collection
-	outputStream.write((const char*)&(pWriteBlock->m_unStructeredBuffer.size()), sizeof(size_t));
-	for(typename UnstructuredBuffer<T>::iterator eIter = pWriteBlock->m_unStructeredBuffer.begin(); eIter != pWriteBlock->m_unStructeredBuffer.end(); ) {
-		T element = *eIter;
-		pWriter->write(element, outputStream);
-	}
-
-	//Write range map of collection
-	//Write size of map
-	outputStream.write((const char*)&(pWriteBlock->m_splitPointRanges.size()), sizeof(size_t));
-
-	for(RangeMap::const_iterator rIter = pWriteBlock->m_splitPointRanges.begin(); rIter != pWriteBlock->m_splitPointRanges.end(); rIter++) {
-		//Write each map element (which itself is a map)
-		std::vector<Range>& range = *rIter;
-
-		//Write size of sub-map
-		size_t rangeSize = range.size();
-		outputStream.write((const char*)&rangeSize, sizeof(size_t));
-
-		for(std::vector<Range>::const_iterator dIter = range.begin(); dIter != range.end(); dIter++) {
-			//Write each sub-map element
-			double dMin = dIter->first;
-			double dMax = dIter->second;
-			outputStream.write((const char*)&dMin, sizeof(double));
-			outputStream.write((const char*)&dMax, sizeof(double));
-		}
-	}
-}
-
-template<typename T>
-void loadGNATCollection(GNATCollectionImpl<T>* pRootCollection, int id, const std::vector<GNATCollectionReadBlock<T>* >& blocks) {
+void PersistableGNATCollectionImpl<T>::loadGNATCollection(int id, const std::vector<GNATCollectionReadBlock<T>* >& blocks) {
 
 	//Create collections and to map
 	GNATCollectionMap<T> collectionMap;
@@ -176,8 +143,8 @@ void loadGNATCollection(GNATCollectionImpl<T>* pRootCollection, int id, const st
 		GNATCollectionReadBlock<T>* pBlock = *bIter;
 		int blockId = pBlock->m_id;
 
-		GNATCollectionImpl<T>* pCollection = (blockId == id) ? pRootCollection : new GNATCollectionImpl<T>();
-		fillCollectionFromReadBlock(pBlock, pCollection);
+		PersistableGNATCollectionImpl<T>* pCollection = (blockId == id) ? this : dynamic_cast<PersistableGNATCollectionImpl<T>*>(generateSubCollection());
+		pCollection->fillCollectionFromReadBlock(pBlock);
 		collectionMap[blockId] = pCollection;
 	}
 
@@ -191,91 +158,100 @@ void loadGNATCollection(GNATCollectionImpl<T>* pRootCollection, int id, const st
 		if(parentCollectionIter == collectionMap.end()) {
 			continue;
 		}
-		GNATCollectionImpl<T>* pParentCollection = parentCollectionIter->second;
+		PersistableGNATCollectionImpl<T>* pParentCollection = parentCollectionIter->second;
 
 		//Get sub-collection from collection map
 		int subCollectionId = pSubBlock->m_id;
 		GNATCollectionImpl<T>* pSubCollection = collectionMap[subCollectionId];
 
 		//Add sub-collection to parent collection
-		pParentCollection->m_subCollections.push_back(pSubCollection);
+		pParentCollection->addSubCollection(pSubCollection);
 	}
 }
 
 template<typename T>
-void readCollectionBlocks(std::vector<GNATCollectionReadBlock<T>* >& rBlocks, ReaderPtr<T> pReader, std::ifstream& inputStream) {
-	rBlocks.clear();
-	//Read blocks from input stream
-	while(!inputStream.eof()) {
-		//Create new block
-		GNATCollectionReadBlock<T>* pReadBlock = new GNATCollectionReadBlock<T>*();
-
-		//Read block
-		readBlock(pReadBlock, pReader, inputStream);
-
-		//Add blocks to block vector
-		rBlocks.push_back(pReadBlock);
-	}
-}
-
-
-template<typename T>
-void fillCollectionFromReadBlock(const GNATCollectionReadBlock<T>* pReadBlock, GNATCollectionImpl<T>* pCollection) {
-	pCollection->m_splitPointRanges = pReadBlock->m_splitPointRanges;
-	pCollection->m_splitPoints = pReadBlock->m_splitPoints;
-	pCollection->m_unStructeredBuffer = pReadBlock->m_unStructeredBuffer;
+void PersistableGNATCollectionImpl<T>::fillCollectionFromReadBlock(const GNATCollectionReadBlock<T>* pReadBlock) {
+	init(pReadBlock->m_splitPoints,
+			pReadBlock->m_unStructeredBuffer,
+			pReadBlock->m_splitPointRanges);
 }
 
 template<typename T>
-void readBlock(const GNATCollectionReadBlock<T>* pReadBlock, ReaderPtr<T> pReader, std::istream& inputStream) {
-	//Read collection id
-	inputStream.read((char*)&(pReadBlock->m_id), sizeof(GNATCollectionIdType));
+bool PersistableGNATCollectionImpl<T>::operator==(const PersistableGNATCollectionImpl<T>& rhs) {
 
-	//Read parent collection id
-	inputStream.read((char*)&(pReadBlock->m_parentId), sizeof(GNATCollectionIdType));
+	return (sameSplitPoints(rhs) &&
+			sameSplitPointsRange(rhs) &&
+			sameSubCollections(rhs) &&
+			sameUnstructuredBuffer(rhs));
+}
 
-	//Read split points of collection
-	size_t nbSplitPoints;
-	inputStream.read((char*)&nbSplitPoints, sizeof(size_t));
-	for(unsigned int i = 0; i < nbSplitPoints; i++) {
-		T splitPoint;
-		pReader->read(splitPoint, inputStream);
-		pReadBlock->m_splitPoints.push_back(splitPoint);
+template<typename T>
+bool PersistableGNATCollectionImpl<T>::sameSplitPoints(const PersistableGNATCollectionImpl<T>& rhs) {
+	size_t nbSplitPointsLhs = GNATCollectionImpl<T>::m_splitPoints.size();
+	size_t nbSplitPointsRhs = rhs.m_splitPoints.size();
+
+	if(nbSplitPointsLhs != nbSplitPointsRhs) {
+		return false;
 	}
 
-	//Read unstructured buffer of collection
-	size_t unstructuredBufferSize;
-	inputStream.read((char*)&unstructuredBufferSize, sizeof(size_t));
-	for(unsigned int i = 0; i < unstructuredBufferSize; i++) {
-		T element;
-		pReader->read(element, inputStream);
-		pReadBlock->m_unStructeredBuffer.push_back(element);
-	}
-
-	//Read range map of collection
-	//Read size of map
-	size_t nbSplitPointRanges;
-	inputStream.read((char*)&nbSplitPointRanges, sizeof(size_t));
-
-	for(unsigned int i = 0; i < nbSplitPointRanges; i++) {
-		//Read each map element (which itself is a map)
-		std::vector<Range> range;
-
-		//Read size of sub-map
-		size_t rangeSize;
-		inputStream.read((char*)&rangeSize, sizeof(size_t));
-
-		for(unsigned int i = 0; i < rangeSize; i++) {
-			//Read each sub-map element
-			double dMin;
-			double dMax;
-			inputStream.read((char*)&dMin, sizeof(double));
-			inputStream.read((char*)&dMax, sizeof(double));
-			range.push_back(Range(dMin, dMax));
+	for(unsigned int i = 0; i < nbSplitPointsLhs; i++) {
+		if(!(*(GNATCollectionImpl<T>::m_splitPoints[i]) == *(rhs.m_splitPoints[i]))) {
+			return false;
 		}
-
-		pReadBlock->m_splitPointRanges.push_back(range);
 	}
+	return true;
 }
 
+template<typename T>
+bool PersistableGNATCollectionImpl<T>::sameUnstructuredBuffer(const PersistableGNATCollectionImpl<T>& rhs) {
+	size_t nbUnstructuredBufferLhs = GNATCollectionImpl<T>::m_unStructeredBuffer.size();
+	size_t nbUnstructuredBufferRhs = rhs.m_unStructeredBuffer.size();
 
+	if(nbUnstructuredBufferLhs != nbUnstructuredBufferRhs) {
+		return false;
+	}
+
+	typename UnstructuredBuffer<T>::const_iterator lIter = GNATCollectionImpl<T>::m_unStructeredBuffer.begin();
+	typename UnstructuredBuffer<T>::const_iterator rIter = rhs.m_unStructeredBuffer.begin();
+
+	for(;lIter != GNATCollectionImpl<T>::m_unStructeredBuffer.end(), rIter != rhs.m_unStructeredBuffer.end();
+			lIter++, rIter++) {
+		if(!(*(*rIter) == *(*lIter))) {
+			return false;
+		}
+	}
+	return true;
+}
+
+template<typename T>
+bool PersistableGNATCollectionImpl<T>::sameSplitPointsRange(const PersistableGNATCollectionImpl<T>& rhs) {
+	return GNATCollectionImpl<T>::m_splitPointRanges == rhs.m_splitPointRanges;
+}
+
+template<typename T>
+bool PersistableGNATCollectionImpl<T>::sameSubCollections(const PersistableGNATCollectionImpl<T>& rhs) {
+	size_t nbSubCollectionsLhs = GNATCollectionImpl<T>::m_subCollections.size();
+	size_t nbSubCollectionsRhs = rhs.m_subCollections.size();
+
+	if(nbSubCollectionsLhs != nbSubCollectionsRhs) {
+		return false;
+	}
+
+	for(unsigned int i = 0; i < nbSubCollectionsLhs; i++) {
+		PersistableGNATCollectionImpl<T>* pLhsSubCollection = dynamic_cast<PersistableGNATCollectionImpl<T>*>(GNATCollectionImpl<T>::m_subCollections[i]);
+		PersistableGNATCollectionImpl<T>* pRhsSubCollection = dynamic_cast<PersistableGNATCollectionImpl<T>*>(rhs.m_subCollections[i]);
+		if(!(*pLhsSubCollection == *pRhsSubCollection)) {
+			return false;
+		}
+	}
+	return true;
+}
+
+template<typename EPtr>
+void releasePointerVector(std::vector<EPtr> vect) {
+	for(typename std::vector<EPtr>::iterator bIter = vect.begin(); bIter != vect.end();) {
+		EPtr pE = *bIter;
+		delete pE;
+		bIter = vect.erase(bIter);
+	}
+}

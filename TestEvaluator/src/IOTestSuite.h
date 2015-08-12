@@ -26,8 +26,11 @@ private:
 	template<typename TPtr>
 	void testReadWriteElement(WriterPtr<TPtr> pWriter, ReaderPtr<TPtr> pReader, std::ofstream& outputStream, std::ifstream& inputStream);
 
+	void assertFilesOpen();
+
 	void testMatrixReadWrite();
 	void testGateReadWrite();
+	void testGNATCollectionPersistence();
 
 	void clearFiles();
 
@@ -46,6 +49,7 @@ private:
 
 	const static std::string MATRIX_FILE_NAME;
 	const static std::string GATE_FILE_NAME;
+	const static std::string GNAT_COLLECTION_FILE;
 };
 
 #endif /* IOTESTSUITE_H_ */

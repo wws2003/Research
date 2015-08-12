@@ -228,6 +228,11 @@ void GNATCollectionImpl<T>::recallElements() {
 }
 
 template<typename T>
+CollectionPtr<T> GNATCollectionImpl<T>::generateSubCollection() {
+	return new GNATCollectionImpl<T>();
+}
+
+template<typename T>
 void GNATCollectionImpl<T>::initSplitPoints() {
 	m_splitPoints.clear();
 
@@ -276,7 +281,7 @@ void GNATCollectionImpl<T>::createSubCollections(DistanceCalculatorPtr<T> pDista
 
 	//Generate sub collections
 	for(unsigned int splitPointIndex = 0; splitPointIndex < nbSplitPoints; splitPointIndex++) {
-		m_subCollections.push_back(CollectionPtr<T>(new GNATCollectionImpl<T>()));
+		m_subCollections.push_back(CollectionPtr<T>(generateSubCollection()));
 	}
 
 	//For each element in unstructured buffer, find the closest split point
