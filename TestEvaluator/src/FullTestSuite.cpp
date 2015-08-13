@@ -121,6 +121,8 @@ FullTestSuite::~FullTestSuite() {
 	delete m_pMatrixOperator;
 	delete m_pMatrixFactory;
 	delete m_pMatrixWriter;
+
+	std::remove(GNAT_COLLECTION_PERSIST_FILE.c_str());
 }
 void FullTestSuite::test(){
 	//testSimpleWriter();
