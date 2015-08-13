@@ -30,6 +30,7 @@ private:
 	void testSampleMatrixBinCollection();
 	void testCalculateCoordinatesInSearchSpace();
 	void testGNATCollectionBuild();
+	void testGNATCollectionPersistence();
 	void testGNATSearch();
 
 	void freeTestGateCollectionEvaluator();
@@ -46,6 +47,8 @@ private:
 
 	MatrixCombinerPtr m_pMatrixCombiner;
 	MatrixSearchSpaceConstructorPtr m_pSearchSpaceConstructor;
+
+	const static std::string GNAT_COLLECTION_PERSIST_FILE;
 };
 
 

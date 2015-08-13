@@ -29,7 +29,7 @@ void SimpleDenseMatrixImpl::getSize(int& rows, int& columns) const {
 
 //Override
 ComplexVal SimpleDenseMatrixImpl::getValue(int row, int column) const {
-	int index = (m_arraySpliceType == ROW_SPLICE) ? (row * m_nbColumns + column) : (column * m_nbRows + row);
+	int index = getInternalIndex(row, column);
 	return m_array[index];
 }
 
@@ -38,7 +38,10 @@ void SimpleDenseMatrixImpl::toArray(ComplexValArrayRef array) const {
 	int arraySize = m_nbRows * m_nbColumns;
 	array = new ComplexVal[arraySize];
 	for(int i = 0; i < arraySize; i++) {
-		array[i] = m_array[i];
+		int row = i / m_nbColumns;
+		int column = i % m_nbColumns;
+		int internalIndex = getInternalIndex(row, column);
+		array[i] = m_array[internalIndex];
 	}
 }
 
@@ -55,6 +58,10 @@ void SimpleDenseMatrixImpl::initArray(const ComplexVal* array, int nbRows, int n
 	cleanNoise(m_array, arraySize);
 	m_nbColumns = nbColumns;
 	m_nbRows = nbRows;
+}
+
+inline int SimpleDenseMatrixImpl::getInternalIndex(int row, int column) const {
+	return (m_arraySpliceType == ROW_SPLICE) ? (row * m_nbColumns + column) : (column * m_nbRows + row);
 }
 
 void cleanNoise(ComplexVal* array, int length) {

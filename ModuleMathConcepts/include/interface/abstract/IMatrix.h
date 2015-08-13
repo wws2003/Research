@@ -20,6 +20,7 @@ public:
 
 	virtual ComplexVal getValue(int row, int column)const = 0;
 
+	//Slice the matrix into an array, by matrix row
 	virtual void toArray(ComplexValArrayRef array) const = 0;
 
 	//Overload

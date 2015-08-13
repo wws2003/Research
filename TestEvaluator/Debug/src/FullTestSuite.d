@@ -217,7 +217,17 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleIO/include/implement/FullGateWriterImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATGateCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
- ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h
+ ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h \
+ ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h \
+ ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h \
+ ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
+ ../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h \
+ ../../ModuleIO/include/interface/abstract/IReader.h \
+ ../../ModuleIO/include/implement/BinaryGateWriterImpl.h \
+ ../../ModuleIO/include/implement/BinaryGateReaderImpl.h \
+ ../../ModuleIO/include/implement/BinaryMatrixReaderImpl.h \
+ ../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h
 
 ../src/FullTestSuite.h:
 
@@ -658,3 +668,23 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h:
 
 ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h:
+
+../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h:
+
+../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h:
+
+../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
+
+../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h:
+
+../../ModuleIO/include/interface/abstract/IReader.h:
+
+../../ModuleIO/include/implement/BinaryGateWriterImpl.h:
+
+../../ModuleIO/include/implement/BinaryGateReaderImpl.h:
+
+../../ModuleIO/include/implement/BinaryMatrixReaderImpl.h:
+
+../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h:

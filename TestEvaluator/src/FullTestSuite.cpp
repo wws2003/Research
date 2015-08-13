@@ -43,11 +43,18 @@
 #include "GNATGateCollectionImpl.h"
 #include "SampleRealCoordinateWriterImpl.hpp"
 #include "MatrixFowlerDistanceCalculator.h"
+#include "PersistableGNATGateCollectionImpl.h"
+#include "BinaryGateWriterImpl.h"
+#include "BinaryGateReaderImpl.h"
+#include "BinaryMatrixReaderImpl.h"
+#include "BinaryMatrixWriterImpl.h"
 #include <iostream>
 #include <cmath>
 #include <cstdio>
 #include <cassert>
 #include <cstdlib>
+
+const std::string FullTestSuite::GNAT_COLLECTION_PERSIST_FILE = "gnat2.dat";
 
 //#define IGNORE_PHASE 1
 
@@ -124,8 +131,9 @@ void FullTestSuite::test(){
 	testSampleMatrixBinCollection();
 	testCalculateCoordinatesInSearchSpace();
 	testGNATCollectionBuild();
+	testGNATCollectionPersistence();
 	testGNATSearch();
-	freeTestGateCollectionEvaluator();
+	//freeTestGateCollectionEvaluator();
 }
 
 void FullTestSuite::testSimpleWriter() {
@@ -597,6 +605,69 @@ void FullTestSuite::testGNATCollectionBuild() {
 
 	delete pGNATCollection;
 	delete pGateCollection;
+
+	releaseTwoQubitsGateUniversalSet(pUniversalSet);
+	delete pGateCombiner;
+	releaseTwoQubitsGateCombinabilityCheckers(combinabilityCheckers);
+
+	std::cout << __func__ << " passed"  <<  std::endl ;
+}
+
+void FullTestSuite::testGNATCollectionPersistence() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+
+	GateCombinabilityCheckers combinabilityCheckers;
+	initTwoQubitsGateCombinabilityCheckers(combinabilityCheckers);
+
+	CombinerPtr<GatePtr> pGateCombiner = new GateCombinerImpl(combinabilityCheckers, m_pMatrixOperator);
+
+	GateCollectionPtr pUniversalSet = NullPtr;
+	initTwoQubitsGateUniversalSet(m_pMatrixOperator, pUniversalSet);
+
+	//Instantiate gate writer, reader
+	MatrixWriterPtr pMatrixWriter = new BinaryMatrixWriterImpl();
+	GateWriterPtr pGateWriter = new BinaryGateWriterImpl(pMatrixWriter);
+	MatrixReaderPtr pMatrixReader = new BinaryMatrixReaderImpl(m_pMatrixFactory);
+	GateReaderPtr pGateReader = new BinaryGateReaderImpl(pMatrixReader);
+
+	//Instantiate persistable GNAT collection
+	PersistableGNATGateCollectionImpl* pGateCollection = new PersistableGNATGateCollectionImpl(pGateWriter, pGateReader);
+
+	//Construct collection
+	int maxSequenceLength = 7;
+	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new GateSearchSpaceConstructorImpl(pGateCombiner);
+	pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection, pUniversalSet, maxSequenceLength);
+	std::cout << "Number of sequence length = " << maxSequenceLength << " constructed by CNOT, H and T: " << pGateCollection->size() << std::endl;
+
+	//Re-structured collection respecting distance function
+	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(m_pMatrixOperator);
+	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(pMatrixDistanceCalculator);
+	pGateCollection->rebuildStructure(pGateDistanceCalculator);
+	std::cout << "Finish re-constructing" << std::endl;
+
+	//Save collection
+	pGateCollection->save(GNAT_COLLECTION_PERSIST_FILE);
+	std::cout << "Finish saving" << std::endl;
+
+	//Load collection
+	PersistableGNATGateCollectionImpl* pReadGateCollection = new PersistableGNATGateCollectionImpl(pGateWriter, pGateReader);
+	pReadGateCollection->load(GNAT_COLLECTION_PERSIST_FILE);
+	std::cout << "Finish loading" << std::endl;
+
+	//Assert read back OK
+	assert(*pReadGateCollection == *pGateCollection);
+
+	delete pReadGateCollection;
+
+	delete pGateDistanceCalculator;
+	delete pMatrixDistanceCalculator;
+
+	delete pGateCollection;
+
+	delete pGateReader;
+	delete pMatrixReader;
+	delete pGateWriter;
+	delete pMatrixWriter;
 
 	releaseTwoQubitsGateUniversalSet(pUniversalSet);
 	delete pGateCombiner;

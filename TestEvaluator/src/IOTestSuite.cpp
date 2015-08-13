@@ -160,7 +160,7 @@ void getSampleElement(GatePtr& rpSampleGate) {
 	ComplexVal expmPi_8 = std::exp(ComplexVal(0, 1) * M_PI / 8.0);
 	ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, -1) * M_PI / 8.0);
 
-	ComplexVal arrayT2[] = {expm_Pi_8, 0.0, 0.0, 0.0
+	ComplexVal arrayT2[] = {expm_Pi_8, 1.0, 1.0, 0.0
 			, 0.0, expmPi_8, 0.0, 0.0
 			, 0.0, 0.0, expm_Pi_8, 0.0
 			, 0.0, 0.0, 0.0, expmPi_8};

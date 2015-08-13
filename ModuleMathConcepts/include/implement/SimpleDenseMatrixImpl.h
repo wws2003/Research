@@ -39,6 +39,8 @@ public:
 private:
 	void initArray(const ComplexVal* array,  int nbRows, int nbColumns);
 
+	int getInternalIndex(int row, int column) const;
+
 	std::string m_label = "";
 	ComplexValArray m_array;
 	int m_nbRows;
