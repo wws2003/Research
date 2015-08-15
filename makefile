@@ -7,10 +7,11 @@ ALGORITHM_DIR := $(MAKE_DIR)/ModuleAlgorithm/Debug
 EVALUATE_DIR := $(MAKE_DIR)/ModuleEvaluate/Debug
 TEST_MATRIX_OPERATOR_DIR := $(MAKE_DIR)/TestMatrixOperator/Debug
 TEST_EVALUATE_DIR := $(MAKE_DIR)/TestEvaluator/Debug
+APPLICATION_DIR := $(MAKE_DIR)/GateApproximationApp/Debug
 
 MAKE_FILE_PATH = makefile
 
-all: testMatrixOperator testEvaluate
+all: testMatrixOperator testEvaluate app
 
 testMatrixOperator: mathConcept matrixOperator
 	@$(MAKE) -C $(TEST_MATRIX_OPERATOR_DIR) -f $(MAKE_FILE_PATH) all	
@@ -33,9 +34,13 @@ evaluate:
 algorithm:
 	@$(MAKE) -C $(ALGORITHM_DIR) -f $(MAKE_FILE_PATH) all	
 
+app:
+	@$(MAKE) -C $(APPLICATION_DIR) -f $(MAKE_FILE_PATH) all	
+
 .PHONY: clean
 
 clean:
+	@$(MAKE) -C $(APPLICATION_DIR) -f $(MAKE_FILE_PATH) clean
 	@$(MAKE) -C $(TEST_MATRIX_OPERATOR_DIR) -f $(MAKE_FILE_PATH) clean	
 	@$(MAKE) -C $(TEST_EVALUATE_DIR) -f $(MAKE_FILE_PATH) clean
 	@$(MAKE) -C $(MATRIX_OPERATOR_DIR) -f $(MAKE_FILE_PATH) clean	
