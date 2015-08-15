@@ -30,6 +30,10 @@ Gate::Gate(MatrixPtr pMatrix, cost_t cost, const LabelSeq& label, const std::str
 	m_labelStr = labelStr;
 }
 
+GatePtr Gate::clone() const {
+	return GatePtr(new Gate(m_pMatrix, m_cost, m_label, m_labelStr));
+}
+
 bool Gate::operator==(const Gate& rhs) {
 	return (m_cost == rhs.m_cost &&
 			m_labelStr == rhs.m_labelStr &&

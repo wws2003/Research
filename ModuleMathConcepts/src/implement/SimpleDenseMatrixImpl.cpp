@@ -49,6 +49,10 @@ std::string SimpleDenseMatrixImpl::getLabel() const {
 	return m_label;
 }
 
+MatrixPtr SimpleDenseMatrixImpl::clone() const {
+	return MatrixPtr(new SimpleDenseMatrixImpl(m_array, m_arraySpliceType, m_nbRows, m_nbColumns, m_label));
+}
+
 void SimpleDenseMatrixImpl::initArray(const ComplexVal* array, int nbRows, int nbColumns) {
 	int arraySize = nbRows * nbColumns;
 	m_array = new ComplexVal[arraySize];

@@ -23,8 +23,12 @@ public:
 	//Slice the matrix into an array, by matrix row
 	virtual void toArray(ComplexValArrayRef array) const = 0;
 
+	//Generate a clone matrix
+	virtual MatrixPtr clone() const = 0;
+
 	//Overload
 	bool operator==(const IMatrix& rhs);
+
 };
 
 

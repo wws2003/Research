@@ -38,5 +38,9 @@ std::string SimpleIdentityMatrixImpl::getLabel() const {
 	return std::string("I");
 }
 
+MatrixPtr SimpleIdentityMatrixImpl::clone() const {
+	return MatrixPtr(new SimpleIdentityMatrixImpl(m_dimension));
+}
+
 
 

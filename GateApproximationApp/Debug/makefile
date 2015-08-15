@@ -8,8 +8,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include src/factory/evaluate/subdir.mk
--include src/app/subdir.mk
+-include src/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -39,19 +38,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: MatrixLookupExtApp
+all: GateApproximationApp
 
 # Tool invocations
-MatrixLookupExtApp: $(OBJS) $(USER_OBJS)
+GateApproximationApp: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -L../../ModuleMathConcepts/artifact -L../../ModuleEvaluate/artifact -L../../ModuleAlgorithm/artifact -L../../ModuleOperator/artifact -L../../ModuleIO/artifact -o "MatrixLookupExtApp" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L../../ModuleMathConcepts/artifact -L../../ModuleOperator/artifact -L../../ModuleIO/artifact -L../../ModuleAlgorithm/artifact -L../../ModuleEvaluate/artifact -o "GateApproximationApp" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) MatrixLookupExtApp
+	-$(RM) $(OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) GateApproximationApp
 	-@echo ' '
 
 .PHONY: all clean dependents

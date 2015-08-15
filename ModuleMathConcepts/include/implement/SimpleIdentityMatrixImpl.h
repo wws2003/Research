@@ -36,6 +36,9 @@ public:
 	//Override
 	virtual std::string getLabel() const;
 
+	//Override
+	virtual MatrixPtr clone() const;
+
 private:
 	int m_dimension;
 };

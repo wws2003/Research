@@ -61,8 +61,12 @@ void addNewSequencesByApplyingUniversalElements(T pSequence, IteratorPtr<T> pUni
 		T pAppendedSequence = NullPtr;
 
 		if(pSequence == NullPtr) {
-			//If current sequence is null, i.e. empty sequence, add the universal matrix/gate it self to collection
-			pAppendedSequence = pUniversalElement;
+			/**
+			 *Instead of adding the universal
+			 *element itself, add a copy to keep the universal set
+			 *independent from the collection
+			 */
+			pAppendedSequence = pUniversalElement->clone();
 		}
 		else {
 			//Otherwise apply multiply operator presenting the append of universal matrix to the sequence

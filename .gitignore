@@ -22,6 +22,9 @@
 *.a
 *.lib
 
+# Data Persistence file
+*.dat
+
 # Executable file 1
 TestMatrixOperator/Debug/TestMatrixOperator
 
