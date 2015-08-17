@@ -13,7 +13,7 @@
 
 class LabelOnlyGateWriterImpl : public IGateWriter {
 public:
-	LabelOnlyGateWriterImpl(std::string endStr = "\n");
+	LabelOnlyGateWriterImpl(std::string endStr = "\r\n");
 
 	virtual ~LabelOnlyGateWriterImpl(){};
 	virtual void write(GatePtr pGate, std::ostream& ouputStream);

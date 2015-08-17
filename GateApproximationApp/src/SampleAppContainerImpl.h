@@ -18,8 +18,7 @@
 
 class SampleAppContainerImpl: public IAppContainer {
 public:
-	//TODO May add some user config params / config file name
-	SampleAppContainerImpl();
+	SampleAppContainerImpl(std::string configFile = "in.conf");
 
 	virtual ~SampleAppContainerImpl();
 
@@ -32,6 +31,8 @@ public:
 	virtual void recycle(GateSearchSpaceEvaluatorPtr& rpGateSearchSpaceEvaluator);
 
 private:
+	void readParamsFromFile(std::string configFile);
+
 	void constructGateCollection(GateCollectionPtr pGateCollection);
 
 	MatrixFactoryPtr m_pMatrixFactory;
@@ -61,7 +62,14 @@ private:
 	RealCoordinateWriterPtr<GatePtr> m_pCoordinateWriter;
 	TimerPtr m_pTimer;
 
-	const static int MAX_SEQUENCE_LENGTH;
+	int m_maxSequenceLength;
+	int m_nbQubits;
+	double m_epsilon;
+
+	const static int DEFAULT_MAX_SEQUENCE_LENGTH;
+	const static int DEFAULT_NB_QUBITS;
+	const static double DEFAULT_EPSILON;
+
 	const static std::string GATE_COLLECTION_PERSIST_FILE_NAME;
 	const static std::string GATE_COLLECTION_PERSIST_FILE_EXT;
 };

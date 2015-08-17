@@ -14,18 +14,32 @@
 template<typename T>
 class SampleRealCoordinateWriterImpl : public ICoordinateWriter<T, double>{
 public:
+	SampleRealCoordinateWriterImpl(std::string endStr = "\r\n");
 	virtual ~SampleRealCoordinateWriterImpl(){};
 
 	virtual void writeCoordinate(const Coordinate<T,double>& coordinate, std::ostream& outputStream);
+
+private:
+	std::string m_endStr;
 };
+
+template<typename T>
+SampleRealCoordinateWriterImpl<T>::SampleRealCoordinateWriterImpl(std::string endStr) {
+	m_endStr = endStr;
+}
 
 template<typename T>
 void SampleRealCoordinateWriterImpl<T>::writeCoordinate(const Coordinate<T,double>& coordinate, std::ostream& outputStream) {
 	std::string delimeter = ",";
 	for(std::vector<double>::const_iterator cIter = coordinate.getCoordinates().begin(); cIter != coordinate.getCoordinates().end(); cIter++) {
-		outputStream << *cIter << delimeter ;
+		if(cIter == coordinate.getCoordinates().begin()) {
+			outputStream << *cIter ;
+		}
+		else {
+			outputStream << delimeter << *cIter ;
+		}
 	}
-	outputStream << std::endl;
+	outputStream << m_endStr;
 }
 
 

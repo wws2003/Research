@@ -116,9 +116,8 @@ void SampleResourceContainerImpl::getMatrixOrthonormalBasis(MatrixPtrVector& pBa
 	}
 }
 
-void SampleResourceContainerImpl::getTargetGatesAndEpsilon(std::vector<GatePtr>& targets, double& epsilon, int nbQubits) {
+void SampleResourceContainerImpl::getTargetGatesAndEpsilon(std::vector<GatePtr>& targets, int nbQubits) {
 	//Just a sample for near-identity
-	epsilon = 0.4;
 
 	targets.clear();
 	switch(nbQubits) {
@@ -171,12 +170,12 @@ void initSingleQubitLibGates(MatrixOperatorPtr pMatrixOperator, CollectionPtr<Ga
 	pLibraryGates->addElement(pTInverse);
 
 	//Add phases to make sure search space cover
-	ComplexVal arrayPhasePi[] = {-1.0,0.0,
+	/*ComplexVal arrayPhasePi[] = {-1.0,0.0,
 			0.0,-1.0};
 	MatrixPtr pPhasePiMat = new SimpleDenseMatrixImpl(arrayPhasePi, ROW_SPLICE, 2, 2, "I");
 
 	GatePtr pPhasePiGate = GatePtr(new Gate(pPhasePiMat, 0, "Ph_Pi"));
-	pLibraryGates->addElement(pPhasePiGate);
+	pLibraryGates->addElement(pPhasePiGate);*/
 }
 
 void initTwoQubitsLibGates(MatrixOperatorPtr pMatrixOperator, CollectionPtr<GatePtr> pLibraryGates) {

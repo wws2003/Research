@@ -19,11 +19,16 @@ using namespace std;
 
 void evaluateCollection(AppContainerPtr pAppContainer);
 
+void evaluateApproximator(AppContainerPtr pAppContainer);
+
 int main() {
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 
-	AppContainerPtr pAppContainer = new SampleAppContainerImpl();
+	AppContainerPtr pAppContainer = new SampleAppContainerImpl("in.conf");
+
 	evaluateCollection(pAppContainer);
+	evaluateApproximator(pAppContainer);
+
 	delete pAppContainer;
 
 	return 0;
@@ -42,4 +47,8 @@ void evaluateCollection(AppContainerPtr pAppContainer) {
 	//Recycle instances
 	pAppContainer->recycle(pGateCollection);
 	pAppContainer->recycle(pSearchSpaceEvaluator);
+}
+
+void evaluateApproximator(AppContainerPtr pAppContainer) {
+
 }

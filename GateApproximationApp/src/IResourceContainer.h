@@ -31,7 +31,7 @@ public:
 
 	virtual void getMatrixOrthonormalBasis(MatrixPtrVector& pBasis, int nbQubits = 2) = 0;
 
-	virtual void getTargetGatesAndEpsilon(std::vector<GatePtr>& targets, double& epsilon, int nbQubits = 2) = 0;
+	virtual void getTargetGatesAndEpsilon(std::vector<GatePtr>& targets, int nbQubits = 2) = 0;
 };
 
 typedef IResourceContainer* ResourceContainerPtr;

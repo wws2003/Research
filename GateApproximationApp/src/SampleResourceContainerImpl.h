@@ -24,7 +24,7 @@ public:
 
 	virtual void getMatrixOrthonormalBasis(MatrixPtrVector& pBasis, int nbQubits = 2);
 
-	void getTargetGatesAndEpsilon(std::vector<GatePtr>& targets, double& epsilon, int nbQubits = 2);
+	void getTargetGatesAndEpsilon(std::vector<GatePtr>& targets, int nbQubits = 2);
 
 private:
 	MatrixOperatorPtr m_pMatrixOperator;

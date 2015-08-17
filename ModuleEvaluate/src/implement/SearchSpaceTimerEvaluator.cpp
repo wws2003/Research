@@ -21,8 +21,10 @@
 #include <algorithm>
 
 #define DENOISING 1
-#define NOISE_THRESOLD 3e-8
+#define NOISE_THRESOLD 9e-8
 #define LOG_ALL_RESULT 1
+
+#define END_LINE "\r\n"
 
 template<typename T>
 struct ElementWithDistance_ {
@@ -75,6 +77,8 @@ void logSearchResult(T pQuery,
 		double precision,
 		double epsilon,
 		WriterPtr<T> pWriter,
+		CoordinatePtr<T, double> pCoordinate,
+		RealCoordinateWriterPtr<T> pRealCoordinateWriter,
 		std::ostream& outputStream);
 
 template<typename T>
@@ -101,7 +105,7 @@ template<typename T>
 void SearchSpaceTimerEvaluatorImpl<T>::evaluateCollection(CollectionPtr<T> pCollection) {
 	size_t numberOfCases = m_targets.size();
 
-	m_ostream << "Search space size " << pCollection->size() << "\n";
+	m_ostream << "Search space size " << pCollection->size() << END_LINE;
 
 	for(size_t i = 0; i < numberOfCases; i++) {
 		T target = m_targets[i];
@@ -117,7 +121,6 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateCollection(CollectionPtr<T> pColl
 				m_pTimer,
 				&searchTime);
 
-#ifdef LOG_ALL_RESULT
 		logAllSearchResultsFoundIterator(pFindResultIter,
 				m_pDistanceCalculator,
 				m_pRealCoordinateCalculator,
@@ -127,27 +130,6 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateCollection(CollectionPtr<T> pColl
 				m_epsilon,
 				m_pWriter,
 				m_ostream);
-
-#else
-		double precision = -1; //Imply no result found
-		T closestApproximation = NullPtr; //Imply no result found
-
-		//Get result closest to query
-		getClosestApproximationFromFoundIterator(pFindResultIter,
-				m_pDistanceCalculator,
-				target,
-				closestApproximation,
-				precision);
-
-		//Write the result to output stream
-		logSearchResult(target,
-				closestApproximation,
-				searchTime,
-				precision,
-				m_epsilon,
-				m_pWriter,
-				m_ostream);
-#endif
 	}
 }
 
@@ -159,17 +141,26 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateApproximator(ApproximatorPtr<T> p
 		T target = m_targets[i];
 
 		double searchTime = 0;
-		double precision = -1; //Imply no result found
-		T closestApproximation = NullPtr; //Imply no result found
 		IteratorPtr<T> pFindResultIter = NullPtr; //Imply no result found
 
-		findTargetAndMeasureTime(pApproximator, pCoreCollection, target, m_pDistanceCalculator, m_epsilon, pFindResultIter, m_pTimer, &searchTime);
+		findTargetAndMeasureTime(pApproximator,
+				pCoreCollection,
+				target,
+				m_pDistanceCalculator,
+				m_epsilon,
+				pFindResultIter,
+				m_pTimer,
+				&searchTime);
 
-		//Get result closest to query
-		getClosestApproximationFromFoundIterator(pFindResultIter, m_pDistanceCalculator, target, closestApproximation, precision);
-
-		//Write the result to output stream
-		logSearchResult(target, closestApproximation, searchTime, precision, m_epsilon, m_pWriter, m_ostream);
+		logAllSearchResultsFoundIterator(pFindResultIter,
+				m_pDistanceCalculator,
+				m_pRealCoordinateCalculator,
+				m_pRealCoordinateWritter,
+				target,
+				searchTime,
+				m_epsilon,
+				m_pWriter,
+				m_ostream);
 	}
 }
 
@@ -213,37 +204,35 @@ void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
 	getSortedResults(pFindResultIter, pDistanceCaculator, target, results);
 
 	//Output some general information
-	outputStream << "--------------------------" << "\n";
-	outputStream << "Number of results:" << results.size() << "\n";
+	outputStream << "--------------------------" << END_LINE;
+	outputStream << "Number of results:" << results.size() << END_LINE;
 	CoordinatePtr<T, double> pQueryCoordinate = NullPtr;
-	if(pRealCoordinateCalculator != NullPtr) {
-		pRealCoordinateCalculator->calulateElementCoordinate(target, pQueryCoordinate);
-		outputStream << "Query coordinate:" << "\n";
-		pRealCoordinateWriter->writeCoordinate(*pQueryCoordinate, outputStream);
-	}
+	pRealCoordinateCalculator->calulateElementCoordinate(target, pQueryCoordinate);
+	outputStream << "Query coordinate:" << END_LINE;
+	pRealCoordinateWriter->writeCoordinate(*pQueryCoordinate, outputStream);
+	outputStream << END_LINE;
 
 	//Output (log) each result
 	for(unsigned int i = 0; i < results.size(); i++) {
 		T result = results[i].element;
 		double precision = results[i].distance;
 
-		outputStream << "Result " << i << "\n";
+		//outputStream << "Result " << i << END_LINE;
 
-		//Output element (gate or matrix or anything)
+		//Calculate result coordinate
+		CoordinatePtr<T, double> pCoordinate = NullPtr;
+		pRealCoordinateCalculator->calulateElementCoordinate(result, pCoordinate);
+
+		//Log result (gate or matrix or anything)
 		logSearchResult(target,
 				result,
 				searchTime,
 				precision,
 				epsilon,
 				pWriter,
+				pCoordinate,
+				pRealCoordinateWriter,
 				outputStream);
-
-		//Output element coordinate
-		CoordinatePtr<T, double> pCoordinate = NullPtr;
-		if(pRealCoordinateCalculator != NullPtr) {
-			pRealCoordinateCalculator->calulateElementCoordinate(result, pCoordinate);
-			pRealCoordinateWriter->writeCoordinate(*pCoordinate, outputStream);
-		}
 	}
 }
 
@@ -286,11 +275,15 @@ void getSortedResults(IteratorPtr<T> pFindResultIter,
 		T element = pFindResultIter->getObj();
 		double precision = pDistanceCaculator->distance(element, pTarget);
 
-		ElementWithDistance<T> result;
-		result.element = element;
-		result.distance = precision;
+#ifdef DENOISING
+		if(precision >= NOISE_THRESOLD) {
+			ElementWithDistance<T> result;
+			result.element = element;
+			result.distance = precision;
 
-		sortedResults.push_back(result);
+			sortedResults.push_back(result);
+		}
+#endif
 
 		pFindResultIter->next();
 	}
@@ -303,26 +296,34 @@ void getSortedResults(IteratorPtr<T> pFindResultIter,
 }
 
 template<typename T>
-void logSearchResult(T pQuery, T pResult, double searchTime, double precision, double epsilon, WriterPtr<T> pWriter, std::ostream& outputStream) {
+void logSearchResult(T pQuery,
+		T pResult,
+		double searchTime,
+		double precision,
+		double epsilon,
+		WriterPtr<T> pWriter,
+		CoordinatePtr<T, double> pCoordinate,
+		RealCoordinateWriterPtr<T> pRealCoordinateWriter,
+		std::ostream& outputStream) {
+
 	const std::string delimeter = ", ";
-	const std::string endLine = "\n";
 
-	outputStream << "Query:" << endLine;
+	//Temporally output nothing but the result 's coordinate and approximation precision
+
+	/*outputStream << "Query:" << END_LINE;
 	pWriter->write(pQuery, outputStream);
-	outputStream << "Epsilon:" << epsilon << endLine;
+	outputStream << "Epsilon:" << epsilon << END_LINE;
 
-	outputStream << "Info" << endLine;
+	outputStream << "Info" << END_LINE;
 	outputStream << "Search time: " ;
 	outputStream << searchTime << delimeter;
-	outputStream << "Precision: ";
-	outputStream << precision;
-	outputStream << endLine;
-	outputStream << "Result:" << endLine;
+	outputStream << "Result:" << END_LINE;*/
 
 	if(pResult != NullPtr) {
 		pWriter->write(pResult, outputStream);
+		pRealCoordinateWriter->writeCoordinate(*pCoordinate, outputStream);
 	}
-	else {
-		outputStream << "No result found" << endLine;
-	}
+
+	outputStream << precision;
+	outputStream << END_LINE;
 }
