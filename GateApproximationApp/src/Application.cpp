@@ -24,9 +24,10 @@ void evaluateApproximator(AppContainerPtr pAppContainer);
 int main() {
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 
-	AppContainerPtr pAppContainer = new SampleAppContainerImpl("in.conf");
+	AppContainerPtr pAppContainer = new SampleAppContainerImpl("in.conf", "near_identity_approximator.conf");
 
 	evaluateCollection(pAppContainer);
+	evaluateApproximator(pAppContainer);
 
 	delete pAppContainer;
 
@@ -44,8 +45,8 @@ void evaluateCollection(AppContainerPtr pAppContainer) {
 	pSearchSpaceEvaluator->evaluateCollection(pGateCollection);
 
 	//Recycle instances
-	pAppContainer->recycle(pGateCollection);
-	pAppContainer->recycle(pSearchSpaceEvaluator);
+	//pAppContainer->recycle(pGateCollection);
+	//pAppContainer->recycle(pSearchSpaceEvaluator);
 }
 
 void evaluateApproximator(AppContainerPtr pAppContainer) {

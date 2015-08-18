@@ -42,6 +42,7 @@ void MapBasedBinCollectionImpl<T>::clear() {
 		bIter->second = NullPtr;
 	}
 	m_binMap.clear();
+	m_pInnerBinIterator->toBegin();
 }
 
 template<typename T>

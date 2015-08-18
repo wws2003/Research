@@ -36,20 +36,123 @@
 
 const int SampleAppContainerImpl::DEFAULT_MAX_SEQUENCE_LENGTH = 14;
 const int SampleAppContainerImpl::DEFAULT_NB_QUBITS = 1;
-const double SampleAppContainerImpl::DEFAULT_EPSILON = 1e-2;
+const double SampleAppContainerImpl::DEFAULT_COLLECTION_EPSILON = 1e-2;
+const double SampleAppContainerImpl::DEFAULT_APPROXIMATOR_EPSILON = 1e-2;
+const NearIdentityElementApproximator<GatePtr>::Config SampleAppContainerImpl::DEFAULT_NEAR_IDENTITY_APPROXIMATOR_CONFIG = {2e-1, 3, 1.5e-1, 7};
 
 const std::string SampleAppContainerImpl::GATE_COLLECTION_PERSIST_FILE_NAME = "gnat";
 const std::string SampleAppContainerImpl::GATE_COLLECTION_PERSIST_FILE_EXT = "dat";
 
 std::string getGateCollectionPersistenceFileFullName(std::string fileName,
-													int maxSequenceLength,
-													int nbQubits,
-													std::string fileExtension);
+		int maxSequenceLength,
+		int nbQubits,
+		std::string fileExtension);
 
-SampleAppContainerImpl::SampleAppContainerImpl(std::string configFile) {
+SampleAppContainerImpl::SampleAppContainerImpl(std::string evaluatorConfigFile, std::string approximatorConfigFile) {
+	readEvaluatorConfigFromFile(evaluatorConfigFile);
+	readApproximatorConfigFromFile(approximatorConfigFile);
+	wireDependencies();
+}
 
-	readParamsFromFile(configFile);
+SampleAppContainerImpl::~SampleAppContainerImpl() {
+	releaseDependencies();
+}
 
+GateCollectionPtr SampleAppContainerImpl::getGateCollection() {
+	PersistableGNATGateCollectionImpl* pGateCollection = new PersistableGNATGateCollectionImpl(m_pBinaryGateWriter,
+			m_pBinaryGateReader);
+
+	std::string persitenceFileName = getGateCollectionPersistenceFileFullName(GATE_COLLECTION_PERSIST_FILE_NAME,
+			m_maxSequenceLength,
+			m_nbQubits,
+			GATE_COLLECTION_PERSIST_FILE_EXT);
+	try {
+		pGateCollection->load(persitenceFileName);
+	}
+	catch (std::exception& e) {
+		std::cout << e.what() << ". Need to build collection from scratch\n";
+		constructGateCollection(pGateCollection);
+		pGateCollection->save(persitenceFileName);
+	}
+
+	return pGateCollection;
+}
+
+GateApproximatorPtr SampleAppContainerImpl::getGateApproximator() {
+	GateApproximatorPtr pGateApproximator = GateApproximatorPtr(new NearIdentityGateApproximator(m_pGateRealCoordinateCalculator,
+			m_pGateCombiner,
+			m_pBinCollection,
+			m_nearIdentityApproximatorConfig));
+
+	return pGateApproximator;
+}
+
+GateSearchSpaceEvaluatorPtr SampleAppContainerImpl::getGateSearchSpaceEvaluator() {
+	TargetElements<GatePtr> targets;
+
+	m_pResourceContainer->getTargetGatesAndEpsilon(targets, m_nbQubits);
+
+	GateSearchSpaceEvaluatorPtr pGateSearchSpaceEvaluator = new GateSearchSpaceTimerEvaluatorImpl(targets,
+			m_collectionEpsilon,
+			m_approximatorEpsilon,
+			m_pGateDistanceCalculator,
+			m_pGateRealCoordinateCalculator,
+			m_pCoordinateWriter,
+			m_pGateWriterInEvaluator,
+			m_pTimer,
+			std::cout);
+
+	return pGateSearchSpaceEvaluator;
+}
+
+void SampleAppContainerImpl::recycle(GateCollectionPtr& rpGateCollection) {
+	_destroy(rpGateCollection);
+	rpGateCollection = NullPtr;
+}
+
+void SampleAppContainerImpl::recycle(GateApproximatorPtr& rpGateApproximator) {
+	_destroy(rpGateApproximator);
+	rpGateApproximator = NullPtr;
+}
+
+void SampleAppContainerImpl::recycle(GateSearchSpaceEvaluatorPtr& rpGateSearchSpaceEvaluator) {
+	_destroy(rpGateSearchSpaceEvaluator);
+	rpGateSearchSpaceEvaluator = NullPtr;
+}
+
+void SampleAppContainerImpl::readEvaluatorConfigFromFile(std::string configFile) {
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		inputStream >> m_maxSequenceLength;
+		inputStream >> m_nbQubits;
+		inputStream >> m_collectionEpsilon;
+		inputStream >> m_approximatorEpsilon;
+	}
+	else {
+		std::cout << "Can not open config file, use default params" << "\r\n";
+		m_maxSequenceLength = DEFAULT_MAX_SEQUENCE_LENGTH;
+		m_nbQubits = DEFAULT_NB_QUBITS;
+		m_collectionEpsilon = DEFAULT_COLLECTION_EPSILON;
+		m_approximatorEpsilon = DEFAULT_APPROXIMATOR_EPSILON;
+	}
+}
+
+void SampleAppContainerImpl::readApproximatorConfigFromFile(std::string configFile) {
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		inputStream >> m_nearIdentityApproximatorConfig.m_initialEpsilon;
+		inputStream >> m_nearIdentityApproximatorConfig.m_maxMergedBinDistance;
+		inputStream >> m_nearIdentityApproximatorConfig.m_maxCandidateEpsilon;
+		inputStream >> m_nearIdentityApproximatorConfig.m_iterationMaxSteps;
+	}
+	else {
+		std::cout << "Can not open config file, use default params" << "\r\n";
+		m_nearIdentityApproximatorConfig = DEFAULT_NEAR_IDENTITY_APPROXIMATOR_CONFIG;
+	}
+}
+
+
+void SampleAppContainerImpl::wireDependencies() {
 	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
 	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));
 
@@ -83,12 +186,15 @@ SampleAppContainerImpl::SampleAppContainerImpl(std::string configFile) {
 
 	m_pTimer = TimerPtr(new CpuTimer());
 
+	GateCombinabilityCheckers emptyCheckers;
+	m_pGateInBinCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(emptyCheckers, m_pMatrixOperator));
 	m_pBinCollection = BinCollectionPtr<GatePtr>(new MapBasedGateBinCollectionImpl());
+
 }
 
-SampleAppContainerImpl::~SampleAppContainerImpl() {
-
+void SampleAppContainerImpl::releaseDependencies() {
 	_destroy(m_pBinCollection);
+	_destroy(m_pGateInBinCombiner);
 
 	_destroy(m_pTimer);
 	_destroy(m_pCoordinateWriter);
@@ -117,82 +223,6 @@ SampleAppContainerImpl::~SampleAppContainerImpl() {
 	_destroy(m_pMatrixFactory);
 }
 
-GateCollectionPtr SampleAppContainerImpl::getGateCollection() {
-	PersistableGNATGateCollectionImpl* pGateCollection = new PersistableGNATGateCollectionImpl(m_pBinaryGateWriter,
-			m_pBinaryGateReader);
-
-	std::string persitenceFileName = getGateCollectionPersistenceFileFullName(GATE_COLLECTION_PERSIST_FILE_NAME,
-											m_maxSequenceLength,
-											m_nbQubits,
-											GATE_COLLECTION_PERSIST_FILE_EXT);
-	try {
-		pGateCollection->load(persitenceFileName);
-	}
-	catch (std::exception& e) {
-		std::cout << e.what() << ". Need to build collection from scratch\n";
-		constructGateCollection(pGateCollection);
-		pGateCollection->save(persitenceFileName);
-	}
-
-	return pGateCollection;
-}
-
-GateApproximatorPtr SampleAppContainerImpl::getGateApproximator() {
-	//TODO Instantiate bin combiner
-	GateApproximatorPtr pGateApproximator = GateApproximatorPtr(new NearIdentityGateApproximator(m_pGateRealCoordinateCalculator,
-			NullPtr,
-			m_pBinCollection));
-
-	return pGateApproximator;
-}
-
-GateSearchSpaceEvaluatorPtr SampleAppContainerImpl::getGateSearchSpaceEvaluator() {
-	TargetElements<GatePtr> targets;
-
-	m_pResourceContainer->getTargetGatesAndEpsilon(targets, m_nbQubits);
-
-	GateSearchSpaceEvaluatorPtr pGateSearchSpaceEvaluator = new GateSearchSpaceTimerEvaluatorImpl(targets,
-			m_epsilon,
-			m_pGateDistanceCalculator,
-			m_pGateRealCoordinateCalculator,
-			m_pCoordinateWriter,
-			m_pGateWriterInEvaluator,
-			m_pTimer,
-			std::cout);
-
-	return pGateSearchSpaceEvaluator;
-}
-
-void SampleAppContainerImpl::recycle(GateCollectionPtr& rpGateCollection) {
-	_destroy(rpGateCollection);
-	rpGateCollection = NullPtr;
-}
-
-void SampleAppContainerImpl::recycle(GateApproximatorPtr& rpGateApproximator) {
-	_destroy(rpGateApproximator);
-	rpGateApproximator = NullPtr;
-}
-
-void SampleAppContainerImpl::recycle(GateSearchSpaceEvaluatorPtr& rpGateSearchSpaceEvaluator) {
-	_destroy(rpGateSearchSpaceEvaluator);
-	rpGateSearchSpaceEvaluator = NullPtr;
-}
-
-void SampleAppContainerImpl::readParamsFromFile(std::string configFile) {
-	std::ifstream inputStream(configFile, std::ifstream::in);
-	if(inputStream.is_open()) {
-		inputStream >> m_maxSequenceLength;
-		inputStream >> m_nbQubits;
-		inputStream >> m_epsilon;
-	}
-	else {
-		std::cout << "Can not open config file, use default params" << "\r\n";
-		m_maxSequenceLength = DEFAULT_MAX_SEQUENCE_LENGTH;
-		m_nbQubits = DEFAULT_NB_QUBITS;
-		m_epsilon = DEFAULT_EPSILON;
-	}
-}
-
 void SampleAppContainerImpl::constructGateCollection(GateCollectionPtr pGateCollection) {
 	m_pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection,
 			m_pUniversalSet,
@@ -202,9 +232,9 @@ void SampleAppContainerImpl::constructGateCollection(GateCollectionPtr pGateColl
 }
 
 std::string getGateCollectionPersistenceFileFullName(std::string fileName,
-													int maxSequenceLength,
-													int nbQubits,
-													std::string fileExtension) {
+		int maxSequenceLength,
+		int nbQubits,
+		std::string fileExtension) {
 	char fullName[256];
 	sprintf(fullName, "%s_%d_%d.%s",
 			fileName.c_str(),

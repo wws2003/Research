@@ -23,39 +23,87 @@ template<typename T>
 void addApprxResultsToBufferFromCollection(CollectionPtr<T> pCollection, T pQuery, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<T>& rResultBuffer);
 
 template<typename T>
-NearIdentityElementApproximator<T>::NearIdentityElementApproximator(RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator, CombinerPtr<T> pCombiner, BinCollectionPtr<T> pBinCollection) {
+NearIdentityElementApproximator<T>::NearIdentityElementApproximator(RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
+		CombinerPtr<T> pCombiner,
+		BinCollectionPtr<T> pBinCollection,
+		const Config& config) {
+
 	m_pRealCoordinateCalculator = pRealCoordinateCalculator;
 	m_pCombiner = pCombiner;
 	m_pBinCollection = pBinCollection;
+	m_config = config;
 }
 
 template<typename T>
-IteratorPtr<T> NearIdentityElementApproximator<T>::getApproximateElements(CollectionPtr<T> pCoreCollection, T pQuery, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) {
-
-	//Find first round results
-	double firstRoundEpsilon = 10 * epsilon;
-	IteratorPtr<T> pFirstRoundApprxIter = pCoreCollection->findNearestNeighbour(pQuery, pDistanceCalculator, firstRoundEpsilon);
-
-	if(pFirstRoundApprxIter == NullPtr || pFirstRoundApprxIter->isDone()) {
-		return pFirstRoundApprxIter;
-	}
+IteratorPtr<T> NearIdentityElementApproximator<T>::getApproximateElements(CollectionPtr<T> pCoreCollection,
+		T pQuery,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		double epsilon) {
 
 	//Calculate coordinate of query
 	RealCoordinatePtr<T> pQueryCoordinate;
 	m_pRealCoordinateCalculator->calulateElementCoordinate(pQuery, pQueryCoordinate);
 	real_coordinate_t queryCoordinate = pQueryCoordinate->getCoordinates();
 
+	initBinCollection(pCoreCollection,
+			pQuery,
+			pQueryCoordinate->getCoordinates(),
+			pDistanceCalculator,
+			epsilon);
+
+	//If no result found even with initial epsilon
+	if(m_pBinCollection->size() == 0) {
+		return NullPtr;
+	}
+
+	std::vector<T> apprxResultBuffer;
+	generateApproximationsFromBins(pQuery,
+			pQueryCoordinate->getCoordinates(),
+			pDistanceCalculator,
+			epsilon,
+			apprxResultBuffer);
+
+	m_pBinCollection->clear();
+
+	return IteratorPtr<T>(new VectorBasedReadOnlyIteratorImpl<T>(apprxResultBuffer)) ;
+}
+
+template<typename T>
+void NearIdentityElementApproximator<T>::initBinCollection(CollectionPtr<T> pCoreCollection,
+		T pQuery,
+		const real_coordinate_t& queryCoordinate,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		double epsilon) {
+
+	//Find first round results
+	double firstRoundEpsilon = m_config.m_initialEpsilon;
+	IteratorPtr<T> pFirstRoundApprxIter = pCoreCollection->findNearestNeighbour(pQuery, pDistanceCalculator, firstRoundEpsilon);
+
+	if(pFirstRoundApprxIter == NullPtr || pFirstRoundApprxIter->isDone()) {
+		return;
+	}
+
 	//Reset bin collection
 	m_pBinCollection->clear();
 
 	//Distribute first results into bin collection
-	distributeResultsToBins(queryCoordinate, pFirstRoundApprxIter, m_pRealCoordinateCalculator, m_pBinCollection);
+	distributeResultsToBins(queryCoordinate,
+			pFirstRoundApprxIter,
+			m_pRealCoordinateCalculator,
+			m_pBinCollection);
+}
+
+template<typename T>
+void NearIdentityElementApproximator<T>::generateApproximationsFromBins(T pQuery,
+		const real_coordinate_t& queryCoordinate,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		double epsilon,
+		std::vector<T>& apprxResultBuffer) {
 
 	int stepCounter = 0;
-	int maxStep = 15;
+	int maxStep = m_config.m_iterationMaxSteps;
 
 	CollectionPtr<T> pApprxTempCollection(new VectorBasedCollectionImpl<T>());
-	std::vector<T> apprxResultBuffer;
 
 	while(++stepCounter <= maxStep) {
 		pApprxTempCollection->clear();
@@ -63,10 +111,11 @@ IteratorPtr<T> NearIdentityElementApproximator<T>::getApproximateElements(Collec
 		//Thinking of applying SA here
 
 		//TODO Don't fix theses values
-		int maxMergeDistance = 5;
-		double epsilonForMergeCandidate = 3.0 * epsilon;
+		int maxMergeDistance = m_config.m_maxMergedBinDistance;
+		double epsilonForMergeCandidate = m_config.m_maxCandidateEpsilon;
 
 		BinIteratorPtr<T> pBinIter = m_pBinCollection->getBinIteratorPtr();
+		pBinIter->toBegin();
 
 		while(!pBinIter->isDone()) {
 			BinPtr<T> pBin = pBinIter->getObj();
@@ -74,7 +123,14 @@ IteratorPtr<T> NearIdentityElementApproximator<T>::getApproximateElements(Collec
 
 			while(!pMergableBinIter->isDone()) {
 				BinPtr<T> pMergableBin = pMergableBinIter->getObj();
-				findApprxByMerge2Bins(pBin, pMergableBin, pQuery, epsilonForMergeCandidate, m_pCombiner, pDistanceCalculator, pApprxTempCollection);
+				findApprxByMerge2Bins(pBin,
+						pMergableBin,
+						pQuery,
+						epsilonForMergeCandidate,
+						m_pCombiner,
+						pDistanceCalculator,
+						pApprxTempCollection);
+
 				pMergableBinIter->next();
 			}
 
@@ -82,17 +138,20 @@ IteratorPtr<T> NearIdentityElementApproximator<T>::getApproximateElements(Collec
 		}
 
 		//Distribute newly generated matrices to bin collection
-		distributeResultsToBins(queryCoordinate, pApprxTempCollection->getIteratorPtr(), m_pRealCoordinateCalculator, m_pBinCollection);
+		distributeResultsToBins(queryCoordinate,
+				pApprxTempCollection->getIteratorPtr(),
+				m_pRealCoordinateCalculator,
+				m_pBinCollection);
 
 		//Collect new results
-		addApprxResultsToBufferFromCollection(pApprxTempCollection, pQuery, pDistanceCalculator, epsilon, apprxResultBuffer);
+		addApprxResultsToBufferFromCollection(pApprxTempCollection,
+				pQuery,
+				pDistanceCalculator,
+				epsilon,
+				apprxResultBuffer);
 	}
 
 	_destroy(pApprxTempCollection);
-
-	m_pBinCollection->clear();
-
-	return IteratorPtr<T>(new VectorBasedReadOnlyIteratorImpl<T>(apprxResultBuffer)) ;
 }
 
 template<typename T>

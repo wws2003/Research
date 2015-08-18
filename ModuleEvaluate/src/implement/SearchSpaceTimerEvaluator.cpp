@@ -22,7 +22,6 @@
 
 #define DENOISING 1
 #define NOISE_THRESOLD 9e-8
-#define LOG_ALL_RESULT 1
 
 #define END_LINE "\r\n"
 
@@ -58,13 +57,6 @@ void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
 		std::ostream& outputStream);
 
 template<typename T>
-void getClosestApproximationFromFoundIterator(IteratorPtr<T> pFindResultIter,
-		DistanceCalculatorPtr<T> pDistanceCaculator,
-		T pTarget,
-		T& prClosestApproximation,
-		double& precision);
-
-template<typename T>
 void getSortedResults(IteratorPtr<T> pFindResultIter,
 		DistanceCalculatorPtr<T> pDistanceCaculator,
 		T pTarget,
@@ -83,7 +75,8 @@ void logSearchResult(T pQuery,
 
 template<typename T>
 SearchSpaceTimerEvaluatorImpl<T>::SearchSpaceTimerEvaluatorImpl(const TargetElements<T>& pTargets,
-		double epsilon,
+		double collectionEpsilon,
+		double approximatorEpsilon,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
 		RealCoordinateWriterPtr<T> pRealCoordinateWritter,
@@ -92,7 +85,8 @@ SearchSpaceTimerEvaluatorImpl<T>::SearchSpaceTimerEvaluatorImpl(const TargetElem
 		std::ostream& outputStream) : m_ostream(outputStream) {
 
 	m_targets.insert(m_targets.end(), pTargets.begin(), pTargets.end());
-	m_epsilon = epsilon;
+	m_collectionEpsilon = collectionEpsilon;
+	m_approximatorEpsilon = approximatorEpsilon;
 	m_pDistanceCalculator = pDistanceCalculator;
 	m_pRealCoordinateCalculator = pRealCoordinateCalculator;
 	m_pRealCoordinateWritter = pRealCoordinateWritter;
@@ -116,7 +110,7 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateCollection(CollectionPtr<T> pColl
 				pCollection,
 				target,
 				m_pDistanceCalculator,
-				m_epsilon,
+				m_collectionEpsilon,
 				pFindResultIter,
 				m_pTimer,
 				&searchTime);
@@ -127,7 +121,7 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateCollection(CollectionPtr<T> pColl
 				m_pRealCoordinateWritter,
 				target,
 				searchTime,
-				m_epsilon,
+				m_collectionEpsilon,
 				m_pWriter,
 				m_ostream);
 	}
@@ -147,7 +141,7 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateApproximator(ApproximatorPtr<T> p
 				pCoreCollection,
 				target,
 				m_pDistanceCalculator,
-				m_epsilon,
+				m_approximatorEpsilon,
 				pFindResultIter,
 				m_pTimer,
 				&searchTime);
@@ -158,7 +152,7 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateApproximator(ApproximatorPtr<T> p
 				m_pRealCoordinateWritter,
 				target,
 				searchTime,
-				m_epsilon,
+				m_approximatorEpsilon,
 				m_pWriter,
 				m_ostream);
 	}
@@ -239,32 +233,6 @@ void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
 				pRealCoordinateWriter,
 				outputStream);
 	}
-}
-
-template<typename T>
-void getClosestApproximationFromFoundIterator(IteratorPtr<T> pFindResultIter, DistanceCalculatorPtr<T> pDistanceCaculator, T pTarget, T& prClosestApproximation, double& precision) {
-	double minPrecision = 1e4;
-
-	if(pFindResultIter != NullPtr) {
-		return;
-	}
-
-	pFindResultIter->toBegin();
-	while(!pFindResultIter->isDone()) {
-		precision = pDistanceCaculator->distance(pFindResultIter->getObj(), pTarget);
-
-#ifdef DENOISING
-		if(precision < NOISE_THRESOLD) {
-			precision = 1;
-		}
-#endif
-		if(precision < minPrecision) {
-			prClosestApproximation = pFindResultIter->getObj();
-			minPrecision = precision;
-		}
-		pFindResultIter->next();
-	}
-	precision = minPrecision;
 }
 
 template<typename T>

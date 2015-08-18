@@ -17,10 +17,11 @@
 #include "IResourceContainer.h"
 #include "IBinCollection.h"
 #include "AlgoInternal.h"
+#include "NearIdentityElementApproximator.h"
 
 class SampleAppContainerImpl: public IAppContainer {
 public:
-	SampleAppContainerImpl(std::string configFile = "in.conf");
+	SampleAppContainerImpl(std::string configFile = "in.conf", std::string approximatorConfigFile = "near_identity_approximator.conf");
 
 	virtual ~SampleAppContainerImpl();
 
@@ -37,9 +38,15 @@ public:
 	virtual void recycle(GateSearchSpaceEvaluatorPtr& rpGateSearchSpaceEvaluator);
 
 private:
-	void readParamsFromFile(std::string configFile);
+	void readEvaluatorConfigFromFile(std::string configFile);
+
+	void readApproximatorConfigFromFile(std::string configFile);
+
+	void wireDependencies();
 
 	void constructGateCollection(GateCollectionPtr pGateCollection);
+
+	void releaseDependencies();
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
@@ -68,15 +75,22 @@ private:
 	RealCoordinateWriterPtr<GatePtr> m_pCoordinateWriter;
 	TimerPtr m_pTimer;
 
+	CombinerPtr<GatePtr> m_pGateInBinCombiner;
 	BinCollectionPtr<GatePtr> m_pBinCollection;
 
 	int m_maxSequenceLength;
 	int m_nbQubits;
-	double m_epsilon;
+	double m_collectionEpsilon;
+	double m_approximatorEpsilon;
+
+	NearIdentityElementApproximator<GatePtr>::Config m_nearIdentityApproximatorConfig;
 
 	const static int DEFAULT_MAX_SEQUENCE_LENGTH;
 	const static int DEFAULT_NB_QUBITS;
-	const static double DEFAULT_EPSILON;
+	const static double DEFAULT_COLLECTION_EPSILON;
+	const static double DEFAULT_APPROXIMATOR_EPSILON;
+
+	const static NearIdentityElementApproximator<GatePtr>::Config DEFAULT_NEAR_IDENTITY_APPROXIMATOR_CONFIG;
 
 	const static std::string GATE_COLLECTION_PERSIST_FILE_NAME;
 	const static std::string GATE_COLLECTION_PERSIST_FILE_EXT;

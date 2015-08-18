@@ -95,6 +95,7 @@ FullTestSuite::FullTestSuite() {
 	m_pTimer = new CpuTimer();
 	m_pSearchSpaceEvaluator = new MatrixSearchSpaceTimerEvaluatorImpl(m_targets,
 			epsilon,
+			epsilon,
 			m_pMatrixDistanceCalculator,
 			NullPtr,
 			NullPtr,
@@ -787,6 +788,7 @@ void FullTestSuite::freeTestGateCollectionEvaluator() {
 	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(m_pMatrixOperator);
 	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(pMatrixDistanceCalculator);
 	GateSearchSpaceEvaluatorPtr pGateSearchSpaceEvaluator = new GateSearchSpaceTimerEvaluatorImpl(targets,
+			epsilon,
 			epsilon,
 			pGateDistanceCalculator,
 			pGateRealCoordinateCalculator,

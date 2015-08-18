@@ -17,6 +17,9 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
  ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
  ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
+ ../../ModuleAlgorithm/include/implement/approximator/NearIdentityElementApproximator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
@@ -187,7 +190,6 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h \
- ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
  ../../ModuleEvaluate/include/implement/GateSearchSpaceConstructorImpl.h \
  ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/VectorBasedCollectionImpl.hpp \
@@ -213,7 +215,6 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h \
  ../../ModuleAlgorithm/include/implement/approximator/NearIdentityGateApproximator.h \
  ../../ModuleAlgorithm/include/implement/approximator/NearIdentityElementApproximator.h \
- ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h
 
@@ -254,6 +255,12 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h:
 
 ../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
+
+../../ModuleAlgorithm/include/implement/approximator/NearIdentityElementApproximator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
 
 ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h:
 
@@ -595,8 +602,6 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 
 ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:
 
-../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
-
 ../../ModuleEvaluate/include/implement/GateSearchSpaceConstructorImpl.h:
 
 ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h:
@@ -646,8 +651,6 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 ../../ModuleAlgorithm/include/implement/approximator/NearIdentityGateApproximator.h:
 
 ../../ModuleAlgorithm/include/implement/approximator/NearIdentityElementApproximator.h:
-
-../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
 
 ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h:
 

@@ -71,6 +71,7 @@ void IntegratingTester::freeTestEvaluateGateSearchSpace(int nbQubits, int maxSeq
 
 	GateSearchSpaceEvaluatorPtr pGateSeachSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl<GatePtr>(queries,
 			epsilon,
+			epsilon,
 			pGateDistanceCalculator,
 			NullPtr,
 			NullPtr,

@@ -16,7 +16,10 @@ src/Application.d: ../src/Application.cpp \
  ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
  ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
- ../../ModuleAlgorithm/include/implement/bin/Bin.hpp
+ ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
+ ../../ModuleAlgorithm/include/implement/approximator/NearIdentityElementApproximator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h
 
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
 
@@ -55,3 +58,9 @@ src/Application.d: ../src/Application.cpp \
 ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h:
 
 ../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
+
+../../ModuleAlgorithm/include/implement/approximator/NearIdentityElementApproximator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
