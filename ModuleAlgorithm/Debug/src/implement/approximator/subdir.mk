@@ -7,18 +7,21 @@ CPP_SRCS += \
 ../src/implement/approximator/DummyMatrixApproximator.cpp \
 ../src/implement/approximator/NINAMatrixApproximator.cpp \
 ../src/implement/approximator/NearIdentityElementApproximator.cpp \
+../src/implement/approximator/NearIdentityGateApproximator.cpp \
 ../src/implement/approximator/NearIdentityMatrixApproximator.cpp 
 
 OBJS += \
 ./src/implement/approximator/DummyMatrixApproximator.o \
 ./src/implement/approximator/NINAMatrixApproximator.o \
 ./src/implement/approximator/NearIdentityElementApproximator.o \
+./src/implement/approximator/NearIdentityGateApproximator.o \
 ./src/implement/approximator/NearIdentityMatrixApproximator.o 
 
 CPP_DEPS += \
 ./src/implement/approximator/DummyMatrixApproximator.d \
 ./src/implement/approximator/NINAMatrixApproximator.d \
 ./src/implement/approximator/NearIdentityElementApproximator.d \
+./src/implement/approximator/NearIdentityGateApproximator.d \
 ./src/implement/approximator/NearIdentityMatrixApproximator.d 
 
 

@@ -28,6 +28,8 @@
 #include "LabelOnlyGateWriterImpl.h"
 #include "CpuTimer.h"
 #include "GateSearchSpaceTimerEvaluatorImpl.h"
+#include "NearIdentityGateApproximator.h"
+#include "MapBasedGateBinCollectionImpl.h"
 #include <cstdio>
 #include <iostream>
 #include <stdexcept>
@@ -80,9 +82,14 @@ SampleAppContainerImpl::SampleAppContainerImpl(std::string configFile) {
 	m_pCoordinateWriter = RealCoordinateWriterPtr<GatePtr>(new SampleRealCoordinateWriterImpl<GatePtr>(","));
 
 	m_pTimer = TimerPtr(new CpuTimer());
+
+	m_pBinCollection = BinCollectionPtr<GatePtr>(new MapBasedGateBinCollectionImpl());
 }
 
 SampleAppContainerImpl::~SampleAppContainerImpl() {
+
+	_destroy(m_pBinCollection);
+
 	_destroy(m_pTimer);
 	_destroy(m_pCoordinateWriter);
 	_destroy(m_pGateRealCoordinateCalculator);
@@ -130,6 +137,15 @@ GateCollectionPtr SampleAppContainerImpl::getGateCollection() {
 	return pGateCollection;
 }
 
+GateApproximatorPtr SampleAppContainerImpl::getGateApproximator() {
+	//TODO Instantiate bin combiner
+	GateApproximatorPtr pGateApproximator = GateApproximatorPtr(new NearIdentityGateApproximator(m_pGateRealCoordinateCalculator,
+			NullPtr,
+			m_pBinCollection));
+
+	return pGateApproximator;
+}
+
 GateSearchSpaceEvaluatorPtr SampleAppContainerImpl::getGateSearchSpaceEvaluator() {
 	TargetElements<GatePtr> targets;
 
@@ -150,6 +166,11 @@ GateSearchSpaceEvaluatorPtr SampleAppContainerImpl::getGateSearchSpaceEvaluator(
 void SampleAppContainerImpl::recycle(GateCollectionPtr& rpGateCollection) {
 	_destroy(rpGateCollection);
 	rpGateCollection = NullPtr;
+}
+
+void SampleAppContainerImpl::recycle(GateApproximatorPtr& rpGateApproximator) {
+	_destroy(rpGateApproximator);
+	rpGateApproximator = NullPtr;
 }
 
 void SampleAppContainerImpl::recycle(GateSearchSpaceEvaluatorPtr& rpGateSearchSpaceEvaluator) {

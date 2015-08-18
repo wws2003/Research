@@ -14,7 +14,9 @@ src/Application.d: ../src/Application.cpp \
  ../src/IResourceContainer.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
  ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
- ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h
+ ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
+ ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
+ ../../ModuleAlgorithm/include/implement/bin/Bin.hpp
 
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
 
@@ -49,3 +51,7 @@ src/Application.d: ../src/Application.cpp \
 ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
+
+../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h:
+
+../../ModuleAlgorithm/include/implement/bin/Bin.hpp:

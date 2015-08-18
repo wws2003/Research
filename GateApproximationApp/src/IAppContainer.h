@@ -21,12 +21,15 @@ class IAppContainer {
 public:
 	virtual ~IAppContainer(){};
 
-	//TODO May add some user config params / config file name
 	virtual GateCollectionPtr getGateCollection() = 0;
+
+	virtual GateApproximatorPtr getGateApproximator() = 0;
 
 	virtual GateSearchSpaceEvaluatorPtr getGateSearchSpaceEvaluator() = 0;
 
 	virtual void recycle(GateCollectionPtr& rpGateCollection) = 0;
+
+	virtual void recycle(GateApproximatorPtr& rpGateApproximator) = 0;
 
 	virtual void recycle(GateSearchSpaceEvaluatorPtr& rpGateSearchSpaceEvaluator) = 0;
 };

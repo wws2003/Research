@@ -11,6 +11,9 @@
 
 #include "NearIdentityElementApproximator.cpp"
 #include "VectorBasedMatrixCollectionImpl.h"
+#include "IMatrix.h"
+
+template class NearIdentityElementApproximator<MatrixPtr>;
 
 #else
 #include "ICoordinateCalculator.h"

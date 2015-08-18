@@ -15,6 +15,8 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
  ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
+ ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
+ ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
@@ -208,7 +210,12 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleEvaluate/include/implement/CpuTimer.h \
  ../../ModuleEvaluate/include/interface/abstract/ITimer.h \
  ../../ModuleEvaluate/include/implement/GateSearchSpaceTimerEvaluatorImpl.h \
- ../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h
+ ../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h \
+ ../../ModuleAlgorithm/include/implement/approximator/NearIdentityGateApproximator.h \
+ ../../ModuleAlgorithm/include/implement/approximator/NearIdentityElementApproximator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
+ ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h \
+ ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h
 
 ../src/SampleAppContainerImpl.h:
 
@@ -243,6 +250,10 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
+
+../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h:
+
+../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
 
 ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h:
 
@@ -631,3 +642,13 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 ../../ModuleEvaluate/include/implement/GateSearchSpaceTimerEvaluatorImpl.h:
 
 ../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h:
+
+../../ModuleAlgorithm/include/implement/approximator/NearIdentityGateApproximator.h:
+
+../../ModuleAlgorithm/include/implement/approximator/NearIdentityElementApproximator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
+
+../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h:
+
+../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h:

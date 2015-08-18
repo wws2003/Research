@@ -13,6 +13,8 @@
 #include "Coordinate.hpp"
 #include "VectorBasedCollectionImpl.hpp"
 #include "VectorBasedReadOnlyIteratorImpl.hpp"
+#include "ICollection.h"
+#include "IBinCollection.h"
 
 template<typename T>
 void findApprxByMerge2Bins(BinPtr<T> pBin1, BinPtr<T> pBin2, T pQuery, double epsilon, CombinerPtr<T> pCombiner, DistanceCalculatorPtr<T> pDistanceCalculator, CollectionPtr<T> pResultCollection);
@@ -32,7 +34,7 @@ IteratorPtr<T> NearIdentityElementApproximator<T>::getApproximateElements(Collec
 
 	//Find first round results
 	double firstRoundEpsilon = 10 * epsilon;
-	IteratorPtr<T> pFirstRoundApprxIter = pCoreCollection->findApproxElements(pQuery, pDistanceCalculator, firstRoundEpsilon);
+	IteratorPtr<T> pFirstRoundApprxIter = pCoreCollection->findNearestNeighbour(pQuery, pDistanceCalculator, firstRoundEpsilon);
 
 	if(pFirstRoundApprxIter == NullPtr || pFirstRoundApprxIter->isDone()) {
 		return pFirstRoundApprxIter;
@@ -71,7 +73,7 @@ IteratorPtr<T> NearIdentityElementApproximator<T>::getApproximateElements(Collec
 			BinIteratorPtr<T> pMergableBinIter = m_pBinCollection->findBinsCloseToBin(pBin, maxMergeDistance);
 
 			while(!pMergableBinIter->isDone()) {
-				BinIteratorPtr<T> pMergableBin = pMergableBinIter->getObj();
+				BinPtr<T> pMergableBin = pMergableBinIter->getObj();
 				findApprxByMerge2Bins(pBin, pMergableBin, pQuery, epsilonForMergeCandidate, m_pCombiner, pDistanceCalculator, pApprxTempCollection);
 				pMergableBinIter->next();
 			}
@@ -156,7 +158,7 @@ void findApprxByMerge2Bins(BinPtr<T> pBin1, BinPtr<T> pBin2, T pQuery, double ep
 
 template<typename T>
 void addApprxResultsToBufferFromCollection(CollectionPtr<T> pCollection, T pQuery, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<T>& rResultBuffer) {
-	IteratorPtr<T> pApprxResultIter = pCollection->findApproxElements(pQuery, pDistanceCalculator, epsilon);
+	IteratorPtr<T> pApprxResultIter = pCollection->findNearestNeighbour(pQuery, pDistanceCalculator, epsilon);
 	if(pApprxResultIter != NullPtr) {
 		while(!pApprxResultIter->isDone()) {
 			rResultBuffer.push_back(pApprxResultIter->getObj());

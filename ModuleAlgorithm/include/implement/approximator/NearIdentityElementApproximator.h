@@ -25,7 +25,7 @@ class NearIdentityElementApproximator: public IApproximator<T> {
 public:
 	NearIdentityElementApproximator(RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator, CombinerPtr<T> pCombiner, BinCollectionPtr<T> pBinCollection);
 
-	virtual ~NearIdentityElementApproximator();
+	virtual ~NearIdentityElementApproximator(){};
 	virtual IteratorPtr<T> getApproximateElements(CollectionPtr<T> pCoreCollection, T pQuery, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon);
 
 private:

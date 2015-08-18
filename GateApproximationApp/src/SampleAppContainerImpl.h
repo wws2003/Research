@@ -15,6 +15,8 @@
 #include "MathConceptsCommon.h"
 #include "AlgoCommon.h"
 #include "IResourceContainer.h"
+#include "IBinCollection.h"
+#include "AlgoInternal.h"
 
 class SampleAppContainerImpl: public IAppContainer {
 public:
@@ -24,9 +26,13 @@ public:
 
 	virtual GateCollectionPtr getGateCollection();
 
+	virtual GateApproximatorPtr getGateApproximator();
+
 	virtual GateSearchSpaceEvaluatorPtr getGateSearchSpaceEvaluator();
 
 	virtual void recycle(GateCollectionPtr& rpGateCollection);
+
+	virtual void recycle(GateApproximatorPtr& rpGateApproximator);
 
 	virtual void recycle(GateSearchSpaceEvaluatorPtr& rpGateSearchSpaceEvaluator);
 
@@ -61,6 +67,8 @@ private:
 	GateRealCoordinateCalculatorPtr m_pGateRealCoordinateCalculator;
 	RealCoordinateWriterPtr<GatePtr> m_pCoordinateWriter;
 	TimerPtr m_pTimer;
+
+	BinCollectionPtr<GatePtr> m_pBinCollection;
 
 	int m_maxSequenceLength;
 	int m_nbQubits;

@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../src/implement/collection/GNATCollectionImpl.cpp \
 ../src/implement/collection/GNATGateCollectionImpl.cpp \
 ../src/implement/collection/MapBasedBinCollectionImpl.cpp \
+../src/implement/collection/MapBasedGateBinCollectionImpl.cpp \
 ../src/implement/collection/MapBasedMatrixBinCollectionImpl.cpp \
 ../src/implement/collection/VectorBasedMatrixCollectionImpl.cpp 
 
@@ -16,6 +17,7 @@ OBJS += \
 ./src/implement/collection/GNATCollectionImpl.o \
 ./src/implement/collection/GNATGateCollectionImpl.o \
 ./src/implement/collection/MapBasedBinCollectionImpl.o \
+./src/implement/collection/MapBasedGateBinCollectionImpl.o \
 ./src/implement/collection/MapBasedMatrixBinCollectionImpl.o \
 ./src/implement/collection/VectorBasedMatrixCollectionImpl.o 
 
@@ -24,6 +26,7 @@ CPP_DEPS += \
 ./src/implement/collection/GNATCollectionImpl.d \
 ./src/implement/collection/GNATGateCollectionImpl.d \
 ./src/implement/collection/MapBasedBinCollectionImpl.d \
+./src/implement/collection/MapBasedGateBinCollectionImpl.d \
 ./src/implement/collection/MapBasedMatrixBinCollectionImpl.d \
 ./src/implement/collection/VectorBasedMatrixCollectionImpl.d 
 

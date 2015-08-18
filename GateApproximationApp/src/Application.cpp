@@ -27,7 +27,6 @@ int main() {
 	AppContainerPtr pAppContainer = new SampleAppContainerImpl("in.conf");
 
 	evaluateCollection(pAppContainer);
-	evaluateApproximator(pAppContainer);
 
 	delete pAppContainer;
 
@@ -50,5 +49,19 @@ void evaluateCollection(AppContainerPtr pAppContainer) {
 }
 
 void evaluateApproximator(AppContainerPtr pAppContainer) {
+	//Get approximator instance, either from file or generate
+	GateApproximatorPtr pGateApproximator = pAppContainer->getGateApproximator();
 
+	//Get collection instance, either from file or generate
+	GateCollectionPtr pGateCoreCollection = pAppContainer->getGateCollection();
+
+	//Get search space evaluator instance
+	GateSearchSpaceEvaluatorPtr pSearchSpaceEvaluator = pAppContainer->getGateSearchSpaceEvaluator();
+
+	//Evaluate collection
+	pSearchSpaceEvaluator->evaluateApproximator(pGateApproximator, pGateCoreCollection);
+
+	//Recycle instances
+	pAppContainer->recycle(pGateApproximator);
+	pAppContainer->recycle(pSearchSpaceEvaluator);
 }
