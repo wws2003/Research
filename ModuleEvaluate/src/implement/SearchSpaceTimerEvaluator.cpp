@@ -206,11 +206,14 @@ void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
 	//Output some general information
 	outputStream << "--------------------------" << END_LINE;
 	outputStream << "Number of results:" << results.size() << END_LINE;
+
 	CoordinatePtr<T, double> pQueryCoordinate = NullPtr;
-	pRealCoordinateCalculator->calulateElementCoordinate(target, pQueryCoordinate);
-	outputStream << "Query coordinate:" << END_LINE;
-	pRealCoordinateWriter->writeCoordinate(*pQueryCoordinate, outputStream);
-	outputStream << END_LINE;
+	if(pRealCoordinateCalculator != NullPtr) {
+		pRealCoordinateCalculator->calulateElementCoordinate(target, pQueryCoordinate);
+		outputStream << "Query coordinate:" << END_LINE;
+		pRealCoordinateWriter->writeCoordinate(*pQueryCoordinate, outputStream);
+		outputStream << END_LINE;
+	}
 
 	//Output (log) each result
 	for(unsigned int i = 0; i < results.size(); i++) {
@@ -221,7 +224,9 @@ void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
 
 		//Calculate result coordinate
 		CoordinatePtr<T, double> pCoordinate = NullPtr;
-		pRealCoordinateCalculator->calulateElementCoordinate(result, pCoordinate);
+		if(pRealCoordinateCalculator != NullPtr) {
+			pRealCoordinateCalculator->calulateElementCoordinate(result, pCoordinate);
+		}
 
 		//Log result (gate or matrix or anything)
 		logSearchResult(target,
@@ -321,7 +326,9 @@ void logSearchResult(T pQuery,
 
 	if(pResult != NullPtr) {
 		pWriter->write(pResult, outputStream);
-		pRealCoordinateWriter->writeCoordinate(*pCoordinate, outputStream);
+		if(pCoordinate != NullPtr) {
+			pRealCoordinateWriter->writeCoordinate(*pCoordinate, outputStream);
+		}
 	}
 
 	outputStream << precision;
