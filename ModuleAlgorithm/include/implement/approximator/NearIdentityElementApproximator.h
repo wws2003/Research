@@ -21,13 +21,18 @@
 typedef std::vector<double> real_coordinate_t;
 
 template<typename T>
+using ApprxResultBuffer = std::vector<T>;
+
+template<typename T>
 class NearIdentityElementApproximator: public IApproximator<T> {
 public:
 	typedef struct Config_ {
 		double m_initialEpsilon;
 		int m_maxMergedBinDistance;
 		double m_maxCandidateEpsilon;
+		double m_maxCandidateEpsilonDecreaseFactor;
 		int m_iterationMaxSteps;
+		int m_maxResultNumber;
 	} Config;
 
 	NearIdentityElementApproximator(RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
@@ -49,7 +54,18 @@ private:
 			const real_coordinate_t& queryCoordinate,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			double epsilon,
-			std::vector<T>& apprxResultBuffer);
+			ApprxResultBuffer<T>& apprxResultBuffer);
+
+	void generateApproximationsPrefixedFromBins(BinPtr<T> pBin,
+				int maxBinDistance,
+				T pQuery,
+				const real_coordinate_t& queryCoordinate,
+				DistanceCalculatorPtr<T> pDistanceCalculator,
+				double epsilonForMergeCandidate,
+				double approximationEpsilon,
+				CollectionPtr<T> pApprxTempCollection,
+				ApprxResultBuffer<T>& apprxResultBuffer,
+				int maxResultsNumber);
 
 	void distributeResultsToBins(const real_coordinate_t& queryCoordinate,
 			IteratorPtr<T> pApprxIter,

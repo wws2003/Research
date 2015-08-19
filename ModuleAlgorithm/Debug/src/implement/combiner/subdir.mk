@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/implement/combiner/DuplicateCancelationMultiplierMatrixCombinerImpl.cpp \
+../src/implement/combiner/DuplicateGateCancelationCombinerImpl.cpp \
 ../src/implement/combiner/GateCancelationCombinabilityCheckerImpl.cpp \
 ../src/implement/combiner/GateCombinerImpl.cpp \
 ../src/implement/combiner/GateCostCombinabilityCheckerImpl.cpp \
@@ -14,6 +15,7 @@ CPP_SRCS += \
 
 OBJS += \
 ./src/implement/combiner/DuplicateCancelationMultiplierMatrixCombinerImpl.o \
+./src/implement/combiner/DuplicateGateCancelationCombinerImpl.o \
 ./src/implement/combiner/GateCancelationCombinabilityCheckerImpl.o \
 ./src/implement/combiner/GateCombinerImpl.o \
 ./src/implement/combiner/GateCostCombinabilityCheckerImpl.o \
@@ -23,6 +25,7 @@ OBJS += \
 
 CPP_DEPS += \
 ./src/implement/combiner/DuplicateCancelationMultiplierMatrixCombinerImpl.d \
+./src/implement/combiner/DuplicateGateCancelationCombinerImpl.d \
 ./src/implement/combiner/GateCancelationCombinabilityCheckerImpl.d \
 ./src/implement/combiner/GateCombinerImpl.d \
 ./src/implement/combiner/GateCostCombinabilityCheckerImpl.d \

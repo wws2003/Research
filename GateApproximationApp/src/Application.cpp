@@ -42,7 +42,9 @@ void evaluateCollection(AppContainerPtr pAppContainer) {
 	GateSearchSpaceEvaluatorPtr pSearchSpaceEvaluator = pAppContainer->getGateSearchSpaceEvaluator();
 
 	//Evaluate collection
+	std::cout << "---------------------Start evaluating collection---------------------" << "\r\n";
 	pSearchSpaceEvaluator->evaluateCollection(pGateCollection);
+	std::cout << "---------------------End evaluating collection---------------------" << "\r\n";
 
 	//Recycle instances
 	//pAppContainer->recycle(pGateCollection);
@@ -60,7 +62,9 @@ void evaluateApproximator(AppContainerPtr pAppContainer) {
 	GateSearchSpaceEvaluatorPtr pSearchSpaceEvaluator = pAppContainer->getGateSearchSpaceEvaluator();
 
 	//Evaluate collection
+	std::cout << "---------------------Start evaluating approximator---------------------" << "\r\n";
 	pSearchSpaceEvaluator->evaluateApproximator(pGateApproximator, pGateCoreCollection);
+	std::cout << "---------------------End evaluating approximator---------------------" << "\r\n";
 
 	//Recycle instances
 	pAppContainer->recycle(pGateApproximator);

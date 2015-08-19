@@ -216,7 +216,9 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleAlgorithm/include/implement/approximator/NearIdentityGateApproximator.h \
  ../../ModuleAlgorithm/include/implement/approximator/NearIdentityElementApproximator.h \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h \
- ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h
+ ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h \
+ ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h \
+ ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h
 
 ../src/SampleAppContainerImpl.h:
 
@@ -655,3 +657,7 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h:
 
 ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h:
+
+../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h:
+
+../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h:

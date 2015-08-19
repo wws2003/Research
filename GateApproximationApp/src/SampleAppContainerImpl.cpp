@@ -30,6 +30,7 @@
 #include "GateSearchSpaceTimerEvaluatorImpl.h"
 #include "NearIdentityGateApproximator.h"
 #include "MapBasedGateBinCollectionImpl.h"
+#include "DuplicateGateCancelationCombinerImpl.h"
 #include <cstdio>
 #include <iostream>
 #include <stdexcept>
@@ -38,7 +39,7 @@ const int SampleAppContainerImpl::DEFAULT_MAX_SEQUENCE_LENGTH = 14;
 const int SampleAppContainerImpl::DEFAULT_NB_QUBITS = 1;
 const double SampleAppContainerImpl::DEFAULT_COLLECTION_EPSILON = 1e-2;
 const double SampleAppContainerImpl::DEFAULT_APPROXIMATOR_EPSILON = 1e-2;
-const NearIdentityElementApproximator<GatePtr>::Config SampleAppContainerImpl::DEFAULT_NEAR_IDENTITY_APPROXIMATOR_CONFIG = {2e-1, 3, 1.5e-1, 7};
+const NearIdentityElementApproximator<GatePtr>::Config SampleAppContainerImpl::DEFAULT_NEAR_IDENTITY_APPROXIMATOR_CONFIG = {2e-1, 3, 1.5e-1, 0.9, 7, 100};
 
 const std::string SampleAppContainerImpl::GATE_COLLECTION_PERSIST_FILE_NAME = "gnat";
 const std::string SampleAppContainerImpl::GATE_COLLECTION_PERSIST_FILE_EXT = "dat";
@@ -123,10 +124,20 @@ void SampleAppContainerImpl::recycle(GateSearchSpaceEvaluatorPtr& rpGateSearchSp
 void SampleAppContainerImpl::readEvaluatorConfigFromFile(std::string configFile) {
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
-		inputStream >> m_maxSequenceLength;
-		inputStream >> m_nbQubits;
-		inputStream >> m_collectionEpsilon;
-		inputStream >> m_approximatorEpsilon;
+		char prefix[256];
+		std::string line;
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &m_maxSequenceLength);
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &m_nbQubits);
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%lf", prefix, &m_collectionEpsilon);
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%lf", prefix, &m_approximatorEpsilon);
 	}
 	else {
 		std::cout << "Can not open config file, use default params" << "\r\n";
@@ -140,10 +151,27 @@ void SampleAppContainerImpl::readEvaluatorConfigFromFile(std::string configFile)
 void SampleAppContainerImpl::readApproximatorConfigFromFile(std::string configFile) {
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
-		inputStream >> m_nearIdentityApproximatorConfig.m_initialEpsilon;
-		inputStream >> m_nearIdentityApproximatorConfig.m_maxMergedBinDistance;
-		inputStream >> m_nearIdentityApproximatorConfig.m_maxCandidateEpsilon;
-		inputStream >> m_nearIdentityApproximatorConfig.m_iterationMaxSteps;
+		char prefix[256];
+		std::string line;
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%lf", prefix, &m_nearIdentityApproximatorConfig.m_initialEpsilon);
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &m_nearIdentityApproximatorConfig.m_maxMergedBinDistance);
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%lf", prefix, &m_nearIdentityApproximatorConfig.m_maxCandidateEpsilon);
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%lf", prefix, &m_nearIdentityApproximatorConfig.m_maxCandidateEpsilonDecreaseFactor);
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &m_nearIdentityApproximatorConfig.m_iterationMaxSteps);
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &m_nearIdentityApproximatorConfig.m_maxResultNumber);
+
 	}
 	else {
 		std::cout << "Can not open config file, use default params" << "\r\n";
@@ -187,7 +215,7 @@ void SampleAppContainerImpl::wireDependencies() {
 	m_pTimer = TimerPtr(new CpuTimer());
 
 	GateCombinabilityCheckers emptyCheckers;
-	m_pGateInBinCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(emptyCheckers, m_pMatrixOperator));
+	m_pGateInBinCombiner = CombinerPtr<GatePtr>(new DuplicateGateCancelationCombinerImpl(emptyCheckers, m_pMatrixOperator));
 	m_pBinCollection = BinCollectionPtr<GatePtr>(new MapBasedGateBinCollectionImpl());
 
 }
