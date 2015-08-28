@@ -21,15 +21,20 @@ void evaluateCollection(AppContainerPtr pAppContainer);
 
 void evaluateApproximator(AppContainerPtr pAppContainer);
 
-int main() {
+int main(int argc, char* argv[]) {
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 
-	AppContainerPtr pAppContainer = new SampleAppContainerImpl("in.conf", "near_identity_approximator.conf");
+	if(argc != 3) {
+		cout << "Syntax error. Correct syntax is $GateApproximationApp config_file_name_1 config_file_name_2" << endl;
+	}
+	else {
+		AppContainerPtr pAppContainer = new SampleAppContainerImpl(argv[1], argv[2]);
 
-	evaluateCollection(pAppContainer);
-	evaluateApproximator(pAppContainer);
+		evaluateCollection(pAppContainer);
+		evaluateApproximator(pAppContainer);
 
-	delete pAppContainer;
+		delete pAppContainer;
+	}
 
 	return 0;
 }

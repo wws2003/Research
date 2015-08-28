@@ -195,7 +195,7 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleAlgorithm/include/implement/collection/VectorBasedCollectionImpl.hpp \
  ../../ModuleAlgorithm/include/implement/iterator/VectorBasedIteratorImpl.hpp \
  ../../ModuleAlgorithm/include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
- ../src/SampleResourceContainerImpl.h \
+ ../src/SampleResourceContainerImpl.h ../src/GateFactory.h \
  ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h \
  ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h \
  ../../ModuleOperator/include/implement/MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h \
@@ -218,7 +218,8 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h \
- ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h
+ ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
+ ../src/HVBasedResourceContainerImpl.h
 
 ../src/SampleAppContainerImpl.h:
 
@@ -616,6 +617,8 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 
 ../src/SampleResourceContainerImpl.h:
 
+../src/GateFactory.h:
+
 ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h:
 
 ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h:
@@ -661,3 +664,5 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h:
 
 ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h:
+
+../src/HVBasedResourceContainerImpl.h:

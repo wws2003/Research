@@ -25,6 +25,8 @@ class IResourceContainer {
 public:
 	virtual ~IResourceContainer(){};
 
+	virtual void setup() = 0;
+
 	virtual void getUniversalGates(GateCollectionPtr pUniversalGates, int nbQubits = 2) = 0;
 
 	virtual void getGateCombinabilityCheckers(GateCombinabilityCheckers& checkers, int nbQubits = 2) = 0;

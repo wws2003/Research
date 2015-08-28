@@ -5,16 +5,22 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/Application.cpp \
+../src/GateFactory.cpp \
+../src/HVBasedResourceContainerImpl.cpp \
 ../src/SampleAppContainerImpl.cpp \
 ../src/SampleResourceContainerImpl.cpp 
 
 OBJS += \
 ./src/Application.o \
+./src/GateFactory.o \
+./src/HVBasedResourceContainerImpl.o \
 ./src/SampleAppContainerImpl.o \
 ./src/SampleResourceContainerImpl.o 
 
 CPP_DEPS += \
 ./src/Application.d \
+./src/GateFactory.d \
+./src/HVBasedResourceContainerImpl.d \
 ./src/SampleAppContainerImpl.d \
 ./src/SampleResourceContainerImpl.d 
 

@@ -18,6 +18,10 @@
 #include "IBinCollection.h"
 #include "AlgoInternal.h"
 #include "NearIdentityElementApproximator.h"
+#include <map>
+
+typedef std::map<std::string, int> LibrarySetNameMap;
+typedef std::map<int, std::string> LibrarySetFileNameMap;
 
 class SampleAppContainerImpl: public IAppContainer {
 public:
@@ -38,15 +42,42 @@ public:
 	virtual void recycle(GateSearchSpaceEvaluatorPtr& rpGateSearchSpaceEvaluator);
 
 private:
+	enum LibrarySet {
+		L_HT,
+		L_HTCNOT,
+		L_HCV
+	};
+
+	typedef struct _EvaluationConfig {
+		LibrarySet m_librarySet;
+		int m_maxSequenceLength;
+		int m_nbQubits;
+		double m_collectionEpsilon;
+		double m_approximatorEpsilon;
+	} EvaluationConfig;
+
+	void initLibrarySetNameMap();
+
+	void initLibrarySetPersistFileNameMap();
+
 	void readEvaluatorConfigFromFile(std::string configFile);
 
 	void readApproximatorConfigFromFile(std::string configFile);
 
 	void wireDependencies();
 
+	void setupResourceContainer();
+
+	std::string getGateCollectionPersistenceFileFullName(const SampleAppContainerImpl::EvaluationConfig& config,
+				const LibrarySetFileNameMap& librarySetFileNameMap,
+				std::string fileExtension);
+
 	void constructGateCollection(GateCollectionPtr pGateCollection);
 
 	void releaseDependencies();
+
+	LibrarySetNameMap m_librarySetNameMap;
+	LibrarySetFileNameMap m_librarySetPersistFileNameMap;
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
@@ -78,11 +109,7 @@ private:
 	CombinerPtr<GatePtr> m_pGateInBinCombiner;
 	BinCollectionPtr<GatePtr> m_pBinCollection;
 
-	int m_maxSequenceLength;
-	int m_nbQubits;
-	double m_collectionEpsilon;
-	double m_approximatorEpsilon;
-
+	EvaluationConfig m_evaluationConfig;
 	NearIdentityElementApproximator<GatePtr>::Config m_nearIdentityApproximatorConfig;
 
 	const static int DEFAULT_MAX_SEQUENCE_LENGTH;
@@ -92,10 +119,8 @@ private:
 
 	const static NearIdentityElementApproximator<GatePtr>::Config DEFAULT_NEAR_IDENTITY_APPROXIMATOR_CONFIG;
 
-	const static std::string GATE_COLLECTION_PERSIST_FILE_NAME;
-	const static std::string GATE_COLLECTION_PERSIST_FILE_EXT;
+	const static std::string DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT;
 };
-
 
 
 #endif /* SAMPLEAPPCONTAINERIMPL_H_ */

@@ -1,4 +1,6 @@
-src/SampleResourceContainerImpl.d: ../src/SampleResourceContainerImpl.cpp \
+src/HVBasedResourceContainerImpl.d: \
+ ../src/HVBasedResourceContainerImpl.cpp \
+ ../src/HVBasedResourceContainerImpl.h \
  ../src/SampleResourceContainerImpl.h ../src/IResourceContainer.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
@@ -182,6 +184,8 @@ src/SampleResourceContainerImpl.d: ../src/SampleResourceContainerImpl.cpp \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h
+
+../src/HVBasedResourceContainerImpl.h:
 
 ../src/SampleResourceContainerImpl.h:
 
