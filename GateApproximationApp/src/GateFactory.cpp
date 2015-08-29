@@ -149,7 +149,7 @@ MatrixPtr getCNOT2Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMa
 	MatrixPtr pSCNOTMat2 = NullPtr;
 	pMatrixOperator->specialUnitaryFromUnitary(pCNOTMat2, pSCNOTMat2);
 
-	_destroy(pSCNOTMat2);
+	_destroy(pCNOTMat2);
 
 	return pSCNOTMat2;
 }

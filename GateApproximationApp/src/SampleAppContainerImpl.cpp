@@ -157,7 +157,8 @@ void SampleAppContainerImpl::readEvaluatorConfigFromFile(std::string configFile)
 
 		std::getline(inputStream, line);
 		sscanf(line.data(), "%[^:]:%[^\n]", prefix, librarySetName);
-		m_evaluationConfig.m_librarySet = (LibrarySet)m_librarySetNameMap[librarySetName];
+		std::string librarySetNameStr(librarySetName);
+		m_evaluationConfig.m_librarySet = (LibrarySet)m_librarySetNameMap[librarySetNameStr];
 
 		std::getline(inputStream, line);
 		sscanf(line.data(), "%[^:]:%d", prefix, &m_evaluationConfig.m_maxSequenceLength);

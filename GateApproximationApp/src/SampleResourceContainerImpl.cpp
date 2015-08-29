@@ -20,7 +20,8 @@
 
 void copyCollection(const GateCollectionPtr pSrcCollection, GateCollectionPtr pDstCollection);
 
-void releaseGateCombinabilityCheckers(GateCombinabilityCheckers& checkers);
+template<typename TPtr>
+void purgePtrVector(std::vector<TPtr>& ptrs);
 
 SampleResourceContainerImpl::SampleResourceContainerImpl(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory) {
 	m_pMatrixOperator = pMatrixOperator;
@@ -32,23 +33,6 @@ SampleResourceContainerImpl::SampleResourceContainerImpl(MatrixOperatorPtr pMatr
 
 	m_pIdentity2 = NullPtr;
 	m_pIdentity4 = NullPtr;
-}
-
-SampleResourceContainerImpl::~SampleResourceContainerImpl() {
-	_destroy(m_pIdentity4);
-	_destroy(m_pIdentity2);
-
-	releaseGateCombinabilityCheckers(m_twoQubitGateCombinerCheckers);
-	releaseGateCombinabilityCheckers(m_singleQubitGateCombinerCheckers);
-
-	//Explicitly release universal (library) gates. Do not rely on release in collection
-	m_pTwoQubitLibraryGates->purge();
-	m_pSingleQubitLibraryGates->purge();
-
-	_destroy(m_pTwoQubitLibraryGates) ;
-	_destroy(m_pSingleQubitLibraryGates);
-
-	_destroy(m_pGateFactory);
 }
 
 void SampleResourceContainerImpl::setup() {
@@ -71,6 +55,27 @@ void SampleResourceContainerImpl::setup() {
 
 	initSingleQubitGateCombinabilityCheckers(m_singleQubitGateCombinerCheckers);
 	initTwoQubitGateCombinabilityCheckers(m_twoQubitGateCombinerCheckers);
+}
+
+SampleResourceContainerImpl::~SampleResourceContainerImpl() {
+
+	purgePtrVector<GateCombinabilityCheckerPtr>(m_twoQubitGateCombinerCheckers);
+	purgePtrVector<GateCombinabilityCheckerPtr>(m_singleQubitGateCombinerCheckers);
+
+	//Explicitly release universal (library) gates. Do not rely on release in collection
+	m_pTwoQubitLibraryGates->purge();
+	m_pSingleQubitLibraryGates->purge();
+
+	_destroy(m_pIdentity4);
+	_destroy(m_pIdentity2);
+
+	purgePtrVector<MatrixPtr>(m_basis4);
+	purgePtrVector<MatrixPtr>(m_basis2);
+
+	_destroy(m_pTwoQubitLibraryGates) ;
+	_destroy(m_pSingleQubitLibraryGates);
+
+	_destroy(m_pGateFactory);
 }
 
 void SampleResourceContainerImpl::getUniversalGates(GateCollectionPtr pLibraryGates, int nbQubits) {
@@ -276,10 +281,11 @@ void copyCollection(const GateCollectionPtr pSrcCollection, GateCollectionPtr pD
 	_destroy(pGateIter);
 }
 
-void releaseGateCombinabilityCheckers(GateCombinabilityCheckers& checkers) {
-	for(GateCombinabilityCheckers::iterator cIter = checkers.begin(); cIter != checkers.end(); ) {
-		GateCombinabilityCheckerPtr pChecker = *cIter;
-		cIter = checkers.erase(cIter);
-		delete pChecker;
+template<typename TPtr>
+void purgePtrVector(std::vector<TPtr>& ptrs) {
+	for(typename std::vector<TPtr>::iterator pIter = ptrs.begin(); pIter != ptrs.end(); ) {
+		TPtr pElement = *pIter;
+		pIter = ptrs.erase(pIter);
+		_destroy(pElement);
 	}
 }
