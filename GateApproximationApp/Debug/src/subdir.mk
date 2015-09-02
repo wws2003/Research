@@ -6,6 +6,7 @@
 CPP_SRCS += \
 ../src/Application.cpp \
 ../src/GateFactory.cpp \
+../src/HTVBasedResourceContainerImpl.cpp \
 ../src/HVBasedResourceContainerImpl.cpp \
 ../src/SampleAppContainerImpl.cpp \
 ../src/SampleResourceContainerImpl.cpp 
@@ -13,6 +14,7 @@ CPP_SRCS += \
 OBJS += \
 ./src/Application.o \
 ./src/GateFactory.o \
+./src/HTVBasedResourceContainerImpl.o \
 ./src/HVBasedResourceContainerImpl.o \
 ./src/SampleAppContainerImpl.o \
 ./src/SampleResourceContainerImpl.o 
@@ -20,6 +22,7 @@ OBJS += \
 CPP_DEPS += \
 ./src/Application.d \
 ./src/GateFactory.d \
+./src/HTVBasedResourceContainerImpl.d \
 ./src/HVBasedResourceContainerImpl.d \
 ./src/SampleAppContainerImpl.d \
 ./src/SampleResourceContainerImpl.d 

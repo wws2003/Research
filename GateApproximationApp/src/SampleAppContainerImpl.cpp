@@ -31,6 +31,7 @@
 #include "NearIdentityGateApproximator.h"
 #include "MapBasedGateBinCollectionImpl.h"
 #include "DuplicateGateCancelationCombinerImpl.h"
+#include "HTVBasedResourceContainerImpl.h"
 #include "HVBasedResourceContainerImpl.h"
 #include <cstdio>
 #include <iostream>
@@ -121,12 +122,14 @@ void SampleAppContainerImpl::initLibrarySetNameMap() {
 	m_librarySetNameMap["H-T"] = L_HT;
 	m_librarySetNameMap["H-CV"] = L_HCV;
 	m_librarySetNameMap["H-T-CNOT"] = L_HTCNOT;
+	m_librarySetNameMap["H-T-CV"] = L_HTCV;
 }
 
 void SampleAppContainerImpl::initLibrarySetPersistFileNameMap() {
 	m_librarySetPersistFileNameMap[L_HT] = "gnat";
 	m_librarySetPersistFileNameMap[L_HTCNOT] = "gnat";
 	m_librarySetPersistFileNameMap[L_HCV] = "gnat_hv";
+	m_librarySetPersistFileNameMap[L_HTCV] = "gnat_htcv";
 }
 
 void SampleAppContainerImpl::setupResourceContainer() {
@@ -140,6 +143,9 @@ void SampleAppContainerImpl::setupResourceContainer() {
 		break;
 	case L_HTCNOT:
 		m_pResourceContainer = ResourceContainerPtr(new SampleResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
+		break;
+	case L_HTCV:
+		m_pResourceContainer = ResourceContainerPtr(new HTVBasedResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
 		break;
 	default:
 		break;

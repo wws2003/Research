@@ -45,7 +45,8 @@ private:
 	enum LibrarySet {
 		L_HT,
 		L_HTCNOT,
-		L_HCV
+		L_HCV,
+		L_HTCV
 	};
 
 	typedef struct _EvaluationConfig {

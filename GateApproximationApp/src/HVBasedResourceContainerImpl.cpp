@@ -33,7 +33,6 @@ void HVBasedResourceContainerImpl::initTwoQubitsLibGates(GateNameCostMap& gateNa
 void HVBasedResourceContainerImpl::getTwoQubitsGateSelectiveCombinabilityChecker(GateCombinabilityCheckerPtr& pGateSelectiveCombinabilityChecker) {
 	CombinableGateLabelMap combinableLabelMap;
 
-	combinableLabelMap.insert(CombinableGateLabelPair("H1","H2"));
 	combinableLabelMap.insert(CombinableGateLabelPair("H1","CV1"));
 	combinableLabelMap.insert(CombinableGateLabelPair("H1","CV2"));
 
