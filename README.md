@@ -2,26 +2,27 @@
 A project aims to implement and evaluate my algorithms for unitary matrix decomposition problem.
 
 ## Module structure
-1. ModuleMathConcepts:  
+1. ***ModuleMathConcepts***  
 Provides classes representing basic theorical concepts, like Matrix, Coordinate, Gate (this class doesn't sounds mathematics though)  
 Dependency: None
-2. ModuleOperator  
+2. ***ModuleOperator***  
 Provides classes to conduct operators on Matrix, such as +, -, *,/, log, distance calcuating, etc.  
 Dependency: ModuleMathConcepts
-3. ModuleAlgorithm  
+3. ***ModuleAlgorithm***  
 Provides classes to solve "important" problems such as Matrix (Gate) lookup, Matrix (Gate) approximation, etc.  
 Dependencies: ModuleMathConcepts, ModuleOperator, ModuleIO
-4. ModuleIO  
+4. ***ModuleIO***    
 Provide classes to export/import from files or standard IO...  
 Dependency: ModuleMathConcepts
-5. ModuleEvaluate  
+5. ***ModuleEvaluate***  
 Provide classes to evaluate difference algorithms  
 Dependencies: ModuleMathConcepts, ModuleOperator, ModuleIO, ModuleAlgorithm
 
 Each modules is built into shared library, generated in the folder *Module*/artifact. Following the principles of OOD, each module only exposes to its client interfaces (normally by abstract classes) located at the folder *Module*/include/interface. Implementing classes are located at the folder *Module*/include/implementation.
 
 ## Executable
-Currently, a part from test cases, there is only one excutable file: GateApproximationApp, located at GateApproximationApp/Debug/. Run it with the LD_LIBRARY_PATH set to $(pwd)/ModuleMathConcepts/artifact:$(pwd)/ModuleOperator/artifact:$(pwd)/ModuleAlgorithm/artifact:$(pwd)/ModuleIO/artifact:$(pwd)/ModuleEvaluate/artifact. Unfortunately, at the moment (2015/10/08), it is very feature-limited
+Currently, a part from test cases, there is only one excutable file: GateApproximationApp, located at GateApproximationApp/Debug/.  
+Run it with the LD_LIBRARY_PATH set to $(pwd)/ModuleMathConcepts/artifact:$(pwd)/ModuleOperator/artifact:$(pwd)/ModuleAlgorithm/artifact:$(pwd)/ModuleIO/artifact:$(pwd)/ModuleEvaluate/artifact. Unfortunately, at the moment (2015/10/08), it is very feature-limited.
 
 ### Misc
 1. This project is based on Eclipse platform.
