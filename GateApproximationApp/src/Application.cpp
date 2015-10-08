@@ -7,6 +7,7 @@
 //============================================================================
 
 #include <iostream>
+#include <cstring>
 #include "Gate.h"
 #include "ICollection.h"
 #include "AlgoCommon.h"
@@ -17,18 +18,22 @@
 
 using namespace std;
 
+bool isValidSyntax(int argc, char* argv[]);
+
+void printSyntaxMessage();
+
 void evaluateCollection(AppContainerPtr pAppContainer);
 
 void evaluateApproximator(AppContainerPtr pAppContainer);
 
 int main(int argc, char* argv[]) {
-	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
+	cout << "!!!Welcome to Quantuam Gate Approximation App!!!" << endl; // prints !!!Hello World!!!
 
-	if(argc != 3) {
-		cout << "Syntax error. Correct syntax is $GateApproximationApp config_file_name_1 config_file_name_2" << endl;
+	if(!isValidSyntax(argc, argv)) {
+		printSyntaxMessage();
 	}
 	else {
-		AppContainerPtr pAppContainer = new SampleAppContainerImpl(argv[1], argv[2]);
+		AppContainerPtr pAppContainer = new SampleAppContainerImpl(argv[2], argv[3]);
 
 		evaluateCollection(pAppContainer);
 		evaluateApproximator(pAppContainer);
@@ -37,6 +42,20 @@ int main(int argc, char* argv[]) {
 	}
 
 	return 0;
+}
+
+bool isValidSyntax(int argc, char* argv[]) {
+	const int VALID_ARGUMENTS_NUMBER = 4;
+	const char* VALID_ARGUMENT1 = "-G";
+
+	return (argc == VALID_ARGUMENTS_NUMBER) && (strcmp(argv[1], VALID_ARGUMENT1) == 0);
+}
+
+void printSyntaxMessage() {
+	cout << "Sorry for any inconvenience. Currently the only accepted syntax is $GateApproximationApp -G config_file_name_1 config_file_name_2" << endl << endl;
+	cout << "_ -G: To generate and print out sequences close to the identity gate. Other options should be added in the future" << endl << endl;
+	cout << "_ config_file_name_1: Path to file contains basic information for approximation like size of gates, library gates, basic sequence length. Please see in1.conf or in2.conf for reference" << endl << endl;
+	cout << "_ config_file_name_2: Path to file contains detailed information to configure the NearIdentity Approximation algorithm based on clustering (binning) gate sequences by their coordinate (see NearIdentityElementApproximator.cpp). Please see near_identity_approximator1.conf or near_identity_approximator2.conf for reference" << endl << endl;
 }
 
 void evaluateCollection(AppContainerPtr pAppContainer) {

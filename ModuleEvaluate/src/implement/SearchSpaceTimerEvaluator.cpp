@@ -299,6 +299,7 @@ void logSearchResult(T pQuery,
 		}
 	}
 
+	outputStream << "Distance to target:";
 	outputStream << precision;
 	outputStream << END_LINE;
 }
