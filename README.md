@@ -1,7 +1,7 @@
 ## Overview
 A project aims to implement and evaluate my algorithms for unitary matrix decomposition problem.
 
-## Module structure
+## Modules structure
 1. ***ModuleMathConcepts***  
 Provides classes representing basic theorical concepts, like Matrix, Coordinate, Gate (this class doesn't sounds mathematics though)  
 Dependency: None
@@ -17,8 +17,10 @@ Dependency: ModuleMathConcepts
 5. ***ModuleEvaluate***  
 Provide classes to evaluate difference algorithms  
 Dependencies: ModuleMathConcepts, ModuleOperator, ModuleIO, ModuleAlgorithm
+6. ***SharedThirdParties***  
+Third parties libraries, those shared between modules. Direct third-party dependency should be strongly restricted, so currently only MPFR (Multiple-Precision Floating-point Reliably) libraries are allowed to be here.
 
-Each modules is built into shared library, generated in the folder *Module*/artifact. Following the principles of OOD, each module only exposes to its client interfaces (normally by abstract classes) located at the folder *Module*/include/interface. Implementing classes are located at the folder *Module*/include/implementation.
+Each module, except for the third party libraries, is built into shared library, generated in the folder *Module*/artifact. Following the principles of OOD, each module only exposes to its client interfaces (normally by abstract classes) located at the folder *Module*/include/interface. Implementing classes are located at the folder *Module*/include/implementation.
 
 ## Executable
 Currently, a part from test cases, there is only one excutable file: GateApproximationApp, located at GateApproximationApp/Debug/.  
