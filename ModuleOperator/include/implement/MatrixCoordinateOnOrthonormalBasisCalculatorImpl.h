@@ -13,7 +13,7 @@
 #include "CoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "IInnerProductCalculator.h"
 
-typedef CoordinateOnOrthonormalBasisCalculatorImpl<MatrixPtr, double> MatrixCoordinateOnOrthonormalBasisCalculatorImpl;
+typedef CoordinateOnOrthonormalBasisCalculatorImpl<MatrixPtr, mreal_t> MatrixCoordinateOnOrthonormalBasisCalculatorImpl;
 
 
 #endif /* MATRIXCOORDINATEONORTHONORMALBASISCALCULATORIMPL_H_ */

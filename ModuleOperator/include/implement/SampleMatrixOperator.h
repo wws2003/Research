@@ -11,6 +11,8 @@
 #include "IMatrixOperator.h"
 #include "eigen3/Eigen/Dense"
 
+typedef Eigen::Matrix<ComplexVal, Eigen::Dynamic, Eigen::Dynamic>  MatrixXcmp;
+
 class SampleMatrixOperator: public IMatrixOperator {
 public:
 	SampleMatrixOperator(MatrixFactoryPtr pMatrixFactory);
@@ -41,9 +43,9 @@ public:
 	void getTracelessHermitianMatricesBasis(int dimension, MatrixPtrVector& pBasis) ;
 
 private:
-	void toEigenMatrix(MatrixPtr pMatrix, Eigen::MatrixXcd& rEigenMat);
-	MatrixPtr fromEigenMatrix(Eigen::MatrixXcd& eigenMatrix, std::string label = "");
-	void fromEigenMatrix(Eigen::MatrixXcd& eigenMatrix, int coloumn, ComplexVectorRef rComplexVector);
+	void toEigenMatrix(MatrixPtr pMatrix, MatrixXcmp& rEigenMat);
+	MatrixPtr fromEigenMatrix(MatrixXcmp& eigenMatrix, std::string label = "");
+	void fromEigenMatrix(MatrixXcmp& eigenMatrix, int coloumn, ComplexVectorRef rComplexVector);
 
 	MatrixFactoryPtr m_pMatrixFactory;
 };

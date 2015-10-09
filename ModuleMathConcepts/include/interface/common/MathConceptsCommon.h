@@ -10,14 +10,18 @@
 
 #include <complex>
 #include <vector>
+#include "mpreal.h"
 
-/*typedef struct ComplexVal {
-	double real;
-	double imf;
-}
-ComplexVal;*/
+#define MPFR_REAL 1
 
-typedef std::complex<double> ComplexVal;
+#if MPFR_REAL
+typedef mpfr::mpreal mreal_t;
+#else
+typedef double mreal_t;
+#endif
+
+typedef std::complex<mreal_t> ComplexVal;
+
 typedef ComplexVal* ComplexValArray;
 typedef ComplexValArray& ComplexValArrayRef;
 
@@ -46,12 +50,12 @@ typedef ComplexVector& ComplexVectorRef;
 typedef IMatrixFactory* MatrixFactoryPtr;
 
 template<typename T>
-using RealCoordinate = Coordinate<T, double>;
+using RealCoordinate = Coordinate<T, mreal_t>;
 
 template<typename T>
 using RealCoordinatePtr = RealCoordinate<T>*;
 
-typedef Coordinate<MatrixPtr, double> MatrixRealCoordinate;
+typedef Coordinate<MatrixPtr, mreal_t> MatrixRealCoordinate;
 typedef MatrixRealCoordinate* MatrixRealCoordinatePtr;
 typedef MatrixRealCoordinatePtr& MatrixCoordinatePtrRef;
 
@@ -65,7 +69,7 @@ template<typename T,typename F>
 using CoordinatePtrRef = CoordinatePtr<T, F>&;
 
 typedef Gate* GatePtr;
-typedef Coordinate<GatePtr, double> GateRealCoordinate;
+typedef Coordinate<GatePtr, mreal_t> GateRealCoordinate;
 typedef GateRealCoordinate* GateRealCoordinatePtr;
 typedef GateRealCoordinatePtr& GateRealCoordinatePtrRef;
 

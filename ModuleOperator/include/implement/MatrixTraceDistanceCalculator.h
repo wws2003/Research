@@ -16,7 +16,7 @@ class MatrixTraceDistanceCalculator : public IDistanceCalculator<MatrixPtr> {
 public:
 	MatrixTraceDistanceCalculator(MatrixOperatorPtr pMatrixOperator);
 
-	virtual double distance(MatrixPtr p1, MatrixPtr p2);
+	virtual mreal_t distance(MatrixPtr p1, MatrixPtr p2);
 
 private:
 	MatrixOperatorPtr m_pMatrixOperator;

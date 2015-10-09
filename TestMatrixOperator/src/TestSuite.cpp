@@ -15,9 +15,11 @@
 #include <iostream>
 #include <cstdio>
 
+#define real_abs(x) (x >= 0.0 ? (x) : -(x))
+
 void initPauliMatrices(MatrixPtrVector& pPauliMatrices);
 void releasePauliMatrices(MatrixPtrVector& pPauliMatrices);
-void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<double> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU);
+void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<mreal_t> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU);
 
 TestSuite::TestSuite() {
 	m_pMatrixFactory = new SimpleDenseMatrixFactoryImpl();
@@ -64,7 +66,7 @@ void TestSuite::test() {
 void TestSuite::testMatrixGenerator() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array = new ComplexVal[4];
-	double inverSqrt2 = 1 / sqrt(2);
+	mreal_t inverSqrt2 = 1 / sqrt(2);
 	array[0] = ComplexVal(1,0) * inverSqrt2;
 	array[1] = ComplexVal(3,0) * inverSqrt2;
 	array[2] = ComplexVal(1,0) * inverSqrt2;
@@ -94,7 +96,8 @@ void TestSuite::testMatrixGenerator() {
 void TestSuite::testMatrixAdd() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array1 = new ComplexVal[4];
-	double inverSqrt2 = 1 / sqrt(2);
+
+	mreal_t inverSqrt2 = 1 / sqrt(2);
 	array1[0] = ComplexVal(1,0) * inverSqrt2;
 	array1[1] = ComplexVal(1,0) * inverSqrt2;
 	array1[2] = ComplexVal(1,0) * inverSqrt2;
@@ -137,7 +140,7 @@ void TestSuite::testMatrixAdd() {
 void TestSuite::testMatrixMultiply() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array1 = new ComplexVal[4];
-	double inverSqrt2 = 1 / sqrt(2);
+	mreal_t inverSqrt2 = 1 / sqrt(2);
 	array1[0] = ComplexVal(1,0) * inverSqrt2;
 	array1[1] = ComplexVal(1,0) * inverSqrt2;
 	array1[2] = ComplexVal(1,0) * inverSqrt2;
@@ -173,10 +176,10 @@ void TestSuite::testMatrixExp() {
 	ComplexValArray array1 = new ComplexVal[4];
 	ComplexVal i = ComplexVal(0,1);
 
-	array1[0] = i / 2.0;
-	array1[1] = i / 2.0;
-	array1[2] = i / 2.0;
-	array1[3] = -i / 2.0;
+	array1[0] = i / (mreal_t)2.0;
+	array1[1] = i / (mreal_t)2.0;
+	array1[2] = i / (mreal_t)2.0;
+	array1[3] = -i / (mreal_t)2.0;
 
 	MatrixPtr pMatrix1 = new SimpleDenseMatrixImpl(array1, ROW_SPLICE, 2, 2, "H1");
 
@@ -203,7 +206,8 @@ void TestSuite::testMatrixExp() {
 void TestSuite::testMatrixInverse() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray array1 = new ComplexVal[4];
-	double inverSqrt2 = 1 / sqrt(2);
+
+	mreal_t inverSqrt2 = 1 / sqrt(2);
 	array1[0] = ComplexVal(1,0) * inverSqrt2;
 	array1[1] = ComplexVal(1,0) * inverSqrt2;
 	array1[2] = ComplexVal(1,0) * inverSqrt2;
@@ -245,10 +249,10 @@ void TestSuite::testMultiplyScalar() {
 	ComplexValArray array1 = new ComplexVal[4];
 	ComplexVal i = ComplexVal(0,1);
 
-	array1[0] = i / 2.0;
-	array1[1] = i / 2.0;
-	array1[2] = i / 2.0;
-	array1[3] = -i / 2.0;
+	array1[0] = i / (mreal_t)2.0;
+	array1[1] = i / (mreal_t)2.0;
+	array1[2] = i / (mreal_t)2.0;
+	array1[3] = -i / (mreal_t)2.0;
 
 	MatrixPtr pMatrix0 = new SimpleDenseMatrixImpl(array0, ROW_SPLICE, 2, 2, "H1");
 
@@ -454,13 +458,13 @@ void TestSuite::testEig() {
 
 	assert(eigenValues.size() == 2);
 
-	assert(std::abs(eigenValues[0] - 1.0) < 1e-15 || std::abs(eigenValues[0] + 1.0) < 1e-15);
-	assert(std::abs(eigenValues[0] + eigenValues[1]) < 1e-30);
+	assert(real_abs(eigenValues[0].real() - (mreal_t)1.0) < 1e-15 || real_abs(eigenValues[0].real() + (mreal_t)1.0) < 1e-15);
+	assert(real_abs(eigenValues[0].real() + eigenValues[1].real()) < 1e-30);
 
-	assert(std::abs(pEigenVectors->getValue(0,0) - 1/sqrt(2.0)) < 1e-15 || std::abs(pEigenVectors->getValue(0,0) + 1/sqrt(2.0))< 1e-15);
-	assert(std::abs(pEigenVectors->getValue(0,0) + pEigenVectors->getValue(0,1)) < 1e-15);
-	assert(std::abs(pEigenVectors->getValue(1,0) - 1/sqrt(2.0)) < 1e-15);
-	assert(std::abs(pEigenVectors->getValue(1,1) - 1/sqrt(2.0)) < 1e-15);
+	assert(real_abs(pEigenVectors->getValue(0,0).real() - (mreal_t)1/sqrt(2.0)) < 1e-15 || real_abs(pEigenVectors->getValue(0,0).real() + (mreal_t)1/sqrt(2.0))< 1e-15);
+	assert(real_abs(pEigenVectors->getValue(0,0).real() + pEigenVectors->getValue(0,1).real()) < 1e-15);
+	assert(real_abs(pEigenVectors->getValue(1,0).real() - (mreal_t)1/sqrt(2.0)) < 1e-15);
+	assert(real_abs(pEigenVectors->getValue(1,1).real() - (mreal_t)1/sqrt(2.0)) < 1e-15);
 
 	delete pEigenVectors;
 
@@ -469,22 +473,26 @@ void TestSuite::testEig() {
 
 void TestSuite::testDistanceCalculator() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
-	double inverSqrt2 = 1 / sqrt(2);
-	ComplexVal arrayH[] = {ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(-1,0) * inverSqrt2};
+	mreal_t inverSqrt2 = 1 / sqrt(2);
+	ComplexVal arrayH[] = {ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2,
+			ComplexVal(1,0) * inverSqrt2, ComplexVal(-1,0) * inverSqrt2};
 	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
 
-	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
+	ComplexVal arrayT[] = {ComplexVal(1,0),
+			(mreal_t)0.0,
+			(mreal_t)0.0,
+			std::exp(ComplexVal(0,1) * (mreal_t)(M_PI / 4.0))};
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
 	MatrixPtr pI = m_pMatrixFactory->getIdentityMatrix(2);
 
-	double dHI = m_pMatrixDistanceCalculator->distance(pMatrixH, pI);
-	double dHH = m_pMatrixDistanceCalculator->distance(pMatrixH, pMatrixH);
-	double dTI = m_pMatrixDistanceCalculator->distance(pMatrixT, pI);
+	mreal_t dHI = m_pMatrixDistanceCalculator->distance(pMatrixH, pI);
+	mreal_t dHH = m_pMatrixDistanceCalculator->distance(pMatrixH, pMatrixH);
+	mreal_t dTI = m_pMatrixDistanceCalculator->distance(pMatrixT, pI);
 
-	assert(std::abs(dHH) < 1e-30);
-	assert(std::abs(dHI - 2.0) < 1e-30);
-	assert(std::abs(dTI - 0.76537) < 1e-5);
+	assert(real_abs(dHH) < 1e-30);
+	assert(real_abs(dHI - 2.0) < 1e-30);
+	assert(real_abs(dTI - 0.76537) < 1e-5);
 
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
@@ -513,10 +521,10 @@ void TestSuite::testMatrixTraceInnerProduct() {
 
 	MatrixPtr pH2 = new SimpleDenseMatrixImpl(array2, ROW_SPLICE, 2, 2, "H1");
 
-	double traceInnerProduct = 0;
+	mreal_t traceInnerProduct = 0;
 	m_pMatrixRealInnerProductCalculator->innerProduct(pH1, pH2, traceInnerProduct);
 
-	assert(std::abs(traceInnerProduct - 21.0) < 1e-30);
+	assert(real_abs(traceInnerProduct - 21.0) < 1e-30);
 
 	delete pH2;
 	delete pH1;
@@ -540,12 +548,12 @@ void TestSuite::testCoordinateOnOrthonormalBasisCalculator() {
 	MatrixRealCoordinatePtr pHRealCoordinate = NullPtr;
 	m_pMatrixRealCoordinateOnOrthonormalBasisCalculator->calulateElementCoordinate(pH, pHRealCoordinate);
 
-	std::vector<double> hCoordinates = pHRealCoordinate->getCoordinates();
+	std::vector<mreal_t> hCoordinates = pHRealCoordinate->getCoordinates();
 
 	assert(hCoordinates.size() == 3);
-	assert(std::abs(hCoordinates[0] - 3) < 1e-30);
-	assert(std::abs(hCoordinates[1] - 4) < 1e-30);
-	assert(std::abs(hCoordinates[2] - -5) < 1e-30);
+	assert(real_abs(hCoordinates[0] - 3) < 1e-30);
+	assert(real_abs(hCoordinates[1] - 4) < 1e-30);
+	assert(real_abs(hCoordinates[2] - -5) < 1e-30);
 
 	delete pHRealCoordinate;
 	delete pH;
@@ -553,12 +561,12 @@ void TestSuite::testCoordinateOnOrthonormalBasisCalculator() {
 	MatrixRealCoordinatePtr pZRealCoordinate = NullPtr;
 	m_pMatrixRealCoordinateOnOrthonormalBasisCalculator->calulateElementCoordinate(m_pPauliMatrices[2], pZRealCoordinate);
 
-	std::vector<double> zCoordinates = pZRealCoordinate->getCoordinates();
+	std::vector<mreal_t> zCoordinates = pZRealCoordinate->getCoordinates();
 
 	assert(zCoordinates.size() == 3);
-	assert(std::abs(zCoordinates[0] - 0) < 1e-30);
-	assert(std::abs(zCoordinates[1] - 0) < 1e-30);
-	assert(std::abs(zCoordinates[2] - 1) < 1e-30);
+	assert(real_abs(zCoordinates[0] - 0) < 1e-30);
+	assert(real_abs(zCoordinates[1] - 0) < 1e-30);
+	assert(real_abs(zCoordinates[2] - 1) < 1e-30);
 
 	delete pZRealCoordinate;
 
@@ -589,10 +597,10 @@ void TestSuite::testTracelessHermitianBasis() {
 
 void TestSuite::testSpecializeUnitary() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
-	ComplexVal arrayCNOT[] = {1.0, 0.0, 0.0, 0.0
-			, 0.0, 1.0, 0.0, 0.0
-			, 0.0, 0.0, 0.0, 1.0
-			, 0.0, 0.0, 1.0, 0.0};
+	ComplexVal arrayCNOT[] = {(mreal_t)1.0, (mreal_t)0.0, (mreal_t)0.0, (mreal_t)0.0
+			, (mreal_t)0.0, (mreal_t)1.0, (mreal_t)0.0, (mreal_t)0.0
+			, (mreal_t)0.0, (mreal_t)0.0, (mreal_t)0.0, (mreal_t)1.0
+			, (mreal_t)0.0, (mreal_t)0.0, (mreal_t)1.0, (mreal_t)0.0};
 
 	MatrixPtr pCNOT = new SimpleDenseMatrixImpl(arrayCNOT, ROW_SPLICE, 4, 4, "CNOT");
 	MatrixPtr pSCNOT = NullPtr;
@@ -613,7 +621,10 @@ void TestSuite::testSpecializeUnitary() {
 	delete(pCNOT);
 	delete(pSCNOT);
 
-	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
+	ComplexVal arrayT[] = {ComplexVal(1,0),
+			(mreal_t)0.0,
+			(mreal_t)0.0,
+			std::exp(ComplexVal(0,1) * (mreal_t)(M_PI / 4.0))};
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 	MatrixPtr pMatrixST = NullPtr;
 
@@ -624,10 +635,10 @@ void TestSuite::testSpecializeUnitary() {
 	ComplexVal st10 = pMatrixST->getValue(1,0);
 	ComplexVal st11 = pMatrixST->getValue(1,1);
 
-	assert(norm(st00 -  std::exp(ComplexVal(0,-1) * M_PI / 8.0)) < 1e-20);
-	assert(norm(st01 -  0.0) < 1e-20);
-	assert(norm(st10 -  0.0) < 1e-20);
-	assert(norm(st11 -  std::exp(ComplexVal(0,1) * M_PI / 8.0)) < 1e-20);
+	assert(norm(st00 -  std::exp(ComplexVal(0,-1) * (mreal_t)(M_PI / 8.0))) < 1e-20);
+	assert(norm(st01 -  (mreal_t)0.0) < 1e-20);
+	assert(norm(st10 - 	(mreal_t)0.0) < 1e-20);
+	assert(norm(st11 -  std::exp(ComplexVal(0,1) * (mreal_t)(M_PI / 8.0))) < 1e-20);
 
 	delete pMatrixST;
 	delete pMatrixT;
@@ -651,18 +662,19 @@ void TestSuite::testSimpleUnitaryCoordinateMapper() {
 	MatrixPtr pHi = NullPtr;
 	m_pMatrixOperator->multiplyScalar(pH, ComplexVal(0,1), pHi);
 
+	//U = e^(i*H)
 	MatrixPtr pU = NullPtr;
 	m_pMatrixOperator->exponential(pHi, pU);
 
 	MatrixRealCoordinatePtr pURealCoordinate = NullPtr;
 
 	m_pSpecialUnitaryCoordinateCalculator->calulateElementCoordinate(pU, pURealCoordinate);
-	std::vector<double> uCoordinates = pURealCoordinate->getCoordinates();
+	std::vector<mreal_t> uCoordinates = pURealCoordinate->getCoordinates();
 
 	assert(uCoordinates.size() == 3);
-	assert(std::abs(uCoordinates[0] - 0.3) < 1e-15);
-	assert(std::abs(uCoordinates[1] - 0.4) < 1e-15);
-	assert(std::abs(uCoordinates[2] - -0.5) < 1e-15);
+	assert(real_abs(uCoordinates[0] - 0.3) < 1e-15);
+	assert(real_abs(uCoordinates[1] - 0.4) < 1e-15);
+	assert(real_abs(uCoordinates[2] - -0.5) < 1e-15);
 
 	delete pURealCoordinate;
 
@@ -685,7 +697,7 @@ void TestSuite::testSpecialUnitaryCoordinateMapper() {
 	assert(pBasis4.size() == 15);
 
 
-	std::vector<double> coordArr = {0.25,0.5,0.5,0.5,0.5,0.2,0.5,0.5,0.3,0.5,0.5,0.1,-0.5,0.5,0.5};
+	std::vector<mreal_t> coordArr = {0.25,0.5,0.5,0.5,0.5,0.2,0.5,0.5,0.3,0.5,0.5,0.1,-0.5,0.5,0.5};
 	//std::vector<double> coordArr = {2.0,1.0,3.0,1.0,-1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
 
 	MatrixPtr pU = NullPtr;
@@ -698,7 +710,7 @@ void TestSuite::testSpecialUnitaryCoordinateMapper() {
 	MatrixRealCoordinatePtr pURealCoordinate = NullPtr;
 
 	pSpecialUnitaryCoordinateCalculator->calulateElementCoordinate(pU, pURealCoordinate);
-	std::vector<double> uCoordinates = pURealCoordinate->getCoordinates();
+	std::vector<mreal_t> uCoordinates = pURealCoordinate->getCoordinates();
 
 	assert(uCoordinates.size() == 15);
 
@@ -782,8 +794,12 @@ void releasePauliMatrices(MatrixPtrVector& pPauliMatrices) {
 	}
 }
 
-void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<double> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU) {
-	ComplexVal zeroArr[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<mreal_t> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU) {
+	ComplexVal zeroArr[] = {(mreal_t)0.0, (mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0 ,
+			(mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0 ,
+			(mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0 ,
+			(mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0};
+
 	MatrixPtr pH = new SimpleDenseMatrixImpl(zeroArr, ROW_SPLICE, 4, 4, "Z");
 
 	//H = 1/2 * (basis4[0]+ basis4[1] + ... + basis4[14])

@@ -19,7 +19,7 @@ void SimpleIdentityMatrixImpl::getSize(int& rows, int& columns) const {
 
 //Override
 ComplexVal SimpleIdentityMatrixImpl::getValue(int row, int column) const {
-	return (row == column) ? 1.0 : 0.0;
+	return (row == column) ? ComplexVal(1.0,0.0) : ComplexVal(0.0, 0.0);
 }
 
 //Override

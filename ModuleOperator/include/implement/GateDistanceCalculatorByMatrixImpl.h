@@ -17,7 +17,7 @@ public:
 	GateDistanceCalculatorByMatrixImpl(MatrixDistanceCalculatorPtr pMatrixDistanceCalculator);
 	virtual ~GateDistanceCalculatorByMatrixImpl(){};
 
-	virtual double distance(GatePtr pGate1, GatePtr pGate2);
+	virtual mreal_t distance(GatePtr pGate1, GatePtr pGate2);
 
 private:
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;

@@ -17,7 +17,7 @@ public:
 	MatrixRealInnerProductByTraceImpl(MatrixOperatorPtr pMatrixOperator);
 	virtual ~MatrixRealInnerProductByTraceImpl(){};
 
-	virtual void innerProduct(MatrixPtr pMatrix1, MatrixPtr pMatrix2, double& rInnerProduct);
+	virtual void innerProduct(MatrixPtr pMatrix1, MatrixPtr pMatrix2, mreal_t& rInnerProduct);
 
 private:
 	MatrixOperatorPtr m_pMatrixOperator;

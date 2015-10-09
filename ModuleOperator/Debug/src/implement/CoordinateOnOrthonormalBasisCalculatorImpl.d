@@ -3,6 +3,9 @@ src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.d: \
  ../include/implement/CoordinateOnOrthonormalBasisCalculatorImpl.h \
  ../include/interface/abstract/ICoordinateCalculator.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../SharedThirdParties/mpfrc++/include/mpreal.h \
+ ../../SharedThirdParties/mpfr/include/mpfr.h \
+ ../../SharedThirdParties/gmp/include/gmp.h \
  ../include/interface/common/OperatorCommon.h \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h
@@ -12,6 +15,12 @@ src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.d: \
 ../include/interface/abstract/ICoordinateCalculator.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../SharedThirdParties/mpfrc++/include/mpreal.h:
+
+../../SharedThirdParties/mpfr/include/mpfr.h:
+
+../../SharedThirdParties/gmp/include/gmp.h:
 
 ../include/interface/common/OperatorCommon.h:
 

@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lModuleMathConcepts -lModuleOperator
+LIBS := -lModuleMathConcepts -lModuleOperator -lmpfr -lgmp
 

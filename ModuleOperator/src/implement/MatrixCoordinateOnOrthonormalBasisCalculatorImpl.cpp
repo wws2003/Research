@@ -8,5 +8,5 @@
 #include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "CoordinateOnOrthonormalBasisCalculatorImpl.cpp"
 
-template class CoordinateOnOrthonormalBasisCalculatorImpl<MatrixPtr, double>;
+template class CoordinateOnOrthonormalBasisCalculatorImpl<MatrixPtr, mreal_t>;
 

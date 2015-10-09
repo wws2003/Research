@@ -11,86 +11,112 @@
 #include "eigen3/Eigen/Eigenvalues"
 #include "eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixExponential.h"
 #include "eigen3/unsupported/Eigen/MatrixFunctions"
+#include "eigen3/unsupported/Eigen/MPRealSupport"
 #include <iostream>
 
 using namespace Eigen;
+
+#if MPFR_REAL
+#define NOISE_THRESOLD 1e-33
+typedef std::complex<long double> LongComplexVal;
+typedef Matrix<LongComplexVal,Dynamic,Dynamic>  MatrixXcld;
+
+void fromMpToLd(const MatrixXcmp& mMp, MatrixXcld& mLd);
+void fromLdToMp(const MatrixXcld& mLd, MatrixXcmp& mMp);
+#else
+#define NOISE_THRESOLD 1e-12
+#endif
+
+#define real_abs(x) (x >= 0.0 ? (x) : -(x))
 
 SampleMatrixOperator::SampleMatrixOperator(MatrixFactoryPtr pMatrixFactory) : m_pMatrixFactory(pMatrixFactory) {
 
 }
 
 void SampleMatrixOperator::add(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prSum) {
-	MatrixXcd eigenMat1, eigenMat2;
+	MatrixXcmp eigenMat1, eigenMat2;
 	toEigenMatrix(pm1, eigenMat1);
 	toEigenMatrix(pm2, eigenMat2);
-	MatrixXcd eigSum = eigenMat1 + eigenMat2;
+	MatrixXcmp eigSum = eigenMat1 + eigenMat2;
 
 	prSum = fromEigenMatrix(eigSum);
 
 }
 
 void SampleMatrixOperator::multiply(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prProduct) {
-	MatrixXcd eigenMat1, eigenMat2;
+	MatrixXcmp eigenMat1, eigenMat2;
 	toEigenMatrix(pm1, eigenMat1);
 	toEigenMatrix(pm2, eigenMat2);
-	MatrixXcd eigProduct = eigenMat1 * eigenMat2;
+	MatrixXcmp eigProduct = eigenMat1 * eigenMat2;
 
 	prProduct = fromEigenMatrix(eigProduct, pm1->getLabel() + pm2->getLabel());
 }
 
 void SampleMatrixOperator::multiplyScalar(MatrixPtr pm, ComplexVal scalar, MatrixPtrRef prProduct) {
-	MatrixXcd eigenMat;
+	MatrixXcmp eigenMat;
 	toEigenMatrix(pm, eigenMat);
 	eigenMat *= scalar;
 	prProduct = fromEigenMatrix(eigenMat);
 }
 
 void SampleMatrixOperator::subtract(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prSubtract) {
-	MatrixXcd eigenMat1, eigenMat2;
+	MatrixXcmp eigenMat1, eigenMat2;
 	toEigenMatrix(pm1, eigenMat1);
 	toEigenMatrix(pm2, eigenMat2);
-	MatrixXcd eigSubstract = eigenMat1 - eigenMat2;
+	MatrixXcmp eigSubstract = eigenMat1 - eigenMat2;
 
 	prSubtract = fromEigenMatrix(eigSubstract);
 }
 
 ComplexVal SampleMatrixOperator::det(MatrixPtr pm) {
-	MatrixXcd eigenMat;
+	MatrixXcmp eigenMat;
 	toEigenMatrix(pm, eigenMat);
 	return eigenMat.determinant();
 }
 
 ComplexVal SampleMatrixOperator::trace(MatrixPtr pm) {
-	MatrixXcd eigenMat;
+	MatrixXcmp eigenMat;
 	toEigenMatrix(pm, eigenMat);
 	return eigenMat.trace();
 }
 
 void SampleMatrixOperator::power(MatrixPtr pm, int exponent, MatrixPtrRef prPower) {
-	MatrixXcd eigenMat;
+	MatrixXcmp eigenMat;
 	toEigenMatrix(pm, eigenMat);
-	MatrixXcd eigenPower = eigenMat.pow(exponent);
-	prPower = fromEigenMatrix(eigenPower);
+
+	MatrixXcmp mpPowerMat;
+#if MPFR_REAL
+	//Temporary has to convert to long double matrix then convert back to mpfr
+	//because eigen hasn't supported mpfr in power operation yet
+	MatrixXcld ldMat;
+	fromMpToLd(eigenMat, ldMat);
+	MatrixXcld ldPowerMat = ldMat.pow(exponent);
+	fromLdToMp(ldPowerMat, mpPowerMat);
+#else
+	mpPowerMat = eigenMat.pow(exponent);
+#endif
+
+	prPower = fromEigenMatrix(mpPowerMat);
 }
 
 void SampleMatrixOperator::sqrt(MatrixPtr pm, MatrixPtrRef prSqrt) {
-	MatrixXcd eigenMat;
+	MatrixXcmp eigenMat;
 	toEigenMatrix(pm, eigenMat);
-	MatrixXcd eigenSqrt = eigenMat.sqrt();
+	MatrixXcmp eigenSqrt = eigenMat.sqrt();
 	prSqrt = fromEigenMatrix(eigenSqrt);
 }
 
 
 void SampleMatrixOperator::conjugateTranpose(MatrixPtr pm, MatrixPtrRef prConjugate) {
-	MatrixXcd eigenMat;
+	MatrixXcmp eigenMat;
 	toEigenMatrix(pm, eigenMat);
 	eigenMat.transposeInPlace();
-	MatrixXcd conjugateEigenMat = eigenMat.conjugate();
+	MatrixXcmp conjugateEigenMat = eigenMat.conjugate();
 	prConjugate = fromEigenMatrix(conjugateEigenMat);
 }
 
 void SampleMatrixOperator::transpose(MatrixPtr pm, MatrixPtrRef prTranspose) {
-	MatrixXcd eigenMat;
+	MatrixXcmp eigenMat;
 	toEigenMatrix(pm, eigenMat);
 
 	eigenMat.transposeInPlace();
@@ -99,36 +125,56 @@ void SampleMatrixOperator::transpose(MatrixPtr pm, MatrixPtrRef prTranspose) {
 }
 
 void SampleMatrixOperator::inverse(MatrixPtr pm, MatrixPtrRef prInverseMatrix) {
-	MatrixXcd eigenMat;
+	MatrixXcmp eigenMat;
 	toEigenMatrix(pm, eigenMat);
-	MatrixXcd eigInverse = eigenMat.inverse();
+	MatrixXcmp eigInverse = eigenMat.inverse();
 	prInverseMatrix = fromEigenMatrix(eigInverse);
 }
 
 void SampleMatrixOperator::exponential(MatrixPtr pm, MatrixPtrRef prExpMatrix) {
-	MatrixXcd eigenMat;
+	MatrixXcmp eigenMat;
 	toEigenMatrix(pm, eigenMat);
-	MatrixXcd eigenExpMat(eigenMat.rows(), eigenMat.cols());
 
-	eigenExpMat = eigenMat.exp();
+	MatrixXcmp mpExpMat;
+#if MPFR_REAL
+	//Temporary has to convert to long double matrix then convert back to mpfr
+	//because eigen hasn't supported mpfr in exp operation yet
+	MatrixXcld ldMat;
+	fromMpToLd(eigenMat, ldMat);
+	MatrixXcld ldExpMat = ldMat.exp();
+	fromLdToMp(ldExpMat, mpExpMat);
+#else
+	mpExpMat = eigenMat.exp();
+#endif
 
-	prExpMatrix = fromEigenMatrix(eigenExpMat);
+	prExpMatrix = fromEigenMatrix(mpExpMat);
 }
 
 void SampleMatrixOperator::log(MatrixPtr pm, MatrixPtrRef prLog) {
-	MatrixXcd eigenMat;
+	MatrixXcmp eigenMat;
 	toEigenMatrix(pm, eigenMat);
-	MatrixXcd eigenLogMat(eigenMat.rows(), eigenMat.cols());
-	eigenLogMat = eigenMat.log();
-	prLog = fromEigenMatrix(eigenLogMat);
+
+	MatrixXcmp mpLogMat;
+#if MPFR_REAL
+	//Temporary has to convert to long double matrix then convert back to mpfr
+	//because eigen hasn't supported mpfr in log operation yet
+	MatrixXcld ldMat;
+	fromMpToLd(eigenMat, ldMat);
+	MatrixXcld ldLogMat = ldMat.log();
+	fromLdToMp(ldLogMat, mpLogMat);
+#else
+	mpLogMat = eigenMat.log();
+#endif
+
+	prLog = fromEigenMatrix(mpLogMat);
 }
 
 void SampleMatrixOperator::eig(MatrixPtr pm, ComplexVectorRef rEigVals, MatrixPtrRef prEigVects) {
-	MatrixXcd eigenMat;
+	MatrixXcmp eigenMat;
 	toEigenMatrix(pm, eigenMat);
-	ComplexEigenSolver<MatrixXcd> ces(eigenMat, true);
-	MatrixXcd eigenVectors = ces.eigenvectors();
-	MatrixXcd eigenValues = ces.eigenvalues();
+	ComplexEigenSolver<MatrixXcmp> ces(eigenMat, true);
+	MatrixXcmp eigenVectors = ces.eigenvectors();
+	MatrixXcmp eigenValues = ces.eigenvalues();
 	prEigVects = fromEigenMatrix(eigenVectors);
 	fromEigenMatrix(eigenValues, 0, rEigVals);
 }
@@ -137,39 +183,39 @@ void SampleMatrixOperator::unitaryDediagonalize(MatrixPtr pU, const ComplexVecto
 	int nbRows, nbColumns;
 	pU->getSize(nbRows, nbColumns);
 
-	MatrixXcd eigenU;
+	MatrixXcmp eigenU;
 	toEigenMatrix(pU, eigenU);
 
-	MatrixXcd eigenInverseU = eigenU.transpose().conjugate();
+	MatrixXcmp eigenInverseU = eigenU.transpose().conjugate();
 
-	MatrixXcd eigenDiag = MatrixXcd::Zero(nbRows, nbColumns);
+	MatrixXcmp eigenDiag = MatrixXcmp::Zero(nbRows, nbColumns);
 
 	for(int i = 0; i < nbRows; i++) {
 		eigenDiag(i,i) = diag[i];
 	}
 
-	MatrixXcd eigenProduct = eigenU * eigenDiag * eigenInverseU;
+	MatrixXcmp eigenProduct = eigenU * eigenDiag * eigenInverseU;
 
 	prRoot = fromEigenMatrix(eigenProduct, "");
 }
 
 void SampleMatrixOperator::specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef prSU) {
-	MatrixXcd eigenU;
+	MatrixXcmp eigenU;
 	toEigenMatrix(pU, eigenU);
 	ComplexVal detU = eigenU.determinant();
 
-	//detU = +-1
-
-	if(std::abs(detU.real() - 1.0) < 1e-12) {
+	//Check if detU = +1
+	mreal_t detNoise = real_abs(detU.real() - 1.0);
+	if(detNoise < NOISE_THRESOLD) {
 		prSU = fromEigenMatrix(eigenU, pU->getLabel());
 	}
 	else {
 		int nbRows, nbColumns;
 		pU->getSize(nbRows, nbColumns);
 		ComplexVal detU = det(pU);
-		ComplexVal c = std::pow(detU, -1.0 / (nbRows));
+		ComplexVal c = pow(detU, (mreal_t)(-1.0 / (nbRows + 0.0)));
 		//ComplexVal c = std::exp(ComplexVal(0,-1) * M_PI / (nbRows + 0.0));
-		MatrixXcd eigenSU = eigenU * c;
+		MatrixXcmp eigenSU = eigenU * c;
 		prSU = fromEigenMatrix(eigenSU, pU->getLabel());
 	}
 }
@@ -240,11 +286,11 @@ void SampleMatrixOperator::getTracelessHermitianMatricesBasis(int dimension, Mat
 	delete[] pBuffer;
 }
 
-void SampleMatrixOperator::toEigenMatrix(MatrixPtr pMatrix, MatrixXcd& rEigenMat) {
+void SampleMatrixOperator::toEigenMatrix(MatrixPtr pMatrix, MatrixXcmp& rEigenMat) {
 	int nbRows, nbColumns;
 	pMatrix->getSize(nbRows, nbColumns);
 
-	rEigenMat = MatrixXcd(nbRows, nbColumns);
+	rEigenMat = MatrixXcmp(nbRows, nbColumns);
 
 	for(int i = 0; i < nbRows; i++) {
 		for(int j = 0; j < nbColumns; j++) {
@@ -253,12 +299,12 @@ void SampleMatrixOperator::toEigenMatrix(MatrixPtr pMatrix, MatrixXcd& rEigenMat
 	}
 }
 
-MatrixPtr SampleMatrixOperator::fromEigenMatrix(MatrixXcd& eigenMatrix, std::string label) {
+MatrixPtr SampleMatrixOperator::fromEigenMatrix(MatrixXcmp& eigenMatrix, std::string label) {
 	int nbRows = eigenMatrix.rows();
 	int nbCols = eigenMatrix.cols();
 
 	ComplexValArray arr = new ComplexVal[nbRows * nbCols];
-	Map<MatrixXcd>(arr, nbRows, nbCols) = eigenMatrix;
+	Map<MatrixXcmp>(arr, nbRows, nbCols) = eigenMatrix;
 
 	MatrixPtr pMatrix = m_pMatrixFactory->getMatrixFromValues(nbRows, nbCols, arr, COLUMN_SPLICE, label);
 
@@ -267,7 +313,7 @@ MatrixPtr SampleMatrixOperator::fromEigenMatrix(MatrixXcd& eigenMatrix, std::str
 	return pMatrix;
 }
 
-void SampleMatrixOperator::fromEigenMatrix(MatrixXcd& eigenMatrix, int column, ComplexVectorRef rComplexVector) {
+void SampleMatrixOperator::fromEigenMatrix(MatrixXcmp& eigenMatrix, int column, ComplexVectorRef rComplexVector) {
 	int numberOfEigenValues = eigenMatrix.rows();
 	for(int i = 0; i < numberOfEigenValues; i++) {
 		ComplexVal val = eigenMatrix.col(column)[i];
@@ -275,4 +321,31 @@ void SampleMatrixOperator::fromEigenMatrix(MatrixXcd& eigenMatrix, int column, C
 	}
 }
 
+#if MPFR_REAL
+void fromMpToLd(const MatrixXcmp& mMp, MatrixXcld& mLd) {
+	int rows = mMp.rows();
+	int columns = mMp.cols();
+	mLd = MatrixXcld::Zero(rows, columns);
+
+	for(int i = 0; i < rows; i++) {
+		for(int j = 0; j < columns; j++) {
+			std::complex<mreal_t> v = mMp(i,j);
+			mLd(i,j) = LongComplexVal(v.real().toLDouble(), v.imag().toLDouble());
+		}
+	}
+}
+
+void fromLdToMp(const MatrixXcld& mLd, MatrixXcmp& mMp) {
+	int rows = mLd.rows();
+	int columns = mLd.cols();
+	mMp = MatrixXcmp::Zero(rows, columns);
+
+	for(int i = 0; i < rows; i++) {
+		for(int j = 0; j < columns; j++) {
+			LongComplexVal v = mLd(i,j);
+			mMp(i,j) = std::complex<mreal_t>(v.real(), v.imag());
+		}
+	}
+}
+#endif
 

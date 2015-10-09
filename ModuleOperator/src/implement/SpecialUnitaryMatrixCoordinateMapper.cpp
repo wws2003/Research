@@ -7,8 +7,15 @@
 
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
 
-#define apprx(x,y,eps) (std::abs(x-y) < eps)
 #define gt(x,y,eps) (x - y > eps)
+#define real_abs(x) (x >= 0.0 ? (x) : -(x))
+#define apprx(x,y,eps) (real_abs(x-y) < eps)
+
+#if MPFR_REAL
+#define NOISE_THRESOLD 1e-33
+#else
+#define NOISE_THRESOLD 1e-12
+#endif
 
 SpecialUnitaryMatrixCoordinateMapper::SpecialUnitaryMatrixCoordinateMapper(MatrixOperatorPtr pMatrixOperator, MatrixRealCoordinateCalculatorPtr pHermitianMatrixCoordinateCalculator) {
 	m_pMatrixOperator = pMatrixOperator;
@@ -32,7 +39,7 @@ void SpecialUnitaryMatrixCoordinateMapper::calculateTracelessHermitianFromSpecia
 	m_pMatrixOperator->log(pSpecialUnitaryMatrix, pSpecialUnitaryLog);
 	m_pMatrixOperator->multiplyScalar(pSpecialUnitaryLog, ComplexVal(0, -1), prTracelessHermitianMatrix);
 
-	double hermitianInitialTrace = m_pMatrixOperator->trace(prTracelessHermitianMatrix).real();
+	mreal_t hermitianInitialTrace = m_pMatrixOperator->trace(prTracelessHermitianMatrix).real();
 
 	if(!apprx(hermitianInitialTrace, 0.0, 1e-9)) {
 		MatrixPtr pTracelessHermitian = prTracelessHermitianMatrix;
@@ -46,27 +53,27 @@ void SpecialUnitaryMatrixCoordinateMapper::calculateTracelessHermitianFromSpecia
 	_destroy(pSpecialUnitaryLog);
 }
 
-void SpecialUnitaryMatrixCoordinateMapper::calculateTracelessHermitianFrom2kpiTraceHermitian(MatrixPtrRef prTracelessHermitianMatrix, double initialTrace) const {
+void SpecialUnitaryMatrixCoordinateMapper::calculateTracelessHermitianFrom2kpiTraceHermitian(MatrixPtrRef prTracelessHermitianMatrix, mreal_t initialTrace) const {
 	ComplexVector eigValues;
 	MatrixPtr eigVectors;
 	m_pMatrixOperator->eig(prTracelessHermitianMatrix, eigValues, eigVectors);
 
 	//Find proper eigen value to decrease/increase
-	double newTrace = initialTrace;
+	mreal_t newTrace = initialTrace;
 	short traceSign = gt(initialTrace,0,1e-9) ? 1 : -1;
 	double delta2pi = -traceSign * 2 * M_PI;
 
 	while(!apprx(newTrace, 0.0, 1e-9)) {
 		int maxAdjustmentIndex = -1;
-		double maxAdjustment = -1.0;
+		mreal_t maxAdjustment = -1.0;
 
 		//Find the highest magnitude in the eigen values, on which adjustment should be applied
 		for(unsigned int i = 0; i < eigValues.size(); i++) {
-			double eigRealValue = eigValues[i].real();
+			mreal_t eigRealValue = eigValues[i].real();
 			short eigRealSign = gt(eigRealValue,0,1e-9) ? 1 : -1;
 
-			if(eigRealSign == traceSign && std::abs(eigRealValue) >= maxAdjustment) {
-				maxAdjustment = std::abs(eigRealValue);
+			if(eigRealSign == traceSign && real_abs(eigRealValue) >= maxAdjustment) {
+				maxAdjustment = real_abs(eigRealValue);
 				maxAdjustmentIndex = i;
 			}
 		}
@@ -82,11 +89,11 @@ void SpecialUnitaryMatrixCoordinateMapper::calculateTracelessHermitianFrom2kpiTr
 
 }
 
-void SpecialUnitaryMatrixCoordinateMapper::addGlobalPhaseToSpecialUnitaryForTracelessHermitian(MatrixPtr pSpecialUnitaryMatrix, MatrixPtrRef prTracelessHermitianMatrix, double initialTrace) const {
+void SpecialUnitaryMatrixCoordinateMapper::addGlobalPhaseToSpecialUnitaryForTracelessHermitian(MatrixPtr pSpecialUnitaryMatrix, MatrixPtrRef prTracelessHermitianMatrix, mreal_t initialTrace) const {
 	int nbRows, nbColumns;
 	pSpecialUnitaryMatrix->getSize(nbRows, nbColumns);
 
-	short traceSign = gt(initialTrace,0,1e-9) ? 1 : -1;
+	short traceSign = gt(initialTrace, 0, 1e-9) ? 1 : -1;
 	double delta2pi = -traceSign * 2 * M_PI / (nbRows + 0.0);
 
 	ComplexVal phase = std::exp(ComplexVal(0, delta2pi));

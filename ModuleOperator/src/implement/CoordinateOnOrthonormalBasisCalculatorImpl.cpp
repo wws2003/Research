@@ -32,5 +32,3 @@ void CoordinateOnOrthonormalBasisCalculatorImpl<E, Field>::calulateElementCoordi
 	prCoordinate = new Coordinate<E, Field>(element, coordinates);
 }
 
-
-

@@ -31,6 +31,9 @@
 									<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleOperator/include/implement"/>
 									<listOptionValue builtIn="false" value="../../ModuleOperator/third-parties"/>
+									<listOptionValue builtIn="false" value="../../SharedThirdParties/gmp/include"/>
+									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfr/include"/>
+									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfrc++/include"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.1700094761" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=gnu++11 -fPIC" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.other.pic.454538389" name="Position Independent Code (-fPIC)" superClass="gnu.cpp.compiler.option.other.pic" value="false" valueType="boolean"/>
@@ -46,10 +49,14 @@
 								<option id="gnu.cpp.link.option.paths.496996949" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/artifact"/>
 									<listOptionValue builtIn="false" value="../../ModuleOperator/artifact"/>
+									<listOptionValue builtIn="false" value="../../SharedThirdParties/gmp/lib"/>
+									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfr/lib"/>
 								</option>
 								<option id="gnu.cpp.link.option.libs.2142925726" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="ModuleMathConcepts"/>
 									<listOptionValue builtIn="false" value="ModuleOperator"/>
+									<listOptionValue builtIn="false" value="mpfr"/>
+									<listOptionValue builtIn="false" value="gmp"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1096673653" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -61,27 +68,6 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1225752370.1681654218" name="TestSuite.cpp" rcbsApplicability="disable" resourcePath="src/TestSuite.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.627483370.1776376277">
-						<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.627483370.1776376277" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.627483370">
-							<option id="gnu.cpp.compiler.option.include.paths.2063745502" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-								<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/abstract"/>
-								<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/common"/>
-								<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/implement"/>
-								<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/abstract"/>
-								<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/common"/>
-								<listOptionValue builtIn="false" value="../../ModuleOperator/include/implement"/>
-								<listOptionValue builtIn="false" value="../../ModuleOperator/src/implement"/>
-								<listOptionValue builtIn="false" value="../../ModuleOperator/third-parties"/>
-							</option>
-							<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1423870959" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
-						</tool>
-						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.1671428347" name="Resource Custom Build Step">
-							<inputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.inputtype.1967409529" name="Resource Custom Build Step Input Type">
-								<additionalInput kind="additionalinputdependency" paths=""/>
-							</inputType>
-							<outputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.outputtype.1683026165" name="Resource Custom Build Step Output Type"/>
-						</tool>
-					</fileInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
@@ -141,21 +127,6 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="TestMatrixOperator.cdt.managedbuild.target.gnu.exe.1187580715" name="Executable" projectType="cdt.managedbuild.target.gnu.exe"/>
 	</storageModule>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1225752370;cdt.managedbuild.config.gnu.exe.debug.1225752370.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.627483370;cdt.managedbuild.tool.gnu.cpp.compiler.input.982904605">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.340573095;cdt.managedbuild.config.gnu.exe.release.340573095.;cdt.managedbuild.tool.gnu.c.compiler.exe.release.819323656;cdt.managedbuild.tool.gnu.c.compiler.input.498095357">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1225752370;cdt.managedbuild.config.gnu.exe.debug.1225752370.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.751695023;cdt.managedbuild.tool.gnu.c.compiler.input.1738674795">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.340573095;cdt.managedbuild.config.gnu.exe.release.340573095.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.415392103;cdt.managedbuild.tool.gnu.cpp.compiler.input.645341496">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Release">
@@ -164,5 +135,20 @@
 		<configuration configurationName="Debug">
 			<resource resourceType="PROJECT" workspacePath="/TestMatrixOperator"/>
 		</configuration>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1225752370;cdt.managedbuild.config.gnu.exe.debug.1225752370.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.627483370;cdt.managedbuild.tool.gnu.cpp.compiler.input.982904605">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1225752370;cdt.managedbuild.config.gnu.exe.debug.1225752370.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.751695023;cdt.managedbuild.tool.gnu.c.compiler.input.1738674795">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.340573095;cdt.managedbuild.config.gnu.exe.release.340573095.;cdt.managedbuild.tool.gnu.c.compiler.exe.release.819323656;cdt.managedbuild.tool.gnu.c.compiler.input.498095357">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.340573095;cdt.managedbuild.config.gnu.exe.release.340573095.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.415392103;cdt.managedbuild.tool.gnu.cpp.compiler.input.645341496">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
 	</storageModule>
 </cproject>

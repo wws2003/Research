@@ -4,6 +4,9 @@ src/implement/SampleMatrixOperator.d: \
  ../include/interface/abstract/IMatrixOperator.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../SharedThirdParties/mpfrc++/include/mpreal.h \
+ ../../SharedThirdParties/mpfr/include/mpfr.h \
+ ../../SharedThirdParties/gmp/include/gmp.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../third-parties/eigen3/Eigen/Dense ../third-parties/eigen3/Eigen/Core \
  ../third-parties/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h \
@@ -166,7 +169,8 @@ src/implement/SampleMatrixOperator.d: \
  ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixFunctionAtomic.h \
  ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixSquareRoot.h \
  ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixLogarithm.h \
- ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixPower.h
+ ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixPower.h \
+ ../third-parties/eigen3/unsupported/Eigen/MPRealSupport
 
 ../include/implement/SampleMatrixOperator.h:
 
@@ -175,6 +179,12 @@ src/implement/SampleMatrixOperator.d: \
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../SharedThirdParties/mpfrc++/include/mpreal.h:
+
+../../SharedThirdParties/mpfr/include/mpfr.h:
+
+../../SharedThirdParties/gmp/include/gmp.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
 
@@ -507,3 +517,5 @@ src/implement/SampleMatrixOperator.d: \
 ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixLogarithm.h:
 
 ../third-parties/eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixPower.h:
+
+../third-parties/eigen3/unsupported/Eigen/MPRealSupport:

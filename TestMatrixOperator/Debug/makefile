@@ -44,7 +44,7 @@ all: TestMatrixOperator
 TestMatrixOperator: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -L../../ModuleMathConcepts/artifact -L../../ModuleOperator/artifact -o "TestMatrixOperator" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L../../ModuleMathConcepts/artifact -L../../ModuleOperator/artifact -L../../SharedThirdParties/gmp/lib -L../../SharedThirdParties/mpfr/lib -o "TestMatrixOperator" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

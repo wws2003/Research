@@ -18,7 +18,7 @@ void GateCoordinateCalculatorImpl::calulateElementCoordinate(GatePtr pGate, Gate
 	MatrixRealCoordinatePtr pMatrixRealCoordinate = NullPtr;
 	m_pMatrixRealCoordinateCalculator->calulateElementCoordinate(pGate->getMatrix(), pMatrixRealCoordinate);
 
-	prGateRealCoordinatePtr = new Coordinate<GatePtr, double>(pGate, pMatrixRealCoordinate->getCoordinates());
+	prGateRealCoordinatePtr = new Coordinate<GatePtr, mreal_t>(pGate, pMatrixRealCoordinate->getCoordinates());
 
 	_destroy(pMatrixRealCoordinate);
 }

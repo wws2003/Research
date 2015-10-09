@@ -22,9 +22,9 @@ public:
 private:
 	void calculateTracelessHermitianFromSpecialUnitary(MatrixPtr pSpecialUnitaryMatrix, MatrixPtrRef prTracelessHermitianMatrix) const;
 
-	void calculateTracelessHermitianFrom2kpiTraceHermitian(MatrixPtrRef prTracelessHermitianMatrix, double intialTrace) const;
+	void calculateTracelessHermitianFrom2kpiTraceHermitian(MatrixPtrRef prTracelessHermitianMatrix, mreal_t intialTrace) const;
 
-	void addGlobalPhaseToSpecialUnitaryForTracelessHermitian(MatrixPtr pSpecialUnitaryMatrix, MatrixPtrRef prTracelessHermitianMatrix, double initialTrace) const;
+	void addGlobalPhaseToSpecialUnitaryForTracelessHermitian(MatrixPtr pSpecialUnitaryMatrix, MatrixPtrRef prTracelessHermitianMatrix, mreal_t initialTrace) const;
 
 	MatrixOperatorPtr m_pMatrixOperator;
 	MatrixRealCoordinateCalculatorPtr m_pHermitianMatrixCoordinateCalculator;

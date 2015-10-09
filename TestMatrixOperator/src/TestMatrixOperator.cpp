@@ -11,6 +11,10 @@
 using namespace std;
 
 int main() {
+#if MPFR_REAL
+	mpfr::mpreal::set_default_prec(256);
+#endif
+
 	TestSuite testSuite;
 	testSuite.test();
 

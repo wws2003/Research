@@ -11,7 +11,7 @@ GateDistanceCalculatorByMatrixImpl::GateDistanceCalculatorByMatrixImpl(MatrixDis
 	m_pMatrixDistanceCalculator = pMatrixDistanceCalculator;
 }
 
-double GateDistanceCalculatorByMatrixImpl::distance(GatePtr pGate1, GatePtr pGate2) {
+mreal_t GateDistanceCalculatorByMatrixImpl::distance(GatePtr pGate1, GatePtr pGate2) {
 	return m_pMatrixDistanceCalculator->distance(pGate1->getMatrix(), pGate2->getMatrix());
 }
 

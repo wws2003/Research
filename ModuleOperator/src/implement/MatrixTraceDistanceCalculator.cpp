@@ -19,13 +19,13 @@ MatrixTraceDistanceCalculator::MatrixTraceDistanceCalculator(MatrixOperatorPtr p
 
 }
 
-double MatrixTraceDistanceCalculator::distance(MatrixPtr p1, MatrixPtr p2) {
+mreal_t MatrixTraceDistanceCalculator::distance(MatrixPtr p1, MatrixPtr p2) {
 	//Return trace(sqrt((p1 - p2)'*(p1 - p2)))
 
 	MatrixPtr pDelta = NullPtr;
 	m_pMatrixOperator->subtract(p1, p2, pDelta);
 
-	ComplexVal distanceTrace = 0.0;
+	ComplexVal distanceTrace(0.0, 0.0);
 
 	//Handle the case delta = 0, i.e. sqrt(delta'*delta) can not be determined
 	//FIXME Just a band-aided solution

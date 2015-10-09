@@ -18,11 +18,11 @@ template<typename E, typename Field>
 class ICoordinateCalculator;
 
 template<typename T>
-using IRealCoordinateCalculator = ICoordinateCalculator<T, double> ;
+using IRealCoordinateCalculator = ICoordinateCalculator<T, mreal_t> ;
 
-typedef ICoordinateCalculator<MatrixPtr, double> IMatrixRealCoordinateCalculator;
+typedef ICoordinateCalculator<MatrixPtr, mreal_t> IMatrixRealCoordinateCalculator;
 typedef IMatrixRealCoordinateCalculator* MatrixRealCoordinateCalculatorPtr;
-typedef ICoordinateCalculator<GatePtr, double> IGateRealCoordinateCalculator;
+typedef ICoordinateCalculator<GatePtr, mreal_t> IGateRealCoordinateCalculator;
 typedef IGateRealCoordinateCalculator* GateRealCoordinateCalculatorPtr;
 
 template<typename T> class IDistanceCalculator;
@@ -49,6 +49,6 @@ using InnerProductCalculatorPtr = IInnerProductCalculator<E, Field>*;
 template<typename T>
 using RealCoordinateCalculatorPtr = IRealCoordinateCalculator<T>*;
 
-typedef IInnerProductCalculator<MatrixPtr, double> IMatrixRealInnerProductCalculator;
+typedef IInnerProductCalculator<MatrixPtr, mreal_t> IMatrixRealInnerProductCalculator;
 typedef IMatrixRealInnerProductCalculator* MatrixRealInnerProductCalculatorPtr;
 #endif /* OPERATORCOMMON_H_ */

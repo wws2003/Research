@@ -1,5 +1,8 @@
 src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../SharedThirdParties/mpfrc++/include/mpreal.h \
+ ../../SharedThirdParties/mpfr/include/mpfr.h \
+ ../../SharedThirdParties/gmp/include/gmp.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixImpl.h \
@@ -174,6 +177,12 @@ src/TestSuite.d: ../src/TestSuite.cpp ../src/TestSuite.h \
 ../src/TestSuite.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../SharedThirdParties/mpfrc++/include/mpreal.h:
+
+../../SharedThirdParties/mpfr/include/mpfr.h:
+
+../../SharedThirdParties/gmp/include/gmp.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
