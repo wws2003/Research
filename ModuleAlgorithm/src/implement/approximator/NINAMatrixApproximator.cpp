@@ -16,8 +16,7 @@ NINAMatrixApproximator::NINAMatrixApproximator(MatrixCollectionPtr pNearIdentity
 	m_pMatrixOperator = pMatrixOperator;
 }
 
-
-MatrixIteratorPtr NINAMatrixApproximator::getApproximateElements(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) {
+MatrixIteratorPtr NINAMatrixApproximator::getApproximateElements(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, mreal_t epsilon) {
 	int stepCount = 0;
 
 	//Find first step approximate matrix from core collection
@@ -82,7 +81,7 @@ MatrixPtr NINAMatrixApproximator::calculateStepMatrix(MatrixPtr pCurrentApproxim
 
 MatrixPtr NINAMatrixApproximator::findMatrixToFitStep(MatrixPtr pStepMatrix, MatrixPtr pCurrentApproximateMatrix, MatrixPtr pTarget, MatrixDistanceCalculatorPtr pDistanceCalculator) const {
 	//TODO Modify proper epsilonForStepMatrix
-	double epsilonForStepMatrix = 1e-4;
+	mreal_t epsilonForStepMatrix = 1e-4;
 
 	MatrixIteratorPtr pNearStepMatrixIterator = m_pNearIdentityMatrixCollection->findNearestNeighbour(pStepMatrix, pDistanceCalculator, epsilonForStepMatrix);
 	pNearStepMatrixIterator->toBegin();
@@ -92,14 +91,14 @@ MatrixPtr NINAMatrixApproximator::findMatrixToFitStep(MatrixPtr pStepMatrix, Mat
 
 	//Find in candidates for step matrix the one can move currentApproximateMatrix closest to target
 	MatrixPtr pStepFitCandidate = NullPtr;
-	double minDistanceToTarget = 1e3;
+	mreal_t minDistanceToTarget = 1e3;
 	while(!pNearStepMatrixIterator->isDone()) {
 		MatrixPtr pStepFitCandidate = pNearStepMatrixIterator->getObj();
 
 		MatrixPtr pTargetCandidate = NullPtr;
 		m_pMatrixOperator->multiply(pCurrentApproximateMatrix, pStepFitCandidate, pTargetCandidate);
 
-		double candidateDistanceToTarget = pDistanceCalculator->distance(pTarget, pTargetCandidate);
+		mreal_t candidateDistanceToTarget = pDistanceCalculator->distance(pTarget, pTargetCandidate);
 		if(candidateDistanceToTarget < minDistanceToTarget) {
 			minDistanceToTarget = candidateDistanceToTarget;
 			pStepFitCandidate = pTargetCandidate;

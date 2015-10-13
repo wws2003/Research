@@ -41,7 +41,7 @@ template<typename T, typename F>
 using CoordinateWriterPtr = ICoordinateWriter<T,F>*;
 
 template<typename T>
-using RealCoordinateWriter = ICoordinateWriter<T,double>;
+using RealCoordinateWriter = ICoordinateWriter<T, mreal_t>;
 
 template<typename T>
 using RealCoordinateWriterPtr = RealCoordinateWriter<T>*;

@@ -49,7 +49,7 @@ MatrixCollectionSize_t CoordinateBasedMatrixCollectionImpl::size() const {
 	return m_pInternalMatrixCoordinateCollection->size();
 }
 
-MatrixIteratorPtr CoordinateBasedMatrixCollectionImpl::findApproxElements(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const  {
+MatrixIteratorPtr CoordinateBasedMatrixCollectionImpl::findApproxElements(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, mreal_t epsilon) const  {
 
 	MatrixRealCoordinatePtr pTargetCoordinate = NullPtr;
 	m_pMatrixCoordinateCalculator->calulateElementCoordinate(pQuery, pTargetCoordinate);

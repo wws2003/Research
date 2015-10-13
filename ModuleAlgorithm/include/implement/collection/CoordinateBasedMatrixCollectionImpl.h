@@ -32,7 +32,7 @@ public:
 
 	virtual MatrixCollectionSize_t size() const ;
 
-	virtual MatrixIteratorPtr findApproxElements(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon) const ;
+	virtual MatrixIteratorPtr findApproxElements(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, mreal_t epsilon) const ;
 
 private:
 	MatrixRealCoordinateCalculatorPtr m_pMatrixCoordinateCalculator;

@@ -145,25 +145,25 @@ void IOTestSuite::clearFiles() {
 }
 
 void getSampleElement(MatrixPtrRef rpSampleMatrix) {
-	ComplexVal expmPi_8 = std::exp(ComplexVal(0, 1) * M_PI / 8.0);
-	ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, -1) * M_PI / 8.0);
+	ComplexVal expmPi_8 = std::exp(ComplexVal(0, M_PI / 8.0));
+	ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, - M_PI / 8.0));
 
-	ComplexVal arrayT1[] = {expm_Pi_8, 0.0, 0.0, 0.0
-			, 0.0, expm_Pi_8, 0.0, 0.0
-			, 0.0, 0.0, expmPi_8, 0.0
-			, 0.0, 0.0, 0.0, expmPi_8};
+	ComplexVal arrayT1[] = {expm_Pi_8, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, expm_Pi_8, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, expmPi_8, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, expmPi_8};
 
 	rpSampleMatrix = new SimpleDenseMatrixImpl(arrayT1, ROW_SPLICE, 4, 4, "Label");
 }
 
 void getSampleElement(GatePtr& rpSampleGate) {
-	ComplexVal expmPi_8 = std::exp(ComplexVal(0, 1) * M_PI / 8.0);
-	ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, -1) * M_PI / 8.0);
+	ComplexVal expmPi_8 = std::exp(ComplexVal(0, M_PI / 8.0));
+	ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, -M_PI / 8.0));
 
-	ComplexVal arrayT2[] = {expm_Pi_8, 1.0, 1.0, 0.0
-			, 0.0, expmPi_8, 0.0, 0.0
-			, 0.0, 0.0, expm_Pi_8, 0.0
-			, 0.0, 0.0, 0.0, expmPi_8};
+	ComplexVal arrayT2[] = {expm_Pi_8, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, expmPi_8, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, expm_Pi_8, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, expmPi_8};
 
 	MatrixPtr pT2Mat = new SimpleDenseMatrixImpl(arrayT2, ROW_SPLICE, 4, 4, "");
 
@@ -217,8 +217,8 @@ void constructSampleGNATCollection(PersistableGNATGateCollectionImpl* pSampleCol
 
 	//---Unstructured buffer: 3 points
 	UnstructuredBuffer<GatePtr> subUnStructeredBuffer2 = {pGates[gateCounter++],
-		pGates[gateCounter++],
-		pGates[gateCounter++]};
+			pGates[gateCounter++],
+			pGates[gateCounter++]};
 
 	//---Split points: 0 splits points
 	SplitPointSet<GatePtr> subSplitPoints2;

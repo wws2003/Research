@@ -19,7 +19,7 @@
 template<typename T>
 using CollectionVector = std::vector<CollectionPtr<T> >;
 
-typedef std::pair<double, double> Range;
+typedef std::pair<mreal_t, mreal_t> Range;
 
 typedef std::vector<std::vector<Range> > RangeMap;
 
@@ -61,7 +61,7 @@ public:
 	virtual void rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator);
 
 	//Find the neighbor elements to the query, given distance calculator
-	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const ;
+	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon) const ;
 
 protected:
 	//Generate instance of a sub-collection. Subject to be overridden in sub-classes
@@ -89,7 +89,7 @@ private:
 
 	/*--------------For searching on GNAT data structure--------------*/
 	//Get sub collections in those search result can be found
-	virtual void getCandidateSubCollections(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<int>& rCheckMap) const;
+	virtual void getCandidateSubCollections(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, std::vector<int>& rCheckMap) const;
 
 	friend class GNATCollectionIterator<T>;
 };

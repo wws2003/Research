@@ -4,6 +4,9 @@ src/implement/collection/GNATGateCollectionImpl.d: \
  ../include/implement/collection/GNATCollectionImpl.h \
  ../include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../SharedThirdParties/mpfrc++/include/mpreal.h \
+ ../../SharedThirdParties/mpfr/include/mpfr.h \
+ ../../SharedThirdParties/gmp/include/gmp.h \
  ../include/internal-abstract/AlgoInternal.h \
  ../include/interface/abstract/ICollection.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
@@ -26,6 +29,12 @@ src/implement/collection/GNATGateCollectionImpl.d: \
 ../include/interface/common/AlgoCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../SharedThirdParties/mpfrc++/include/mpreal.h:
+
+../../SharedThirdParties/mpfr/include/mpfr.h:
+
+../../SharedThirdParties/gmp/include/gmp.h:
 
 ../include/internal-abstract/AlgoInternal.h:
 

@@ -12,12 +12,12 @@
 #include "Coordinate.hpp"
 
 template<typename T>
-class SampleRealCoordinateWriterImpl : public ICoordinateWriter<T, double>{
+class SampleRealCoordinateWriterImpl : public ICoordinateWriter<T, mreal_t>{
 public:
 	SampleRealCoordinateWriterImpl(std::string endStr = "\r\n");
 	virtual ~SampleRealCoordinateWriterImpl(){};
 
-	virtual void writeCoordinate(const Coordinate<T,double>& coordinate, std::ostream& outputStream);
+	virtual void writeCoordinate(const Coordinate<T,mreal_t>& coordinate, std::ostream& outputStream);
 
 private:
 	std::string m_endStr;
@@ -29,9 +29,9 @@ SampleRealCoordinateWriterImpl<T>::SampleRealCoordinateWriterImpl(std::string en
 }
 
 template<typename T>
-void SampleRealCoordinateWriterImpl<T>::writeCoordinate(const Coordinate<T,double>& coordinate, std::ostream& outputStream) {
+void SampleRealCoordinateWriterImpl<T>::writeCoordinate(const Coordinate<T,mreal_t>& coordinate, std::ostream& outputStream) {
 	std::string delimeter = ",";
-	for(std::vector<double>::const_iterator cIter = coordinate.getCoordinates().begin(); cIter != coordinate.getCoordinates().end(); cIter++) {
+	for(std::vector<mreal_t>::const_iterator cIter = coordinate.getCoordinates().begin(); cIter != coordinate.getCoordinates().end(); cIter++) {
 		if(cIter == coordinate.getCoordinates().begin()) {
 			outputStream << *cIter ;
 		}

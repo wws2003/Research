@@ -62,7 +62,7 @@ const std::string FullTestSuite::GNAT_COLLECTION_PERSIST_FILE = "gnat2.dat";
 
 void initTwoQubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT1, GatePtr& pCNOT2, GatePtr& pH1, GatePtr& pH2, GatePtr& pT1, GatePtr& pT2);
 
-void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<double> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU);
+void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<mreal_t> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU);
 
 void initTwoQubitsGateUniversalSet(MatrixOperatorPtr pMatrixOperator, GateCollectionPtr& pUniversalSet);
 
@@ -90,7 +90,7 @@ FullTestSuite::FullTestSuite() {
 	m_pMatrixOperator = new SampleMatrixOperator(m_pMatrixFactory);
 
 	m_targets.push_back(m_pMatrixFactory->getIdentityMatrix(2));
-	double epsilon = 1e-10;
+	mreal_t epsilon = 1e-10;
 	m_pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(m_pMatrixOperator);
 	m_pTimer = new CpuTimer();
 	m_pSearchSpaceEvaluator = new MatrixSearchSpaceTimerEvaluatorImpl(m_targets,
@@ -143,10 +143,10 @@ void FullTestSuite::testSimpleWriter() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	ComplexValArray arrayH = new ComplexVal[4];
 	double inverSqrt2 = 1 / sqrt(2);
-	arrayH[0] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[1] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[2] = ComplexVal(1,0) * inverSqrt2;
-	arrayH[3] = ComplexVal(-1,0) * inverSqrt2;
+	arrayH[0] = ComplexVal(inverSqrt2,0);
+	arrayH[1] = ComplexVal(inverSqrt2,0);
+	arrayH[2] = ComplexVal(inverSqrt2,0);
+	arrayH[3] = ComplexVal(-inverSqrt2,0);
 
 	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
 
@@ -154,9 +154,9 @@ void FullTestSuite::testSimpleWriter() {
 
 	ComplexValArray arrayT = new ComplexVal[4];
 	arrayT[0] = ComplexVal(1,0);
-	arrayT[1] = 0.0;
-	arrayT[2] = 0.0;
-	arrayT[3] = std::exp(ComplexVal(0,1) * M_PI / 4.0);
+	arrayT[1] = (ComplexVal)0.0;
+	arrayT[2] = (ComplexVal)0.0;
+	arrayT[3] = std::exp(ComplexVal(0, M_PI / 4.0));
 
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
@@ -179,10 +179,12 @@ void FullTestSuite::testSimpleCollection() {
 	MatrixCollectionPtr pMatrixCollection = new VectorBasedMatrixCollectionImpl();
 
 	double inverSqrt2 = 1 / sqrt(2);
-	ComplexVal arrayH[] = {ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(-1,0) * inverSqrt2};
+	ComplexVal arrayH[] = {ComplexVal(inverSqrt2,0), ComplexVal(inverSqrt2,0),
+			ComplexVal(inverSqrt2,0), ComplexVal(-inverSqrt2,0)};
 	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
 
-	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
+	ComplexVal arrayT[] = {ComplexVal(1,0), (ComplexVal)0.0,
+			(ComplexVal)0.0, std::exp(ComplexVal(0, M_PI / 4.0))};
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
 	MatrixPtr pMatrixHT = NullPtr;
@@ -229,10 +231,12 @@ void FullTestSuite::testSimpleSearchSpaceConstructor() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
 	double inverSqrt2 = 1 / sqrt(2);
-	ComplexVal arrayH[] = {ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(-1,0) * inverSqrt2};
+	ComplexVal arrayH[] = {ComplexVal(inverSqrt2,0), ComplexVal(inverSqrt2,0),
+			ComplexVal(inverSqrt2,0), ComplexVal(-inverSqrt2,0)};
 	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
 
-	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
+	ComplexVal arrayT[] = {ComplexVal(1,0), (ComplexVal)0.0,
+			(ComplexVal)0.0, std::exp(ComplexVal(0, M_PI / 4.0))};
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
 	int universalSetSize = 2;
@@ -274,7 +278,7 @@ void FullTestSuite::testSimpleSearchSpaceConstructor() {
 	assert(!pResultIter->isDone());
 
 	MatrixPtr pI = m_pMatrixFactory->getIdentityMatrix(2);
-	double dI_HH = m_pMatrixDistanceCalculator->distance(pI, pHH);
+	mreal_t dI_HH = m_pMatrixDistanceCalculator->distance(pI, pHH);
 	assert(dI_HH < 1e-30);
 
 	delete pI;
@@ -295,10 +299,12 @@ void FullTestSuite::testSimpleEvaluator() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
 	double inverSqrt2 = 1 / sqrt(2);
-	ComplexVal arrayH[] = {ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(-1,0) * inverSqrt2};
+	ComplexVal arrayH[] = {ComplexVal(inverSqrt2,0), ComplexVal(inverSqrt2,0),
+			ComplexVal(inverSqrt2,0), ComplexVal(-inverSqrt2,0)};
 	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
 
-	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
+	ComplexVal arrayT[] = {ComplexVal(1,0), (ComplexVal)0.0,
+			(ComplexVal)0.0, std::exp(ComplexVal(0, M_PI / 4.0))};
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
 	int universalSetSize = 2;
@@ -331,10 +337,12 @@ void FullTestSuite::testInverseCancelingSearchSpaceConstructor() {
 
 	double inverSqrt2 = 1 / sqrt(2);
 
-	ComplexVal arrayH[] = {ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(1,0) * inverSqrt2, ComplexVal(-1,0) * inverSqrt2};
+	ComplexVal arrayH[] = {ComplexVal(inverSqrt2,0), ComplexVal(inverSqrt2,0),
+			ComplexVal(inverSqrt2,0), ComplexVal(-inverSqrt2,0)};
 	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
 
-	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
+	ComplexVal arrayT[] = {ComplexVal(1,0), (ComplexVal)0.0,
+			(ComplexVal)0.0, std::exp(ComplexVal(0, M_PI / 4.0))};
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 
 	MatrixPtr pTmpMatrixInverseH = NullPtr;
@@ -409,7 +417,8 @@ void FullTestSuite::testSampleMatrixBinCollection() {
 	pBinCollection->addElement(pMatrixH, binPattern2);
 
 	//Add to collection twice a matrix with bin pattern = binPattern1
-	ComplexVal arrayT[] = {ComplexVal(1,0), 0.0, 0.0, std::exp(ComplexVal(0,1) * M_PI / 4.0)};
+	ComplexVal arrayT[] = {ComplexVal(1,0), (ComplexVal)0.0,
+			(ComplexVal)0.0, std::exp(ComplexVal(0, M_PI / 4.0))};
 	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
 	pBinCollection->addElement(pMatrixT, binPattern1);
 	pBinCollection->addElement(pMatrixT, binPattern1);
@@ -474,7 +483,7 @@ void FullTestSuite::testCalculateCoordinatesInSearchSpace() {
 	MatrixRealCoordinateCalculatorPtr pHermitiaRealCoordinateCalculator = new MatrixCoordinateOnOrthonormalBasisCalculatorImpl(pMatrixRealInnerProductCalculator, pBasis4);
 	MatrixRealCoordinateCalculatorPtr pMatrixRealCoordinateCalculator = new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, pHermitiaRealCoordinateCalculator);
 
-	CoordinateWriterPtr<MatrixPtr, double> pMatrixCoordinateWriter = new SampleRealCoordinateWriterImpl<MatrixPtr>();
+	CoordinateWriterPtr<MatrixPtr, mreal_t> pMatrixCoordinateWriter = new SampleRealCoordinateWriterImpl<MatrixPtr>();
 
 	IteratorPtr<GatePtr> pGateIter = pGateCollection->getIteratorPtr();
 
@@ -493,7 +502,7 @@ void FullTestSuite::testCalculateCoordinatesInSearchSpace() {
 
 			MatrixPtr pU1 = NullPtr;
 			calculateSpecialUnitaryFromTracelessHermitianCoordinates(m_pMatrixOperator, pMatrixRealCoordinate->getCoordinates(), pBasis4, pU1);
-			double coordinateCalculatorErr = m_pMatrixDistanceCalculator->distance(pU1, pGateIter->getObj()->getMatrix());
+			mreal_t coordinateCalculatorErr = m_pMatrixDistanceCalculator->distance(pU1, pGateIter->getObj()->getMatrix());
 
 			if(coordinateCalculatorErr > COORD_ERR_THRESHOLD) {
 
@@ -509,8 +518,8 @@ void FullTestSuite::testCalculateCoordinatesInSearchSpace() {
 				MatrixPtr pGlobalPhaseAdjusted2 = NullPtr;
 				m_pMatrixOperator->multiplyScalar(pU1, phase2, pGlobalPhaseAdjusted2);
 
-				double adjustedError1 = m_pMatrixDistanceCalculator->distance(pGlobalPhaseAdjusted1, pGateIter->getObj()->getMatrix());
-				double adjustedError2 = m_pMatrixDistanceCalculator->distance(pGlobalPhaseAdjusted2, pGateIter->getObj()->getMatrix());
+				mreal_t adjustedError1 = m_pMatrixDistanceCalculator->distance(pGlobalPhaseAdjusted1, pGateIter->getObj()->getMatrix());
+				mreal_t adjustedError2 = m_pMatrixDistanceCalculator->distance(pGlobalPhaseAdjusted2, pGateIter->getObj()->getMatrix());
 
 				if(adjustedError1 > COORD_ERR_THRESHOLD && adjustedError2 > COORD_ERR_THRESHOLD) {
 					wrongCoordinateCalculateCounter++;
@@ -824,10 +833,10 @@ void FullTestSuite::freeTestGateCollectionEvaluator() {
 }
 
 void initTwoQubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT1, GatePtr& pCNOT2, GatePtr& pH1, GatePtr& pH2, GatePtr& pT1, GatePtr& pT2) {
-	ComplexVal arrayCNOT1[] = {1.0, 0.0, 0.0, 0.0
-			, 0.0, 1.0, 0.0, 0.0
-			, 0.0, 0.0, 0.0, 1.0
-			, 0.0, 0.0, 1.0, 0.0};
+	ComplexVal arrayCNOT1[] = {(ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0};
 
 	MatrixPtr pCNOTMat1 = new SimpleDenseMatrixImpl(arrayCNOT1, ROW_SPLICE, 4, 4, "");
 	MatrixPtr pSCNOTMat1 = NullPtr;
@@ -836,10 +845,10 @@ void initTwoQubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT1, G
 
 	pCNOT1 = new Gate(pSCNOTMat1, 1, "CNOT1");
 
-	ComplexVal arrayCNOT2[] = {0.0, 1.0, 0.0, 0.0
-			, 1.0, 0.0, 0.0, 0.0
-			, 0.0, 0.0, 1.0, 0.0
-			, 0.0, 0.0, 0.0, 1.0};
+	ComplexVal arrayCNOT2[] = {(ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0};
 
 	MatrixPtr pCNOTMat2 = new SimpleDenseMatrixImpl(arrayCNOT2, ROW_SPLICE, 4, 4, "");
 	MatrixPtr pSCNOTMat2 = NullPtr;
@@ -849,48 +858,51 @@ void initTwoQubitsLibGates(MatrixOperatorPtr pMatrixOperator, GatePtr& pCNOT1, G
 
 	double inverseSQRT2 = 1/sqrt(2);
 
-	ComplexVal arrayH1[] = {ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(inverseSQRT2, 0), 0.0
-			, 0.0, ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(inverseSQRT2, 0)
-			, ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(-inverseSQRT2, 0), 0.0
-			, 0.0, ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(-inverseSQRT2, 0)};
+	ComplexVal arrayH1[] = {ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0
+			, (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0)
+			, ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0, ComplexVal(-inverseSQRT2, 0), (ComplexVal)0.0
+			, (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0, ComplexVal(-inverseSQRT2, 0)};
 
 	MatrixPtr pH1Mat = new SimpleDenseMatrixImpl(arrayH1, ROW_SPLICE, 4, 4, "");
 
 	pH1 = new Gate(pH1Mat, 4, "H1");
 
-	ComplexVal arrayH2[] = {ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0), 0.0, 0.0
-			, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0), 0.0, 0.0
-			, 0.0, 0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0)
-			, 0.0, 0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0)};
+	ComplexVal arrayH2[] = {ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0, (ComplexVal)0.0
+			, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0), (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0)
+			, (ComplexVal)0.0, (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0)};
 
 	MatrixPtr pH2Mat = new SimpleDenseMatrixImpl(arrayH2, ROW_SPLICE, 4, 4, "");
 
 	pH2 = new Gate(pH2Mat, 4, "H2");
 
-	ComplexVal expmPi_8 = std::exp(ComplexVal(0, 1) * M_PI / 8.0);
-	ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, -1) * M_PI / 8.0);
+	ComplexVal expmPi_8 = std::exp(ComplexVal(0, M_PI / 8.0));
+	ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, -M_PI / 8.0));
 
-	ComplexVal arrayT1[] = {expm_Pi_8, 0.0, 0.0, 0.0
-			, 0.0, expm_Pi_8, 0.0, 0.0
-			, 0.0, 0.0, expmPi_8, 0.0
-			, 0.0, 0.0, 0.0, expmPi_8};
+	ComplexVal arrayT1[] = {expm_Pi_8, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, expm_Pi_8, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, expmPi_8, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, expmPi_8};
 
 	MatrixPtr pT1Mat = new SimpleDenseMatrixImpl(arrayT1, ROW_SPLICE, 4, 4, "");
 
 	pT1 = new Gate(pT1Mat, 1, "T1");
 
-	ComplexVal arrayT2[] = {expm_Pi_8, 0.0, 0.0, 0.0
-			, 0.0, expmPi_8, 0.0, 0.0
-			, 0.0, 0.0, expm_Pi_8, 0.0
-			, 0.0, 0.0, 0.0, expmPi_8};
+	ComplexVal arrayT2[] = {expm_Pi_8, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, expmPi_8, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, expm_Pi_8, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, expmPi_8};
 
 	MatrixPtr pT2Mat = new SimpleDenseMatrixImpl(arrayT2, ROW_SPLICE, 4, 4, "");
 
 	pT2 = new Gate(pT2Mat, 1, "T2");
 }
 
-void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<double> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU) {
-	ComplexVal zeroArr[] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+void calculateSpecialUnitaryFromTracelessHermitianCoordinates(MatrixOperatorPtr pMatrixOperator, std::vector<mreal_t> coordinates, MatrixPtrVector pHermitianBasis, MatrixPtrRef pU) {
+	ComplexVal zeroArr[] = {(mreal_t)0.0, (mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0 ,
+			(mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0 ,
+			(mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0 ,
+			(mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0 ,(mreal_t)0.0};
 	MatrixPtr pH = new SimpleDenseMatrixImpl(zeroArr, ROW_SPLICE, 4, 4, "Hermitian");
 
 	MatrixWriterPtr pMatrixWriter = new SampleMatrixWriterImpl();
@@ -1037,7 +1049,7 @@ void getNearIdentityGate(MatrixOperatorPtr pMatrixOperator, MatrixPtrVector pHer
 	/* initialize random seed: */
 	srand (time(NULL));
 
-	std::vector<double> randCoords;
+	std::vector<mreal_t> randCoords;
 	for(unsigned int j = 0; j < pHermitianBasis.size(); j++) {
 		randCoords.push_back(my_small_rand(0.0));
 	}
@@ -1054,10 +1066,10 @@ void getNearIdentityGate(MatrixOperatorPtr pMatrixOperator, MatrixPtrVector pHer
 	MatrixPtr pIdentityWithPhasePI = NullPtr;
 	MatrixPtr pIdentityWithPhase_PI = NullPtr;
 
-	ComplexVal expmPi_2 = std::exp(ComplexVal(0, 1) * M_PI / 2.0);
-	ComplexVal expm_Pi_2 = std::exp(ComplexVal(0, -1) * M_PI / 2.0);
-	ComplexVal expmPi = std::exp(ComplexVal(0, 1) * M_PI);
-	ComplexVal expm_Pi = std::exp(ComplexVal(0, -1) * M_PI);
+	ComplexVal expmPi_2 = std::exp(ComplexVal(0,  M_PI / 2.0));
+	ComplexVal expm_Pi_2 = std::exp(ComplexVal(0, -M_PI / 2.0));
+	ComplexVal expmPi = std::exp(ComplexVal(0, M_PI / 2.0));
+	ComplexVal expm_Pi = std::exp(ComplexVal(0, - M_PI));
 
 	pMatrixOperator->multiplyScalar(pU, expmPi_2, pIdentityWithPhasePI_2);
 	pMatrixOperator->multiplyScalar(pU, expm_Pi_2, pIdentityWithPhase_PI_2);

@@ -43,7 +43,7 @@ public:
 	virtual void rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator);
 
 	//Find the neighbor elements to the query, given distance calculator
-	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const ;
+	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon) const ;
 
 private:
 	std::vector<T> m_elements;
@@ -94,7 +94,7 @@ void VectorBasedCollectionImpl<T>::rebuildStructure(DistanceCalculatorPtr<T> pDi
 }
 
 template<typename T>
-IteratorPtr<T> VectorBasedCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const {
+IteratorPtr<T> VectorBasedCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon) const {
 	std::vector<T> results;
 	CollectionSize_t collectionSize = m_elements.size();
 	for(unsigned int i = 0; i < collectionSize; i++) {

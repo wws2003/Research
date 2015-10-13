@@ -31,7 +31,7 @@ public:
 	 * Find in given collection, and moreover, if possible generate from it
 		 approximate matrices to query (distance smaller than epsilon)
 	 */
-	virtual MatrixIteratorPtr getApproximateElements(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon);
+	virtual MatrixIteratorPtr getApproximateElements(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, mreal_t epsilon);
 
 protected:
 

@@ -32,6 +32,9 @@
 								<option id="gnu.cpp.compiler.option.include.paths.1827906171" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/common"/>
+									<listOptionValue builtIn="false" value="../../SharedThirdParties/gmp/include"/>
+									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfr/include"/>
+									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfrc++/include"/>
 									<listOptionValue builtIn="false" value="../include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../include/interface/common"/>
 									<listOptionValue builtIn="false" value="../include/implement"/>

@@ -107,14 +107,15 @@ void AssemblerUtil::getSampleGateSearchSpaceCollection(GateCollectionPtr& pGateC
 
 void AssemblerUtil::getSampleQueryGate(GatePtrVector& queries, int nbQubits) {
 	//Currently only returns X to test
-	ComplexVal arrayX2[] = {0.0,ComplexVal(0,1),ComplexVal(0,1),0.0};
+	ComplexVal arrayX2[] = {(ComplexVal)0.0, ComplexVal(0,1),
+			ComplexVal(0,1), (ComplexVal)0.0};
 	MatrixPtr pX2 = new SimpleDenseMatrixImpl(arrayX2, ROW_SPLICE, 2, 2, "X");
 	GatePtr pX2Gate = new Gate(pX2, 9999, "Unknown");
 
-	ComplexVal arrayI4[] = {1.0,0.0,0.0,0.0,
-			0.0,1.0,0.0,0.0,
-			0.0,0.0,1.0,0.0,
-			0.0,0.0,0.0,1.0};
+	ComplexVal arrayI4[] = {(ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0,
+			(ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0,
+			(ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0,
+			(ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0};
 
 	MatrixPtr pI4 = new SimpleDenseMatrixImpl(arrayI4, ROW_SPLICE, 2, 2, "I");
 	GatePtr pI4Gate = new Gate(pI4, 9999, "Unknown");
@@ -149,19 +150,19 @@ void initSingleQubitLibGates(MatrixOperatorPtr pMatrixOperator, CollectionPtr<Ga
 	GatePtr pH = new Gate(pSHMat, 1, "H");
 	pLibraryGates->addElement(pH);
 
-	ComplexVal expmPi_8 = std::exp(ComplexVal(0, 1) * M_PI / 8.0);
-	ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, -1) * M_PI / 8.0);
+	ComplexVal expmPi_8 = std::exp(ComplexVal(0, 1) * ComplexVal(M_PI / 8.0, 0));
+	ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, -1) * ComplexVal(M_PI / 8.0, 0));
 
-	ComplexVal arrayT[] = {expm_Pi_8, 0.0
-			, 0.0, expmPi_8};
+	ComplexVal arrayT[] = {expm_Pi_8, (ComplexVal)0.0
+			, (ComplexVal)0.0, expmPi_8};
 
 	MatrixPtr pTMat = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "");
 
 	GatePtr pT = new Gate(pTMat, 4, "T");
 	pLibraryGates->addElement(pT);
 
-	ComplexVal arrayTInverse[] = {expmPi_8, 0.0
-			, 0.0, expm_Pi_8};
+	ComplexVal arrayTInverse[] = {expmPi_8, (ComplexVal)0.0
+			, (ComplexVal)0.0, expm_Pi_8};
 
 	MatrixPtr pTInverseMat = new SimpleDenseMatrixImpl(arrayTInverse, ROW_SPLICE, 2, 2, "");
 
@@ -169,8 +170,8 @@ void initSingleQubitLibGates(MatrixOperatorPtr pMatrixOperator, CollectionPtr<Ga
 	pLibraryGates->addElement(pTInverse);
 
 	//Add phases to make sure search space cover
-	ComplexVal arrayPhasePi[] = {-1.0,0.0,
-						0.0,-1.0};
+	ComplexVal arrayPhasePi[] = {(ComplexVal)-1.0, (ComplexVal)0.0,
+			(ComplexVal)0.0, (ComplexVal)-1.0};
 	MatrixPtr pPhasePiMat = new SimpleDenseMatrixImpl(arrayPhasePi, ROW_SPLICE, 2, 2, "I");
 
 	GatePtr pPhasePiGate = GatePtr(new Gate(pPhasePiMat, 0, "Ph_Pi"));
@@ -178,10 +179,10 @@ void initSingleQubitLibGates(MatrixOperatorPtr pMatrixOperator, CollectionPtr<Ga
 }
 
 void initTwoQubitsLibGates(MatrixOperatorPtr pMatrixOperator, CollectionPtr<GatePtr> pLibraryGates) {
-	ComplexVal arrayCNOT1[] = {1.0, 0.0, 0.0, 0.0
-			, 0.0, 1.0, 0.0, 0.0
-			, 0.0, 0.0, 0.0, 1.0
-			, 0.0, 0.0, 1.0, 0.0};
+	ComplexVal arrayCNOT1[] = {(ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0};
 
 	MatrixPtr pCNOTMat1 = new SimpleDenseMatrixImpl(arrayCNOT1, ROW_SPLICE, 4, 4, "");
 	MatrixPtr pSCNOTMat1 = NullPtr;
@@ -192,10 +193,10 @@ void initTwoQubitsLibGates(MatrixOperatorPtr pMatrixOperator, CollectionPtr<Gate
 	GatePtr pCNOT1 = new Gate(pSCNOTMat1, 1, "CNOT1");
 	pLibraryGates->addElement(pCNOT1);
 
-	ComplexVal arrayCNOT2[] = {0.0, 1.0, 0.0, 0.0
-			, 1.0, 0.0, 0.0, 0.0
-			, 0.0, 0.0, 1.0, 0.0
-			, 0.0, 0.0, 0.0, 1.0};
+	ComplexVal arrayCNOT2[] = {(ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0};
 
 	MatrixPtr pCNOTMat2 = new SimpleDenseMatrixImpl(arrayCNOT2, ROW_SPLICE, 4, 4, "");
 	MatrixPtr pSCNOTMat2 = NullPtr;
@@ -208,43 +209,43 @@ void initTwoQubitsLibGates(MatrixOperatorPtr pMatrixOperator, CollectionPtr<Gate
 
 	double inverseSQRT2 = 1/sqrt(2);
 
-	ComplexVal arrayH1[] = {ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(inverseSQRT2, 0), 0.0
-			, 0.0, ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(inverseSQRT2, 0)
-			, ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(-inverseSQRT2, 0), 0.0
-			, 0.0, ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(-inverseSQRT2, 0)};
+	ComplexVal arrayH1[] = {ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0
+			, (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0)
+			, ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0, ComplexVal(-inverseSQRT2, 0), (ComplexVal)0.0
+			, (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0),(ComplexVal) 0.0, ComplexVal(-inverseSQRT2, 0)};
 
 	MatrixPtr pH1Mat = new SimpleDenseMatrixImpl(arrayH1, ROW_SPLICE, 4, 4, "");
 
 	GatePtr pH1 = new Gate(pH1Mat, 4, "H1");
 	pLibraryGates->addElement(pH1);
 
-	ComplexVal arrayH2[] = {ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0), 0.0, 0.0
-			, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0), 0.0, 0.0
-			, 0.0, 0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0)
-			, 0.0, 0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0)};
+	ComplexVal arrayH2[] = {ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0, (ComplexVal)0.0
+			, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0), (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0)
+			, (ComplexVal)0.0, (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0)};
 
 	MatrixPtr pH2Mat = new SimpleDenseMatrixImpl(arrayH2, ROW_SPLICE, 4, 4, "");
 
 	GatePtr pH2 = new Gate(pH2Mat, 4, "H2");
 	pLibraryGates->addElement(pH2);
 
-	ComplexVal expmPi_8 = std::exp(ComplexVal(0, 1) * M_PI / 8.0);
-	ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, -1) * M_PI / 8.0);
+	ComplexVal expmPi_8 = std::exp(ComplexVal(0, 1) * (ComplexVal)(M_PI / 8.0));
+	ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, -1) * (ComplexVal)(M_PI / 8.0));
 
-	ComplexVal arrayT1[] = {expm_Pi_8, 0.0, 0.0, 0.0
-			, 0.0, expm_Pi_8, 0.0, 0.0
-			, 0.0, 0.0, expmPi_8, 0.0
-			, 0.0, 0.0, 0.0, expmPi_8};
+	ComplexVal arrayT1[] = {expm_Pi_8, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, expm_Pi_8, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, expmPi_8, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, expmPi_8};
 
 	MatrixPtr pT1Mat = new SimpleDenseMatrixImpl(arrayT1, ROW_SPLICE, 4, 4, "");
 
 	GatePtr pT1 = new Gate(pT1Mat, 1, "T1");
 	pLibraryGates->addElement(pT1);
 
-	ComplexVal arrayT2[] = {expm_Pi_8, 0.0, 0.0, 0.0
-			, 0.0, expmPi_8, 0.0, 0.0
-			, 0.0, 0.0, expm_Pi_8, 0.0
-			, 0.0, 0.0, 0.0, expmPi_8};
+	ComplexVal arrayT2[] = {expm_Pi_8, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, expmPi_8, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, expm_Pi_8, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, expmPi_8};
 
 	MatrixPtr pT2Mat = new SimpleDenseMatrixImpl(arrayT2, ROW_SPLICE, 4, 4, "");
 
@@ -373,7 +374,7 @@ void getGlobalPhaseEquivalentQueries(MatrixOperatorPtr pMatrixOperator, GatePtr 
 
 	MatrixPtr pQueryWithPhasePI = NullPtr;
 
-	ComplexVal expmPi = std::exp(ComplexVal(0, 1) * M_PI);
+	ComplexVal expmPi = std::exp(ComplexVal(0,  M_PI) );
 	pMatrixOperator->multiplyScalar(pU, expmPi, pQueryWithPhasePI);
 
 	queries.push_back(GatePtr(new Gate(pQueryWithPhasePI, 99999, "Unknown")));
@@ -382,8 +383,8 @@ void getGlobalPhaseEquivalentQueries(MatrixOperatorPtr pMatrixOperator, GatePtr 
 		MatrixPtr pQueryWithPhasePI_2 = NullPtr;
 		MatrixPtr pQueryWithPhase_PI_2 = NullPtr;
 
-		ComplexVal expmPi_2 = std::exp(ComplexVal(0, 1) * M_PI / 2.0);
-		ComplexVal expm_Pi_2 = std::exp(ComplexVal(0, -1) * M_PI / 2.0);
+		ComplexVal expmPi_2 = std::exp(ComplexVal(0, 1) * (ComplexVal)(M_PI / 2.0));
+		ComplexVal expm_Pi_2 = std::exp(ComplexVal(0, -1) * (ComplexVal)(M_PI / 2.0));
 
 		pMatrixOperator->multiplyScalar(pU, expmPi_2, pQueryWithPhasePI_2);
 		pMatrixOperator->multiplyScalar(pU, expm_Pi_2, pQueryWithPhase_PI_2);

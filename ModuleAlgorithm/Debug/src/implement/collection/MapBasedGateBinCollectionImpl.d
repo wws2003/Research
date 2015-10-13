@@ -5,6 +5,9 @@ src/implement/collection/MapBasedGateBinCollectionImpl.d: \
  ../include/internal-abstract/AlgoInternal.h \
  ../include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../SharedThirdParties/mpfrc++/include/mpreal.h \
+ ../../SharedThirdParties/mpfr/include/mpfr.h \
+ ../../SharedThirdParties/gmp/include/gmp.h \
  ../include/internal-abstract/collection/IBinCollection.h \
  ../include/implement/bin/Bin.hpp \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
@@ -24,6 +27,12 @@ src/implement/collection/MapBasedGateBinCollectionImpl.d: \
 ../include/interface/common/AlgoCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../SharedThirdParties/mpfrc++/include/mpreal.h:
+
+../../SharedThirdParties/mpfr/include/mpfr.h:
+
+../../SharedThirdParties/gmp/include/gmp.h:
 
 ../include/internal-abstract/collection/IBinCollection.h:
 

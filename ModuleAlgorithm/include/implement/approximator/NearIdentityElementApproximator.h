@@ -18,7 +18,7 @@
 /**
  * This generic class aims to serve both gate and matrix approximator
  */
-typedef std::vector<double> real_coordinate_t;
+typedef std::vector<mreal_t> real_coordinate_t;
 
 template<typename T>
 using ApprxResultBuffer = std::vector<T>;
@@ -27,10 +27,10 @@ template<typename T>
 class NearIdentityElementApproximator: public IApproximator<T> {
 public:
 	typedef struct Config_ {
-		double m_initialEpsilon;
+		mreal_t m_initialEpsilon;
 		int m_maxMergedBinDistance;
-		double m_maxCandidateEpsilon;
-		double m_maxCandidateEpsilonDecreaseFactor;
+		mreal_t m_maxCandidateEpsilon;
+		mreal_t m_maxCandidateEpsilonDecreaseFactor;
 		int m_iterationMaxSteps;
 		int m_maxResultNumber;
 	} Config;
@@ -41,19 +41,19 @@ public:
 			const Config& config);
 
 	virtual ~NearIdentityElementApproximator(){};
-	virtual IteratorPtr<T> getApproximateElements(CollectionPtr<T> pCoreCollection, T pQuery, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon);
+	virtual IteratorPtr<T> getApproximateElements(CollectionPtr<T> pCoreCollection, T pQuery, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon);
 
 private:
 	void initBinCollection(CollectionPtr<T> pCoreCollection,
 			T pQuery,
 			const real_coordinate_t& queryCoordinate,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
-			double epsilon);
+			mreal_t epsilon);
 
 	void generateApproximationsFromBins(T pQuery,
 			const real_coordinate_t& queryCoordinate,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
-			double epsilon,
+			mreal_t epsilon,
 			ApprxResultBuffer<T>& apprxResultBuffer);
 
 	void generateApproximationsPrefixedFromBins(BinPtr<T> pBin,
@@ -61,8 +61,8 @@ private:
 				T pQuery,
 				const real_coordinate_t& queryCoordinate,
 				DistanceCalculatorPtr<T> pDistanceCalculator,
-				double epsilonForMergeCandidate,
-				double approximationEpsilon,
+				mreal_t epsilonForMergeCandidate,
+				mreal_t approximationEpsilon,
 				CollectionPtr<T> pApprxTempCollection,
 				ApprxResultBuffer<T>& apprxResultBuffer,
 				int maxResultsNumber);

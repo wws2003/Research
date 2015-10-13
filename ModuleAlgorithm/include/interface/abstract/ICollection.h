@@ -43,7 +43,7 @@ public:
 	virtual void rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator) = 0;
 
 	//Find the neighbor elements to the query, given distance calculator
-	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const = 0;
+	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon) const = 0;
 
 };
 

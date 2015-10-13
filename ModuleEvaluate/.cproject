@@ -40,6 +40,9 @@
 									<listOptionValue builtIn="false" value="../../ModuleOperator/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleIO/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleIO/include/interface/common"/>
+									<listOptionValue builtIn="false" value="../../SharedThirdParties/gmp/include"/>
+									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfr/include"/>
+									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfrc++/include"/>
 									<listOptionValue builtIn="false" value="../include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../include/interface/common"/>
 									<listOptionValue builtIn="false" value="../include/implement"/>

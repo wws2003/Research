@@ -3,6 +3,9 @@ src/IntegratingTester.d: ../src/IntegratingTester.cpp \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../SharedThirdParties/mpfrc++/include/mpreal.h \
+ ../../SharedThirdParties/mpfr/include/mpfr.h \
+ ../../SharedThirdParties/gmp/include/gmp.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
@@ -186,6 +189,12 @@ src/IntegratingTester.d: ../src/IntegratingTester.cpp \
 ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../SharedThirdParties/mpfrc++/include/mpreal.h:
+
+../../SharedThirdParties/mpfr/include/mpfr.h:
+
+../../SharedThirdParties/gmp/include/gmp.h:
 
 ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h:
 

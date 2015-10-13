@@ -4,6 +4,9 @@ src/internal-abstract/AbstractMultiplierMatrixCombiner.d: \
  ../include/interface/abstract/ICombiner.h \
  ../include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../SharedThirdParties/mpfrc++/include/mpreal.h \
+ ../../SharedThirdParties/mpfr/include/mpfr.h \
+ ../../SharedThirdParties/gmp/include/gmp.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
@@ -16,6 +19,12 @@ src/internal-abstract/AbstractMultiplierMatrixCombiner.d: \
 ../include/interface/common/AlgoCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../SharedThirdParties/mpfrc++/include/mpreal.h:
+
+../../SharedThirdParties/mpfr/include/mpfr.h:
+
+../../SharedThirdParties/gmp/include/gmp.h:
 
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
 

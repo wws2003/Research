@@ -21,8 +21,8 @@ template<typename T>
 void findApprxByMerge2Bins(BinPtr<T> pBin1,
 		BinPtr<T> pBin2,
 		T pQuery,
-		double filterEpsilon,
-		double epsilon,
+		mreal_t filterEpsilon,
+		mreal_t epsilon,
 		CombinerPtr<T> pCombiner,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		CollectionPtr<T> pResultCollection,
@@ -33,7 +33,7 @@ template<typename T>
 void addApprxResultsToBufferFromCollection(CollectionPtr<T> pCollection,
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
-		double epsilon,
+		mreal_t epsilon,
 		ApprxResultBuffer<T>& rResultBuffer,
 		int maxResultsNumber);
 
@@ -53,7 +53,7 @@ template<typename T>
 IteratorPtr<T> NearIdentityElementApproximator<T>::getApproximateElements(CollectionPtr<T> pCoreCollection,
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
-		double epsilon) {
+		mreal_t epsilon) {
 
 	//Calculate coordinate of query
 	RealCoordinatePtr<T> pQueryCoordinate;
@@ -88,10 +88,10 @@ void NearIdentityElementApproximator<T>::initBinCollection(CollectionPtr<T> pCor
 		T pQuery,
 		const real_coordinate_t& queryCoordinate,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
-		double epsilon) {
+		mreal_t epsilon) {
 
 	//Find first round results
-	double firstRoundEpsilon = m_config.m_initialEpsilon;
+	mreal_t firstRoundEpsilon = m_config.m_initialEpsilon;
 	IteratorPtr<T> pFirstRoundApprxIter = pCoreCollection->findNearestNeighbour(pQuery, pDistanceCalculator, firstRoundEpsilon);
 
 	if(pFirstRoundApprxIter == NullPtr || pFirstRoundApprxIter->isDone()) {
@@ -112,11 +112,11 @@ template<typename T>
 void NearIdentityElementApproximator<T>::generateApproximationsFromBins(T pQuery,
 		const real_coordinate_t& queryCoordinate,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
-		double epsilon,
+		mreal_t epsilon,
 		ApprxResultBuffer<T>& apprxResultBuffer) {
 
 	int maxStep = m_config.m_iterationMaxSteps;
-	double epsilonForMergeCandidate = m_config.m_maxCandidateEpsilon;
+	mreal_t epsilonForMergeCandidate = m_config.m_maxCandidateEpsilon;
 	int maxResultNumber = m_config.m_maxResultNumber;
 
 	CollectionPtr<T> pApprxTempCollection(new VectorBasedCollectionImpl<T>());
@@ -170,8 +170,8 @@ void NearIdentityElementApproximator<T>::generateApproximationsPrefixedFromBins(
 		T pQuery,
 		const real_coordinate_t& queryCoordinate,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
-		double epsilonForMergeCandidate,
-		double approximationEpsilon,
+		mreal_t epsilonForMergeCandidate,
+		mreal_t approximationEpsilon,
 		CollectionPtr<T> pApprxTempCollection,
 		ApprxResultBuffer<T>& apprxResultBuffer,
 		int maxResultsNumber) {
@@ -241,8 +241,8 @@ template<typename T>
 void findApprxByMerge2Bins(BinPtr<T> pBin1,
 		BinPtr<T> pBin2,
 		T pQuery,
-		double filterEpsilon,
-		double epsilon,
+		mreal_t filterEpsilon,
+		mreal_t epsilon,
 		CombinerPtr<T> pCombiner,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		CollectionPtr<T> pResultCollection,
@@ -260,7 +260,7 @@ void findApprxByMerge2Bins(BinPtr<T> pBin1,
 			pCombiner->combine(pBin1->getElements()[i], pBin2->getElements()[j], pProduct1);
 
 			if(pProduct1 != NullPtr) {
-				double distance = pDistanceCalculator->distance(pProduct1, pQuery);
+				mreal_t distance = pDistanceCalculator->distance(pProduct1, pQuery);
 
 				if(distance <= filterEpsilon || (distance <= epsilon && apprxResultBuffer.size() < maxResultsNumber)) {
 					if(distance <= filterEpsilon) {
@@ -279,7 +279,12 @@ void findApprxByMerge2Bins(BinPtr<T> pBin1,
 }
 
 template<typename T>
-void addApprxResultsToBufferFromCollection(CollectionPtr<T> pCollection, T pQuery, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, ApprxResultBuffer<T>& rResultBuffer, int maxResultsNumber) {
+void addApprxResultsToBufferFromCollection(CollectionPtr<T> pCollection,
+		T pQuery,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon,
+		ApprxResultBuffer<T>& rResultBuffer,
+		int maxResultsNumber) {
 	IteratorPtr<T> pApprxResultIter = pCollection->findNearestNeighbour(pQuery, pDistanceCalculator, epsilon);
 	if(pApprxResultIter != NullPtr) {
 		while(!pApprxResultIter->isDone() && rResultBuffer.size() < maxResultsNumber) {

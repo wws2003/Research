@@ -4,6 +4,9 @@ src/implement/approximator/NearIdentityGateApproximator.d: \
  ../include/implement/approximator/NearIdentityElementApproximator.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../SharedThirdParties/mpfrc++/include/mpreal.h \
+ ../../SharedThirdParties/mpfr/include/mpfr.h \
+ ../../SharedThirdParties/gmp/include/gmp.h \
  ../include/interface/abstract/ICollection.h \
  ../include/interface/common/AlgoCommon.h \
  ../include/interface/abstract/IIterator.h \
@@ -33,6 +36,12 @@ src/implement/approximator/NearIdentityGateApproximator.d: \
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../SharedThirdParties/mpfrc++/include/mpreal.h:
+
+../../SharedThirdParties/mpfr/include/mpfr.h:
+
+../../SharedThirdParties/gmp/include/gmp.h:
 
 ../include/interface/abstract/ICollection.h:
 

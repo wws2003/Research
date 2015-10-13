@@ -20,16 +20,16 @@
 #define MIN_SIZE_TO_BUILD_STRUCTURE 30
 
 template<typename T>
-void calculateMaxMinRange(T element, CollectionPtr<T> pCollection, DistanceCalculatorPtr<T> pDistanceCalculator, double& maxDist, double& minDist);
+void calculateMaxMinRange(T element, CollectionPtr<T> pCollection, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t& maxDist, mreal_t& minDist);
 
 template<typename T>
 int findClosestElementIndex(T element, const std::vector<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator);
 
 template<typename T>
-void findClosestElementsInUnStructuredBuffer(T query, const UnstructuredBuffer<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<T>& results);
+void findClosestElementsInUnStructuredBuffer(T query, const UnstructuredBuffer<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, std::vector<T>& results);
 
 template<typename T>
-void findClosestElementsInSplitPoints(T query, const SplitPointSet<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<T>& results);
+void findClosestElementsInSplitPoints(T query, const SplitPointSet<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, std::vector<T>& results);
 
 template<typename T>
 void selfTest(GNATCollectionImpl<T>* pCollection);
@@ -146,7 +146,7 @@ void GNATCollectionImpl<T>::rebuildStructure(DistanceCalculatorPtr<T> pDistanceC
 }
 
 template<typename T>
-IteratorPtr<T> GNATCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) const {
+IteratorPtr<T> GNATCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon) const {
 	std::vector<T> results;
 
 	//Get results from unstructured buffer first
@@ -307,8 +307,8 @@ void GNATCollectionImpl<T>::calculateRanges(DistanceCalculatorPtr<T> pDistanceCa
 		T splitPoint = m_splitPoints[splitPointIndex];
 
 		for(unsigned int subCollectionIndex = 0; subCollectionIndex < m_subCollections.size(); subCollectionIndex++) {
-			double maxRange = 0;
-			double minRange = 0;
+			mreal_t maxRange = 0;
+			mreal_t minRange = 0;
 			calculateMaxMinRange(splitPoint, m_subCollections[subCollectionIndex], pDistanceCalculator, maxRange, minRange);
 			m_splitPointRanges[splitPointIndex][subCollectionIndex] = Range(minRange, maxRange);
 		}
@@ -316,13 +316,13 @@ void GNATCollectionImpl<T>::calculateRanges(DistanceCalculatorPtr<T> pDistanceCa
 }
 
 template<typename T>
-void GNATCollectionImpl<T>::getCandidateSubCollections(T query, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<int>& rCheckMap) const {
+void GNATCollectionImpl<T>::getCandidateSubCollections(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, std::vector<int>& rCheckMap) const {
 
 	unsigned int nbSubCollections = m_subCollections.size();
 
 	for(unsigned int splitPointIndex = 0; splitPointIndex < nbSubCollections; splitPointIndex++) {
 
-		double dSplitPointQuery = pDistanceCalculator->distance(m_splitPoints[splitPointIndex], query);
+		mreal_t dSplitPointQuery = pDistanceCalculator->distance(m_splitPoints[splitPointIndex], query);
 
 		//Calculate range of solution to split point considering the distance from split point to query
 		Range solutionDistanceToSplitPointRange(dSplitPointQuery > epsilon ? dSplitPointQuery - epsilon : 0, epsilon + dSplitPointQuery);
@@ -339,12 +339,12 @@ void GNATCollectionImpl<T>::getCandidateSubCollections(T query, DistanceCalculat
 }
 
 template<typename T>
-void calculateMaxMinRange(T element, CollectionPtr<T> pCollection, DistanceCalculatorPtr<T> pDistanceCalculator, double& maxDist, double& minDist) {
+void calculateMaxMinRange(T element, CollectionPtr<T> pCollection, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t& maxDist, mreal_t& minDist) {
 	maxDist = 0;
 	minDist = 1E9;
 	IteratorPtr<T> cIter = pCollection->getIteratorPtr();
 	while(!cIter->isDone()) {
-		double d = pDistanceCalculator->distance(cIter->getObj(), element);
+		mreal_t d = pDistanceCalculator->distance(cIter->getObj(), element);
 		maxDist = std::max(d, maxDist);
 		minDist = std::min(d, minDist);
 		cIter->next();
@@ -355,10 +355,10 @@ void calculateMaxMinRange(T element, CollectionPtr<T> pCollection, DistanceCalcu
 template<typename T>
 int findClosestElementIndex(T element, const std::vector<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator) {
 	int closestElementIndex = 0;
-	double closestDistanceToDataSet = 1e4;
+	mreal_t closestDistanceToDataSet = 1e4;
 
 	for(unsigned int elementIndex = 0; elementIndex < dataSet.size(); elementIndex++) {
-		double distanceToElement = pDistanceCalculator->distance(element, dataSet[elementIndex]);
+		mreal_t distanceToElement = pDistanceCalculator->distance(element, dataSet[elementIndex]);
 
 		if(distanceToElement < closestDistanceToDataSet) {
 			closestDistanceToDataSet = distanceToElement;
@@ -370,7 +370,7 @@ int findClosestElementIndex(T element, const std::vector<T>& dataSet, DistanceCa
 }
 
 template<typename T>
-void findClosestElementsInUnStructuredBuffer(T query, const UnstructuredBuffer<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<T>& results) {
+void findClosestElementsInUnStructuredBuffer(T query, const UnstructuredBuffer<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, std::vector<T>& results) {
 	for(typename UnstructuredBuffer<T>::const_iterator eIter = dataSet.begin(); eIter != dataSet.end(); eIter++) {
 		T element = *eIter;
 		if(pDistanceCalculator->distance(element, query) <= epsilon) {
@@ -380,7 +380,7 @@ void findClosestElementsInUnStructuredBuffer(T query, const UnstructuredBuffer<T
 }
 
 template<typename T>
-void findClosestElementsInSplitPoints(T query, const SplitPointSet<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, std::vector<T>& results) {
+void findClosestElementsInSplitPoints(T query, const SplitPointSet<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, std::vector<T>& results) {
 	for(typename SplitPointSet<T>::const_iterator eIter = dataSet.begin(); eIter != dataSet.end(); eIter++) {
 		T element = *eIter;
 		if(pDistanceCalculator->distance(element, query) <= epsilon) {

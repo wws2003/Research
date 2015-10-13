@@ -24,8 +24,8 @@ template<typename T>
 class SearchSpaceTimerEvaluatorImpl : public ISearchSpaceEvaluator<T> {
 public:
 	SearchSpaceTimerEvaluatorImpl(const TargetElements<T>& pTargets,
-			double epsilon,
-			double approximatorEpsilon,
+			mreal_t epsilon,
+			mreal_t approximatorEpsilon,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
 			RealCoordinateWriterPtr<T> pRealCoordinateWritter,
@@ -47,8 +47,8 @@ public:
 
 private:
 	TargetElements<T> m_targets;
-	double m_collectionEpsilon;
-	double m_approximatorEpsilon;
+	mreal_t m_collectionEpsilon;
+	mreal_t m_approximatorEpsilon;
 
 	DistanceCalculatorPtr<T> m_pDistanceCalculator;
 	RealCoordinateCalculatorPtr<T> m_pRealCoordinateCalculator;

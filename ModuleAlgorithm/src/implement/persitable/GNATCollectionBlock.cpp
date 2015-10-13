@@ -62,10 +62,10 @@ void writeBlock(const GNATCollectionWriteBlock<T>* pWriteBlock, WriterPtr<T> pWr
 
 		for(std::vector<Range>::const_iterator dIter = range.begin(); dIter != range.end(); dIter++) {
 			//Write each sub-map element
-			double dMin = dIter->first;
-			double dMax = dIter->second;
-			outputStream.write((const char*)&dMin, sizeof(double));
-			outputStream.write((const char*)&dMax, sizeof(double));
+			mreal_t dMin = dIter->first;
+			mreal_t dMax = dIter->second;
+			outputStream.write((const char*)&dMin, sizeof(mreal_t));
+			outputStream.write((const char*)&dMax, sizeof(mreal_t));
 		}
 	}
 }
@@ -134,10 +134,10 @@ void readBlock(GNATCollectionReadBlock<T>* pReadBlock, ReaderPtr<T> pReader, std
 
 		for(unsigned int i = 0; i < rangeSize; i++) {
 			//Read each sub-map element
-			double dMin;
-			double dMax;
-			inputStream.read((char*)&dMin, sizeof(double));
-			inputStream.read((char*)&dMax, sizeof(double));
+			mreal_t dMin;
+			mreal_t dMax;
+			inputStream.read((char*)&dMin, sizeof(mreal_t));
+			inputStream.read((char*)&dMax, sizeof(mreal_t));
 			range.push_back(Range(dMin, dMax));
 		}
 

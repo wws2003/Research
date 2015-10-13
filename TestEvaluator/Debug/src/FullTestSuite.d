@@ -1,6 +1,9 @@
 src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../SharedThirdParties/mpfrc++/include/mpreal.h \
+ ../../SharedThirdParties/mpfr/include/mpfr.h \
+ ../../SharedThirdParties/gmp/include/gmp.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
@@ -234,6 +237,12 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../SharedThirdParties/mpfrc++/include/mpreal.h:
+
+../../SharedThirdParties/mpfr/include/mpfr.h:
+
+../../SharedThirdParties/gmp/include/gmp.h:
 
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
 

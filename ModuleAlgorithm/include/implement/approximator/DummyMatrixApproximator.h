@@ -20,7 +20,7 @@ public:
 	/**
 	 * This implementation is just done by finding approximation of the core collection, doesn't generate any new candidates
 	 */
-	virtual MatrixIteratorPtr getApproximateElements(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, double epsilon);
+	virtual MatrixIteratorPtr getApproximateElements(MatrixCollectionPtr pCoreCollection, MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, mreal_t epsilon);
 
 };
 

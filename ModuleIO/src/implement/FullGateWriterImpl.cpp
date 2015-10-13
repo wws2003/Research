@@ -10,6 +10,8 @@
 
 #define PRINT_BUFFER_LENGTH 128
 
+void printVal(char* printBuffer, const ComplexVal& val);
+
 FullGateWriterImpl::FullGateWriterImpl() {
 
 }
@@ -32,11 +34,19 @@ void FullGateWriterImpl::write(GatePtr pGate, std::ostream& outputStream) {
 		for(int j = 0; j < nbColumns; j++) {
 			char printfBuffer[PRINT_BUFFER_LENGTH];
 			ComplexVal val = pMatrix->getValue(i,j);
-			sprintf(printfBuffer, "[%.3f %s %.3f i] ", val.real(), val.imag() > 0 ? "+" : "-", std::abs(val.imag()));
+			printVal(printfBuffer, val);
 			outputStream << printfBuffer;
 		}
 		outputStream << std::endl;
 	}
+}
+
+void printVal(char* printfBuffer, const ComplexVal& val) {
+#if MPFR_REAL
+	sprintf(printfBuffer, "[%.3f %s %.3f i] ", val.real().toDouble(), val.imag().toDouble() > 0 ? "+" : "-", std::abs(val.imag().toDouble()));
+#else
+	sprintf(printfBuffer, "[%.3f %s %.3f i] ", val.real(), val.imag() > 0 ? "+" : "-", std::abs(val.imag()));
+#endif
 }
 
 

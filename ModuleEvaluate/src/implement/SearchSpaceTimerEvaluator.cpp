@@ -28,7 +28,7 @@
 template<typename T>
 struct ElementWithDistance_ {
 	T element;
-	double distance;
+	mreal_t distance;
 
 	bool operator < (const ElementWithDistance_& e) const
 	{
@@ -43,7 +43,7 @@ template<typename T>
 using ElementWithDistances = std::vector<ElementWithDistance<T> >;
 
 template<typename T>
-void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCollection, T target, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, IteratorPtr<T>&  prFindIter, TimerPtr pTimer, double* pSearchTime);
+void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCollection, T target, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, IteratorPtr<T>&  prFindIter, TimerPtr pTimer, double* pSearchTime);
 
 template<typename T>
 void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
@@ -52,7 +52,7 @@ void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
 		RealCoordinateWriterPtr<T> pRealCoordinateWriter,
 		T target,
 		double searchTime,
-		double epsilon,
+		mreal_t epsilon,
 		WriterPtr<T> pWriter,
 		std::ostream& outputStream);
 
@@ -66,17 +66,17 @@ template<typename T>
 void logSearchResult(T pQuery,
 		T pResult,
 		double searchTime,
-		double precision,
-		double epsilon,
+		mreal_t precision,
+		mreal_t epsilon,
 		WriterPtr<T> pWriter,
-		CoordinatePtr<T, double> pCoordinate,
+		CoordinatePtr<T, mreal_t> pCoordinate,
 		RealCoordinateWriterPtr<T> pRealCoordinateWriter,
 		std::ostream& outputStream);
 
 template<typename T>
 SearchSpaceTimerEvaluatorImpl<T>::SearchSpaceTimerEvaluatorImpl(const TargetElements<T>& pTargets,
-		double collectionEpsilon,
-		double approximatorEpsilon,
+		mreal_t collectionEpsilon,
+		mreal_t approximatorEpsilon,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
 		RealCoordinateWriterPtr<T> pRealCoordinateWritter,
@@ -159,7 +159,7 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateApproximator(ApproximatorPtr<T> p
 }
 
 template<typename T>
-void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCollection, T target, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon, IteratorPtr<T>&  prFindIter, TimerPtr pTimer, double* pSearchTime) {
+void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCollection, T target, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, IteratorPtr<T>&  prFindIter, TimerPtr pTimer, double* pSearchTime) {
 	//Use try catch and make use of scope timer
 	try {
 		ScopeTimer scopeTimer(pTimer, pSearchTime);
@@ -185,7 +185,7 @@ void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
 		RealCoordinateWriterPtr<T> pRealCoordinateWriter,
 		T target,
 		double searchTime,
-		double epsilon,
+		mreal_t epsilon,
 		WriterPtr<T> pWriter,
 		std::ostream& outputStream) {
 
@@ -201,7 +201,7 @@ void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
 	outputStream << "--------------------------" << END_LINE;
 	outputStream << "Number of results:" << results.size() << END_LINE;
 
-	CoordinatePtr<T, double> pQueryCoordinate = NullPtr;
+	CoordinatePtr<T, mreal_t> pQueryCoordinate = NullPtr;
 	if(pRealCoordinateCalculator != NullPtr) {
 		pRealCoordinateCalculator->calulateElementCoordinate(target, pQueryCoordinate);
 		outputStream << "Query coordinate:" << END_LINE;
@@ -212,12 +212,12 @@ void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
 	//Output (log) each result
 	for(unsigned int i = 0; i < results.size(); i++) {
 		T result = results[i].element;
-		double precision = results[i].distance;
+		mreal_t precision = results[i].distance;
 
 		//outputStream << "Result " << i << END_LINE;
 
 		//Calculate result coordinate
-		CoordinatePtr<T, double> pCoordinate = NullPtr;
+		CoordinatePtr<T, mreal_t> pCoordinate = NullPtr;
 		if(pRealCoordinateCalculator != NullPtr) {
 			pRealCoordinateCalculator->calulateElementCoordinate(result, pCoordinate);
 		}
@@ -246,7 +246,7 @@ void getSortedResults(IteratorPtr<T> pFindResultIter,
 	//Traverse iterator to get element and push to results vector
 	while(!pFindResultIter->isDone()) {
 		T element = pFindResultIter->getObj();
-		double precision = pDistanceCaculator->distance(element, pTarget);
+		mreal_t precision = pDistanceCaculator->distance(element, pTarget);
 
 #ifdef DENOISING
 		if(precision >= NOISE_THRESOLD) {
@@ -272,10 +272,10 @@ template<typename T>
 void logSearchResult(T pQuery,
 		T pResult,
 		double searchTime,
-		double precision,
-		double epsilon,
+		mreal_t precision,
+		mreal_t epsilon,
 		WriterPtr<T> pWriter,
-		CoordinatePtr<T, double> pCoordinate,
+		CoordinatePtr<T, mreal_t> pCoordinate,
 		RealCoordinateWriterPtr<T> pRealCoordinateWriter,
 		std::ostream& outputStream) {
 

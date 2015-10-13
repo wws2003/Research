@@ -20,7 +20,7 @@ public:
 	 * Find in given collection, and moreover, if possible generate from it
 		 approximate elements to query (distance smaller than epsilon)
 	 */
-	virtual IteratorPtr<T> getApproximateElements(CollectionPtr<T> pCoreCollection, T pQuery, DistanceCalculatorPtr<T> pDistanceCalculator, double epsilon) = 0;
+	virtual IteratorPtr<T> getApproximateElements(CollectionPtr<T> pCoreCollection, T pQuery, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon) = 0;
 };
 
 #endif /* IAPPROXIMATOR_H_ */

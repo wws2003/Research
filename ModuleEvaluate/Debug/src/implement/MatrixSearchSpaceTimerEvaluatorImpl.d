@@ -5,6 +5,9 @@ src/implement/MatrixSearchSpaceTimerEvaluatorImpl.d: \
  ../include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../SharedThirdParties/mpfrc++/include/mpreal.h \
+ ../../SharedThirdParties/mpfr/include/mpfr.h \
+ ../../SharedThirdParties/gmp/include/gmp.h \
  ../include/interface/common/EvaluateCommon.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
@@ -32,6 +35,12 @@ src/implement/MatrixSearchSpaceTimerEvaluatorImpl.d: \
 ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../SharedThirdParties/mpfrc++/include/mpreal.h:
+
+../../SharedThirdParties/mpfr/include/mpfr.h:
+
+../../SharedThirdParties/gmp/include/gmp.h:
 
 ../include/interface/common/EvaluateCommon.h:
 

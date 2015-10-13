@@ -2,6 +2,9 @@ src/IOTestSuite.d: ../src/IOTestSuite.cpp ../src/IOTestSuite.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../SharedThirdParties/mpfrc++/include/mpreal.h \
+ ../../SharedThirdParties/mpfr/include/mpfr.h \
+ ../../SharedThirdParties/gmp/include/gmp.h \
  ../../ModuleIO/include/interface/abstract/IReader.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
@@ -33,6 +36,12 @@ src/IOTestSuite.d: ../src/IOTestSuite.cpp ../src/IOTestSuite.h \
 ../../ModuleIO/include/interface/common/IOCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../SharedThirdParties/mpfrc++/include/mpreal.h:
+
+../../SharedThirdParties/mpfr/include/mpfr.h:
+
+../../SharedThirdParties/gmp/include/gmp.h:
 
 ../../ModuleIO/include/interface/abstract/IReader.h:
 

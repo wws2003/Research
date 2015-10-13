@@ -3,6 +3,9 @@ src/implement/MatrixSearchSpaceConstructorImpl.d: \
  ../src/implement/SearchSpaceConstructorImpl.cpp \
  ../include/implement/SearchSpaceConstructorImpl.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../SharedThirdParties/mpfrc++/include/mpreal.h \
+ ../../SharedThirdParties/mpfr/include/mpfr.h \
+ ../../SharedThirdParties/gmp/include/gmp.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../include/interface/abstract/ISearchSpaceConstructor.h \
@@ -20,6 +23,12 @@ src/implement/MatrixSearchSpaceConstructorImpl.d: \
 ../include/implement/SearchSpaceConstructorImpl.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../SharedThirdParties/mpfrc++/include/mpreal.h:
+
+../../SharedThirdParties/mpfr/include/mpfr.h:
+
+../../SharedThirdParties/gmp/include/gmp.h:
 
 ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
 
