@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../src/implement/BinaryGateWriterImpl.cpp \
 ../src/implement/BinaryMatrixReaderImpl.cpp \
 ../src/implement/BinaryMatrixWriterImpl.cpp \
+../src/implement/ComplexValIO.cpp \
 ../src/implement/FullGateWriterImpl.cpp \
 ../src/implement/LabelOnlyGateWriterImpl.cpp \
 ../src/implement/LabelOnlyMatrixWriterImpl.cpp \
@@ -18,6 +19,7 @@ OBJS += \
 ./src/implement/BinaryGateWriterImpl.o \
 ./src/implement/BinaryMatrixReaderImpl.o \
 ./src/implement/BinaryMatrixWriterImpl.o \
+./src/implement/ComplexValIO.o \
 ./src/implement/FullGateWriterImpl.o \
 ./src/implement/LabelOnlyGateWriterImpl.o \
 ./src/implement/LabelOnlyMatrixWriterImpl.o \
@@ -28,6 +30,7 @@ CPP_DEPS += \
 ./src/implement/BinaryGateWriterImpl.d \
 ./src/implement/BinaryMatrixReaderImpl.d \
 ./src/implement/BinaryMatrixWriterImpl.d \
+./src/implement/ComplexValIO.d \
 ./src/implement/FullGateWriterImpl.d \
 ./src/implement/LabelOnlyGateWriterImpl.d \
 ./src/implement/LabelOnlyMatrixWriterImpl.d \

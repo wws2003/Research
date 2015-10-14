@@ -16,6 +16,7 @@
 
 #if MPFR_REAL
 typedef mpfr::mpreal mreal_t;
+#define REAL_IO_PRECISION 32
 #else
 typedef double mreal_t;
 #endif

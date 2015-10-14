@@ -8,6 +8,8 @@ src/implement/BinaryMatrixWriterImpl.d: \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../include/implement/BinaryMatrixWriterImpl.h \
  ../include/interface/abstract/IWriter.h \
+ ../include/interface/common/IOCommon.h \
+ ../include/interface/common/ComplexValIO.h \
  ../include/interface/common/IOCommon.h
 
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
@@ -25,5 +27,9 @@ src/implement/BinaryMatrixWriterImpl.d: \
 ../include/implement/BinaryMatrixWriterImpl.h:
 
 ../include/interface/abstract/IWriter.h:
+
+../include/interface/common/IOCommon.h:
+
+../include/interface/common/ComplexValIO.h:
 
 ../include/interface/common/IOCommon.h:

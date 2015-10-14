@@ -225,7 +225,8 @@ bool PersistableGNATCollectionImpl<T>::sameUnstructuredBuffer(const PersistableG
 
 template<typename T>
 bool PersistableGNATCollectionImpl<T>::sameSplitPointsRange(const PersistableGNATCollectionImpl<T>& rhs) {
-	return GNATCollectionImpl<T>::m_splitPointRanges == rhs.m_splitPointRanges;
+	bool r = GNATCollectionImpl<T>::m_splitPointRanges == rhs.m_splitPointRanges;
+	return r;
 }
 
 template<typename T>

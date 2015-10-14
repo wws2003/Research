@@ -5,6 +5,7 @@
  *      Author: pham
  */
 #include "GNATCollectionBlock.h"
+#include "ComplexValIO.h"
 
 template<typename T>
 void writeCollectionBlocks(const std::vector<GNATCollectionWriteBlock<T>* >& rBlocks, WriterPtr<T> pWriter, std::ostream& outputStream) {
@@ -64,8 +65,8 @@ void writeBlock(const GNATCollectionWriteBlock<T>* pWriteBlock, WriterPtr<T> pWr
 			//Write each sub-map element
 			mreal_t dMin = dIter->first;
 			mreal_t dMax = dIter->second;
-			outputStream.write((const char*)&dMin, sizeof(mreal_t));
-			outputStream.write((const char*)&dMax, sizeof(mreal_t));
+			writeRealValue(dMin, outputStream);
+			writeRealValue(dMax, outputStream);
 		}
 	}
 }
@@ -136,8 +137,9 @@ void readBlock(GNATCollectionReadBlock<T>* pReadBlock, ReaderPtr<T> pReader, std
 			//Read each sub-map element
 			mreal_t dMin;
 			mreal_t dMax;
-			inputStream.read((char*)&dMin, sizeof(mreal_t));
-			inputStream.read((char*)&dMax, sizeof(mreal_t));
+			readRealValue(inputStream, &dMin);
+			readRealValue(inputStream, &dMax);
+			endOfReadComplexVals(inputStream);
 			range.push_back(Range(dMin, dMax));
 		}
 

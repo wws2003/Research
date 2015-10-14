@@ -6,6 +6,11 @@
  */
 
 #include "IMatrix.h"
+#if DEBUGGING
+#include <iostream>
+#endif
+
+#define REAL_TOLERANCE 1e-64
 
 //Check if 2 matrices have the same number of rows and columns
 bool sameSize(IMatrix& lhs, const IMatrix& rhs);
@@ -15,6 +20,9 @@ bool sameData(IMatrix& lhs, const IMatrix& rhs);
 
 //Check if 2 matrices have the same label / one or both of them have no label
 bool sameLabel(IMatrix& lhs, const IMatrix& rhs);
+
+//Check if 2 complex values can be considered equal
+bool sameValue(const ComplexVal& lhs, const ComplexVal& rhs);
 
 bool IMatrix::operator==(const IMatrix& rhs) {
 	return sameSize(*this, rhs) && sameData(*this, rhs) && sameLabel(*this, rhs);
@@ -32,7 +40,7 @@ bool sameData(IMatrix& lhs, const IMatrix& rhs) {
 	lhs.getSize(nbRows, nbColumns);
 	for(int r = 0; r < nbRows; r++) {
 		for(int c = 0; c < nbColumns; c++) {
-			if(lhs.getValue(r,c) != rhs.getValue(r,c)) {
+			if(!sameValue(lhs.getValue(r,c), rhs.getValue(r,c))) {
 				return false;
 			}
 		}
@@ -44,4 +52,12 @@ bool sameLabel(IMatrix& lhs, const IMatrix& rhs) {
 	std::string label1 = lhs.getLabel();
 	std::string label2 = rhs.getLabel();
 	return (label1.empty() || label2.empty() || label1.compare(label2) == 0);
+}
+
+bool sameValue(const ComplexVal& lhs, const ComplexVal& rhs) {
+#if MPFR_REAL
+	return std::norm(lhs - rhs) < REAL_TOLERANCE;
+#else
+	return lhs == rhs;
+#endif
 }

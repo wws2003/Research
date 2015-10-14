@@ -9,7 +9,9 @@ src/implement/BinaryMatrixReaderImpl.d: \
  ../../SharedThirdParties/gmp/include/gmp.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
- ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h
+ ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
+ ../include/interface/common/ComplexValIO.h \
+ ../include/interface/common/IOCommon.h
 
 ../include/implement/BinaryMatrixReaderImpl.h:
 
@@ -30,3 +32,7 @@ src/implement/BinaryMatrixReaderImpl.d: \
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
+
+../include/interface/common/ComplexValIO.h:
+
+../include/interface/common/IOCommon.h:

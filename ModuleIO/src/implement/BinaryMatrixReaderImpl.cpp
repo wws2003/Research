@@ -6,6 +6,7 @@
  */
 
 #include "BinaryMatrixReaderImpl.h"
+#include "ComplexValIO.h"
 
 #define LABEL_MAX_SIZE 256
 
@@ -33,17 +34,13 @@ void BinaryMatrixReaderImpl::read(MatrixPtr& rpMatrix, std::istream &inputStream
 
 	//Read array
 	int arraySize = nbRows * nbColumns;
-	ComplexValArray matrixArray = new ComplexVal[arraySize];
 	for(int i = 0; i < arraySize; i++) {
-		inputStream.read((char*)(&matrixArray[i]), sizeof(ComplexVal));
+		readComplexVal(inputStream, &m_valBuffer[i]);
 	}
+	endOfReadComplexVals(inputStream);
 
 	//Generate matrix instance
 	std::string labelStr(label, labelLength);
-	rpMatrix = m_pMatrixFactory->getMatrixFromValues(nbRows, nbColumns, matrixArray, ROW_SPLICE, labelStr);
+	rpMatrix = m_pMatrixFactory->getMatrixFromValues(nbRows, nbColumns, m_valBuffer, ROW_SPLICE, labelStr);
 
-	//Release read matrix array
-	delete[] matrixArray;
 }
-
-

@@ -11,12 +11,18 @@
 #include "IntegratingTester.h"
 #include "FullTestSuite.h"
 #include "IOTestSuite.h"
+#include "mpreal.h"
 
 using namespace std;
 
 #define UT 1
 
 int main() {
+
+#if MPFR_REAL
+	mpfr::mpreal::set_default_prec(256);
+#endif
+
 	cout << "!!!Testing algorithm and evaluator!!!" << endl; // prints !!!Hello World!!!
 #if UT
 	//IOTestSuite testSuite;

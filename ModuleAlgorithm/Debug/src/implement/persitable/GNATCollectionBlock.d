@@ -14,7 +14,9 @@ src/implement/persitable/GNATCollectionBlock.d: \
  ../include/interface/abstract/IIterator.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
  ../../ModuleIO/include/interface/abstract/IReader.h \
- ../../ModuleIO/include/interface/abstract/IWriter.h
+ ../../ModuleIO/include/interface/abstract/IWriter.h \
+ ../../ModuleIO/include/interface/common/ComplexValIO.h \
+ ../../ModuleIO/include/interface/common/IOCommon.h
 
 ../include/implement/persistable/GNATCollectionBlock.h:
 
@@ -45,3 +47,7 @@ src/implement/persitable/GNATCollectionBlock.d: \
 ../../ModuleIO/include/interface/abstract/IReader.h:
 
 ../../ModuleIO/include/interface/abstract/IWriter.h:
+
+../../ModuleIO/include/interface/common/ComplexValIO.h:
+
+../../ModuleIO/include/interface/common/IOCommon.h:

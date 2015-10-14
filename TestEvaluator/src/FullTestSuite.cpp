@@ -54,6 +54,8 @@
 #include <cassert>
 #include <cstdlib>
 
+#define DEBUGGING 1
+
 const std::string FullTestSuite::GNAT_COLLECTION_PERSIST_FILE = "gnat2.dat";
 
 //#define IGNORE_PHASE 1
@@ -489,11 +491,13 @@ void FullTestSuite::testCalculateCoordinatesInSearchSpace() {
 
 	int wrongCoordinateCalculateCounter = 0;
 
+	//Iterate through the whole collection
 	while(!pGateIter->isDone()) {
 		//pGateWriter->write(pGateIter->getObj(), std::cout);
 
 		MatrixRealCoordinatePtr pMatrixRealCoordinate = NullPtr;
-		pMatrixRealCoordinateCalculator->calulateElementCoordinate(pGateIter->getObj()->getMatrix(), pMatrixRealCoordinate);
+		pMatrixRealCoordinateCalculator->calulateElementCoordinate(pGateIter->getObj()->getMatrix(),
+				pMatrixRealCoordinate);
 
 		const double COORD_ERR_THRESHOLD = 1e-7;
 
@@ -501,7 +505,12 @@ void FullTestSuite::testCalculateCoordinatesInSearchSpace() {
 		if(pMatrixRealCoordinate != NullPtr) {
 
 			MatrixPtr pU1 = NullPtr;
-			calculateSpecialUnitaryFromTracelessHermitianCoordinates(m_pMatrixOperator, pMatrixRealCoordinate->getCoordinates(), pBasis4, pU1);
+
+			//Calculate back matrix from coordinate
+			calculateSpecialUnitaryFromTracelessHermitianCoordinates(m_pMatrixOperator,
+					pMatrixRealCoordinate->getCoordinates(),
+					pBasis4,
+					pU1);
 			mreal_t coordinateCalculatorErr = m_pMatrixDistanceCalculator->distance(pU1, pGateIter->getObj()->getMatrix());
 
 			if(coordinateCalculatorErr > COORD_ERR_THRESHOLD) {
@@ -523,6 +532,13 @@ void FullTestSuite::testCalculateCoordinatesInSearchSpace() {
 
 				if(adjustedError1 > COORD_ERR_THRESHOLD && adjustedError2 > COORD_ERR_THRESHOLD) {
 					wrongCoordinateCalculateCounter++;
+#if DEBUGGING
+					pGateWriter->write(pGateIter->getObj(), std::cout);
+					m_pMatrixWriter->write(pGateIter->getObj()->getMatrix(), std::cout);
+					m_pMatrixWriter->write(pU1, std::cout);
+					pMatrixCoordinateWriter->writeCoordinate(*pMatrixRealCoordinate, std::cout);
+					std::cout << coordinateCalculatorErr.toDouble() << " " << adjustedError1.toDouble() << " " << adjustedError2.toDouble() << std::endl;
+#endif
 				}
 
 				delete pGlobalPhaseAdjusted2;
@@ -646,7 +662,7 @@ void FullTestSuite::testGNATCollectionPersistence() {
 	PersistableGNATGateCollectionImpl* pGateCollection = new PersistableGNATGateCollectionImpl(pGateWriter, pGateReader);
 
 	//Construct collection
-	int maxSequenceLength = 7;
+	int maxSequenceLength = 5;
 	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new GateSearchSpaceConstructorImpl(pGateCombiner);
 	pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection, pUniversalSet, maxSequenceLength);
 	std::cout << "Number of sequence length = " << maxSequenceLength << " constructed by CNOT, H and T: " << pGateCollection->size() << std::endl;

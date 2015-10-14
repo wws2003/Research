@@ -22,6 +22,8 @@ public:
 	virtual void read(MatrixPtr& rpMatrix, std::istream &inputStream);
 
 private:
+	//FIXME Only handle upto 16x16 matrices
+	ComplexVal m_valBuffer[256];
 	MatrixFactoryPtr m_pMatrixFactory;
 };
 

@@ -24,7 +24,9 @@ src/implement/persitable/PersistableGNATGateCollectionImpl.d: \
  ../src/implement/persitable/PersistableGNATCollectionImpl.cpp \
  ../include/implement/persistable/PersistableGNATCollectionImpl.h \
  ../include/implement/persistable/GNATCollectionBlock.h \
- ../src/implement/persitable/GNATCollectionBlock.cpp
+ ../src/implement/persitable/GNATCollectionBlock.cpp \
+ ../../ModuleIO/include/interface/common/ComplexValIO.h \
+ ../../ModuleIO/include/interface/common/IOCommon.h
 
 ../include/implement/persistable/PersistableGNATGateCollectionImpl.h:
 
@@ -75,3 +77,7 @@ src/implement/persitable/PersistableGNATGateCollectionImpl.d: \
 ../include/implement/persistable/GNATCollectionBlock.h:
 
 ../src/implement/persitable/GNATCollectionBlock.cpp:
+
+../../ModuleIO/include/interface/common/ComplexValIO.h:
+
+../../ModuleIO/include/interface/common/IOCommon.h:

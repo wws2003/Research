@@ -5,8 +5,8 @@
  *      Author: pham
  */
 
-#include "BinaryGateReaderImpl.h"
 
+#include "BinaryGateReaderImpl.h"
 #define LABEL_MAX_SIZE 256
 
 BinaryGateReaderImpl::BinaryGateReaderImpl(MatrixReaderPtr pMatrixReader) {

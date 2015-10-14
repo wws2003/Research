@@ -7,6 +7,7 @@
 
 #include "IMatrix.h"
 #include "BinaryMatrixWriterImpl.h"
+#include "ComplexValIO.h"
 
 BinaryMatrixWriterImpl::BinaryMatrixWriterImpl(){
 
@@ -37,7 +38,7 @@ void BinaryMatrixWriterImpl::write(MatrixPtr pMatrix, std::ostream& outputStream
 	pMatrix->toArray(matrixArray);
 	int arraySize = nbRows * nbColumns;
 	for(int i = 0; i < arraySize; i++) {
-		outputStream.write((const char*)(&matrixArray[i]), sizeof(ComplexVal));
+		writeComplexValue(matrixArray[i], outputStream);
 	}
 
 	//Release array
