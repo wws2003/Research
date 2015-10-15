@@ -8,8 +8,7 @@
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
 
 #define gt(x,y,eps) (x - y > eps)
-#define real_abs(x) (x >= 0.0 ? (x) : -(x))
-#define apprx(x,y,eps) (real_abs(x-y) < eps)
+#define apprx(x,y,eps) (mreal::abs(x-y) < eps)
 
 #if MPFR_REAL
 #define NOISE_THRESOLD 1e-33
@@ -72,8 +71,8 @@ void SpecialUnitaryMatrixCoordinateMapper::calculateTracelessHermitianFrom2kpiTr
 			mreal_t eigRealValue = eigValues[i].real();
 			short eigRealSign = gt(eigRealValue,0,1e-9) ? 1 : -1;
 
-			if(eigRealSign == traceSign && real_abs(eigRealValue) >= maxAdjustment) {
-				maxAdjustment = real_abs(eigRealValue);
+			if(eigRealSign == traceSign && mreal::abs(eigRealValue) >= maxAdjustment) {
+				maxAdjustment = mreal::abs(eigRealValue);
 				maxAdjustmentIndex = i;
 			}
 		}

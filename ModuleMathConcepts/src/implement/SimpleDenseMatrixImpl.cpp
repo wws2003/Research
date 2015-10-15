@@ -13,8 +13,6 @@
 #define NOISE_THRESHOLD 1e-16
 #endif
 
-#define real_abs(x) (x >= 0.0 ? (x) : -(x))
-
 //Erase noised zero value such as 1e-16, 1e-17
 void cleanNoise(ComplexVal* array, int length);
 
@@ -76,10 +74,10 @@ inline int SimpleDenseMatrixImpl::getInternalIndex(int row, int column) const {
 
 void cleanNoise(ComplexVal* array, int length) {
 	for(int i = 0; i < length; i++) {
-		if(real_abs(array[i].real()) < NOISE_THRESHOLD) {
+		if(mreal::abs(array[i].real()) < NOISE_THRESHOLD) {
 			array[i].real(0.0);
 		}
-		if(real_abs(array[i].imag()) < NOISE_THRESHOLD) {
+		if(mreal::abs(array[i].imag()) < NOISE_THRESHOLD) {
 			array[i].imag(0.0);
 		}
 	}

@@ -7,11 +7,17 @@
 
 #include "ComplexValIO.h"
 
+#if MPFR_REAL
+	int getIOStreamPrecision() {
+		return REAL_IO_PRECISION;
+	}
+#endif
+
 void readComplexVal(std::istream &inputStream, ComplexVal* pCVal) {
 #if MPFR_REAL
 	int defaultPrecision = inputStream.precision();
 	//Increase precision of output stream for mpfr
-	inputStream.precision(mpfr::mpreal::get_default_prec());
+	inputStream.precision(getIOStreamPrecision());
 	mreal_t rVal;
 	inputStream >> rVal;
 	mreal_t iVal;
@@ -41,7 +47,7 @@ void writeComplexValue(const ComplexVal& cVal, std::ostream& outputStream) {
 
 	int defaultPrecision = outputStream.precision();
 	//Increase precision of output stream for mpfr
-	outputStream.precision(mpfr::mpreal::get_default_prec());
+	outputStream.precision(getIOStreamPrecision());
 	outputStream << cVal.real() << " " << cVal.imag() << " ";
 	//Restore default precision of output stream
 	outputStream.precision(defaultPrecision);
@@ -55,7 +61,7 @@ void readRealValue(std::istream &inputStream, mreal_t* pRVal) {
 #if MPFR_REAL
 	int defaultPrecision = inputStream.precision();
 	//Increase precision of output stream for mpfr
-	inputStream.precision(mpfr::mpreal::get_default_prec());
+	inputStream.precision(getIOStreamPrecision());
 	mreal_t rVal;
 	inputStream >> rVal;
 	*pRVal = rVal;
@@ -72,7 +78,7 @@ void writeRealValue(const mreal_t& rVal, std::ostream& outputStream) {
 
 	int defaultPrecision = outputStream.precision();
 	//Increase precision of output stream for mpfr
-	outputStream.precision(mpfr::mpreal::get_default_prec());
+	outputStream.precision(getIOStreamPrecision());
 	outputStream << rVal << " ";
 	//Restore default precision of output stream
 	outputStream.precision(defaultPrecision);

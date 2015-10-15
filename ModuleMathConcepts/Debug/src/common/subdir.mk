@@ -4,13 +4,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../src/common/Gate.cpp 
+../src/common/Gate.cpp \
+../src/common/MathConceptsCommon.cpp 
 
 OBJS += \
-./src/common/Gate.o 
+./src/common/Gate.o \
+./src/common/MathConceptsCommon.o 
 
 CPP_DEPS += \
-./src/common/Gate.d 
+./src/common/Gate.d \
+./src/common/MathConceptsCommon.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

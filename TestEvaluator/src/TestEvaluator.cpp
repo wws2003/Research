@@ -19,9 +19,7 @@ using namespace std;
 
 int main() {
 
-#if MPFR_REAL
-	mpfr::mpreal::set_default_prec(256);
-#endif
+	mreal::initPrecision();
 
 	cout << "!!!Testing algorithm and evaluator!!!" << endl; // prints !!!Hello World!!!
 #if UT

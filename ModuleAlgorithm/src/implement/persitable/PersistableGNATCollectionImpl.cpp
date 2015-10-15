@@ -225,8 +225,34 @@ bool PersistableGNATCollectionImpl<T>::sameUnstructuredBuffer(const PersistableG
 
 template<typename T>
 bool PersistableGNATCollectionImpl<T>::sameSplitPointsRange(const PersistableGNATCollectionImpl<T>& rhs) {
-	bool r = GNATCollectionImpl<T>::m_splitPointRanges == rhs.m_splitPointRanges;
-	return r;
+#if MPFR_REAL
+	mreal_t errorThreshold = 1e-30;
+	size_t lRangeMapSize = GNATCollectionImpl<T>::m_splitPointRanges.size();
+	size_t rRangeMapSize = rhs.m_splitPointRanges.size();
+	if(lRangeMapSize != rRangeMapSize) {
+		return false;
+	}
+	for(unsigned int i = 0; i < lRangeMapSize; i++) {
+		std::vector<Range> lRanges = GNATCollectionImpl<T>::m_splitPointRanges[i];
+		std::vector<Range> rRanges = rhs.m_splitPointRanges[i];
+		size_t lRangeSize = lRanges.size();
+		size_t rRangeSize = rRanges.size();
+		if(lRangeSize != rRangeSize) {
+			return false;
+		}
+		for(unsigned int j = 0; j < lRangeSize; j++) {
+			Range lRange = lRanges[j];
+			Range rRange = rRanges[j];
+			if(mreal::abs(lRange.first - rRange.first) > errorThreshold
+					|| mreal::abs(lRange.second - rRange.second) > errorThreshold) {
+				return false;
+			}
+		}
+	}
+	return true;
+#else
+	return GNATCollectionImpl<T>::m_splitPointRanges == rhs.m_splitPointRanges;
+#endif
 }
 
 template<typename T>
@@ -252,7 +278,7 @@ template<typename EPtr>
 void releasePointerVector(std::vector<EPtr> vect) {
 	for(typename std::vector<EPtr>::iterator bIter = vect.begin(); bIter != vect.end();) {
 		EPtr pE = *bIter;
-		delete pE;
+		_destroy(pE);
 		bIter = vect.erase(bIter);
 	}
 }

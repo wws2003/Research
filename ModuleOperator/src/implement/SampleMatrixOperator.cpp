@@ -27,8 +27,6 @@ void fromLdToMp(const MatrixXcld& mLd, MatrixXcmp& mMp);
 #define NOISE_THRESOLD 1e-12
 #endif
 
-#define real_abs(x) (x >= 0.0 ? (x) : -(x))
-
 SampleMatrixOperator::SampleMatrixOperator(MatrixFactoryPtr pMatrixFactory) : m_pMatrixFactory(pMatrixFactory) {
 
 }
@@ -205,7 +203,7 @@ void SampleMatrixOperator::specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef 
 	ComplexVal detU = eigenU.determinant();
 
 	//Check if detU = +1
-	mreal_t detNoise = real_abs(detU.real() - 1.0);
+	mreal_t detNoise = mreal::abs(detU.real() - 1.0);
 	if(detNoise < NOISE_THRESOLD) {
 		prSU = fromEigenMatrix(eigenU, pU->getLabel());
 	}

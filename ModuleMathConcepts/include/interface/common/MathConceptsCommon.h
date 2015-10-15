@@ -23,6 +23,28 @@ typedef double mreal_t;
 
 typedef std::complex<mreal_t> ComplexVal;
 
+namespace mreal {
+
+inline void initPrecision() {
+#if MPFR_REAL
+	mpfr::mpreal::set_default_prec(256);
+#else
+	//DO nothing
+#endif
+}
+
+inline mreal_t abs(const mreal_t& v) {
+#if MPFR_REAL
+	return mpfr::abs(v);
+#else
+	return std::abs(v);
+#endif
+}
+
+mreal_t norm(const ComplexVal& v);
+}
+// namespace mreal
+
 typedef ComplexVal* ComplexValArray;
 typedef ComplexValArray& ComplexValArrayRef;
 

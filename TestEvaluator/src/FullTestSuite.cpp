@@ -533,11 +533,12 @@ void FullTestSuite::testCalculateCoordinatesInSearchSpace() {
 				if(adjustedError1 > COORD_ERR_THRESHOLD && adjustedError2 > COORD_ERR_THRESHOLD) {
 					wrongCoordinateCalculateCounter++;
 #if DEBUGGING
+					std::cout << "Abnormal case:" << std::endl;
 					pGateWriter->write(pGateIter->getObj(), std::cout);
 					m_pMatrixWriter->write(pGateIter->getObj()->getMatrix(), std::cout);
 					m_pMatrixWriter->write(pU1, std::cout);
 					pMatrixCoordinateWriter->writeCoordinate(*pMatrixRealCoordinate, std::cout);
-					std::cout << coordinateCalculatorErr.toDouble() << " " << adjustedError1.toDouble() << " " << adjustedError2.toDouble() << std::endl;
+					std::cout << coordinateCalculatorErr << " " << adjustedError1 << " " << adjustedError2 << std::endl;
 #endif
 				}
 
