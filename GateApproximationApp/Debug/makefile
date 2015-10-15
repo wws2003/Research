@@ -44,7 +44,7 @@ all: GateApproximationApp
 GateApproximationApp: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -L../../ModuleMathConcepts/artifact -L../../ModuleOperator/artifact -L../../ModuleIO/artifact -L../../ModuleAlgorithm/artifact -L../../ModuleEvaluate/artifact -o "GateApproximationApp" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L../../ModuleMathConcepts/artifact -L../../ModuleOperator/artifact -L../../ModuleIO/artifact -L../../ModuleAlgorithm/artifact -L../../ModuleEvaluate/artifact -L../../SharedThirdParties/gmp/lib -L../../SharedThirdParties/mpfr/lib -L../../SharedThirdParties/mpfrc++/lib -o "GateApproximationApp" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

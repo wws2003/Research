@@ -33,6 +33,8 @@ int main(int argc, char* argv[]) {
 		printSyntaxMessage();
 	}
 	else {
+		mreal::initPrecision();
+
 		AppContainerPtr pAppContainer = new SampleAppContainerImpl(argv[2], argv[3]);
 
 		evaluateCollection(pAppContainer);

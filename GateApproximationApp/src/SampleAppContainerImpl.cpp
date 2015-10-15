@@ -195,16 +195,22 @@ void SampleAppContainerImpl::readApproximatorConfigFromFile(std::string configFi
 		std::string line;
 
 		std::getline(inputStream, line);
-		sscanf(line.data(), "%[^:]:%lf", prefix, &m_nearIdentityApproximatorConfig.m_initialEpsilon);
+		double initialEpsilon;
+		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
+		m_nearIdentityApproximatorConfig.m_initialEpsilon = (ComplexVal)initialEpsilon;
 
 		std::getline(inputStream, line);
 		sscanf(line.data(), "%[^:]:%d", prefix, &m_nearIdentityApproximatorConfig.m_maxMergedBinDistance);
 
 		std::getline(inputStream, line);
-		sscanf(line.data(), "%[^:]:%lf", prefix, &m_nearIdentityApproximatorConfig.m_maxCandidateEpsilon);
+		double maxCandidateEpsilon;
+		sscanf(line.data(), "%[^:]:%lf", prefix, &maxCandidateEpsilon);
+		m_nearIdentityApproximatorConfig.m_maxCandidateEpsilon = (ComplexVal)maxCandidateEpsilon;
 
 		std::getline(inputStream, line);
-		sscanf(line.data(), "%[^:]:%lf", prefix, &m_nearIdentityApproximatorConfig.m_maxCandidateEpsilonDecreaseFactor);
+		double maxCandidateEpsilonDecreaseFactor;
+		sscanf(line.data(), "%[^:]:%lf", prefix, &maxCandidateEpsilonDecreaseFactor);
+		m_nearIdentityApproximatorConfig.m_maxCandidateEpsilonDecreaseFactor = (ComplexVal)maxCandidateEpsilonDecreaseFactor;
 
 		std::getline(inputStream, line);
 		sscanf(line.data(), "%[^:]:%d", prefix, &m_nearIdentityApproximatorConfig.m_iterationMaxSteps);
@@ -298,9 +304,16 @@ std::string SampleAppContainerImpl::getGateCollectionPersistenceFileFullName(con
 	int maxSequenceLength = config.m_maxSequenceLength;
 	std::string fileName = librarySetFileNameMap.find(config.m_librarySet)->second;
 
+#if MPFR_REAL
+	std::string precisionPostFix = "_mpfr";
+#else
+	std::string precisionPostFix = "";
+#endif
+
 	char fullName[256];
-	sprintf(fullName, "%s_%d_%d.%s",
+	sprintf(fullName, "%s%s_%d_%d.%s",
 			fileName.c_str(),
+			precisionPostFix.c_str(),
 			nbQubits,
 			maxSequenceLength,
 			fileExtension.c_str());

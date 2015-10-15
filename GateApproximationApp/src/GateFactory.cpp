@@ -12,8 +12,8 @@
 #include <stdexcept>
 
 double inverseSQRT2 = 1/sqrt(2);
-ComplexVal expmPi_8 = std::exp(ComplexVal(0, 1) * M_PI / 8.0);
-ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, -1) * M_PI / 8.0);
+ComplexVal expmPi_8 = std::exp(ComplexVal(0, 1 * M_PI / 8.0));
+ComplexVal expm_Pi_8 = std::exp(ComplexVal(0, -1 * M_PI / 8.0));
 
 MatrixPtr getHMatrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory);
 MatrixPtr getTMatrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory);
@@ -116,18 +116,18 @@ MatrixPtr getHMatrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrix
 
 MatrixPtr getTMatrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory) {
 
-	ComplexVal arrayT[] = {expm_Pi_8, 0.0
-			, 0.0, expmPi_8};
+	ComplexVal arrayT[] = {expm_Pi_8, (ComplexVal)0.0
+			, (ComplexVal)0.0, expmPi_8};
 
 	MatrixPtr pTMat = pMatrixFactory->getMatrixFromValues(2, 2, arrayT, ROW_SPLICE);
 	return pTMat;
 }
 
 MatrixPtr getCNOT1Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory) {
-	ComplexVal arrayCNOT1[] = {1.0, 0.0, 0.0, 0.0
-			, 0.0, 1.0, 0.0, 0.0
-			, 0.0, 0.0, 0.0, 1.0
-			, 0.0, 0.0, 1.0, 0.0};
+	ComplexVal arrayCNOT1[] = {(ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0};
 
 	MatrixPtr pCNOTMat1 = pMatrixFactory->getMatrixFromValues(2, 2, arrayCNOT1, ROW_SPLICE);
 
@@ -140,10 +140,10 @@ MatrixPtr getCNOT1Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMa
 }
 
 MatrixPtr getCNOT2Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory) {
-	ComplexVal arrayCNOT2[] = {0.0, 1.0, 0.0, 0.0
-			, 1.0, 0.0, 0.0, 0.0
-			, 0.0, 0.0, 1.0, 0.0
-			, 0.0, 0.0, 0.0, 1.0};
+	ComplexVal arrayCNOT2[] = {(ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0};
 
 	MatrixPtr pCNOTMat2 = pMatrixFactory->getMatrixFromValues(2, 2, arrayCNOT2, ROW_SPLICE);
 	MatrixPtr pSCNOTMat2 = NullPtr;
@@ -155,10 +155,10 @@ MatrixPtr getCNOT2Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMa
 }
 
 MatrixPtr getCV1Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory) {
-	ComplexVal arrayV1[] = {1.0, 0.0, 0.0, 0.0
-			, 0.0, 1.0, 0.0, 0.0
-			, 0.0, 0.0, ComplexVal(0.5, 0.5), ComplexVal(0.5, -0.5)
-			, 0.0, 0.0, ComplexVal(0.5, -0.5), ComplexVal(0.5, 0.5)};
+	ComplexVal arrayV1[] = {(ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, ComplexVal(0.5, 0.5), ComplexVal(0.5, -0.5)
+			, (ComplexVal)0.0, (ComplexVal)0.0, ComplexVal(0.5, -0.5), ComplexVal(0.5, 0.5)};
 
 	MatrixPtr pV1Mat = pMatrixFactory->getMatrixFromValues(4, 4, arrayV1, ROW_SPLICE);
 	MatrixPtr pSV1Mat = NullPtr;
@@ -170,10 +170,10 @@ MatrixPtr getCV1Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatr
 }
 
 MatrixPtr getCV2Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory) {
-	ComplexVal arrayV2[] = {ComplexVal(0.5, 0.5), ComplexVal(0.5, -0.5), 0.0, 0.0
-			, ComplexVal(0.5, -0.5), ComplexVal(0.5, 0.5), 0.0, 0.0
-			, 0.0, 0.0, 1.0, 0.0
-			, 0.0, 0.0, 0.0, 1.0};
+	ComplexVal arrayV2[] = {ComplexVal(0.5, 0.5), ComplexVal(0.5, -0.5), (ComplexVal)0.0, (ComplexVal)0.0
+			, ComplexVal(0.5, -0.5), ComplexVal(0.5, 0.5), (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0};
 
 	MatrixPtr pV2Mat = pMatrixFactory->getMatrixFromValues(4, 4, arrayV2, ROW_SPLICE);
 	MatrixPtr pSV2Mat = NullPtr;
@@ -185,30 +185,30 @@ MatrixPtr getCV2Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatr
 }
 
 MatrixPtr getH1Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory) {
-	ComplexVal arrayH1[] = {ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(inverseSQRT2, 0), 0.0
-			, 0.0, ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(inverseSQRT2, 0)
-			, ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(-inverseSQRT2, 0), 0.0
-			, 0.0, ComplexVal(inverseSQRT2, 0), 0.0, ComplexVal(-inverseSQRT2, 0)};
+	ComplexVal arrayH1[] = {ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0
+			, (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0)
+			, ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0, ComplexVal(-inverseSQRT2, 0), (ComplexVal)0.0
+			, (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0),(ComplexVal) 0.0, ComplexVal(-inverseSQRT2, 0)};
 
 	MatrixPtr pH1Mat = pMatrixFactory->getMatrixFromValues(4, 4, arrayH1, ROW_SPLICE);
 	return pH1Mat;
 }
 
 MatrixPtr getH2Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory) {
-	ComplexVal arrayH2[] = {ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0), 0.0, 0.0
-			, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0), 0.0, 0.0
-			, 0.0, 0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0)
-			, 0.0, 0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0)};
+	ComplexVal arrayH2[] = {ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0), (ComplexVal)0.0, (ComplexVal)0.0
+			, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0), (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(inverseSQRT2, 0)
+			, (ComplexVal)0.0, (ComplexVal)0.0, ComplexVal(inverseSQRT2, 0), ComplexVal(-inverseSQRT2, 0)};
 
 	MatrixPtr pH2Mat = pMatrixFactory->getMatrixFromValues(4, 4, arrayH2, ROW_SPLICE);
 	return pH2Mat;
 }
 
 MatrixPtr getT1Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory) {
-	ComplexVal arrayT1[] = {expm_Pi_8, 0.0, 0.0, 0.0
-			, 0.0, expm_Pi_8, 0.0, 0.0
-			, 0.0, 0.0, expmPi_8, 0.0
-			, 0.0, 0.0, 0.0, expmPi_8};
+	ComplexVal arrayT1[] = {expm_Pi_8, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, expm_Pi_8, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, expmPi_8, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, expmPi_8};
 
 	MatrixPtr pT1Mat = pMatrixFactory->getMatrixFromValues(4, 4, arrayT1, ROW_SPLICE);
 
@@ -216,10 +216,10 @@ MatrixPtr getT1Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatri
 }
 
 MatrixPtr getT2Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory) {
-	ComplexVal arrayT2[] = {expm_Pi_8, 0.0, 0.0, 0.0
-			, 0.0, expmPi_8, 0.0, 0.0
-			, 0.0, 0.0, expm_Pi_8, 0.0
-			, 0.0, 0.0, 0.0, expmPi_8};
+	ComplexVal arrayT2[] = {expm_Pi_8, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, expmPi_8, (ComplexVal)0.0, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, expm_Pi_8, (ComplexVal)0.0
+			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, expmPi_8};
 
 	MatrixPtr pT2Mat = pMatrixFactory->getMatrixFromValues(4, 4, arrayT2, ROW_SPLICE);
 
@@ -227,8 +227,8 @@ MatrixPtr getT2Matrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatri
 }
 
 MatrixPtr getInverseTMatrix(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory) {
-	ComplexVal arrayTInverse[] = {expmPi_8, 0.0
-			, 0.0, expm_Pi_8};
+	ComplexVal arrayTInverse[] = {expmPi_8, (ComplexVal)0.0
+			, (ComplexVal)0.0, expm_Pi_8};
 
 	MatrixPtr pTInverseMat = pMatrixFactory->getMatrixFromValues(2, 2, arrayTInverse, ROW_SPLICE);
 
