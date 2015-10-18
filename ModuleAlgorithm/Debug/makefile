@@ -10,6 +10,8 @@ RM := rm -rf
 -include sources.mk
 -include src/internal-abstract/subdir.mk
 -include src/implement/persitable/subdir.mk
+-include src/implement/decomposer/subdir.mk
+-include src/implement/composer/subdir.mk
 -include src/implement/combiner/subdir.mk
 -include src/implement/collection/subdir.mk
 -include src/implement/approximator/subdir.mk

@@ -23,6 +23,7 @@ typedef IApproximator<GatePtr> IGateApproximator;
 template<typename T> class ICombiner;
 typedef ICombiner<MatrixPtr> IMatrixCombiner;
 typedef ICombiner<GatePtr> IGateCombiner;
+
 template<typename T>
 using CombinerPtr = ICombiner<T>*;
 
@@ -33,10 +34,24 @@ using CollectionPtr = ICollection<T>*;
 template<typename T>
 using ApproximatorPtr = IApproximator<T>*;
 
+template<typename T>class IComposer;
+
+template<typename T>
+using ComposerPtr = IComposer<T>*;
+
+template<typename T>class IDecomposer;
+
+template<typename T>
+using DecomposerPtr = IDecomposer<T>*;
+
 typedef ICollection<MatrixRealCoordinatePtr> MatrixRealCoordinateCollection;
 typedef ICollection<GateRealCoordinatePtr> GateRealCoordinateCollection;
 typedef ICollection<MatrixPtr> IMatrixCollection;
 typedef ICollection<GatePtr> IGateCollection;
+typedef IComposer<GatePtr> IGateComposer;
+typedef IComposer<MatrixPtr> IMatrixComposer;
+typedef IDecomposer<GatePtr> IGateDecomposer;
+typedef IDecomposer<MatrixPtr> IMatrixDecomposer;
 
 template<typename T> class IIterator;
 template<typename T>
@@ -61,8 +76,17 @@ typedef IPersistableMatrixCollection* PersitableMatrixCollectionPtr;
 typedef IMatrixApproximator* MatrixApproximatorPtr;
 typedef IMatrixApproximator& MatrixApproximatorRef;
 
+typedef IMatrixComposer* MatrixComposerPtr;
+typedef MatrixComposerPtr& MatrixComposerPtrRef;
+
 typedef IGateApproximator* GateApproximatorPtr;
 typedef GateApproximatorPtr& GateApproximatorPtrRef;
+
+typedef IGateComposer* GateComposerPtr;
+typedef GateComposerPtr& GateComposerPtrRef;
+
+typedef IGateDecomposer* GateDecomposerPtr;
+typedef GateDecomposerPtr& GateDecomposerPtrRef;
 
 typedef MatrixRealCoordinateCollection* MatrixRealCoordinateCollectionPtr;
 

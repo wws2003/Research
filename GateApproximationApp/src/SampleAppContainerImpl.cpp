@@ -197,7 +197,7 @@ void SampleAppContainerImpl::readApproximatorConfigFromFile(std::string configFi
 		std::getline(inputStream, line);
 		double initialEpsilon;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
-		m_nearIdentityApproximatorConfig.m_initialEpsilon = (ComplexVal)initialEpsilon;
+		m_nearIdentityApproximatorConfig.m_initialEpsilon = (mreal_t)initialEpsilon;
 
 		std::getline(inputStream, line);
 		sscanf(line.data(), "%[^:]:%d", prefix, &m_nearIdentityApproximatorConfig.m_maxMergedBinDistance);
@@ -205,12 +205,12 @@ void SampleAppContainerImpl::readApproximatorConfigFromFile(std::string configFi
 		std::getline(inputStream, line);
 		double maxCandidateEpsilon;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &maxCandidateEpsilon);
-		m_nearIdentityApproximatorConfig.m_maxCandidateEpsilon = (ComplexVal)maxCandidateEpsilon;
+		m_nearIdentityApproximatorConfig.m_maxCandidateEpsilon = (mreal_t)maxCandidateEpsilon;
 
 		std::getline(inputStream, line);
 		double maxCandidateEpsilonDecreaseFactor;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &maxCandidateEpsilonDecreaseFactor);
-		m_nearIdentityApproximatorConfig.m_maxCandidateEpsilonDecreaseFactor = (ComplexVal)maxCandidateEpsilonDecreaseFactor;
+		m_nearIdentityApproximatorConfig.m_maxCandidateEpsilonDecreaseFactor = (mreal_t)maxCandidateEpsilonDecreaseFactor;
 
 		std::getline(inputStream, line);
 		sscanf(line.data(), "%[^:]:%d", prefix, &m_nearIdentityApproximatorConfig.m_iterationMaxSteps);
@@ -256,7 +256,7 @@ void SampleAppContainerImpl::wireDependencies() {
 	m_pHermitiaRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new MatrixCoordinateOnOrthonormalBasisCalculatorImpl(m_pMatrixRealInnerProductCalculator, pBasis));
 	m_pMatrixRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, m_pHermitiaRealCoordinateCalculator));
 	m_pGateRealCoordinateCalculator = GateRealCoordinateCalculatorPtr(new GateCoordinateCalculatorImpl(m_pMatrixRealCoordinateCalculator));
-	m_pCoordinateWriter = RealCoordinateWriterPtr<GatePtr>(new SampleRealCoordinateWriterImpl<GatePtr>(","));
+	m_pCoordinateWriter = RealCoordinateWriterPtr<GatePtr>(new SampleRealCoordinateWriterImpl<GatePtr>(20, ","));
 
 	m_pTimer = TimerPtr(new CpuTimer());
 

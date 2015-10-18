@@ -611,7 +611,8 @@ void FullTestSuite::testGNATCollectionBuild() {
 	assert(gateCountsFromIterator == gateCounts);
 	delete pGateIter;
 
-	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(m_pMatrixOperator);
+	//MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(m_pMatrixOperator);
+	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(m_pMatrixOperator);
 	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(pMatrixDistanceCalculator);
 	pGNATCollection->rebuildStructure(pGateDistanceCalculator);
 
@@ -669,7 +670,8 @@ void FullTestSuite::testGNATCollectionPersistence() {
 	std::cout << "Number of sequence length = " << maxSequenceLength << " constructed by CNOT, H and T: " << pGateCollection->size() << std::endl;
 
 	//Re-structured collection respecting distance function
-	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(m_pMatrixOperator);
+	//MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(m_pMatrixOperator);
+	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(m_pMatrixOperator);
 	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(pMatrixDistanceCalculator);
 	pGateCollection->rebuildStructure(pGateDistanceCalculator);
 	std::cout << "Finish re-constructing" << std::endl;
@@ -733,7 +735,8 @@ void FullTestSuite::testGNATSearch() {
 	TargetElements<GatePtr> targets;
 	getNearIdentityGate(m_pMatrixOperator, pBasis4, targets);
 
-	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(m_pMatrixOperator);
+	//MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(m_pMatrixOperator);
+	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(m_pMatrixOperator);
 	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(pMatrixDistanceCalculator);
 
 	std::vector<int> vectorCollectionResultNumbers;
@@ -811,7 +814,8 @@ void FullTestSuite::freeTestGateCollectionEvaluator() {
 	TargetElements<GatePtr> targets;
 	getNearIdentityGate(m_pMatrixOperator, pBasis4, targets);
 
-	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(m_pMatrixOperator);
+	//MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(m_pMatrixOperator);
+	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(m_pMatrixOperator);
 	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(pMatrixDistanceCalculator);
 	GateSearchSpaceEvaluatorPtr pGateSearchSpaceEvaluator = new GateSearchSpaceTimerEvaluatorImpl(targets,
 			epsilon,

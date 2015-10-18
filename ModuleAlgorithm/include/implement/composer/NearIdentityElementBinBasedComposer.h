@@ -1,19 +1,16 @@
 /*
- * NearIdentityElementApproximator.h
+ * NearIdentityElementComposer.h
  *
- *  Created on: Jun 18, 2015
+ *  Created on: Oct 18, 2015
  *      Author: pham
  */
 
-#ifndef NEARIDENTITYELEMENTAPPROXIMATOR_H_
-#define NEARIDENTITYELEMENTAPPROXIMATOR_H_
+#ifndef NEARIDENTITYELEMENTBINBASEDCOMPOSER_H_
+#define NEARIDENTITYELEMENTBINBASEDCOMPOSER_H_
 
-#include "OperatorCommon.h"
-#include "ICollection.h"
-#include "ICombiner.h"
-#include "AlgoInternal.h"
-#include "IApproximator.h"
-#include "OperatorCommon.h"
+#include "IComposer.h"
+#include "Bin.hpp"
+#include "IIterator.h"
 
 typedef std::vector<mreal_t> real_coordinate_t;
 
@@ -21,10 +18,9 @@ template<typename T>
 using ApprxResultBuffer = std::vector<T>;
 
 template<typename T>
-class NearIdentityElementApproximator: public IApproximator<T> {
+class NearIdentityElementBinBasedComposer: public IComposer<T> {
 public:
 	typedef struct Config_ {
-		mreal_t m_initialEpsilon;
 		int m_maxMergedBinDistance;
 		mreal_t m_maxCandidateEpsilon;
 		mreal_t m_maxCandidateEpsilonDecreaseFactor;
@@ -32,16 +28,21 @@ public:
 		int m_maxResultNumber;
 	} Config;
 
-	NearIdentityElementApproximator(RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
+	NearIdentityElementBinBasedComposer(RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
 			CombinerPtr<T> pCombiner,
 			BinCollectionPtr<T> pBinCollection,
 			const Config& config);
 
-	virtual ~NearIdentityElementApproximator(){};
-	virtual IteratorPtr<T> getApproximateElements(CollectionPtr<T> pCoreCollection, T pQuery, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon);
+	virtual ~NearIdentityElementBinBasedComposer(){};
+
+	//Override
+	virtual IteratorPtr<T> composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
+			T pQuery,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilon);
 
 private:
-	void initBinCollection(CollectionPtr<T> pCoreCollection,
+	void initBinCollection(IteratorPtr<T> pBuildingBlockIter,
 			T pQuery,
 			const real_coordinate_t& queryCoordinate,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
@@ -54,15 +55,15 @@ private:
 			ApprxResultBuffer<T>& apprxResultBuffer);
 
 	void generateApproximationsPrefixedFromBins(BinPtr<T> pBin,
-				int maxBinDistance,
-				T pQuery,
-				const real_coordinate_t& queryCoordinate,
-				DistanceCalculatorPtr<T> pDistanceCalculator,
-				mreal_t epsilonForMergeCandidate,
-				mreal_t approximationEpsilon,
-				CollectionPtr<T> pApprxTempCollection,
-				ApprxResultBuffer<T>& apprxResultBuffer,
-				int maxResultsNumber);
+			int maxBinDistance,
+			T pQuery,
+			const real_coordinate_t& queryCoordinate,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilonForMergeCandidate,
+			mreal_t approximationEpsilon,
+			CollectionPtr<T> pApprxTempCollection,
+			ApprxResultBuffer<T>& apprxResultBuffer,
+			int maxResultsNumber);
 
 	void distributeResultsToBins(const real_coordinate_t& queryCoordinate,
 			IteratorPtr<T> pApprxIter,
@@ -80,4 +81,5 @@ private:
 	Config m_config;
 };
 
-#endif /* NEARIDENTITYELEMENTAPPROXIMATOR_H_ */
+
+#endif /* NEARIDENTITYELEMENTCOMPOSER_H_ */

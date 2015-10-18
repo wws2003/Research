@@ -1,12 +1,11 @@
 /*
- * NearIdentityElementApproximator.cpp
+ * NearIdentityElementBinBasedComposer.cpp
  *
- *  Created on: Jun 18, 2015
+ *  Created on: Oct 18, 2015
  *      Author: pham
  */
 
-#include "NearIdentityElementApproximator.h"
-
+#include "NearIdentityElementBinBasedComposer.h"
 #include "ICoordinateCalculator.h"
 #include "Bin.hpp"
 #include "IIterator.h"
@@ -15,6 +14,7 @@
 #include "VectorBasedReadOnlyIteratorImpl.hpp"
 #include "ICollection.h"
 #include "IBinCollection.h"
+#include "ICombiner.h"
 #include <iostream>
 
 template<typename T>
@@ -38,7 +38,7 @@ void addApprxResultsToBufferFromCollection(CollectionPtr<T> pCollection,
 		int maxResultsNumber);
 
 template<typename T>
-NearIdentityElementApproximator<T>::NearIdentityElementApproximator(RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
+NearIdentityElementBinBasedComposer<T>::NearIdentityElementBinBasedComposer(RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
 		CombinerPtr<T> pCombiner,
 		BinCollectionPtr<T> pBinCollection,
 		const Config& config) {
@@ -50,7 +50,7 @@ NearIdentityElementApproximator<T>::NearIdentityElementApproximator(RealCoordina
 }
 
 template<typename T>
-IteratorPtr<T> NearIdentityElementApproximator<T>::getApproximateElements(CollectionPtr<T> pCoreCollection,
+IteratorPtr<T> NearIdentityElementBinBasedComposer<T>::composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon) {
@@ -60,7 +60,8 @@ IteratorPtr<T> NearIdentityElementApproximator<T>::getApproximateElements(Collec
 	m_pRealCoordinateCalculator->calulateElementCoordinate(pQuery, pQueryCoordinate);
 	real_coordinate_t queryCoordinate = pQueryCoordinate->getCoordinates();
 
-	initBinCollection(pCoreCollection,
+	//This this case, using only the first bucket of building blocks. Buckets should be equivalent
+	initBinCollection(buildingBlockBuckets[0],
 			pQuery,
 			pQueryCoordinate->getCoordinates(),
 			pDistanceCalculator,
@@ -83,33 +84,26 @@ IteratorPtr<T> NearIdentityElementApproximator<T>::getApproximateElements(Collec
 	return IteratorPtr<T>(new VectorBasedReadOnlyIteratorImpl<T>(apprxResultBuffer)) ;
 }
 
+
 template<typename T>
-void NearIdentityElementApproximator<T>::initBinCollection(CollectionPtr<T> pCoreCollection,
+void NearIdentityElementBinBasedComposer<T>::initBinCollection(IteratorPtr<T> pBuildingBlockIter,
 		T pQuery,
 		const real_coordinate_t& queryCoordinate,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon) {
-
-	//Find first round results
-	mreal_t firstRoundEpsilon = m_config.m_initialEpsilon;
-	IteratorPtr<T> pFirstRoundApprxIter = pCoreCollection->findNearestNeighbour(pQuery, pDistanceCalculator, firstRoundEpsilon);
-
-	if(pFirstRoundApprxIter == NullPtr || pFirstRoundApprxIter->isDone()) {
-		return;
-	}
 
 	//Reset bin collection
 	m_pBinCollection->clear();
 
 	//Distribute first results into bin collection
 	distributeResultsToBins(queryCoordinate,
-			pFirstRoundApprxIter,
+			pBuildingBlockIter,
 			m_pRealCoordinateCalculator,
 			m_pBinCollection);
 }
 
 template<typename T>
-void NearIdentityElementApproximator<T>::generateApproximationsFromBins(T pQuery,
+void NearIdentityElementBinBasedComposer<T>::generateApproximationsFromBins(T pQuery,
 		const real_coordinate_t& queryCoordinate,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
@@ -165,7 +159,7 @@ void NearIdentityElementApproximator<T>::generateApproximationsFromBins(T pQuery
 }
 
 template<typename T>
-void NearIdentityElementApproximator<T>::generateApproximationsPrefixedFromBins(BinPtr<T> pBin,
+void NearIdentityElementBinBasedComposer<T>::generateApproximationsPrefixedFromBins(BinPtr<T> pBin,
 		int maxBinDistance,
 		T pQuery,
 		const real_coordinate_t& queryCoordinate,
@@ -198,7 +192,10 @@ void NearIdentityElementApproximator<T>::generateApproximationsPrefixedFromBins(
 }
 
 template<typename T>
-void NearIdentityElementApproximator<T>::distributeResultsToBins(const real_coordinate_t& queryCoordinate, IteratorPtr<T> pApprxIter, RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator, BinCollectionPtr<T> pBinCollection) {
+void NearIdentityElementBinBasedComposer<T>::distributeResultsToBins(const real_coordinate_t& queryCoordinate,
+		IteratorPtr<T> pApprxIter,
+		RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
+		BinCollectionPtr<T> pBinCollection) {
 	unsigned int nbCoordinates = queryCoordinate.size();
 	BinPattern binPattern(nbCoordinates, '0');
 
@@ -225,7 +222,7 @@ void NearIdentityElementApproximator<T>::distributeResultsToBins(const real_coor
 }
 
 template<typename T>
-void NearIdentityElementApproximator<T>::calculateBinPattern(const real_coordinate_t& queryCoordinate, const real_coordinate_t& apprxCoordinate, BinPattern& binPattern) {
+void NearIdentityElementBinBasedComposer<T>::calculateBinPattern(const real_coordinate_t& queryCoordinate, const real_coordinate_t& apprxCoordinate, BinPattern& binPattern) {
 	unsigned int nbCoordinates = queryCoordinate.size();
 	for(unsigned int i = 0; i < nbCoordinates; i++) {
 		if(queryCoordinate[i] < apprxCoordinate[i] / 2) {
@@ -293,3 +290,5 @@ void addApprxResultsToBufferFromCollection(CollectionPtr<T> pCollection,
 		}
 	}
 }
+
+

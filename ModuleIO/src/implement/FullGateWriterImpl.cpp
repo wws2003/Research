@@ -42,11 +42,7 @@ void FullGateWriterImpl::write(GatePtr pGate, std::ostream& outputStream) {
 }
 
 void printVal(char* printfBuffer, const ComplexVal& val) {
-#if MPFR_REAL
-	sprintf(printfBuffer, "[%.3f %s %.3f i] ", val.real().toDouble(), val.imag().toDouble() > 0 ? "+" : "-", std::abs(val.imag().toDouble()));
-#else
-	sprintf(printfBuffer, "[%.3f %s %.3f i] ", val.real(), val.imag() > 0 ? "+" : "-", std::abs(val.imag()));
-#endif
+	sprintf(printfBuffer, "[%.3f %s %.3f i] ", mreal::toDouble(val.real()), mreal::toDouble(val.imag()) > 0 ? "+" : "-", std::abs(mreal::toDouble(val.imag())));
 }
 
 

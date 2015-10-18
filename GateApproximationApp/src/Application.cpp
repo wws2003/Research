@@ -27,7 +27,7 @@ void evaluateCollection(AppContainerPtr pAppContainer);
 void evaluateApproximator(AppContainerPtr pAppContainer);
 
 int main(int argc, char* argv[]) {
-	cout << "!!!Welcome to Quantuam Gate Approximation App!!!" << endl; // prints !!!Hello World!!!
+	cout << "!!!Welcome to Quantum Gate Approximation App!!!" << endl; // prints !!!Hello World!!!
 
 	if(!isValidSyntax(argc, argv)) {
 		printSyntaxMessage();

@@ -25,6 +25,8 @@ C_UPPER_DEPS :=
 SUBDIRS := \
 src/internal-abstract \
 src/implement/persitable \
+src/implement/decomposer \
+src/implement/composer \
 src/implement/combiner \
 src/implement/collection \
 src/implement/approximator \

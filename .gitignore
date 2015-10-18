@@ -40,6 +40,9 @@ run_test_evaluator.sh
 gdb_test_operator.txt
 gdb_test_evaluator.txt
 
+# Output files
+GateApproximationApp/Debug/*.txt
+
 # Misc metadata
 .metadata
 

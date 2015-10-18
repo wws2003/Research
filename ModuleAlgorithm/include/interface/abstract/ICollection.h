@@ -13,8 +13,6 @@
 #include "MathConceptsCommon.h"
 #include "IIterator.h"
 
-//Only for future purpose. Generic level of current implementation is not enough for this
-
 template<typename T>
 class ICollection {
 public:

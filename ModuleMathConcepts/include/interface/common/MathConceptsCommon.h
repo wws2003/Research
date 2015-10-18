@@ -25,9 +25,9 @@ typedef std::complex<mreal_t> ComplexVal;
 
 namespace mreal {
 
-inline void initPrecision() {
+inline void initPrecision(int defaultPrecision = 256) {
 #if MPFR_REAL
-	mpfr::mpreal::set_default_prec(256);
+	mpfr::mpreal::set_default_prec(defaultPrecision);
 #else
 	//DO nothing
 #endif
@@ -38,6 +38,14 @@ inline mreal_t abs(const mreal_t& v) {
 	return mpfr::abs(v);
 #else
 	return std::abs(v);
+#endif
+}
+
+inline double toDouble(const mreal_t& v) {
+#if MPFR_REAL
+	return v.toDouble();
+#else
+	return v;
 #endif
 }
 

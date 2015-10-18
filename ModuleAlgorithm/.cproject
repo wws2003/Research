@@ -45,6 +45,8 @@
 									<listOptionValue builtIn="false" value="../include/implement/combiner"/>
 									<listOptionValue builtIn="false" value="../include/implement/iterator"/>
 									<listOptionValue builtIn="false" value="../include/implement/collection"/>
+									<listOptionValue builtIn="false" value="../include/implement/composer"/>
+									<listOptionValue builtIn="false" value="../include/implement/decomposer"/>
 									<listOptionValue builtIn="false" value="../include/implement/approximator"/>
 									<listOptionValue builtIn="false" value="../include/implement/bin"/>
 									<listOptionValue builtIn="false" value="../include/implement/persistable"/>
@@ -53,6 +55,7 @@
 									<listOptionValue builtIn="false" value="../include/internal-abstract/combiner"/>
 									<listOptionValue builtIn="false" value="../src/implement/approximator"/>
 									<listOptionValue builtIn="false" value="../src/implement/collection"/>
+									<listOptionValue builtIn="false" value="../src/implement/composer"/>
 									<listOptionValue builtIn="false" value="../src/implement/persitable"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.1870982613" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC" valueType="string"/>
