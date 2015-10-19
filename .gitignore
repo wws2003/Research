@@ -43,6 +43,11 @@ gdb_test_evaluator.txt
 # Output files
 GateApproximationApp/Debug/*.txt
 
+# Third parties artifact
+SharedThirdParties/gmp
+SharedThirdParties/m4
+SharedThirdParties/mpfr
+
 # Misc metadata
 .metadata
 

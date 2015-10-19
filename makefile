@@ -1,5 +1,6 @@
 MAKE_DIR = $(PWD)
 
+SHARED_THIRD_PARTIES_DIR := $(MAKE_DIR)/SharedThirdParties
 MATH_CONCEPT_DIR := $(MAKE_DIR)/ModuleMathConcepts/Debug
 MATRIX_OPERATOR_DIR := $(MAKE_DIR)/ModuleOperator/Debug
 IO_DIR := $(MAKE_DIR)/ModuleIO/Debug
@@ -16,26 +17,29 @@ all: testMatrixOperator testEvaluate app
 testMatrixOperator: mathConcept matrixOperator
 	@$(MAKE) -C $(TEST_MATRIX_OPERATOR_DIR) -f $(MAKE_FILE_PATH) all	
 
-mathConcept: 
+mathConcept: sharedThirdParties 
 	@$(MAKE) -C $(MATH_CONCEPT_DIR) -f $(MAKE_FILE_PATH) all	
 
-matrixOperator:
+matrixOperator: sharedThirdParties
 	@$(MAKE) -C $(MATRIX_OPERATOR_DIR) -f $(MAKE_FILE_PATH) all	
 
 testEvaluate: io algorithm evaluate
 	@$(MAKE) -C $(TEST_EVALUATE_DIR) -f $(MAKE_FILE_PATH) all	
 
-io:
+io: sharedThirdParties
 	@$(MAKE) -C $(IO_DIR) -f $(MAKE_FILE_PATH) all
 
-evaluate:
+evaluate: sharedThirdParties
 	@$(MAKE) -C $(EVALUATE_DIR) -f $(MAKE_FILE_PATH) all	
 
-algorithm:
+algorithm: sharedThirdParties
 	@$(MAKE) -C $(ALGORITHM_DIR) -f $(MAKE_FILE_PATH) all	
 
 app:
 	@$(MAKE) -C $(APPLICATION_DIR) -f $(MAKE_FILE_PATH) all	
+
+sharedThirdParties:
+	@$(MAKE) -C $(SHARED_THIRD_PARTIES_DIR) all
 
 .PHONY: clean
 

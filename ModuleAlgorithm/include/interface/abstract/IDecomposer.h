@@ -21,7 +21,7 @@ public:
 	 *Decompose an element (a gate / a matrix) into a number of sub-elements.
 	 *For instace GC-decompose by Dawson in SK algorithm
 	 */
-	virtual void decomposeElement(T element, std::vector<T>& subElements, int nbSubElements = 0);
+	virtual void decomposeElement(T element, std::vector<T>& subElements, int nbSubElements = 0) =0 ;
 };
 
 

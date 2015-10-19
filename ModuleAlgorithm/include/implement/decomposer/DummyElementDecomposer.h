@@ -15,7 +15,7 @@ template<typename T>
 class DummyElementDecomposer : public IDecomposer<T> {
 public:
 	DummyElementDecomposer(){};
-	virtual ~DummyElementDecomposer();
+	virtual ~DummyElementDecomposer(){};
 
 	//Override
 	virtual void decomposeElement(T element,
