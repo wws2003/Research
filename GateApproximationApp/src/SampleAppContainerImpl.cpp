@@ -28,11 +28,13 @@
 #include "LabelOnlyGateWriterImpl.h"
 #include "CpuTimer.h"
 #include "GateSearchSpaceTimerEvaluatorImpl.h"
-#include "NearIdentityGateApproximator.h"
 #include "MapBasedGateBinCollectionImpl.h"
 #include "DuplicateGateCancelationCombinerImpl.h"
 #include "HTVBasedResourceContainerImpl.h"
 #include "HVBasedResourceContainerImpl.h"
+#include "DummyGateDecomposer.h"
+#include "NearIdentityGateBinBasedComposer.h"
+#include "ComposerBasedGateApproximator.h"
 #include <cstdio>
 #include <iostream>
 #include <stdexcept>
@@ -41,7 +43,13 @@ const int SampleAppContainerImpl::DEFAULT_MAX_SEQUENCE_LENGTH = 14;
 const int SampleAppContainerImpl::DEFAULT_NB_QUBITS = 1;
 const double SampleAppContainerImpl::DEFAULT_COLLECTION_EPSILON = 1e-2;
 const double SampleAppContainerImpl::DEFAULT_APPROXIMATOR_EPSILON = 1e-2;
-const NearIdentityElementApproximator<GatePtr>::Config SampleAppContainerImpl::DEFAULT_NEAR_IDENTITY_APPROXIMATOR_CONFIG = {2e-1, 3, 1.5e-1, 0.9, 7, 100};
+const SampleAppContainerImpl::ApproximatorConfig SampleAppContainerImpl::DEFAULT_NEAR_IDENTITY_APPROXIMATOR_CONFIG = {
+		3,
+		1.5e-1,
+		0.9,
+		7,
+		100,
+		2e-1};
 
 const std::string SampleAppContainerImpl::DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT = "dat";
 
@@ -77,10 +85,10 @@ GateCollectionPtr SampleAppContainerImpl::getGateCollection() {
 }
 
 GateApproximatorPtr SampleAppContainerImpl::getGateApproximator() {
-	GateApproximatorPtr pGateApproximator = GateApproximatorPtr(new NearIdentityGateApproximator(m_pGateRealCoordinateCalculator,
-			m_pGateCombiner,
-			m_pBinCollection,
-			m_nearIdentityApproximatorConfig));
+	GateApproximatorPtr pGateApproximator = GateApproximatorPtr(new ComposerBasedGateApproximator(m_pGateDecomposer,
+			1,
+			m_pGateComposer,
+			m_nearIdentityApproximatorConfig.m_initialEpsilon));
 
 	return pGateApproximator;
 }
@@ -200,23 +208,23 @@ void SampleAppContainerImpl::readApproximatorConfigFromFile(std::string configFi
 		m_nearIdentityApproximatorConfig.m_initialEpsilon = (mreal_t)initialEpsilon;
 
 		std::getline(inputStream, line);
-		sscanf(line.data(), "%[^:]:%d", prefix, &m_nearIdentityApproximatorConfig.m_maxMergedBinDistance);
+		sscanf(line.data(), "%[^:]:%d", prefix, &m_nearIdentityApproximatorConfig.m_nearIdentityComposerConfig.m_maxMergedBinDistance);
 
 		std::getline(inputStream, line);
 		double maxCandidateEpsilon;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &maxCandidateEpsilon);
-		m_nearIdentityApproximatorConfig.m_maxCandidateEpsilon = (mreal_t)maxCandidateEpsilon;
+		m_nearIdentityApproximatorConfig.m_nearIdentityComposerConfig.m_maxCandidateEpsilon = (mreal_t)maxCandidateEpsilon;
 
 		std::getline(inputStream, line);
 		double maxCandidateEpsilonDecreaseFactor;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &maxCandidateEpsilonDecreaseFactor);
-		m_nearIdentityApproximatorConfig.m_maxCandidateEpsilonDecreaseFactor = (mreal_t)maxCandidateEpsilonDecreaseFactor;
+		m_nearIdentityApproximatorConfig.m_nearIdentityComposerConfig.m_maxCandidateEpsilonDecreaseFactor = (mreal_t)maxCandidateEpsilonDecreaseFactor;
 
 		std::getline(inputStream, line);
-		sscanf(line.data(), "%[^:]:%d", prefix, &m_nearIdentityApproximatorConfig.m_iterationMaxSteps);
+		sscanf(line.data(), "%[^:]:%d", prefix, &m_nearIdentityApproximatorConfig.m_nearIdentityComposerConfig.m_iterationMaxSteps);
 
 		std::getline(inputStream, line);
-		sscanf(line.data(), "%[^:]:%d", prefix, &m_nearIdentityApproximatorConfig.m_maxResultNumber);
+		sscanf(line.data(), "%[^:]:%d", prefix, &m_nearIdentityApproximatorConfig.m_nearIdentityComposerConfig.m_maxResultNumber);
 
 	}
 	else {
@@ -263,9 +271,18 @@ void SampleAppContainerImpl::wireDependencies() {
 	GateCombinabilityCheckers emptyCheckers;
 	m_pGateInBinCombiner = CombinerPtr<GatePtr>(new DuplicateGateCancelationCombinerImpl(emptyCheckers, m_pMatrixOperator));
 	m_pBinCollection = BinCollectionPtr<GatePtr>(new MapBasedGateBinCollectionImpl());
+
+	m_pGateDecomposer = DecomposerPtr<GatePtr>(new DummyGateDecomposer());
+	m_pGateComposer = ComposerPtr<GatePtr>(new NearIdentityGateBinBasedComposer(m_pGateRealCoordinateCalculator,
+			m_pGateCombiner,
+			m_pBinCollection,
+			m_nearIdentityApproximatorConfig.m_nearIdentityComposerConfig));
 }
 
 void SampleAppContainerImpl::releaseDependencies() {
+	_destroy(m_pGateDecomposer);
+	_destroy(m_pGateComposer);
+
 	_destroy(m_pBinCollection);
 	_destroy(m_pGateInBinCombiner);
 

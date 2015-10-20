@@ -20,9 +20,10 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
  ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
  ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
- ../../ModuleAlgorithm/include/implement/approximator/NearIdentityElementApproximator.h \
- ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
- ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
+ ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
@@ -181,7 +182,6 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
- ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
  ../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h \
@@ -193,6 +193,7 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
  ../../ModuleEvaluate/include/implement/GateSearchSpaceConstructorImpl.h \
  ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/VectorBasedCollectionImpl.hpp \
@@ -216,14 +217,19 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleEvaluate/include/interface/abstract/ITimer.h \
  ../../ModuleEvaluate/include/implement/GateSearchSpaceTimerEvaluatorImpl.h \
  ../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h \
- ../../ModuleAlgorithm/include/implement/approximator/NearIdentityGateApproximator.h \
- ../../ModuleAlgorithm/include/implement/approximator/NearIdentityElementApproximator.h \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
  ../src/HTVBasedResourceContainerImpl.h \
- ../src/HVBasedResourceContainerImpl.h
+ ../src/HVBasedResourceContainerImpl.h \
+ ../../ModuleAlgorithm/include/implement/decomposer/DummyGateDecomposer.h \
+ ../../ModuleAlgorithm/include/implement/decomposer/DummyElementDecomposer.h \
+ ../../ModuleAlgorithm/include/implement/composer/NearIdentityGateBinBasedComposer.h \
+ ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h \
+ ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedGateApproximator.h \
+ ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedElementApproximator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h
 
 ../src/SampleAppContainerImpl.h:
 
@@ -269,11 +275,13 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 
 ../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
 
-../../ModuleAlgorithm/include/implement/approximator/NearIdentityElementApproximator.h:
+../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h:
 
-../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
+../../ModuleAlgorithm/include/interface/abstract/IComposer.h:
 
-../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
+../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
 ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h:
 
@@ -591,8 +599,6 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 
 ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h:
 
-../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
-
 ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
 
 ../../ModuleIO/include/interface/abstract/IWriter.h:
@@ -614,6 +620,8 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
 
 ../../ModuleEvaluate/include/implement/GateSearchSpaceConstructorImpl.h:
 
@@ -663,10 +671,6 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 
 ../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h:
 
-../../ModuleAlgorithm/include/implement/approximator/NearIdentityGateApproximator.h:
-
-../../ModuleAlgorithm/include/implement/approximator/NearIdentityElementApproximator.h:
-
 ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h:
 
 ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h:
@@ -678,3 +682,17 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 ../src/HTVBasedResourceContainerImpl.h:
 
 ../src/HVBasedResourceContainerImpl.h:
+
+../../ModuleAlgorithm/include/implement/decomposer/DummyGateDecomposer.h:
+
+../../ModuleAlgorithm/include/implement/decomposer/DummyElementDecomposer.h:
+
+../../ModuleAlgorithm/include/implement/composer/NearIdentityGateBinBasedComposer.h:
+
+../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h:
+
+../../ModuleAlgorithm/include/implement/approximator/ComposerBasedGateApproximator.h:
+
+../../ModuleAlgorithm/include/implement/approximator/ComposerBasedElementApproximator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:

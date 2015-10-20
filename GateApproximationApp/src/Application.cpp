@@ -87,7 +87,7 @@ void evaluateApproximator(AppContainerPtr pAppContainer) {
 	//Get search space evaluator instance
 	GateSearchSpaceEvaluatorPtr pSearchSpaceEvaluator = pAppContainer->getGateSearchSpaceEvaluator();
 
-	//Evaluate collection
+	//Evaluate approximator
 	std::cout << "---------------------Start evaluating approximator---------------------" << "\r\n";
 	pSearchSpaceEvaluator->evaluateApproximator(pGateApproximator, pGateCoreCollection);
 	std::cout << "---------------------End evaluating approximator---------------------" << "\r\n";

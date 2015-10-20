@@ -68,7 +68,8 @@ private:
 	void distributeResultsToBins(const real_coordinate_t& queryCoordinate,
 			IteratorPtr<T> pApprxIter,
 			RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
-			BinCollectionPtr<T> pBinCollection);
+			BinCollectionPtr<T> pBinCollection,
+			bool toDestroyApprxIter = true);
 
 	void calculateBinPattern(const real_coordinate_t& queryCoordinate,
 			const real_coordinate_t& apprxCoordinate,

@@ -96,10 +96,12 @@ void NearIdentityElementBinBasedComposer<T>::initBinCollection(IteratorPtr<T> pB
 	m_pBinCollection->clear();
 
 	//Distribute first results into bin collection
+	//Note: Do not destroy the building block iterator which given from outside
 	distributeResultsToBins(queryCoordinate,
 			pBuildingBlockIter,
 			m_pRealCoordinateCalculator,
-			m_pBinCollection);
+			m_pBinCollection,
+			false);
 }
 
 template<typename T>
@@ -195,7 +197,9 @@ template<typename T>
 void NearIdentityElementBinBasedComposer<T>::distributeResultsToBins(const real_coordinate_t& queryCoordinate,
 		IteratorPtr<T> pApprxIter,
 		RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
-		BinCollectionPtr<T> pBinCollection) {
+		BinCollectionPtr<T> pBinCollection,
+		bool toDestroyApprxIter) {
+
 	unsigned int nbCoordinates = queryCoordinate.size();
 	BinPattern binPattern(nbCoordinates, '0');
 
@@ -218,7 +222,9 @@ void NearIdentityElementBinBasedComposer<T>::distributeResultsToBins(const real_
 		pApprxIter->next();
 	}
 
-	_destroy(pApprxIter);
+	if(toDestroyApprxIter) {
+		_destroy(pApprxIter);
+	}
 }
 
 template<typename T>

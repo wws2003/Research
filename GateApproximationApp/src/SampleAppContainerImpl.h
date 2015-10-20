@@ -17,7 +17,9 @@
 #include "IResourceContainer.h"
 #include "IBinCollection.h"
 #include "AlgoInternal.h"
-#include "NearIdentityElementApproximator.h"
+#include "IDecomposer.h"
+#include "IComposer.h"
+#include "NearIdentityElementBinBasedComposer.h"
 #include <map>
 
 typedef std::map<std::string, int> LibrarySetNameMap;
@@ -57,6 +59,11 @@ private:
 		double m_approximatorEpsilon;
 	} EvaluationConfig;
 
+	typedef struct _ApproximatorConfig {
+		NearIdentityElementBinBasedComposer<GatePtr>::Config m_nearIdentityComposerConfig;
+		mreal_t m_initialEpsilon;
+	} ApproximatorConfig;
+
 	void initLibrarySetNameMap();
 
 	void initLibrarySetPersistFileNameMap();
@@ -70,8 +77,8 @@ private:
 	void setupResourceContainer();
 
 	std::string getGateCollectionPersistenceFileFullName(const SampleAppContainerImpl::EvaluationConfig& config,
-				const LibrarySetFileNameMap& librarySetFileNameMap,
-				std::string fileExtension);
+			const LibrarySetFileNameMap& librarySetFileNameMap,
+			std::string fileExtension);
 
 	void constructGateCollection(GateCollectionPtr pGateCollection);
 
@@ -110,15 +117,18 @@ private:
 	CombinerPtr<GatePtr> m_pGateInBinCombiner;
 	BinCollectionPtr<GatePtr> m_pBinCollection;
 
+	ComposerPtr<GatePtr> m_pGateComposer;
+	DecomposerPtr<GatePtr> m_pGateDecomposer;
+
 	EvaluationConfig m_evaluationConfig;
-	NearIdentityElementApproximator<GatePtr>::Config m_nearIdentityApproximatorConfig;
+	ApproximatorConfig m_nearIdentityApproximatorConfig;
 
 	const static int DEFAULT_MAX_SEQUENCE_LENGTH;
 	const static int DEFAULT_NB_QUBITS;
 	const static double DEFAULT_COLLECTION_EPSILON;
 	const static double DEFAULT_APPROXIMATOR_EPSILON;
 
-	const static NearIdentityElementApproximator<GatePtr>::Config DEFAULT_NEAR_IDENTITY_APPROXIMATOR_CONFIG;
+	const static ApproximatorConfig DEFAULT_NEAR_IDENTITY_APPROXIMATOR_CONFIG;
 
 	const static std::string DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT;
 };
