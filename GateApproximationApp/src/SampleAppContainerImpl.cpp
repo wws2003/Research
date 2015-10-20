@@ -35,6 +35,8 @@
 #include "DummyGateDecomposer.h"
 #include "NearIdentityGateBinBasedComposer.h"
 #include "ComposerBasedGateApproximator.h"
+#include "SampleLibraryMatrixStore.h"
+#include "LazyGateDistanceCalculatorImpl.h"
 #include <cstdio>
 #include <iostream>
 #include <stdexcept>
@@ -242,8 +244,8 @@ void SampleAppContainerImpl::wireDependencies() {
 
 	m_pBinaryMatrixWriter = MatrixWriterPtr(new BinaryMatrixWriterImpl());
 	m_pBinaryMatrixReader = MatrixReaderPtr(new BinaryMatrixReaderImpl(m_pMatrixFactory));
-	m_pBinaryGateWriter = GateWriterPtr(new BinaryGateWriterImpl(m_pBinaryMatrixWriter));
-	m_pBinaryGateReader = GateReaderPtr(new BinaryGateReaderImpl(m_pBinaryMatrixReader));
+	m_pBinaryGateWriter = GateWriterPtr(new BinaryGateWriterImpl(NullPtr));
+	m_pBinaryGateReader = GateReaderPtr(new BinaryGateReaderImpl(NullPtr));
 
 	m_pUniversalSet = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>());
 	m_pResourceContainer->getUniversalGates(m_pUniversalSet, m_evaluationConfig.m_nbQubits);
@@ -255,7 +257,11 @@ void SampleAppContainerImpl::wireDependencies() {
 	m_pGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorImpl(m_pGateCombiner));
 
 	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(m_pMatrixOperator));
-	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new GateDistanceCalculatorByMatrixImpl(m_pMatrixDistanceCalculator));
+	m_pLibraryMatrixStore = LibraryMatrixStorePtr(new SampleLibraryMatrixStore(m_pMatrixFactory, m_pMatrixOperator));
+
+	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new LazyGateDistanceCalculatorImpl(m_pMatrixDistanceCalculator,
+			m_pMatrixOperator,
+			m_pLibraryMatrixStore));
 
 	MatrixPtrVector pBasis;
 	m_pResourceContainer->getMatrixOrthonormalBasis(pBasis, m_evaluationConfig.m_nbQubits);
@@ -295,6 +301,7 @@ void SampleAppContainerImpl::releaseDependencies() {
 	_destroy(m_pGateWriterInEvaluator);
 
 	_destroy(m_pGateDistanceCalculator);
+	_destroy(m_pLibraryMatrixStore);
 	_destroy(m_pMatrixDistanceCalculator);
 	_destroy(m_pGateSearchSpaceConstructor);
 

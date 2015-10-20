@@ -14,6 +14,8 @@ class IMatrixOperator;
 
 class ITargetMatrixFactory;
 
+class ILibaryMatrixMatrixStore;
+
 template<typename E, typename Field>
 class ICoordinateCalculator;
 
@@ -51,4 +53,7 @@ using RealCoordinateCalculatorPtr = IRealCoordinateCalculator<T>*;
 
 typedef IInnerProductCalculator<MatrixPtr, mreal_t> IMatrixRealInnerProductCalculator;
 typedef IMatrixRealInnerProductCalculator* MatrixRealInnerProductCalculatorPtr;
+
+typedef ILibaryMatrixMatrixStore* LibraryMatrixStorePtr;
+
 #endif /* OPERATORCOMMON_H_ */

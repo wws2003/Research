@@ -12,6 +12,7 @@
 #include "OperatorCommon.h"
 #include "AlgoInternal.h"
 #include "GateFactory.h"
+#include "ILibraryMatrixStore.h"
 #include <map>
 
 typedef std::map<std::string, cost_t> GateNameCostMap;
@@ -60,6 +61,8 @@ protected:
 
 private:
 	void collectLibraryGatesFromMap(const GateNameCostMap& gateNameCostMap, GateFactoryPtr pGateFactory, CollectionPtr<GatePtr> pLibraryGates);
+
+	LibraryMatrixStorePtr m_pLibraryMatrixStore;
 
 	MatrixOperatorPtr m_pMatrixOperator;
 	MatrixFactoryPtr m_pMatrixFactory;

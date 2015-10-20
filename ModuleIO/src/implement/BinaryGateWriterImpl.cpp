@@ -33,7 +33,9 @@ void BinaryGateWriterImpl::write(GatePtr pGate, std::ostream& ouputStream) {
 	ouputStream.write((const char*)&cost, sizeof(cost_t));
 
 	//Write matrix
-	m_pMatrixWriter->write(pGate->getMatrix(), ouputStream);
+	if(m_pMatrixWriter != NullPtr) {
+		m_pMatrixWriter->write(pGate->getMatrix(), ouputStream);
+	}
 
 	ouputStream.flush();
 }

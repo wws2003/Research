@@ -19,6 +19,7 @@
 #include "AlgoInternal.h"
 #include "IDecomposer.h"
 #include "IComposer.h"
+#include "ILibraryMatrixStore.h"
 #include "NearIdentityElementBinBasedComposer.h"
 #include <map>
 
@@ -104,6 +105,7 @@ private:
 	GateSearchSpaceConstructorPtr m_pGateSearchSpaceConstructor;
 
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
+	LibraryMatrixStorePtr m_pLibraryMatrixStore;
 	GateDistanceCalculatorPtr m_pGateDistanceCalculator;
 
 	GateWriterPtr m_pGateWriterInEvaluator;

@@ -7,11 +7,13 @@ CPP_SRCS += \
 ../src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.cpp \
 ../src/implement/GateCoordinateCalculatorImpl.cpp \
 ../src/implement/GateDistanceCalculatorByMatrixImpl.cpp \
+../src/implement/LazyGateDistanceCalculatorImpl.cpp \
 ../src/implement/MatrixCoordinateDistanceCalculator.cpp \
 ../src/implement/MatrixCoordinateOnOrthonormalBasisCalculatorImpl.cpp \
 ../src/implement/MatrixFowlerDistanceCalculator.cpp \
 ../src/implement/MatrixRealInnerProductByTraceImpl.cpp \
 ../src/implement/MatrixTraceDistanceCalculator.cpp \
+../src/implement/SampleLibraryMatrixStore.cpp \
 ../src/implement/SampleMatrixOperator.cpp \
 ../src/implement/SpecialUnitaryMatrixCoordinateMapper.cpp 
 
@@ -19,11 +21,13 @@ OBJS += \
 ./src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.o \
 ./src/implement/GateCoordinateCalculatorImpl.o \
 ./src/implement/GateDistanceCalculatorByMatrixImpl.o \
+./src/implement/LazyGateDistanceCalculatorImpl.o \
 ./src/implement/MatrixCoordinateDistanceCalculator.o \
 ./src/implement/MatrixCoordinateOnOrthonormalBasisCalculatorImpl.o \
 ./src/implement/MatrixFowlerDistanceCalculator.o \
 ./src/implement/MatrixRealInnerProductByTraceImpl.o \
 ./src/implement/MatrixTraceDistanceCalculator.o \
+./src/implement/SampleLibraryMatrixStore.o \
 ./src/implement/SampleMatrixOperator.o \
 ./src/implement/SpecialUnitaryMatrixCoordinateMapper.o 
 
@@ -31,11 +35,13 @@ CPP_DEPS += \
 ./src/implement/CoordinateOnOrthonormalBasisCalculatorImpl.d \
 ./src/implement/GateCoordinateCalculatorImpl.d \
 ./src/implement/GateDistanceCalculatorByMatrixImpl.d \
+./src/implement/LazyGateDistanceCalculatorImpl.d \
 ./src/implement/MatrixCoordinateDistanceCalculator.d \
 ./src/implement/MatrixCoordinateOnOrthonormalBasisCalculatorImpl.d \
 ./src/implement/MatrixFowlerDistanceCalculator.d \
 ./src/implement/MatrixRealInnerProductByTraceImpl.d \
 ./src/implement/MatrixTraceDistanceCalculator.d \
+./src/implement/SampleLibraryMatrixStore.d \
 ./src/implement/SampleMatrixOperator.d \
 ./src/implement/SpecialUnitaryMatrixCoordinateMapper.d 
 

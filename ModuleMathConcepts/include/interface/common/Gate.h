@@ -13,7 +13,6 @@
 #include <vector>
 
 typedef unsigned int cost_t;
-typedef std::vector<std::string> LabelSeq;
 
 class Gate {
 public:
@@ -27,6 +26,10 @@ public:
 
 	inline MatrixPtr getMatrix() {
 		return m_pMatrix;
+	}
+
+	inline void setMatrix(MatrixPtr pMatrix) {
+		m_pMatrix = pMatrix;
 	}
 
 	inline cost_t getCost() {

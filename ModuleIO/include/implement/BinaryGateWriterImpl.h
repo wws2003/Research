@@ -15,7 +15,7 @@
 
 class BinaryGateWriterImpl : public IGateWriter {
 public:
-	BinaryGateWriterImpl(MatrixWriterPtr pMatrixWriter);
+	BinaryGateWriterImpl(MatrixWriterPtr pMatrixWriter = NullPtr);
 
 	virtual ~BinaryGateWriterImpl(){};
 	virtual void write(GatePtr pGate, std::ostream& ouputStream);

@@ -35,8 +35,16 @@ GatePtr Gate::clone() const {
 }
 
 bool Gate::operator==(const Gate& rhs) {
-	return (m_cost == rhs.m_cost &&
-			m_labelStr == rhs.m_labelStr &&
-			m_label == rhs.m_label &&
-			*m_pMatrix == *rhs.m_pMatrix);
+	if(m_cost != rhs.m_cost &&
+			m_labelStr != rhs.m_labelStr &&
+			m_label != rhs.m_label) {
+		return false;
+	}
+
+	if(m_pMatrix != NullPtr && rhs.m_pMatrix != NullPtr) {
+		return (*m_pMatrix == *rhs.m_pMatrix);
+	}
+	else {
+		return (m_pMatrix == NullPtr && rhs.m_pMatrix == NullPtr);
+	}
 }

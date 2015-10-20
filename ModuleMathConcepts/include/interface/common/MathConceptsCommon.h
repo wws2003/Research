@@ -61,6 +61,8 @@ typedef ComplexValArray& ComplexValArrayRef;
 
 typedef ComplexVal& ComplexValRef;
 
+typedef std::vector<std::string> LabelSeq;
+
 class IMatrix;
 class IMatrixFactory;
 class Gate;

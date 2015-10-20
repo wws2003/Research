@@ -16,7 +16,7 @@
 
 class BinaryGateReaderImpl: public IReader<GatePtr> {
 public:
-	BinaryGateReaderImpl(MatrixReaderPtr pMatrixReader);
+	BinaryGateReaderImpl(MatrixReaderPtr pMatrixReader = NullPtr);
 
 	virtual ~BinaryGateReaderImpl(){};
 

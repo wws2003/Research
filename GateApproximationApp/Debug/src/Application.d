@@ -22,6 +22,7 @@ src/Application.d: ../src/Application.cpp \
  ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
  ../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h \
  ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
+ ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h \
  ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h
 
@@ -72,6 +73,8 @@ src/Application.d: ../src/Application.cpp \
 ../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IComposer.h:
+
+../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h:
 
 ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h:
 

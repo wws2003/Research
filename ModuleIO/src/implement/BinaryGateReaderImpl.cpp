@@ -40,7 +40,9 @@ void BinaryGateReaderImpl::read(GatePtr& rpGate, std::istream &inputStream) {
 
 	//Read matrix
 	MatrixPtr pMatrix = NullPtr;
-	m_pMatrixReader->read(pMatrix, inputStream);
+	if(m_pMatrixReader != NullPtr) {
+		m_pMatrixReader->read(pMatrix, inputStream);
+	}
 
 	//Create gate instance
 	rpGate = new Gate(pMatrix, cost, labelSeq);

@@ -22,6 +22,7 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
  ../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h \
  ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
+ ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h \
  ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
@@ -229,7 +230,9 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
  ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h \
  ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedGateApproximator.h \
  ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedElementApproximator.h \
- ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h
+ ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
+ ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h \
+ ../../ModuleOperator/include/implement/LazyGateDistanceCalculatorImpl.h
 
 ../src/SampleAppContainerImpl.h:
 
@@ -278,6 +281,8 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 ../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IComposer.h:
+
+../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h:
 
 ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h:
 
@@ -696,3 +701,7 @@ src/SampleAppContainerImpl.d: ../src/SampleAppContainerImpl.cpp \
 ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedElementApproximator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
+
+../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h:
+
+../../ModuleOperator/include/implement/LazyGateDistanceCalculatorImpl.h:

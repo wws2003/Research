@@ -17,6 +17,7 @@
 #include "GateIdentityCycleCombinabilityCheckerImpl.h"
 #include "SampleMatrixOperator.h"
 #include "SimpleDenseMatrixFactoryImpl.h"
+#include "SampleLibraryMatrixStore.h"
 
 void copyCollection(const GateCollectionPtr pSrcCollection, GateCollectionPtr pDstCollection);
 
@@ -26,7 +27,8 @@ void purgePtrVector(std::vector<TPtr>& ptrs);
 SampleResourceContainerImpl::SampleResourceContainerImpl(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory) {
 	m_pMatrixOperator = pMatrixOperator;
 	m_pMatrixFactory = pMatrixFactory;
-	m_pGateFactory = GateFactoryPtr(new GateFactory(m_pMatrixOperator, m_pMatrixFactory));
+	m_pLibraryMatrixStore = LibraryMatrixStorePtr(new SampleLibraryMatrixStore(m_pMatrixFactory, m_pMatrixOperator));
+	m_pGateFactory = GateFactoryPtr(new GateFactory(m_pLibraryMatrixStore));
 
 	m_pSingleQubitLibraryGates = NullPtr;
 	m_pTwoQubitLibraryGates = NullPtr;
@@ -76,6 +78,7 @@ SampleResourceContainerImpl::~SampleResourceContainerImpl() {
 	_destroy(m_pSingleQubitLibraryGates);
 
 	_destroy(m_pGateFactory);
+	_destroy(m_pLibraryMatrixStore);
 }
 
 void SampleResourceContainerImpl::getUniversalGates(GateCollectionPtr pLibraryGates, int nbQubits) {

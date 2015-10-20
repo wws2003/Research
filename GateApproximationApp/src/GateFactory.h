@@ -11,22 +11,24 @@
 #include "Gate.h"
 #include "MathConceptsCommon.h"
 #include "OperatorCommon.h"
+#include "ILibraryMatrixStore.h"
 #include <map>
 
 typedef std::map<std::string, int> GateNameCodeMap;
 
 class GateFactory {
 public:
-	GateFactory(MatrixOperatorPtr pMatrixOperator, MatrixFactoryPtr pMatrixFactory);
+	GateFactory(LibraryMatrixStorePtr pLibraryMatrixStore);
+
 	virtual ~GateFactory(){};
 	GatePtr getLibraryGateInstance(std::string gateName, cost_t cost = 1);
 
 private:
 	void initGateNameCodeMap();
 
-	MatrixOperatorPtr m_pMatrixOperator;
-	MatrixFactoryPtr m_pMatrixFactory;
 	GateNameCodeMap m_gateNameCodeMap;
+
+	LibraryMatrixStorePtr m_pLibraryMatrixStore;
 
 	enum GateCode {
 		G_H,

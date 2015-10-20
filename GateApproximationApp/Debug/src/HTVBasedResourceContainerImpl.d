@@ -17,6 +17,7 @@ src/HTVBasedResourceContainerImpl.d: \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
  ../src/GateFactory.h \
+ ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h \
  ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h \
  ../../ModuleAlgorithm/include/implement/collection/VectorBasedCollectionImpl.hpp \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
@@ -223,6 +224,8 @@ src/HTVBasedResourceContainerImpl.d: \
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
 
 ../src/GateFactory.h:
+
+../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h:
 
 ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h:
 

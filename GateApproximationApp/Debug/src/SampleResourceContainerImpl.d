@@ -15,6 +15,7 @@ src/SampleResourceContainerImpl.d: ../src/SampleResourceContainerImpl.cpp \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
  ../src/GateFactory.h \
+ ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h \
  ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h \
  ../../ModuleAlgorithm/include/implement/collection/VectorBasedCollectionImpl.hpp \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
@@ -184,7 +185,8 @@ src/SampleResourceContainerImpl.d: ../src/SampleResourceContainerImpl.cpp \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
- ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
+ ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h
 
 ../src/SampleResourceContainerImpl.h:
 
@@ -219,6 +221,8 @@ src/SampleResourceContainerImpl.d: ../src/SampleResourceContainerImpl.cpp \
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
 
 ../src/GateFactory.h:
+
+../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h:
 
 ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h:
 
@@ -559,3 +563,5 @@ src/SampleResourceContainerImpl.d: ../src/SampleResourceContainerImpl.cpp \
 ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
+
+../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h:
