@@ -12,9 +12,10 @@ src/Application.d: ../src/Application.cpp \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
- ../src/SampleAppContainerImpl.h ../src/IAppContainer.h \
+ ../src/container/SampleAppContainerImpl.h \
+ ../src/container/IAppContainer.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
- ../src/IResourceContainer.h \
+ ../src/container/IResourceContainer.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
  ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
@@ -24,7 +25,10 @@ src/Application.d: ../src/Application.cpp \
  ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
  ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h \
  ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h \
- ../../ModuleAlgorithm/include/interface/abstract/IIterator.h
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../src/container/IAppContainer.h ../src/command/CommandParser.h \
+ ../src/command/ICommandExecutor.h ../src/common/ApplicationCommon.h \
+ ../src/command/ICommandExecutor.h
 
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
 
@@ -52,13 +56,13 @@ src/Application.d: ../src/Application.cpp \
 
 ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h:
 
-../src/SampleAppContainerImpl.h:
+../src/container/SampleAppContainerImpl.h:
 
-../src/IAppContainer.h:
+../src/container/IAppContainer.h:
 
 ../../ModuleIO/include/interface/common/IOCommon.h:
 
-../src/IResourceContainer.h:
+../src/container/IResourceContainer.h:
 
 ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h:
 
@@ -79,3 +83,13 @@ src/Application.d: ../src/Application.cpp \
 ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../src/container/IAppContainer.h:
+
+../src/command/CommandParser.h:
+
+../src/command/ICommandExecutor.h:
+
+../src/common/ApplicationCommon.h:
+
+../src/command/ICommandExecutor.h:

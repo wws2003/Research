@@ -15,10 +15,32 @@
 #include "EvaluateCommon.h"
 #include "SampleAppContainerImpl.h"
 #include "IAppContainer.h"
+#include "CommandParser.h"
+#include "ApplicationCommon.h"
+#include "ICommandExecutor.h"
 
 using namespace std;
 
-bool isValidSyntax(int argc, char* argv[]);
+#define FORMAL 1
+
+#if FORMAL
+	int main(int argc, char* argv[]) {
+		CommandParser commandParser;
+		try {
+			CommandExecutorPtr pCommandExecutor = commandParser.getCommandExecutor(argc, argv);
+			if(pCommandExecutor != NullPtr) {
+				pCommandExecutor->execute();
+				_destroy(pCommandExecutor);
+			}
+		}
+		catch(std::exception const& e) {
+			std::cout << e.what() << std::endl;
+			commandParser.printSyntaxMessage();
+		}
+	}
+
+#else
+bool isValidSyntax();
 
 void printSyntaxMessage();
 
@@ -96,3 +118,4 @@ void evaluateApproximator(AppContainerPtr pAppContainer) {
 	pAppContainer->recycle(pGateApproximator);
 	pAppContainer->recycle(pSearchSpaceEvaluator);
 }
+#endif
