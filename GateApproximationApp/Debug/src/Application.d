@@ -29,6 +29,7 @@ src/Application.d: ../src/Application.cpp \
  ../src/common/ApplicationCommon.h ../src/container/IAppContainer.h \
  ../src/command/CommandParser.h ../src/command/ICommand.h \
  ../src/command/CommandFactory.h ../src/container/IEvaluatorContainer.h \
+ ../src/container/IApproximatorContainer.h \
  ../src/container/ICollectionContainer.h ../src/configure/Config.h \
  ../src/command/ICommand.h
 
@@ -97,6 +98,8 @@ src/Application.d: ../src/Application.cpp \
 ../src/command/CommandFactory.h:
 
 ../src/container/IEvaluatorContainer.h:
+
+../src/container/IApproximatorContainer.h:
 
 ../src/container/ICollectionContainer.h:
 

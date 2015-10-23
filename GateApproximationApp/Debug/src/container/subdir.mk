@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../src/container/HTVBasedResourceContainerImpl.cpp \
 ../src/container/HVBasedResourceContainerImpl.cpp \
 ../src/container/SampleAppContainerImpl.cpp \
+../src/container/SampleApproximatorContainerImpl.cpp \
 ../src/container/SampleCollectionContainerImpl.cpp \
 ../src/container/SampleEvaluatorContainerImpl.cpp \
 ../src/container/SampleResourceContainerImpl.cpp 
@@ -17,6 +18,7 @@ OBJS += \
 ./src/container/HTVBasedResourceContainerImpl.o \
 ./src/container/HVBasedResourceContainerImpl.o \
 ./src/container/SampleAppContainerImpl.o \
+./src/container/SampleApproximatorContainerImpl.o \
 ./src/container/SampleCollectionContainerImpl.o \
 ./src/container/SampleEvaluatorContainerImpl.o \
 ./src/container/SampleResourceContainerImpl.o 
@@ -26,6 +28,7 @@ CPP_DEPS += \
 ./src/container/HTVBasedResourceContainerImpl.d \
 ./src/container/HVBasedResourceContainerImpl.d \
 ./src/container/SampleAppContainerImpl.d \
+./src/container/SampleApproximatorContainerImpl.d \
 ./src/container/SampleCollectionContainerImpl.d \
 ./src/container/SampleEvaluatorContainerImpl.d \
 ./src/container/SampleResourceContainerImpl.d 

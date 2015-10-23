@@ -10,6 +10,7 @@
 
 #include "ICommand.h"
 #include "IEvaluatorContainer.h"
+#include "IApproximatorContainer.h"
 #include "ICollectionContainer.h"
 #include "Config.h"
 #include "ApplicationCommon.h"
@@ -24,9 +25,14 @@ public:
 private:
 	void resetCollectionContainer(CollectionConfig collectionConfig);
 	void resetEvaluationContainer(EvaluatorConfig evaluatorConfig);
+	void resetApproximatorContainer(NearIdentityApproximatorConfig approximatorConfig);
+
+	void fillApproximatorConfig(LibrarySet librarySet, int nbQubits, NearIdentityApproximatorConfig* pApproximatorConfig);
 
 	CollectionContainerPtr m_pCollectionContainer;
+	ApproximatorContainerPtr m_pApproximatorContainer;
 	EvaluatorContainerPtr m_pEvaluatorContainer;
+
 };
 
 #endif /* COMMANDFACTORY_H_ */

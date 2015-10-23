@@ -57,3 +57,38 @@ void ConfigReader::readCollectionAndEvaluatorConfig(std::string configFile, Coll
 		throw std::logic_error("Can not read config file!");
 	}
 }
+
+void ConfigReader::readApproximatorConfig(std::string configFile, NearIdentityApproximatorConfig* pApproximatorConfig) {
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		char prefix[128];
+		std::string line;
+
+		std::getline(inputStream, line);
+		double initialEpsilon;
+		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
+		pApproximatorConfig->m_initialEpsilon = (mreal_t)initialEpsilon;
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_maxMergedBinDistance));
+
+		std::getline(inputStream, line);
+		double maxCandidateEpsilon;
+		sscanf(line.data(), "%[^:]:%lf", prefix, &maxCandidateEpsilon);
+		pApproximatorConfig->m_maxCandidateEpsilon = (mreal_t)maxCandidateEpsilon;
+
+		std::getline(inputStream, line);
+		double maxCandidateEpsilonDecreaseFactor;
+		sscanf(line.data(), "%[^:]:%lf", prefix, &maxCandidateEpsilonDecreaseFactor);
+		pApproximatorConfig->m_maxCandidateEpsilonDecreaseFactor = (mreal_t)maxCandidateEpsilonDecreaseFactor;
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_iterationMaxSteps));
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_maxResultNumber));
+	}
+	else {
+		throw std::logic_error("Can not read config file for approximator!");
+	}
+}

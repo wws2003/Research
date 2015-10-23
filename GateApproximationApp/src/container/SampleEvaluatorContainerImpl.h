@@ -15,10 +15,7 @@
 #include "MathConceptsCommon.h"
 #include "AlgoCommon.h"
 #include "IResourceContainer.h"
-#include "IBinCollection.h"
 #include "AlgoInternal.h"
-#include "IDecomposer.h"
-#include "IComposer.h"
 #include "ILibraryMatrixStore.h"
 #include "Config.h"
 

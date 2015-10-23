@@ -19,6 +19,8 @@ public:
 
 	virtual void readCollectionAndEvaluatorConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
 
+	virtual void readApproximatorConfig(std::string configFile, NearIdentityApproximatorConfig* pApproximatorConfig);
+
 private:
 	void initLibrarySetNameMap();
 

@@ -27,6 +27,8 @@ void initCommands(CommandParser* pCommandParser);
 void printSyntaxMessage();
 
 int main(int argc, char* argv[]) {
+	mreal::initPrecision();
+
 	CommandParser commandParser;
 	initCommands(&commandParser);
 

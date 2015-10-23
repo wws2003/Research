@@ -13,11 +13,15 @@
 #include <string>
 
 class ICommand;
+class AbstractChainCommand;
+
 class ICollectionContainer;
 class IApproximatorContainer;
 class IEvaluatorContainer;
 
 typedef ICommand* CommandPtr;
+typedef AbstractChainCommand* AbstractCommandPtr;
+
 typedef ICollectionContainer* CollectionContainerPtr;
 typedef IApproximatorContainer* ApproximatorContainerPtr;
 typedef IEvaluatorContainer* EvaluatorContainerPtr;

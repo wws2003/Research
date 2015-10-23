@@ -10,6 +10,7 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
+ ../src/container/IApproximatorContainer.h \
  ../src/container/ICollectionContainer.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
@@ -26,13 +27,22 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../src/container/ICollectionContainer.h \
  ../src/container/SampleEvaluatorContainerImpl.h \
  ../src/container/IEvaluatorContainer.h \
- ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
- ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
- ../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h \
- ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
  ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h \
+ ../src/container/SampleApproximatorContainerImpl.h \
+ ../src/container/IApproximatorContainer.h \
+ ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h \
+ ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h \
+ ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h \
+ ../../ModuleOperator/include/implement/GateCoordinateCalculatorImpl.h \
+ ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
+ ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
+ ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h \
  ../src/command/EvaluateCollectionCommand.h \
  ../src/command/AbstractChainCommandExecutor.h \
+ ../src/command/EvaluateApproximatorCommand.h \
  ../src/configure/ConfigReader.h ../src/configure/Config.h
 
 ../src/command/CommandFactory.h:
@@ -58,6 +68,8 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
+
+../src/container/IApproximatorContainer.h:
 
 ../src/container/ICollectionContainer.h:
 
@@ -93,19 +105,37 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../src/container/IEvaluatorContainer.h:
 
-../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h:
+../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h:
 
-../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
+../src/container/SampleApproximatorContainerImpl.h:
 
-../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h:
+../src/container/IApproximatorContainer.h:
+
+../../ModuleOperator/include/interface/abstract/IMatrixOperator.h:
+
+../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h:
+
+../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h:
+
+../../ModuleOperator/include/implement/GateCoordinateCalculatorImpl.h:
+
+../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
+
+../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IComposer.h:
 
-../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h:
+../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
+
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h:
 
 ../src/command/EvaluateCollectionCommand.h:
 
 ../src/command/AbstractChainCommandExecutor.h:
+
+../src/command/EvaluateApproximatorCommand.h:
 
 ../src/configure/ConfigReader.h:
 
