@@ -8,16 +8,16 @@
 #ifndef ABSTRACTCHAINCOMMANDEXECUTOR_H_
 #define ABSTRACTCHAINCOMMANDEXECUTOR_H_
 
-#include "ICommandExecutor.h"
+#include "ICommand.h"
 #include "MathConceptsCommon.h"
 #include "ApplicationCommon.h"
 
-class AbstractChainCommandExecutor : public ICommandExecutor {
+class AbstractChainCommand : public ICommand {
 public:
-	AbstractChainCommandExecutor(CommandExecutorPtr pSuccessor = NullPtr);
-	virtual ~AbstractChainCommandExecutor();
+	AbstractChainCommand(CommandPtr pSuccessor = NullPtr);
+	virtual ~AbstractChainCommand();
 
-	inline void setSuccessor(CommandExecutorPtr pSuccessor){m_pSuccessor = pSuccessor;};
+	inline void setSuccessor(CommandPtr pSuccessor){m_pSuccessor = pSuccessor;};
 
 	//Override
 	void execute();
@@ -26,7 +26,7 @@ protected:
 	virtual void doExecute() = 0;
 
 private:
-	CommandExecutorPtr m_pSuccessor;
+	CommandPtr m_pSuccessor;
 };
 
 #endif /* ABSTRACTCHAINCOMMANDEXECUTOR_H_ */

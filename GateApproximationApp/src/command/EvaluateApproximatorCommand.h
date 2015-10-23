@@ -1,12 +1,12 @@
 /*
- * EvaluateApproximator.h
+ * EvaluateApproximatorCommand.h
  *
  *  Created on: Oct 21, 2015
  *      Author: pham
  */
 
-#ifndef EVALUATEAPPROXIMATOR_H_
-#define EVALUATEAPPROXIMATOR_H_
+#ifndef EVALUATEAPPROXIMATORCOMMAND_H_
+#define EVALUATEAPPROXIMATORCOMMAND_H_
 
 #include "AbstractChainCommandExecutor.h"
 #include "IApproximatorContainer.h"
@@ -14,12 +14,12 @@
 #include "ICollectionContainer.h"
 #include "ApplicationCommon.h"
 
-class EvaluateApproximator: public AbstractChainCommandExecutor {
+class EvaluateApproximatorCommand: public AbstractChainCommand {
 public:
-	EvaluateApproximator(ApproximatorContainerPtr pApproximatorContainer,
+	EvaluateApproximatorCommand(ApproximatorContainerPtr pApproximatorContainer,
 			CollectionContainerPtr pCollectionContainer,
 			EvaluatorContainerPtr pEvaluatorContainer);
-	virtual ~EvaluateApproximator();
+	virtual ~EvaluateApproximatorCommand();
 
 protected:
 	//Override

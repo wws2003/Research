@@ -7,14 +7,14 @@
 
 #include "AbstractChainCommandExecutor.h"
 
-AbstractChainCommandExecutor::AbstractChainCommandExecutor(CommandExecutorPtr pSuccessor) {
+AbstractChainCommand::AbstractChainCommand(CommandPtr pSuccessor) {
 	m_pSuccessor = pSuccessor;
 }
 
-AbstractChainCommandExecutor::~AbstractChainCommandExecutor() {
+AbstractChainCommand::~AbstractChainCommand() {
 }
 
-void AbstractChainCommandExecutor::execute() {
+void AbstractChainCommand::execute() {
 	doExecute();
 	if(m_pSuccessor != NullPtr) {
 		m_pSuccessor->execute();

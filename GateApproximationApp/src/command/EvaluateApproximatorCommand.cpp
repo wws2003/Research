@@ -5,22 +5,22 @@
  *      Author: pham
  */
 
-#include "EvaluateApproximator.h"
+#include "EvaluateApproximatorCommand.h"
 #include "ISearchSpaceEvaluator.h"
 
-EvaluateApproximator::EvaluateApproximator(ApproximatorContainerPtr pApproximatorContainer,
+EvaluateApproximatorCommand::EvaluateApproximatorCommand(ApproximatorContainerPtr pApproximatorContainer,
 		CollectionContainerPtr pCollectionContainer,
-		EvaluatorContainerPtr pEvaluatorContainer) : AbstractChainCommandExecutor() {
+		EvaluatorContainerPtr pEvaluatorContainer) : AbstractChainCommand() {
 	m_pApproximatorContainer = pApproximatorContainer;
 	m_pCollectionContainer = pCollectionContainer;
 	m_pEvaluatorContainer = pEvaluatorContainer;
 }
 
-EvaluateApproximator::~EvaluateApproximator() {
+EvaluateApproximatorCommand::~EvaluateApproximatorCommand() {
 
 }
 
-void EvaluateApproximator::doExecute() {
+void EvaluateApproximatorCommand::doExecute() {
 	GateApproximatorPtr pApproximator = m_pApproximatorContainer->getGateApproximator();
 	GateCollectionPtr pCollection = m_pCollectionContainer->getGateCollection();
 	GateSearchSpaceEvaluatorPtr pEvaluator = m_pEvaluatorContainer->getGateSearchSpaceEvaluator();

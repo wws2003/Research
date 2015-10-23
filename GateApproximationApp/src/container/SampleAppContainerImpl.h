@@ -21,10 +21,8 @@
 #include "IComposer.h"
 #include "ILibraryMatrixStore.h"
 #include "NearIdentityElementBinBasedComposer.h"
+#include "ApplicationCommon.h"
 #include <map>
-
-typedef std::map<std::string, int> LibrarySetNameMap;
-typedef std::map<int, std::string> LibrarySetFileNameMap;
 
 class SampleAppContainerImpl: public IAppContainer {
 public:

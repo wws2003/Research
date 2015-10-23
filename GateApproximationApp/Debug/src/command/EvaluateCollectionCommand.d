@@ -1,6 +1,6 @@
-src/command/EvaluateCollectionCommandExecutor.d: \
- ../src/command/EvaluateCollectionCommandExecutor.cpp \
- ../src/command/EvaluateCollectionCommandExecutor.h \
+src/command/EvaluateCollectionCommand.d: \
+ ../src/command/EvaluateCollectionCommand.cpp \
+ ../src/command/EvaluateCollectionCommand.h \
  ../src/common/ApplicationCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
@@ -16,11 +16,10 @@ src/command/EvaluateCollectionCommandExecutor.d: \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../src/container/IEvaluatorContainer.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
- ../src/command/AbstractChainCommandExecutor.h \
- ../src/command/ICommandExecutor.h \
+ ../src/command/AbstractChainCommandExecutor.h ../src/command/ICommand.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h
 
-../src/command/EvaluateCollectionCommandExecutor.h:
+../src/command/EvaluateCollectionCommand.h:
 
 ../src/common/ApplicationCommon.h:
 
@@ -54,6 +53,6 @@ src/command/EvaluateCollectionCommandExecutor.d: \
 
 ../src/command/AbstractChainCommandExecutor.h:
 
-../src/command/ICommandExecutor.h:
+../src/command/ICommand.h:
 
 ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h:

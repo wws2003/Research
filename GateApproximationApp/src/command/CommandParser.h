@@ -8,7 +8,7 @@
 #ifndef COMMANDPARSER_H_
 #define COMMANDPARSER_H_
 
-#include "ICommandExecutor.h"
+#include "ICommand.h"
 #include "ApplicationCommon.h"
 #include <stdexcept>
 #include <map>
@@ -25,32 +25,19 @@ public:
 	CommandParser();
 	virtual ~CommandParser();
 
-	CommandExecutorPtr getCommandExecutor(int argc, char* argv[]);
+	void provideArgumentPatternForCommandCode(int argc, std::vector<int> argvPositions, std::vector<std::string> argvs, int commandCode);
 
-	void printSyntaxMessage();
+	void getCommandCodeAndParams(int argc, char* argv[], int& commandCode, CommandParams& rCommandParams);
 
 private:
-	void initCommandMap();
-
-	void provideArgumentPattern(int argc, std::vector<int> argvPositions, std::vector<std::string> argvs, int commandCode);
-
-	int getCommandCodeFromArguments(int argc, char* argv[]);
-
-	CommandExecutorPtr getCommandExecutorForCommandCode(int commandCode);
 
 	bool isArgumentsMatched(char* argv[], const ArgumentPattern& argumentPattern);
+
+	void parseParametersFromArguments(const ArgumentPattern& argumentPattern, int argc, char* argv[], CommandParams& rCommandParams);
 
 	CommandPatternMap m_commandMap;
 
 	CommandCodeMap m_commandCodeMap;
-
-	enum CommandCode {
-		UNKNOWN_COMMAND,
-		GENERATE_NEAR_IDENTITY,
-		EVALUATE_COLLECTION_TO_IDENTITY,
-		EVALUATE_COLLECTION_APPROXIMATOR_TO_IDENTITY,
-		//TODO Add more command code
-	};
 
 };
 

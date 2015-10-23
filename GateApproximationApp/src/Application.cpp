@@ -17,105 +17,59 @@
 #include "IAppContainer.h"
 #include "CommandParser.h"
 #include "ApplicationCommon.h"
-#include "ICommandExecutor.h"
+#include "CommandFactory.h"
+#include "ICommand.h"
 
 using namespace std;
 
-#define FORMAL 1
-
-#if FORMAL
-	int main(int argc, char* argv[]) {
-		CommandParser commandParser;
-		try {
-			CommandExecutorPtr pCommandExecutor = commandParser.getCommandExecutor(argc, argv);
-			if(pCommandExecutor != NullPtr) {
-				pCommandExecutor->execute();
-				_destroy(pCommandExecutor);
-			}
-		}
-		catch(std::exception const& e) {
-			std::cout << e.what() << std::endl;
-			commandParser.printSyntaxMessage();
-		}
-	}
-
-#else
-bool isValidSyntax();
+void initCommands(CommandParser* pCommandParser);
 
 void printSyntaxMessage();
 
-void evaluateCollection(AppContainerPtr pAppContainer);
-
-void evaluateApproximator(AppContainerPtr pAppContainer);
-
 int main(int argc, char* argv[]) {
-	cout << "!!!Welcome to Quantum Gate Approximation App!!!" << endl; // prints !!!Hello World!!!
+	CommandParser commandParser;
+	initCommands(&commandParser);
 
-	if(!isValidSyntax(argc, argv)) {
+	CommandFactory commandFactory;
+
+	try {
+		int commandCode = UNKNOWN_COMMAND;
+		CommandParams commandParams;
+		commandParser.getCommandCodeAndParams(argc, argv, commandCode, commandParams);
+
+		CommandPtr pCommand = commandFactory.getCommand(commandCode, commandParams);
+		pCommand->execute();
+	}
+	catch(std::exception const& e) {
+		std::cout << e.what() << std::endl;
 		printSyntaxMessage();
 	}
-	else {
-		mreal::initPrecision();
-
-		AppContainerPtr pAppContainer = new SampleAppContainerImpl(argv[2], argv[3]);
-
-		evaluateCollection(pAppContainer);
-		evaluateApproximator(pAppContainer);
-
-		delete pAppContainer;
-	}
-
-	return 0;
 }
 
-bool isValidSyntax(int argc, char* argv[]) {
-	const int VALID_ARGUMENTS_NUMBER = 4;
-	const char* VALID_ARGUMENT1 = "-G";
+void initCommands(CommandParser* pCommandParser) {
+	//For -g conf1 conf2 -o outputFile
+	pCommandParser->provideArgumentPatternForCommandCode(6, {1, 4}, {"-g", "-o"}, GENERATE_NEAR_IDENTITY);
 
-	return (argc == VALID_ARGUMENTS_NUMBER) && (strcmp(argv[1], VALID_ARGUMENT1) == 0);
+	//For -e conf1 -I
+	pCommandParser->provideArgumentPatternForCommandCode(4, {1, 3}, {"-e", "-I"}, EVALUATE_COLLECTION_TO_IDENTITY);
+
+	//For -e conf1 conf2 -I
+	pCommandParser->provideArgumentPatternForCommandCode(5, {1, 4}, {"-e", "-I"}, EVALUATE_COLLECTION_APPROXIMATOR_TO_IDENTITY);
+
 }
 
 void printSyntaxMessage() {
-	cout << "Sorry for any inconvenience. Currently the only accepted syntax is $GateApproximationApp -G config_file_name_1 config_file_name_2" << endl << endl;
-	cout << "_ -G: To generate and print out sequences close to the identity gate. Other options should be added in the future" << endl << endl;
-	cout << "_ config_file_name_1: Path to file contains basic information for approximation like size of gates, library gates, basic sequence length. Please see in1.conf or in2.conf for reference" << endl << endl;
-	cout << "_ config_file_name_2: Path to file contains detailed information to configure the NearIdentity Approximation algorithm based on clustering (binning) gate sequences by their coordinate (see NearIdentityElementApproximator.cpp). Please see near_identity_approximator1.conf or near_identity_approximator2.conf for reference" << endl << endl;
+	std::cout << "As of 2015/10/21, acceptable command arguments are:" << std::endl;
+
+	std::cout << "-g conf1 conf2 -o outputFile -> Generate near identity sequences (persist to storage )" << std::endl;
+
+	std::cout << "-e conf1 -I  -> Evaluate collection for identity" << std::endl;
+	std::cout << "-e conf1 conf2 -I -> Evaluate collection, approximator for identity" << std::endl;
+
+	std::cout << "For future purposes" << std::endl;
+
+	std::cout << "-e conf1 -t targetConf -> Evaluate collection for target" << std::endl;
+	std::cout << "-e conf1 -c dbconf -t targetConf -> Evaluate collection for target given candidates file" << std::endl;
+	std::cout << "-e conf1 conf2 -t targetConf -> Evaluate collection, approximator for target" << std::endl;
+
 }
-
-void evaluateCollection(AppContainerPtr pAppContainer) {
-	//Get collection instance, either from file or generate
-	GateCollectionPtr pGateCollection = pAppContainer->getGateCollection();
-
-	//Get search space evaluator instance
-	GateSearchSpaceEvaluatorPtr pSearchSpaceEvaluator = pAppContainer->getGateSearchSpaceEvaluator();
-
-	//Evaluate collection
-	std::cout << "---------------------Start evaluating collection---------------------" << "\r\n";
-	pSearchSpaceEvaluator->evaluateCollection(pGateCollection);
-	std::cout << "---------------------End evaluating collection---------------------" << "\r\n";
-
-	//Recycle instances
-	//pAppContainer->recycle(pGateCollection);
-	//pAppContainer->recycle(pSearchSpaceEvaluator);
-}
-
-void evaluateApproximator(AppContainerPtr pAppContainer) {
-	//Get approximator instance, either from file or generate
-	GateApproximatorPtr pGateApproximator = pAppContainer->getGateApproximator();
-
-	//Get collection instance, either from file or generate
-	GateCollectionPtr pGateCoreCollection = pAppContainer->getGateCollection();
-
-	//Get search space evaluator instance
-	GateSearchSpaceEvaluatorPtr pSearchSpaceEvaluator = pAppContainer->getGateSearchSpaceEvaluator();
-
-	//Evaluate approximator
-	std::cout << "---------------------Start evaluating approximator---------------------" << "\r\n";
-	pSearchSpaceEvaluator->evaluateApproximator(pGateApproximator, pGateCoreCollection);
-	std::cout << "---------------------End evaluating approximator---------------------" << "\r\n";
-
-	//Recycle instances
-	pAppContainer->recycle(pGateApproximator);
-	pAppContainer->recycle(pSearchSpaceEvaluator);
-}
-#endif

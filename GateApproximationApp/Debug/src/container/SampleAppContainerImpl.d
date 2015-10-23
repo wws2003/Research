@@ -27,6 +27,7 @@ src/container/SampleAppContainerImpl.d: \
  ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h \
  ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../src/common/ApplicationCommon.h \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
@@ -290,6 +291,8 @@ src/container/SampleAppContainerImpl.d: \
 ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../src/common/ApplicationCommon.h:
 
 ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h:
 

@@ -1,22 +1,22 @@
 /*
- * EvaluateCollectionCommandExecutor.h
+ * EvaluateCollectionCommand.h
  *
  *  Created on: Oct 21, 2015
  *      Author: pham
  */
 
-#ifndef EVALUATECOLLECTIONCOMMANDEXECUTOR_H_
-#define EVALUATECOLLECTIONCOMMANDEXECUTOR_H_
+#ifndef EVALUATECOLLECTIONCOMMAND_H_
+#define EVALUATECOLLECTIONCOMMAND_H_
 
 #include "ApplicationCommon.h"
 #include "ICollectionContainer.h"
 #include "IEvaluatorContainer.h"
 #include "AbstractChainCommandExecutor.h"
 
-class EvaluateCollectionCommandExecutor : public AbstractChainCommandExecutor {
+class EvaluateCollectionCommand : public AbstractChainCommand {
 public:
-	EvaluateCollectionCommandExecutor(CollectionContainerPtr pCollectionContainer, EvaluatorContainerPtr pEvaluatorContainer);
-	virtual ~EvaluateCollectionCommandExecutor();
+	EvaluateCollectionCommand(CollectionContainerPtr pCollectionContainer, EvaluatorContainerPtr pEvaluatorContainer);
+	virtual ~EvaluateCollectionCommand();
 
 protected:
 	//Override

@@ -1,8 +1,7 @@
-src/command/EvaluateApproximator.d: \
- ../src/command/EvaluateApproximator.cpp \
- ../src/command/EvaluateApproximator.h \
- ../src/command/AbstractChainCommandExecutor.h \
- ../src/command/ICommandExecutor.h \
+src/command/EvaluateApproximatorCommand.d: \
+ ../src/command/EvaluateApproximatorCommand.cpp \
+ ../src/command/EvaluateApproximatorCommand.h \
+ ../src/command/AbstractChainCommandExecutor.h ../src/command/ICommand.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
@@ -21,11 +20,11 @@ src/command/EvaluateApproximator.d: \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h
 
-../src/command/EvaluateApproximator.h:
+../src/command/EvaluateApproximatorCommand.h:
 
 ../src/command/AbstractChainCommandExecutor.h:
 
-../src/command/ICommandExecutor.h:
+../src/command/ICommand.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
 

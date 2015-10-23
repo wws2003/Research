@@ -6,13 +6,160 @@
  */
 
 #include "SampleCollectionContainerImpl.h"
+#include "SimpleDenseMatrixFactoryImpl.h"
+#include "SampleMatrixOperator.h"
+#include "PersistableGNATGateCollectionImpl.h"
+#include "BinaryGateWriterImpl.h"
+#include "BinaryGateReaderImpl.h"
+#include "BinaryMatrixWriterImpl.h"
+#include "BinaryMatrixReaderImpl.h"
+#include "MatrixFowlerDistanceCalculator.h"
+#include "GateDistanceCalculatorByMatrixImpl.h"
+#include "ICombiner.h"
+#include "GateSearchSpaceConstructorImpl.h"
+#include "VectorBasedCollectionImpl.hpp"
+#include "SampleResourceContainerImpl.h"
+#include "GateCombinerImpl.h"
+#include "LabelOnlyGateWriterImpl.h"
+#include "DuplicateGateCancelationCombinerImpl.h"
+#include "HTVBasedResourceContainerImpl.h"
+#include "HVBasedResourceContainerImpl.h"
+#include <stdexcept>
 
-SampleCollectionContainerImpl::SampleCollectionContainerImpl() {
-	// TODO Auto-generated constructor stub
+const std::string SampleCollectionContainerImpl::DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT = "dat";
 
+SampleCollectionContainerImpl::SampleCollectionContainerImpl(const CollectionConfig& collectionConfig) : m_collectionConfig(collectionConfig) {
+	initLibrarySetPersistFileNameMap();
+	wireDependencies();
 }
 
 SampleCollectionContainerImpl::~SampleCollectionContainerImpl() {
-	// TODO Auto-generated destructor stub
+	releaseDependencies();
+}
+
+GateCollectionPtr SampleCollectionContainerImpl::getGateCollection() {
+	PersistableGNATGateCollectionImpl* pGateCollection = new PersistableGNATGateCollectionImpl(m_pBinaryGateWriter,
+			m_pBinaryGateReader);
+
+	std::string persitenceFileName = getGateCollectionPersistenceFileFullName(m_collectionConfig,
+			m_librarySetPersistFileNameMap,
+			DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT);
+	try {
+		pGateCollection->load(persitenceFileName);
+	}
+	catch (std::exception& e) {
+		std::cout << e.what() << ". Need to build collection from scratch\n";
+		constructGateCollection(pGateCollection);
+		pGateCollection->save(persitenceFileName);
+	}
+
+	return pGateCollection;
+}
+
+void SampleCollectionContainerImpl::initLibrarySetPersistFileNameMap() {
+	m_librarySetPersistFileNameMap[L_HT] = "gnat";
+	m_librarySetPersistFileNameMap[L_HTCNOT] = "gnat";
+	m_librarySetPersistFileNameMap[L_HCV] = "gnat_hv";
+	m_librarySetPersistFileNameMap[L_HTCV] = "gnat_htcv";
+}
+
+void SampleCollectionContainerImpl::setupResourceContainer() {
+
+	switch(m_collectionConfig.m_librarySet) {
+	case L_HT:
+		m_pResourceContainer = ResourceContainerPtr(new SampleResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
+		break;
+	case L_HCV:
+		m_pResourceContainer = ResourceContainerPtr(new HVBasedResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
+		break;
+	case L_HTCNOT:
+		m_pResourceContainer = ResourceContainerPtr(new SampleResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
+		break;
+	case L_HTCV:
+		m_pResourceContainer = ResourceContainerPtr(new HTVBasedResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
+		break;
+	default:
+		break;
+	}
+
+	m_pResourceContainer->setup();
+}
+
+void SampleCollectionContainerImpl::wireDependencies() {
+	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
+	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));
+
+	setupResourceContainer();
+
+	m_pBinaryMatrixWriter = MatrixWriterPtr(new BinaryMatrixWriterImpl());
+	m_pBinaryMatrixReader = MatrixReaderPtr(new BinaryMatrixReaderImpl(m_pMatrixFactory));
+	m_pBinaryGateWriter = GateWriterPtr(new BinaryGateWriterImpl(NullPtr));
+	m_pBinaryGateReader = GateReaderPtr(new BinaryGateReaderImpl(NullPtr));
+
+	m_pUniversalSet = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>());
+	m_pResourceContainer->getUniversalGates(m_pUniversalSet, m_collectionConfig.m_nbQubits);
+
+	GateCombinabilityCheckers checkers;
+	m_pResourceContainer->getGateCombinabilityCheckers(checkers, m_collectionConfig.m_nbQubits);
+	m_pGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(checkers, m_pMatrixOperator));
+
+	m_pGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorImpl(m_pGateCombiner));
+
+	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(m_pMatrixOperator));
+
+	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new GateDistanceCalculatorByMatrixImpl(m_pMatrixDistanceCalculator));
+}
+
+void SampleCollectionContainerImpl::releaseDependencies() {
+	_destroy(m_pGateDistanceCalculator);
+	_destroy(m_pMatrixDistanceCalculator);
+	_destroy(m_pGateSearchSpaceConstructor);
+
+	_destroy(m_pGateCombiner);
+
+	_destroy(m_pUniversalSet);
+
+	_destroy(m_pBinaryGateReader);
+	_destroy(m_pBinaryGateWriter);
+	_destroy(m_pBinaryMatrixReader);
+	_destroy(m_pBinaryMatrixWriter);
+
+	_destroy(m_pResourceContainer);
+
+	_destroy(m_pMatrixOperator);
+	_destroy(m_pMatrixFactory);
+}
+
+std::string SampleCollectionContainerImpl::getGateCollectionPersistenceFileFullName(const CollectionConfig& config,
+		const LibrarySetFileNameMap& librarySetFileNameMap,
+		std::string fileExtension) {
+
+	int nbQubits = config.m_nbQubits;
+	int maxSequenceLength = config.m_maxSequenceLength;
+	std::string fileName = librarySetFileNameMap.find(config.m_librarySet)->second;
+
+#if MPFR_REAL
+	std::string precisionPostFix = "_mpfr";
+#else
+	std::string precisionPostFix = "";
+#endif
+
+	char fullName[256];
+	sprintf(fullName, "%s%s_%d_%d.%s",
+			fileName.c_str(),
+			precisionPostFix.c_str(),
+			nbQubits,
+			maxSequenceLength,
+			fileExtension.c_str());
+
+	return std::string(fullName);
+}
+
+void SampleCollectionContainerImpl::constructGateCollection(GateCollectionPtr pGateCollection) {
+	m_pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection,
+			m_pUniversalSet,
+			m_collectionConfig.m_maxSequenceLength);
+
+	pGateCollection->rebuildStructure(m_pGateDistanceCalculator);
 }
 
