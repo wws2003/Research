@@ -13,8 +13,6 @@
 #include "BinaryGateReaderImpl.h"
 #include "BinaryMatrixWriterImpl.h"
 #include "BinaryMatrixReaderImpl.h"
-#include "MatrixFowlerDistanceCalculator.h"
-#include "GateDistanceCalculatorByMatrixImpl.h"
 #include "ICombiner.h"
 #include "GateSearchSpaceConstructorImpl.h"
 #include "VectorBasedCollectionImpl.hpp"
@@ -24,6 +22,8 @@
 #include "DuplicateGateCancelationCombinerImpl.h"
 #include "HTVBasedResourceContainerImpl.h"
 #include "HVBasedResourceContainerImpl.h"
+#include "PersistableGNATCollectionImpl.h"
+#include "IPersistableCollection.h"
 #include <stdexcept>
 
 const std::string SampleCollectionContainerImpl::DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT = "dat";
@@ -37,23 +37,29 @@ SampleCollectionContainerImpl::~SampleCollectionContainerImpl() {
 	releaseDependencies();
 }
 
-GateCollectionPtr SampleCollectionContainerImpl::getGateCollection() {
-	PersistableGNATGateCollectionImpl* pGateCollection = new PersistableGNATGateCollectionImpl(m_pBinaryGateWriter,
-			m_pBinaryGateReader);
+GateCollectionPtr SampleCollectionContainerImpl::getGateCollection(GateDistanceCalculatorPtr pGateDistanceCalculator) {
+	PersitableGateCollectionPtr pGateCollection = PersitableGateCollectionPtr(new PersistableGNATGateCollectionImpl(m_pBinaryGateWriter,
+			m_pBinaryGateReader));
 
 	std::string persitenceFileName = getGateCollectionPersistenceFileFullName(m_collectionConfig,
 			m_librarySetPersistFileNameMap,
 			DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT);
 	try {
 		pGateCollection->load(persitenceFileName);
+		std::cout << "Collection loaded from storage. Distance calculator is ignored !\n";
 	}
 	catch (std::exception& e) {
 		std::cout << e.what() << ". Need to build collection from scratch\n";
-		constructGateCollection(pGateCollection);
+		constructGateCollection(pGateCollection, pGateDistanceCalculator);
 		pGateCollection->save(persitenceFileName);
 	}
 
 	return pGateCollection;
+}
+
+PersitableGateCollectionPtr SampleCollectionContainerImpl::getPersitableGateCollection() {
+	return PersitableGateCollectionPtr(new PersistableGNATGateCollectionImpl(m_pBinaryGateWriter,
+			m_pBinaryGateReader));
 }
 
 void SampleCollectionContainerImpl::initLibrarySetPersistFileNameMap() {
@@ -104,15 +110,9 @@ void SampleCollectionContainerImpl::wireDependencies() {
 	m_pGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(checkers, m_pMatrixOperator));
 
 	m_pGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorImpl(m_pGateCombiner));
-
-	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(m_pMatrixOperator));
-
-	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new GateDistanceCalculatorByMatrixImpl(m_pMatrixDistanceCalculator));
 }
 
 void SampleCollectionContainerImpl::releaseDependencies() {
-	_destroy(m_pGateDistanceCalculator);
-	_destroy(m_pMatrixDistanceCalculator);
 	_destroy(m_pGateSearchSpaceConstructor);
 
 	_destroy(m_pGateCombiner);
@@ -155,11 +155,12 @@ std::string SampleCollectionContainerImpl::getGateCollectionPersistenceFileFullN
 	return std::string(fullName);
 }
 
-void SampleCollectionContainerImpl::constructGateCollection(GateCollectionPtr pGateCollection) {
+void SampleCollectionContainerImpl::constructGateCollection(GateCollectionPtr pGateCollection,
+		GateDistanceCalculatorPtr pGateDistanceCalculator) {
 	m_pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection,
 			m_pUniversalSet,
 			m_collectionConfig.m_maxSequenceLength);
 
-	pGateCollection->rebuildStructure(m_pGateDistanceCalculator);
+	pGateCollection->rebuildStructure(pGateDistanceCalculator);
 }
 

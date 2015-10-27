@@ -21,7 +21,8 @@
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
 #include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
 
-SampleApproximatorContainerImpl::SampleApproximatorContainerImpl(NearIdentityApproximatorConfig approximatorConfig) : m_approximatorConfig(approximatorConfig) {
+SampleApproximatorContainerImpl::SampleApproximatorContainerImpl(NearIdentityApproximatorConfig approximatorConfig,
+		CollectionConfig coreCollectionConfig) : m_approximatorConfig(approximatorConfig), m_coreCollectionConfig(coreCollectionConfig) {
 	wireDependencies();
 }
 
@@ -45,11 +46,11 @@ void SampleApproximatorContainerImpl::wireDependencies() {
 	setupResourceContainer();
 
 	GateCombinabilityCheckers checkers;
-	m_pResourceContainer->getGateCombinabilityCheckers(checkers, m_approximatorConfig.m_nbQubits);
+	m_pResourceContainer->getGateCombinabilityCheckers(checkers, m_coreCollectionConfig.m_nbQubits);
 	m_pGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(checkers, m_pMatrixOperator));
 
 	MatrixPtrVector pBasis;
-	m_pResourceContainer->getMatrixOrthonormalBasis(pBasis, m_approximatorConfig.m_nbQubits);
+	m_pResourceContainer->getMatrixOrthonormalBasis(pBasis, m_coreCollectionConfig.m_nbQubits);
 	m_pMatrixRealInnerProductCalculator = MatrixRealInnerProductCalculatorPtr(new MatrixRealInnerProductByTraceImpl(m_pMatrixOperator));
 	m_pHermitiaRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new MatrixCoordinateOnOrthonormalBasisCalculatorImpl(m_pMatrixRealInnerProductCalculator, pBasis));
 	m_pMatrixRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, m_pHermitiaRealCoordinateCalculator));
@@ -87,7 +88,7 @@ void SampleApproximatorContainerImpl::releaseDependencies() {
 }
 
 void SampleApproximatorContainerImpl::setupResourceContainer() {
-	switch(m_approximatorConfig.m_librarySet) {
+	switch(m_coreCollectionConfig.m_librarySet) {
 	case L_HT:
 		m_pResourceContainer = ResourceContainerPtr(new SampleResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
 		break;

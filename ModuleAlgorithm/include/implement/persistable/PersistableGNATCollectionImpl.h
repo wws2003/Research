@@ -13,10 +13,11 @@
 #include "IOCommon.h"
 #include "IWriter.h"
 #include "GNATCollectionBlock.h"
+#include "IPersistableCollection.h"
 #include "IReader.h"
 
 template<typename T>
-class  PersistableGNATCollectionImpl: public GNATCollectionImpl<T>, IPersistable {
+class  PersistableGNATCollectionImpl: public GNATCollectionImpl<T>, public IPersistable {
 public:
 	PersistableGNATCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader);
 

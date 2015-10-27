@@ -14,6 +14,7 @@
 #include "ICollectionContainer.h"
 #include "Config.h"
 #include "ApplicationCommon.h"
+#include "ConfigReader.h"
 
 class CommandFactory {
 public:
@@ -23,11 +24,16 @@ public:
 	virtual CommandPtr getCommand(int commandCode, const CommandParams& commandParams);
 
 private:
-	void resetCollectionContainer(CollectionConfig collectionConfig);
-	void resetEvaluationContainer(EvaluatorConfig evaluatorConfig);
-	void resetApproximatorContainer(NearIdentityApproximatorConfig approximatorConfig);
+	AbstractCommandPtr getCollectionEvaluationCommandForIdentity(std::string configFileName);
+	AbstractCommandPtr getApproximatorEvaluationCommandForIdentity(std::string evaluationConfigFile, std::string approximatorConfigFileName);
+	AbstractCommandPtr getGenerateAndStoreApproximationsForIdentity(std::string evaluationConfigFile, std::string approximatorConfigFileName, std::string storeFileName);
 
-	void fillApproximatorConfig(LibrarySet librarySet, int nbQubits, NearIdentityApproximatorConfig* pApproximatorConfig);
+	void readCollectionAndEvaluatorConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
+	void readApproximatorConfig(ConfigReader configReader, std::string configFile, const CollectionConfig&  collectionConfig, NearIdentityApproximatorConfig* pApproximatorConfig);
+
+	void resetCollectionContainer(const CollectionConfig& collectionConfig);
+	void resetEvaluationContainer(const EvaluatorConfig& evaluatorConfig);
+	void resetApproximatorContainer(const NearIdentityApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig);
 
 	CollectionContainerPtr m_pCollectionContainer;
 	ApproximatorContainerPtr m_pApproximatorContainer;

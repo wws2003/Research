@@ -61,4 +61,10 @@ typedef std::vector<GateCombinabilityCheckerPtr> GateCombinabilityCheckers;
 template<typename T>
 class GNATCollectionIterator;
 
+template<typename T>
+class PersistableGNATCollectionImpl;
+
+template<typename T>
+using PersistableGNATCollectionImplPtr = PersistableGNATCollectionImpl<T>*;
+
 #endif /* ALGOINTERNAL_H_ */

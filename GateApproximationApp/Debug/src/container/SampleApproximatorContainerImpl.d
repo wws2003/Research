@@ -7,13 +7,14 @@ src/container/SampleApproximatorContainerImpl.d: \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
+ ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../src/configure/Config.h \
  ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h \
  ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h \
- ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h \
  ../../ModuleOperator/include/implement/GateCoordinateCalculatorImpl.h \
  ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
@@ -219,6 +220,10 @@ src/container/SampleApproximatorContainerImpl.d: \
 
 ../../SharedThirdParties/gmp/include/gmp.h:
 
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
+../../ModuleOperator/include/interface/common/OperatorCommon.h:
+
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
@@ -230,8 +235,6 @@ src/container/SampleApproximatorContainerImpl.d: \
 ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h:
 
 ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h:
-
-../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
 ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h:
 

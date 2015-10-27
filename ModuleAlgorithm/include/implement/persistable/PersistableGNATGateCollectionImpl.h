@@ -8,11 +8,13 @@
 #ifndef PERSISTABLEGNATGATECOLLECTIONIMPL_H_
 #define PERSISTABLEGNATGATECOLLECTIONIMPL_H_
 
-#include "PersistableGNATCollectionImpl.h"
+#include "PersistableGNATItemCollectionImpl.h"
 #include "MathConceptsCommon.h"
 #include "Gate.h"
+#include "AlgoInternal.h"
 
-typedef class PersistableGNATCollectionImpl<GatePtr> PersistableGNATGateCollectionImpl;
+typedef class PersistableGNATItemCollectionImpl<GatePtr> PersistableGNATGateCollectionImpl;
+
 
 
 #endif /* PERSISTABLEGNATGATECOLLECTIONIMPL_H_ */

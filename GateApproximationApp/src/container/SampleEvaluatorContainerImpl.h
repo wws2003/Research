@@ -25,7 +25,13 @@ public:
 	virtual ~SampleEvaluatorContainerImpl();
 
 	//Override
-	virtual GateSearchSpaceEvaluatorPtr getGateSearchSpaceEvaluator();
+	GateSearchSpaceEvaluatorPtr getGateSearchSpaceEvaluator();
+
+	//Override
+	void getTargetsForEvaluation(std::vector<GatePtr>& targets);
+
+	//Override
+	GateDistanceCalculatorPtr getGateDistanceCalculatorForEvaluation();
 
 private:
 	void wireDependencies();

@@ -12,6 +12,7 @@
 
 class IPersistable {
 public:
+
 	virtual ~IPersistable(){};
 
 	virtual void save(std::string fileName) = 0;

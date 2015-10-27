@@ -6,20 +6,19 @@
  */
 
 #include "EvaluateCollectionCommand.h"
-#include "ICollection.h"
-#include "ISearchSpaceEvaluator.h"
 
-EvaluateCollectionCommand::EvaluateCollectionCommand(CollectionContainerPtr pCollectionContainer, EvaluatorContainerPtr pEvaluatorContainer) : AbstractChainCommand() {
-	m_pCollectionContainer = pCollectionContainer;
-	m_pEvaluatorContainer = pEvaluatorContainer;
+EvaluateCollectionCommand::EvaluateCollectionCommand(GateCollectionPtr pCollection,
+		GateSearchSpaceEvaluatorPtr pEvaluator) : AbstractChainCommand() {
+	m_pCollection = pCollection;
+	m_pEvaluator = pEvaluator;
 }
 
 EvaluateCollectionCommand::~EvaluateCollectionCommand() {
-	// TODO Auto-generated destructor stub
+	//TODO Revise if destroy should be here
+	_destroy(m_pEvaluator);
+	_destroy(m_pCollection);
 }
 
 void EvaluateCollectionCommand::doExecute() {
-	GateCollectionPtr pCollection = m_pCollectionContainer->getGateCollection();
-	GateSearchSpaceEvaluatorPtr pEvaluator = m_pEvaluatorContainer->getGateSearchSpaceEvaluator();
-	pEvaluator->evaluateCollection(pCollection);
+	m_pEvaluator->evaluateCollection(m_pCollection);
 }

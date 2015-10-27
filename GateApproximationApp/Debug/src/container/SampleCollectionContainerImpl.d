@@ -20,6 +20,10 @@ src/container/SampleCollectionContainerImpl.d: \
  ../src/container/ICollectionContainer.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../src/common/ApplicationCommon.h ../src/configure/Config.h \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
@@ -177,6 +181,7 @@ src/container/SampleCollectionContainerImpl.d: \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/./RealQZ.h \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h \
+ ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATItemCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
@@ -188,9 +193,6 @@ src/container/SampleCollectionContainerImpl.d: \
  ../../ModuleIO/include/implement/BinaryGateReaderImpl.h \
  ../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h \
  ../../ModuleIO/include/implement/BinaryMatrixReaderImpl.h \
- ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
- ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
  ../../ModuleEvaluate/include/implement/GateSearchSpaceConstructorImpl.h \
  ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
@@ -205,7 +207,8 @@ src/container/SampleCollectionContainerImpl.d: \
  ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
  ../src/container/HTVBasedResourceContainerImpl.h \
- ../src/container/HVBasedResourceContainerImpl.h
+ ../src/container/HVBasedResourceContainerImpl.h \
+ ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h
 
 ../src/container/SampleCollectionContainerImpl.h:
 
@@ -246,6 +249,14 @@ src/container/SampleCollectionContainerImpl.d: \
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../src/common/ApplicationCommon.h:
 
@@ -563,6 +574,8 @@ src/container/SampleCollectionContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h:
 
+../../ModuleAlgorithm/include/implement/persistable/PersistableGNATItemCollectionImpl.h:
+
 ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h:
 
 ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h:
@@ -584,12 +597,6 @@ src/container/SampleCollectionContainerImpl.d: \
 ../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h:
 
 ../../ModuleIO/include/implement/BinaryMatrixReaderImpl.h:
-
-../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
-
-../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
 
@@ -620,3 +627,5 @@ src/container/SampleCollectionContainerImpl.d: \
 ../src/container/HTVBasedResourceContainerImpl.h:
 
 ../src/container/HVBasedResourceContainerImpl.h:
+
+../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h:

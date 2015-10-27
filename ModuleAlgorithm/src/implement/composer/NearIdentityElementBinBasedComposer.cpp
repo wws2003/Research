@@ -260,7 +260,9 @@ void findApprxByMerge2Bins(BinPtr<T> pBin1,
 		for(unsigned int j = 0; j < sizeBin2; j++) {
 
 			T pProduct1 = NullPtr;
-			pCombiner->combine(pBin1->getElements()[i], pBin2->getElements()[j], pProduct1);
+			pCombiner->combine(pBin1->getElements()[i],
+					pBin2->getElements()[j],
+					pProduct1);
 
 			if(pProduct1 != NullPtr) {
 				mreal_t distance = pDistanceCalculator->distance(pProduct1, pQuery);

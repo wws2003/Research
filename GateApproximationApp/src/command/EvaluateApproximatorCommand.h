@@ -9,16 +9,16 @@
 #define EVALUATEAPPROXIMATORCOMMAND_H_
 
 #include "AbstractChainCommandExecutor.h"
-#include "IApproximatorContainer.h"
-#include "IEvaluatorContainer.h"
-#include "ICollectionContainer.h"
 #include "ApplicationCommon.h"
+#include "ISearchSpaceEvaluator.h"
+#include "EvaluateCommon.h"
 
 class EvaluateApproximatorCommand: public AbstractChainCommand {
 public:
-	EvaluateApproximatorCommand(ApproximatorContainerPtr pApproximatorContainer,
-			CollectionContainerPtr pCollectionContainer,
-			EvaluatorContainerPtr pEvaluatorContainer);
+	EvaluateApproximatorCommand(GateApproximatorPtr pApproximator,
+			GateCollectionPtr pCollection,
+			GateSearchSpaceEvaluatorPtr pEvaluator);
+
 	virtual ~EvaluateApproximatorCommand();
 
 protected:
@@ -26,9 +26,9 @@ protected:
 	void doExecute();
 
 private:
-	ApproximatorContainerPtr m_pApproximatorContainer;
-	CollectionContainerPtr m_pCollectionContainer;
-	EvaluatorContainerPtr m_pEvaluatorContainer;
+	GateApproximatorPtr m_pApproximator;
+	GateCollectionPtr m_pCoreCollection;
+	GateSearchSpaceEvaluatorPtr m_pEvaluator;
 };
 
 #endif /* EVALUATEAPPROXIMATOR_H_ */

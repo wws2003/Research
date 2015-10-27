@@ -9,13 +9,16 @@
 #define EVALUATECOLLECTIONCOMMAND_H_
 
 #include "ApplicationCommon.h"
-#include "ICollectionContainer.h"
-#include "IEvaluatorContainer.h"
 #include "AbstractChainCommandExecutor.h"
+#include "ICollection.h"
+#include "AlgoCommon.h"
+#include "EvaluateCommon.h"
+#include "ISearchSpaceEvaluator.h"
 
 class EvaluateCollectionCommand : public AbstractChainCommand {
 public:
-	EvaluateCollectionCommand(CollectionContainerPtr pCollectionContainer, EvaluatorContainerPtr pEvaluatorContainer);
+	EvaluateCollectionCommand(GateCollectionPtr pCollection,
+			GateSearchSpaceEvaluatorPtr pEvaluator);
 	virtual ~EvaluateCollectionCommand();
 
 protected:
@@ -23,8 +26,8 @@ protected:
 	void doExecute();
 
 private:
-	CollectionContainerPtr m_pCollectionContainer;
-	EvaluatorContainerPtr m_pEvaluatorContainer;
+	GateCollectionPtr m_pCollection;
+	GateSearchSpaceEvaluatorPtr m_pEvaluator;
 };
 
 #endif /* EVALUATECOLLECTIONCOMMANDEXECUTOR_H_ */

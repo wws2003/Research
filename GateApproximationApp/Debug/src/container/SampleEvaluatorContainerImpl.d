@@ -8,10 +8,11 @@ src/container/SampleEvaluatorContainerImpl.d: \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
+ ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
- ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
  ../src/container/IResourceContainer.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
@@ -182,7 +183,6 @@ src/container/SampleEvaluatorContainerImpl.d: \
  ../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h \
  ../../ModuleIO/include/implement/BinaryMatrixReaderImpl.h \
  ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h \
  ../../ModuleEvaluate/include/implement/GateSearchSpaceConstructorImpl.h \
  ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
@@ -239,13 +239,15 @@ src/container/SampleEvaluatorContainerImpl.d: \
 
 ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h:
 
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
+../../ModuleOperator/include/interface/common/OperatorCommon.h:
+
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
-
-../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
 ../../ModuleIO/include/interface/common/IOCommon.h:
 
@@ -586,8 +588,6 @@ src/container/SampleEvaluatorContainerImpl.d: \
 ../../ModuleIO/include/implement/BinaryMatrixReaderImpl.h:
 
 ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:
 

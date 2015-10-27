@@ -23,7 +23,9 @@ public:
 	SampleCollectionContainerImpl(const CollectionConfig& collectionConfig);
 	virtual ~SampleCollectionContainerImpl();
 
-	virtual GateCollectionPtr getGateCollection();
+	virtual GateCollectionPtr getGateCollection(GateDistanceCalculatorPtr pGateDistanceCalculator);
+
+	virtual PersitableGateCollectionPtr getPersitableGateCollection();
 
 private:
 
@@ -39,7 +41,7 @@ private:
 			const LibrarySetFileNameMap& librarySetFileNameMap,
 			std::string fileExtension);
 
-	void constructGateCollection(GateCollectionPtr pGateCollection);
+	void constructGateCollection(GateCollectionPtr pGateCollection, GateDistanceCalculatorPtr pGateDistanceCalculator);
 
 	void releaseDependencies();
 
@@ -60,9 +62,6 @@ private:
 
 	CombinerPtr<GatePtr> m_pGateCombiner;
 	GateSearchSpaceConstructorPtr m_pGateSearchSpaceConstructor;
-
-	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
-	GateDistanceCalculatorPtr m_pGateDistanceCalculator;
 
 	CollectionConfig m_collectionConfig;
 

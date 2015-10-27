@@ -9,6 +9,7 @@
 #define IAPPROXIMATORCONTAINER_H_
 
 #include "AlgoCommon.h"
+#include "IDistanceCalculator.h"
 #include "Gate.h"
 
 class IApproximatorContainer {

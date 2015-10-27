@@ -10,13 +10,17 @@
 
 #include "ICollection.h"
 #include "AlgoCommon.h"
+#include "IPersistableCollection.h"
+#include "IDistanceCalculator.h"
 #include "Gate.h"
 
 class ICollectionContainer {
 public:
 	virtual ~ICollectionContainer(){};
 
-	virtual GateCollectionPtr getGateCollection() = 0;
+	virtual GateCollectionPtr getGateCollection(GateDistanceCalculatorPtr pGateDistanceCalculator) = 0;
+
+	virtual PersitableGateCollectionPtr getPersitableGateCollection() = 0;
 };
 
 

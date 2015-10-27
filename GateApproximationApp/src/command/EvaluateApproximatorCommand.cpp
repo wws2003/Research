@@ -6,27 +6,29 @@
  */
 
 #include "EvaluateApproximatorCommand.h"
-#include "ISearchSpaceEvaluator.h"
+#include "ICollection.h"
+#include "IApproximator.h"
 #include <iostream>
 
-EvaluateApproximatorCommand::EvaluateApproximatorCommand(ApproximatorContainerPtr pApproximatorContainer,
-		CollectionContainerPtr pCollectionContainer,
-		EvaluatorContainerPtr pEvaluatorContainer) : AbstractChainCommand() {
-	m_pApproximatorContainer = pApproximatorContainer;
-	m_pCollectionContainer = pCollectionContainer;
-	m_pEvaluatorContainer = pEvaluatorContainer;
+EvaluateApproximatorCommand::EvaluateApproximatorCommand(GateApproximatorPtr pApproximator,
+		GateCollectionPtr pCollection,
+		GateSearchSpaceEvaluatorPtr pEvaluator) : AbstractChainCommand() {
+
+	m_pApproximator = pApproximator;
+	m_pCoreCollection = pCollection;
+	m_pEvaluator = pEvaluator;
 }
 
 EvaluateApproximatorCommand::~EvaluateApproximatorCommand() {
-
+	//TODO Revise if destroy should be here
+	_destroy(m_pEvaluator);
+	_destroy(m_pCoreCollection);
+	_destroy(m_pApproximator);
 }
 
 void EvaluateApproximatorCommand::doExecute() {
 	std::cout << "Start evaluate approximator" << std::endl;
 
-	GateApproximatorPtr pApproximator = m_pApproximatorContainer->getGateApproximator();
-	GateCollectionPtr pCollection = m_pCollectionContainer->getGateCollection();
-	GateSearchSpaceEvaluatorPtr pEvaluator = m_pEvaluatorContainer->getGateSearchSpaceEvaluator();
-	pEvaluator->evaluateApproximator(pApproximator, pCollection);
+	m_pEvaluator->evaluateApproximator(m_pApproximator, m_pCoreCollection);
 }
 

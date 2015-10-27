@@ -184,12 +184,16 @@ src/container/SampleAppContainerImpl.d: \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/./RealQZ.h \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h \
+ ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATItemCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
  ../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h \
  ../../ModuleIO/include/interface/abstract/IReader.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleIO/include/implement/BinaryGateWriterImpl.h \
  ../../ModuleIO/include/implement/BinaryGateReaderImpl.h \
  ../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h \
@@ -606,6 +610,8 @@ src/container/SampleAppContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h:
 
+../../ModuleAlgorithm/include/implement/persistable/PersistableGNATItemCollectionImpl.h:
+
 ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h:
 
 ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h:
@@ -617,6 +623,12 @@ src/container/SampleAppContainerImpl.d: \
 ../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h:
 
 ../../ModuleIO/include/interface/abstract/IReader.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
 ../../ModuleIO/include/implement/BinaryGateWriterImpl.h:
 

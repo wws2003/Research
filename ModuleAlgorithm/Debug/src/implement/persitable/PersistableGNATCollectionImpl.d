@@ -17,6 +17,12 @@ src/implement/persitable/PersistableGNATCollectionImpl.d: \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
  ../include/implement/persistable/GNATCollectionBlock.h \
  ../../ModuleIO/include/interface/abstract/IReader.h \
+ ../include/interface/abstract/IPersistableCollection.h \
+ ../include/interface/abstract/IPersistable.h \
+ ../include/interface/abstract/ICollection.h \
+ ../../ModuleMathConcepts/include/interface/common/Gate.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
+ ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../include/implement/persistable/GNATCollectionBlock.h
 
 ../include/implement/persistable/PersistableGNATCollectionImpl.h:
@@ -52,5 +58,17 @@ src/implement/persitable/PersistableGNATCollectionImpl.d: \
 ../include/implement/persistable/GNATCollectionBlock.h:
 
 ../../ModuleIO/include/interface/abstract/IReader.h:
+
+../include/interface/abstract/IPersistableCollection.h:
+
+../include/interface/abstract/IPersistable.h:
+
+../include/interface/abstract/ICollection.h:
+
+../../ModuleMathConcepts/include/interface/common/Gate.h:
+
+../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
+
+../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
 
 ../include/implement/persistable/GNATCollectionBlock.h:

@@ -10,6 +10,7 @@
 
 #include "AlgoCommon.h"
 #include "EvaluateCommon.h"
+#include "IDistanceCalculator.h"
 #include "Gate.h"
 
 class IEvaluatorContainer {
@@ -17,6 +18,10 @@ public:
 	virtual ~IEvaluatorContainer(){};
 
 	virtual GateSearchSpaceEvaluatorPtr getGateSearchSpaceEvaluator() = 0;
+
+	virtual void getTargetsForEvaluation(std::vector<GatePtr>& targets) = 0;
+
+	virtual GateDistanceCalculatorPtr getGateDistanceCalculatorForEvaluation() = 0;
 };
 
 

@@ -61,6 +61,15 @@ GateSearchSpaceEvaluatorPtr SampleEvaluatorContainerImpl::getGateSearchSpaceEval
 	return pGateSearchSpaceEvaluator;
 }
 
+void SampleEvaluatorContainerImpl::getTargetsForEvaluation(std::vector<GatePtr>& targets) {
+	targets.clear();
+	m_pResourceContainer->getTargetGatesAndEpsilon(targets, m_evaluatorConfig.m_nbQubits);
+}
+
+GateDistanceCalculatorPtr SampleEvaluatorContainerImpl::getGateDistanceCalculatorForEvaluation() {
+	return m_pGateDistanceCalculator;
+}
+
 void SampleEvaluatorContainerImpl::wireDependencies() {
 	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
 	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));

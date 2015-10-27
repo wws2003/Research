@@ -7,18 +7,13 @@ src/command/EvaluateApproximatorCommand.d: \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
  ../src/common/ApplicationCommon.h \
- ../src/container/IApproximatorContainer.h \
+ ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
- ../../ModuleMathConcepts/include/interface/common/Gate.h \
- ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
- ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
- ../src/container/IEvaluatorContainer.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
- ../src/container/ICollectionContainer.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
- ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h
+ ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h
 
 ../src/command/EvaluateApproximatorCommand.h:
 
@@ -36,21 +31,11 @@ src/command/EvaluateApproximatorCommand.d: \
 
 ../src/common/ApplicationCommon.h:
 
-../src/container/IApproximatorContainer.h:
+../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h:
 
 ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
 
-../../ModuleMathConcepts/include/interface/common/Gate.h:
-
-../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
-
-../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
-
-../src/container/IEvaluatorContainer.h:
-
 ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h:
-
-../src/container/ICollectionContainer.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
@@ -58,4 +43,4 @@ src/command/EvaluateApproximatorCommand.d: \
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
-../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h:
+../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:

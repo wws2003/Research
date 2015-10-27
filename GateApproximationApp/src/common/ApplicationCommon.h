@@ -18,6 +18,7 @@ class AbstractChainCommand;
 class ICollectionContainer;
 class IApproximatorContainer;
 class IEvaluatorContainer;
+class IWriterContainer;
 
 typedef ICommand* CommandPtr;
 typedef AbstractChainCommand* AbstractCommandPtr;
@@ -25,6 +26,7 @@ typedef AbstractChainCommand* AbstractCommandPtr;
 typedef ICollectionContainer* CollectionContainerPtr;
 typedef IApproximatorContainer* ApproximatorContainerPtr;
 typedef IEvaluatorContainer* EvaluatorContainerPtr;
+typedef IWriterContainer* WriterContainerPtr;
 
 typedef std::map<std::string, int> LibrarySetNameMap;
 typedef std::map<int, std::string> LibrarySetFileNameMap;
@@ -34,6 +36,7 @@ enum CommandCode {
 	GENERATE_NEAR_IDENTITY,
 	EVALUATE_COLLECTION_TO_IDENTITY,
 	EVALUATE_COLLECTION_APPROXIMATOR_TO_IDENTITY,
+	EVALUATE_PERSISTED_COLLECTION_TO_TARGET
 	//TODO Add more command code
 };
 

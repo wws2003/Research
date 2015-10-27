@@ -7,15 +7,20 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
+ ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../src/container/IApproximatorContainer.h \
  ../src/container/ICollectionContainer.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
- ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../src/configure/Config.h ../src/common/ApplicationCommon.h \
+ ../src/configure/ConfigReader.h ../src/configure/Config.h \
  ../src/command/NotAvailableCommand.h \
  ../src/container/SampleCollectionContainerImpl.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
@@ -43,7 +48,9 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../src/command/EvaluateCollectionCommand.h \
  ../src/command/AbstractChainCommandExecutor.h \
  ../src/command/EvaluateApproximatorCommand.h \
- ../src/configure/ConfigReader.h ../src/configure/Config.h
+ ../src/command/GenerateAndStoreApproximationsCommand.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
+ ../../ModuleIO/include/interface/abstract/IWriter.h
 
 ../src/command/CommandFactory.h:
 
@@ -63,6 +70,10 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h:
 
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
+../../ModuleOperator/include/interface/common/OperatorCommon.h:
+
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
@@ -75,13 +86,21 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
-../../ModuleOperator/include/interface/common/OperatorCommon.h:
-
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
 ../src/configure/Config.h:
 
 ../src/common/ApplicationCommon.h:
+
+../src/configure/ConfigReader.h:
+
+../src/configure/Config.h:
 
 ../src/command/NotAvailableCommand.h:
 
@@ -137,6 +156,8 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../src/command/EvaluateApproximatorCommand.h:
 
-../src/configure/ConfigReader.h:
+../src/command/GenerateAndStoreApproximationsCommand.h:
 
-../src/configure/Config.h:
+../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
+
+../../ModuleIO/include/interface/abstract/IWriter.h:

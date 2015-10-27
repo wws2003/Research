@@ -26,6 +26,9 @@ void initCommands(CommandParser* pCommandParser);
 
 void printSyntaxMessage();
 
+typedef std::vector<int> ArgumentPositions;
+typedef std::vector<std::string> Arguments;
+
 int main(int argc, char* argv[]) {
 	mreal::initPrecision();
 
@@ -50,20 +53,22 @@ int main(int argc, char* argv[]) {
 
 void initCommands(CommandParser* pCommandParser) {
 	//For -g conf1 conf2 -o outputFile
-	pCommandParser->provideArgumentPatternForCommandCode(6, {1, 4}, {"-g", "-o"}, GENERATE_NEAR_IDENTITY);
+	pCommandParser->provideArgumentPatternForCommandCode(6, ArgumentPositions{1, 4}, Arguments{"-g", "-o"}, GENERATE_NEAR_IDENTITY);
 
 	//For -e conf1 -I
-	pCommandParser->provideArgumentPatternForCommandCode(4, {1, 3}, {"-e", "-I"}, EVALUATE_COLLECTION_TO_IDENTITY);
+	pCommandParser->provideArgumentPatternForCommandCode(4, ArgumentPositions{1, 3}, Arguments{"-e", "-I"}, EVALUATE_COLLECTION_TO_IDENTITY);
 
 	//For -e conf1 conf2 -I
-	pCommandParser->provideArgumentPatternForCommandCode(5, {1, 4}, {"-e", "-I"}, EVALUATE_COLLECTION_APPROXIMATOR_TO_IDENTITY);
+	pCommandParser->provideArgumentPatternForCommandCode(5, ArgumentPositions{1, 4}, Arguments{"-e", "-I"}, EVALUATE_COLLECTION_APPROXIMATOR_TO_IDENTITY);
 
+	//For -e conf1 -i db -t targetConf.
+	pCommandParser->provideArgumentPatternForCommandCode(7, ArgumentPositions{1, 3, 5}, Arguments{"-e", "-i", "-t"}, EVALUATE_PERSISTED_COLLECTION_TO_TARGET);
 }
 
 void printSyntaxMessage() {
-	std::cout << "As of 2015/10/21, acceptable command arguments are:" << std::endl;
+	std::cout << "As of 2015/10/27, acceptable command arguments are:" << std::endl;
 
-	std::cout << "-g conf1 conf2 -o outputFile -> Generate near identity sequences (persist to storage )" << std::endl;
+	std::cout << "-g conf1 conf2 -o outputFile -> Generate near identity sequences (then persist to storage)" << std::endl;
 
 	std::cout << "-e conf1 -I  -> Evaluate collection for identity" << std::endl;
 	std::cout << "-e conf1 conf2 -I -> Evaluate collection, approximator for identity" << std::endl;
@@ -71,7 +76,7 @@ void printSyntaxMessage() {
 	std::cout << "For future purposes" << std::endl;
 
 	std::cout << "-e conf1 -t targetConf -> Evaluate collection for target" << std::endl;
-	std::cout << "-e conf1 -c dbconf -t targetConf -> Evaluate collection for target given candidates file" << std::endl;
+	std::cout << "-e conf1 -i db -t targetConf -> Evaluate collection for target given candidates in database file" << std::endl;
 	std::cout << "-e conf1 conf2 -t targetConf -> Evaluate collection, approximator for target" << std::endl;
 
 }

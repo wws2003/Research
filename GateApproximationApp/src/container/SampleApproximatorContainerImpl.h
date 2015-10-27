@@ -21,10 +21,12 @@
 
 class SampleApproximatorContainerImpl: public IApproximatorContainer {
 public:
-	SampleApproximatorContainerImpl(NearIdentityApproximatorConfig approximatorConfig);
+	SampleApproximatorContainerImpl(NearIdentityApproximatorConfig approximatorConfig,
+			CollectionConfig coreCollectionConfig);
+
 	virtual ~SampleApproximatorContainerImpl();
 
-	virtual GateApproximatorPtr getGateApproximator();
+	GateApproximatorPtr getGateApproximator();
 
 private:
 	void wireDependencies();
@@ -53,6 +55,7 @@ private:
 	DecomposerPtr<GatePtr> m_pGateDecomposer;
 
 	NearIdentityApproximatorConfig m_approximatorConfig;
+	CollectionConfig m_coreCollectionConfig;
 };
 
 #endif /* SAMPLEAPPROXIMATORCONTAINERIMPL_H_ */

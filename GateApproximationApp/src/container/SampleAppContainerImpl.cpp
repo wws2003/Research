@@ -68,8 +68,8 @@ SampleAppContainerImpl::~SampleAppContainerImpl() {
 }
 
 GateCollectionPtr SampleAppContainerImpl::getGateCollection() {
-	PersistableGNATGateCollectionImpl* pGateCollection = new PersistableGNATGateCollectionImpl(m_pBinaryGateWriter,
-			m_pBinaryGateReader);
+	PersitableGateCollectionPtr pGateCollection = PersitableGateCollectionPtr(new PersistableGNATCollectionImpl<GatePtr>(m_pBinaryGateWriter,
+			m_pBinaryGateReader));
 
 	std::string persitenceFileName = getGateCollectionPersistenceFileFullName(m_evaluationConfig,
 			m_librarySetPersistFileNameMap,

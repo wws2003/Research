@@ -33,8 +33,6 @@ typedef struct _EvaluatorConfig {
 EvaluatorConfig;
 
 typedef struct _NearIdentityApproximatorConfig {
-	LibrarySet m_librarySet;
-	int m_nbQubits;
 	int m_maxMergedBinDistance;
 	mreal_t m_maxCandidateEpsilon;
 	mreal_t m_maxCandidateEpsilonDecreaseFactor;

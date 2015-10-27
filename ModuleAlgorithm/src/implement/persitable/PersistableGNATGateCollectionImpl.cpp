@@ -10,5 +10,5 @@
 #include "GNATCollectionBlock.cpp"
 
 template class PersistableGNATCollectionImpl<GatePtr>;
-
+template class PersistableGNATItemCollectionImpl<GatePtr>;
 
