@@ -213,7 +213,9 @@ void NearIdentityElementBinBasedComposer<T>::distributeResultsToBins(const real_
 		pRealCoordinateCalculator->calulateElementCoordinate(apprxElement, pApprxCoord);
 
 		//Calculate bin pattern for the approximation
-		calculateBinPattern(queryCoordinate, pApprxCoord->getCoordinates(), binPattern);
+		calculateBinPattern(queryCoordinate,
+				pApprxCoord->getCoordinates(),
+				binPattern);
 
 		//Add to bin collection (may generate a new bin or add to existed one)
 		pBinCollection->addElement(apprxElement, binPattern);

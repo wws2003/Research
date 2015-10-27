@@ -44,6 +44,7 @@ int main(int argc, char* argv[]) {
 
 		CommandPtr pCommand = commandFactory.getCommand(commandCode, commandParams);
 		pCommand->execute();
+		_destroy(pCommand);
 	}
 	catch(std::exception const& e) {
 		std::cout << e.what() << std::endl;
