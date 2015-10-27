@@ -30,14 +30,22 @@ public:
 
 	virtual ~MapBasedBinCollectionImpl();
 
-	virtual void addElement(T element, BinPattern binPattern);
+	//Override
+	virtual void addTarget(T target);
 
+	//Override
+	virtual void addElement(T element);
+
+	//Override
 	virtual CollectionSize_t size();
 
+	//Override
 	virtual void clear();
 
+	//Override
 	virtual BinIteratorPtr<T> getBinIteratorPtr();
 
+	//Override
 	virtual BinIteratorPtr<T> findBinsCloseToBin(BinPtr<T> pOtherBin, int distance);
 
 private:

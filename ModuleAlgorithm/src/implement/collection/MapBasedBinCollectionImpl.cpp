@@ -21,12 +21,22 @@ MapBasedBinCollectionImpl<T>::~MapBasedBinCollectionImpl() {
 }
 
 template<typename T>
+void MapBasedBinCollectionImpl<T>::addTarget(T target) {
+	//TODO Implement
+}
+
+/*template<typename T>
 void MapBasedBinCollectionImpl<T>::addElement(T element, BinPattern binPattern) {
 	//This if statement is not really required
 	if(m_binMap.find(binPattern) == m_binMap.end()) {
 		m_binMap.insert(PatternBinPair<T>(binPattern, BinPtr<T>(new Bin<T>(binPattern))));
 	}
 	m_binMap[binPattern]->addElement(element);
+}*/
+
+template<typename T>
+void MapBasedBinCollectionImpl<T>::addElement(T element) {
+	//TODO Implement
 }
 
 template<typename T>

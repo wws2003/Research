@@ -38,12 +38,10 @@ void addApprxResultsToBufferFromCollection(CollectionPtr<T> pCollection,
 		int maxResultsNumber);
 
 template<typename T>
-NearIdentityElementBinBasedComposer<T>::NearIdentityElementBinBasedComposer(RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
-		CombinerPtr<T> pCombiner,
+NearIdentityElementBinBasedComposer<T>::NearIdentityElementBinBasedComposer(CombinerPtr<T> pCombiner,
 		BinCollectionPtr<T> pBinCollection,
 		const Config& config) {
 
-	m_pRealCoordinateCalculator = pRealCoordinateCalculator;
 	m_pCombiner = pCombiner;
 	m_pBinCollection = pBinCollection;
 	m_config = config;
@@ -55,16 +53,12 @@ IteratorPtr<T> NearIdentityElementBinBasedComposer<T>::composeApproximations(con
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon) {
 
-	//Calculate coordinate of query
-	RealCoordinatePtr<T> pQueryCoordinate;
-	m_pRealCoordinateCalculator->calulateElementCoordinate(pQuery, pQueryCoordinate);
-	real_coordinate_t queryCoordinate = pQueryCoordinate->getCoordinates();
+	//Add query to bin collection as a target
+	m_pBinCollection->addTarget(pQuery);
 
 	//This this case, using only the first bucket of building blocks. Buckets should be equivalent
 	initBinCollection(buildingBlockBuckets[0],
 			pQuery,
-			pQueryCoordinate->getCoordinates(),
-			pDistanceCalculator,
 			epsilon);
 
 	//If no result found even with initial epsilon
@@ -74,7 +68,6 @@ IteratorPtr<T> NearIdentityElementBinBasedComposer<T>::composeApproximations(con
 
 	ApprxResultBuffer<T> apprxResultBuffer;
 	generateApproximationsFromBins(pQuery,
-			pQueryCoordinate->getCoordinates(),
 			pDistanceCalculator,
 			epsilon,
 			apprxResultBuffer);
@@ -88,8 +81,6 @@ IteratorPtr<T> NearIdentityElementBinBasedComposer<T>::composeApproximations(con
 template<typename T>
 void NearIdentityElementBinBasedComposer<T>::initBinCollection(IteratorPtr<T> pBuildingBlockIter,
 		T pQuery,
-		const real_coordinate_t& queryCoordinate,
-		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon) {
 
 	//Reset bin collection
@@ -97,16 +88,13 @@ void NearIdentityElementBinBasedComposer<T>::initBinCollection(IteratorPtr<T> pB
 
 	//Distribute first results into bin collection
 	//Note: Do not destroy the building block iterator which given from outside
-	distributeResultsToBins(queryCoordinate,
-			pBuildingBlockIter,
-			m_pRealCoordinateCalculator,
+	distributeResultsToBins(pBuildingBlockIter,
 			m_pBinCollection,
 			false);
 }
 
 template<typename T>
 void NearIdentityElementBinBasedComposer<T>::generateApproximationsFromBins(T pQuery,
-		const real_coordinate_t& queryCoordinate,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
 		ApprxResultBuffer<T>& apprxResultBuffer) {
@@ -133,7 +121,6 @@ void NearIdentityElementBinBasedComposer<T>::generateApproximationsFromBins(T pQ
 			generateApproximationsPrefixedFromBins(pBin,
 					maxMergeDistance,
 					pQuery,
-					queryCoordinate,
 					pDistanceCalculator,
 					epsilonForMergeCandidate,
 					epsilon,
@@ -148,9 +135,7 @@ void NearIdentityElementBinBasedComposer<T>::generateApproximationsFromBins(T pQ
 
 		if(stepCounter < maxStep - 1 && apprxResultBuffer.size() < maxResultNumber) {
 			//Distribute newly generated matrices to bin collection, for new combination
-			distributeResultsToBins(queryCoordinate,
-					pApprxTempCollection->getIteratorPtr(),
-					m_pRealCoordinateCalculator,
+			distributeResultsToBins(pApprxTempCollection->getIteratorPtr(),
 					m_pBinCollection);
 
 			epsilonForMergeCandidate *= m_config.m_maxCandidateEpsilonDecreaseFactor;
@@ -164,7 +149,6 @@ template<typename T>
 void NearIdentityElementBinBasedComposer<T>::generateApproximationsPrefixedFromBins(BinPtr<T> pBin,
 		int maxBinDistance,
 		T pQuery,
-		const real_coordinate_t& queryCoordinate,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilonForMergeCandidate,
 		mreal_t approximationEpsilon,
@@ -194,51 +178,23 @@ void NearIdentityElementBinBasedComposer<T>::generateApproximationsPrefixedFromB
 }
 
 template<typename T>
-void NearIdentityElementBinBasedComposer<T>::distributeResultsToBins(const real_coordinate_t& queryCoordinate,
-		IteratorPtr<T> pApprxIter,
-		RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
+void NearIdentityElementBinBasedComposer<T>::distributeResultsToBins(IteratorPtr<T> pApprxIter,
 		BinCollectionPtr<T> pBinCollection,
 		bool toDestroyApprxIter) {
-
-	unsigned int nbCoordinates = queryCoordinate.size();
-	BinPattern binPattern(nbCoordinates, '0');
 
 	pApprxIter->toBegin();
 
 	while(!pApprxIter->isDone()) {
 		T apprxElement = pApprxIter->getObj();
 
-		//Calculate real coordinate of approximation
-		RealCoordinatePtr<T> pApprxCoord = NullPtr;
-		pRealCoordinateCalculator->calulateElementCoordinate(apprxElement, pApprxCoord);
+		//Add item to bins collection.
+		pBinCollection->addElement(apprxElement);
 
-		//Calculate bin pattern for the approximation
-		calculateBinPattern(queryCoordinate,
-				pApprxCoord->getCoordinates(),
-				binPattern);
-
-		//Add to bin collection (may generate a new bin or add to existed one)
-		pBinCollection->addElement(apprxElement, binPattern);
-
-		_destroy(pApprxCoord);
 		pApprxIter->next();
 	}
 
 	if(toDestroyApprxIter) {
 		_destroy(pApprxIter);
-	}
-}
-
-template<typename T>
-void NearIdentityElementBinBasedComposer<T>::calculateBinPattern(const real_coordinate_t& queryCoordinate, const real_coordinate_t& apprxCoordinate, BinPattern& binPattern) {
-	unsigned int nbCoordinates = queryCoordinate.size();
-	for(unsigned int i = 0; i < nbCoordinates; i++) {
-		if(queryCoordinate[i] < apprxCoordinate[i] / 2) {
-			binPattern[i] = '1';
-		}
-		else {
-			binPattern[i] = '0';
-		}
 	}
 }
 
@@ -300,5 +256,3 @@ void addApprxResultsToBufferFromCollection(CollectionPtr<T> pCollection,
 		}
 	}
 }
-
-
