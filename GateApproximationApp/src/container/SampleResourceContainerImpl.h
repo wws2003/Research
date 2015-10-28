@@ -31,7 +31,9 @@ public:
 
 	virtual void getMatrixOrthonormalBasis(MatrixPtrVector& pBasis, int nbQubits = 2);
 
-	void getTargetGatesAndEpsilon(std::vector<GatePtr>& targets, int nbQubits = 2);
+	void getIdentityTargets(std::vector<GatePtr>& targets, int nbQubits = 2);
+
+	void getRotationTargets(std::vector<GatePtr>& targets, const RotationConfigs& rotationTargetsConfig, int nbQubits = 2);
 
 protected:
 
@@ -61,6 +63,8 @@ protected:
 
 private:
 	void collectLibraryGatesFromMap(const GateNameCostMap& gateNameCostMap, GateFactoryPtr pGateFactory, CollectionPtr<GatePtr> pLibraryGates);
+
+	GatePtr getRotationGate(RotationConfig rotationConfig);
 
 	LibraryMatrixStorePtr m_pLibraryMatrixStore;
 

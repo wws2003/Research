@@ -28,13 +28,12 @@
 #include "GateSearchSpaceTimerEvaluatorImpl.h"
 #include "MapBasedGateBinCollectionImpl.h"
 #include "DuplicateGateCancelationCombinerImpl.h"
-#include "HTVBasedResourceContainerImpl.h"
-#include "HVBasedResourceContainerImpl.h"
+#include "ContainerResourceFactory.h"
 #include "SampleLibraryMatrixStore.h"
 #include "LazyGateDistanceCalculatorImpl.h"
 #include <stdexcept>
 
-SampleEvaluatorContainerImpl::SampleEvaluatorContainerImpl(const EvaluatorConfig& config) : m_evaluatorConfig(config) {
+SampleEvaluatorContainerImpl::SampleEvaluatorContainerImpl(const EvaluatorConfig& config, const CollectionConfig& collectionConfig) : m_evaluatorConfig(config), m_collectionConfig(collectionConfig) {
 	wireDependencies();
 }
 
@@ -45,8 +44,7 @@ SampleEvaluatorContainerImpl::~SampleEvaluatorContainerImpl() {
 GateSearchSpaceEvaluatorPtr SampleEvaluatorContainerImpl::getGateSearchSpaceEvaluator() {
 	TargetElements<GatePtr> targets;
 
-	m_pResourceContainer->getTargetGatesAndEpsilon(targets,
-			m_evaluatorConfig.m_nbQubits);
+	getTargetsForEvaluation(targets);
 
 	GateSearchSpaceEvaluatorPtr pGateSearchSpaceEvaluator = new GateSearchSpaceTimerEvaluatorImpl(targets,
 			m_evaluatorConfig.m_collectionEpsilon,
@@ -63,7 +61,13 @@ GateSearchSpaceEvaluatorPtr SampleEvaluatorContainerImpl::getGateSearchSpaceEval
 
 void SampleEvaluatorContainerImpl::getTargetsForEvaluation(std::vector<GatePtr>& targets) {
 	targets.clear();
-	m_pResourceContainer->getTargetGatesAndEpsilon(targets, m_evaluatorConfig.m_nbQubits);
+	if(m_evaluatorConfig.m_rotationTargets.empty()) {
+		//No specified target -> use identity as default target
+		m_pResourceContainer->getIdentityTargets(targets, m_collectionConfig.m_nbQubits);
+	}
+	else {
+		m_pResourceContainer->getRotationTargets(targets, m_evaluatorConfig.m_rotationTargets, m_collectionConfig.m_nbQubits);
+	}
 }
 
 GateDistanceCalculatorPtr SampleEvaluatorContainerImpl::getGateDistanceCalculatorForEvaluation() {
@@ -74,7 +78,10 @@ void SampleEvaluatorContainerImpl::wireDependencies() {
 	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
 	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));
 
-	setupResourceContainer();
+	ResourceContainerFactory resourceContainerFactory;
+	m_pResourceContainer = resourceContainerFactory.getResourceContainer(m_collectionConfig.m_librarySet,
+			m_pMatrixFactory,
+			m_pMatrixOperator);
 
 	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(m_pMatrixOperator));
 	m_pLibraryMatrixStore = LibraryMatrixStorePtr(new SampleLibraryMatrixStore(m_pMatrixFactory, m_pMatrixOperator));
@@ -84,7 +91,7 @@ void SampleEvaluatorContainerImpl::wireDependencies() {
 			m_pLibraryMatrixStore));
 
 	MatrixPtrVector pBasis;
-	m_pResourceContainer->getMatrixOrthonormalBasis(pBasis, m_evaluatorConfig.m_nbQubits);
+	m_pResourceContainer->getMatrixOrthonormalBasis(pBasis, m_collectionConfig.m_nbQubits);
 	m_pGateWriterInEvaluator = GateWriterPtr(new LabelOnlyGateWriterImpl(","));
 	m_pMatrixRealInnerProductCalculator = MatrixRealInnerProductCalculatorPtr(new MatrixRealInnerProductByTraceImpl(m_pMatrixOperator));
 	m_pHermitiaRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new MatrixCoordinateOnOrthonormalBasisCalculatorImpl(m_pMatrixRealInnerProductCalculator, pBasis));
@@ -112,23 +119,3 @@ void SampleEvaluatorContainerImpl::releaseDependencies() {
 	_destroy(m_pMatrixFactory);
 }
 
-void SampleEvaluatorContainerImpl::setupResourceContainer() {
-	switch(m_evaluatorConfig.m_librarySet) {
-	case L_HT:
-		m_pResourceContainer = ResourceContainerPtr(new SampleResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
-		break;
-	case L_HCV:
-		m_pResourceContainer = ResourceContainerPtr(new HVBasedResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
-		break;
-	case L_HTCNOT:
-		m_pResourceContainer = ResourceContainerPtr(new SampleResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
-		break;
-	case L_HTCV:
-		m_pResourceContainer = ResourceContainerPtr(new HTVBasedResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
-		break;
-	default:
-		break;
-	}
-
-	m_pResourceContainer->setup();
-}

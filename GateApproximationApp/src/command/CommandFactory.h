@@ -27,12 +27,14 @@ private:
 	AbstractCommandPtr getCollectionEvaluationCommandForIdentity(std::string configFileName);
 	AbstractCommandPtr getApproximatorEvaluationCommandForIdentity(std::string evaluationConfigFile, std::string approximatorConfigFileName);
 	AbstractCommandPtr getGenerateAndStoreApproximationsForIdentity(std::string evaluationConfigFile, std::string approximatorConfigFileName, std::string storeFileName);
+	AbstractCommandPtr getPersistedCollectionEvaluationForTargets(std::string storeFileName, std::string targetConfigFile);
 
 	void readCollectionAndEvaluatorConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
 	void readApproximatorConfig(ConfigReader configReader, std::string configFile, const CollectionConfig&  collectionConfig, NearIdentityApproximatorConfig* pApproximatorConfig);
+	void readTargetConfig(ConfigReader configReader, std::string targetConfigFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
 
 	void resetCollectionContainer(const CollectionConfig& collectionConfig);
-	void resetEvaluationContainer(const EvaluatorConfig& evaluatorConfig);
+	void resetEvaluationContainer(const EvaluatorConfig& evaluatorConfig, const CollectionConfig& collectionConfig);
 	void resetApproximatorContainer(const NearIdentityApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig);
 
 	CollectionContainerPtr m_pCollectionContainer;

@@ -14,8 +14,26 @@ enum LibrarySet {
 	L_HT,
 	L_HTCNOT,
 	L_HCV,
-	L_HTCV
+	L_HTCV,
+	L_UNSPECIFIED
 };
+
+enum RotationType {
+	R_X,
+	R_Y,
+	R_Z,
+	C_RX,//For controlled gate
+	C_RY,//For controlled gate
+	C_RZ //For controlled gate
+};
+
+typedef struct _RotationInfo {
+	RotationType m_rotationType;
+	mreal_t m_rotationAngle;
+}
+RotationConfig;
+
+typedef std::vector<RotationConfig> RotationConfigs;
 
 typedef struct _CollectionConfig {
 	LibrarySet m_librarySet;
@@ -25,10 +43,9 @@ typedef struct _CollectionConfig {
 CollectionConfig;
 
 typedef struct _EvaluatorConfig {
-	LibrarySet m_librarySet;
 	double m_collectionEpsilon;
 	double m_approximatorEpsilon;
-	int m_nbQubits;
+	RotationConfigs m_rotationTargets;
 }
 EvaluatorConfig;
 

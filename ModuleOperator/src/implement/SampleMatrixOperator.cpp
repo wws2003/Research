@@ -284,6 +284,24 @@ void SampleMatrixOperator::getTracelessHermitianMatricesBasis(int dimension, Mat
 	delete[] pBuffer;
 }
 
+void SampleMatrixOperator::getRotationMatrix(MatrixPtr pBasis, mreal_t rotationAngle, MatrixPtrRef rpRotationMatrix) {
+	mreal_t cosPhi_2 = mreal::cos(rotationAngle / 2.0);
+	mreal_t sinPhi_2 = mreal::sin(rotationAngle / 2.0);
+
+	//Return R = cosPhi_2 * I - i * sinPhi_2 * M;
+	int nbRows, nbColumns;
+	pBasis->getSize(nbRows, nbColumns);
+
+	MatrixXcmp eigenBasis;
+	toEigenMatrix(pBasis, eigenBasis);
+
+	MatrixXcmp eigenRotation;
+	eigenRotation = cosPhi_2 * MatrixXcmp::Identity(nbRows, nbColumns) - ComplexVal(0,1) * sinPhi_2 * eigenBasis;
+
+	rpRotationMatrix = fromEigenMatrix(eigenRotation, pBasis->getLabel() + "_rot");
+}
+
+
 void SampleMatrixOperator::toEigenMatrix(MatrixPtr pMatrix, MatrixXcmp& rEigenMat) {
 	int nbRows, nbColumns;
 	pMatrix->getSize(nbRows, nbColumns);

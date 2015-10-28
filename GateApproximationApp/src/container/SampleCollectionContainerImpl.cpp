@@ -20,8 +20,8 @@
 #include "GateCombinerImpl.h"
 #include "LabelOnlyGateWriterImpl.h"
 #include "DuplicateGateCancelationCombinerImpl.h"
-#include "HTVBasedResourceContainerImpl.h"
-#include "HVBasedResourceContainerImpl.h"
+#include "ContainerResourceFactory.h"
+#include "SampleLibraryMatrixStore.h"
 #include "PersistableGNATCollectionImpl.h"
 #include "IPersistableCollection.h"
 #include <stdexcept>
@@ -69,33 +69,14 @@ void SampleCollectionContainerImpl::initLibrarySetPersistFileNameMap() {
 	m_librarySetPersistFileNameMap[L_HTCV] = "gnat_htcv";
 }
 
-void SampleCollectionContainerImpl::setupResourceContainer() {
-
-	switch(m_collectionConfig.m_librarySet) {
-	case L_HT:
-		m_pResourceContainer = ResourceContainerPtr(new SampleResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
-		break;
-	case L_HCV:
-		m_pResourceContainer = ResourceContainerPtr(new HVBasedResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
-		break;
-	case L_HTCNOT:
-		m_pResourceContainer = ResourceContainerPtr(new SampleResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
-		break;
-	case L_HTCV:
-		m_pResourceContainer = ResourceContainerPtr(new HTVBasedResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
-		break;
-	default:
-		break;
-	}
-
-	m_pResourceContainer->setup();
-}
-
 void SampleCollectionContainerImpl::wireDependencies() {
 	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
 	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));
 
-	setupResourceContainer();
+	ResourceContainerFactory resourceContainerFactory;
+	m_pResourceContainer = resourceContainerFactory.getResourceContainer(m_collectionConfig.m_librarySet,
+			m_pMatrixFactory,
+			m_pMatrixOperator);
 
 	m_pBinaryMatrixWriter = MatrixWriterPtr(new BinaryMatrixWriterImpl());
 	m_pBinaryMatrixReader = MatrixReaderPtr(new BinaryMatrixReaderImpl(m_pMatrixFactory));

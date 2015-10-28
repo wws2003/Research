@@ -13,6 +13,7 @@
 #include "EvaluateCollectionCommand.h"
 #include "EvaluateApproximatorCommand.h"
 #include "GenerateAndStoreApproximationsCommand.h"
+#include "EvaluatePersistedCollectionForTargetsCommand.h"
 #include "ConfigReader.h"
 
 CommandFactory::CommandFactory() : m_pCollectionContainer(NullPtr), m_pApproximatorContainer(NullPtr), m_pEvaluatorContainer(NullPtr){
@@ -37,6 +38,9 @@ CommandPtr CommandFactory::getCommand(int commandCode, const CommandParams& comm
 	}
 	case GENERATE_NEAR_IDENTITY: {
 		return getGenerateAndStoreApproximationsForIdentity(commandParams[0], commandParams[1], commandParams[2]);
+	}
+	case EVALUATE_PERSISTED_COLLECTION_TO_TARGET: {
+		return getPersistedCollectionEvaluationForTargets(commandParams[0], commandParams[1]);
 	}
 	default:
 		return CommandPtr(new NotAvailableCommand());
@@ -118,10 +122,25 @@ AbstractCommandPtr CommandFactory::getGenerateAndStoreApproximationsForIdentity(
 	return pCommand;
 }
 
+AbstractCommandPtr CommandFactory::getPersistedCollectionEvaluationForTargets(std::string storeFileName, std::string targetConfigFile) {
+	ConfigReader configReader;
+
+	CollectionConfig collectionConfig;
+	EvaluatorConfig evaluatorConfig;
+	readTargetConfig(configReader, targetConfigFile, &collectionConfig, &evaluatorConfig);
+
+	PersitableGateCollectionPtr pPersistableCollection = m_pCollectionContainer->getPersitableGateCollection();
+	GateSearchSpaceEvaluatorPtr pEvaluator = m_pEvaluatorContainer->getGateSearchSpaceEvaluator();
+
+	return AbstractCommandPtr(new EvaluatePersistedCollectionForTargetsCommand(pPersistableCollection,
+			pEvaluator,
+			storeFileName));
+}
+
 void CommandFactory::readCollectionAndEvaluatorConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig) {
 	configReader.readCollectionAndEvaluatorConfig(configFile, pCollectionConfig, pEvaluatorConfig);
 	resetCollectionContainer(*pCollectionConfig);
-	resetEvaluationContainer(*pEvaluatorConfig);
+	resetEvaluationContainer(*pEvaluatorConfig, *pCollectionConfig);
 }
 
 void CommandFactory::readApproximatorConfig(ConfigReader configReader, std::string configFile, const CollectionConfig&  collectionConfig, NearIdentityApproximatorConfig* pApproximatorConfig) {
@@ -129,15 +148,21 @@ void CommandFactory::readApproximatorConfig(ConfigReader configReader, std::stri
 	resetApproximatorContainer(*pApproximatorConfig, collectionConfig);
 }
 
+void CommandFactory::readTargetConfig(ConfigReader configReader, std::string targetConfigFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig) {
+	configReader.readTargetsConfig(targetConfigFile, pCollectionConfig, pEvaluatorConfig);
+
+	resetCollectionContainer(*pCollectionConfig);
+	resetEvaluationContainer(*pEvaluatorConfig, *pCollectionConfig);
+}
 
 void CommandFactory::resetCollectionContainer(const CollectionConfig& collectionConfig) {
 	_destroy(m_pCollectionContainer);
 	m_pCollectionContainer = CollectionContainerPtr(new SampleCollectionContainerImpl(collectionConfig));
 }
 
-void CommandFactory::resetEvaluationContainer(const EvaluatorConfig& evaluatorConfig) {
+void CommandFactory::resetEvaluationContainer(const EvaluatorConfig& evaluatorConfig, const CollectionConfig& collectionConfig) {
 	_destroy(m_pEvaluatorContainer);
-	m_pEvaluatorContainer = EvaluatorContainerPtr(new SampleEvaluatorContainerImpl(evaluatorConfig));
+	m_pEvaluatorContainer = EvaluatorContainerPtr(new SampleEvaluatorContainerImpl(evaluatorConfig, collectionConfig));
 }
 
 void CommandFactory::resetApproximatorContainer(const NearIdentityApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig) {

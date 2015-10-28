@@ -4,6 +4,7 @@ src/container/SampleEvaluatorContainerImpl.d: \
  ../src/container/IEvaluatorContainer.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Mreal.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
@@ -19,8 +20,8 @@ src/container/SampleEvaluatorContainerImpl.d: \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
- ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h \
  ../src/configure/Config.h \
+ ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
@@ -194,7 +195,7 @@ src/container/SampleEvaluatorContainerImpl.d: \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../src/container/SampleResourceContainerImpl.h \
- ../src/container/GateFactory.h \
+ ../src/factory/GateFactory.h \
  ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h \
  ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h \
  ../../ModuleOperator/include/implement/MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h \
@@ -218,8 +219,8 @@ src/container/SampleEvaluatorContainerImpl.d: \
  ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
  ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
- ../src/container/HTVBasedResourceContainerImpl.h \
- ../src/container/HVBasedResourceContainerImpl.h \
+ ../src/factory/ContainerResourceFactory.h \
+ ../src/container/IResourceContainer.h ../src/common/ApplicationCommon.h \
  ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h \
  ../../ModuleOperator/include/implement/LazyGateDistanceCalculatorImpl.h
 
@@ -230,6 +231,8 @@ src/container/SampleEvaluatorContainerImpl.d: \
 ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleMathConcepts/include/interface/common/Mreal.h:
 
 ../../SharedThirdParties/mpfrc++/include/mpreal.h:
 
@@ -261,9 +264,9 @@ src/container/SampleEvaluatorContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
 
-../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h:
-
 ../src/configure/Config.h:
+
+../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h:
 
 ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h:
 
@@ -611,7 +614,7 @@ src/container/SampleEvaluatorContainerImpl.d: \
 
 ../src/container/SampleResourceContainerImpl.h:
 
-../src/container/GateFactory.h:
+../src/factory/GateFactory.h:
 
 ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h:
 
@@ -659,9 +662,11 @@ src/container/SampleEvaluatorContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h:
 
-../src/container/HTVBasedResourceContainerImpl.h:
+../src/factory/ContainerResourceFactory.h:
 
-../src/container/HVBasedResourceContainerImpl.h:
+../src/container/IResourceContainer.h:
+
+../src/common/ApplicationCommon.h:
 
 ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h:
 

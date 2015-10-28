@@ -35,8 +35,6 @@ private:
 
 	void wireDependencies();
 
-	void setupResourceContainer();
-
 	std::string getGateCollectionPersistenceFileFullName(const CollectionConfig& config,
 			const LibrarySetFileNameMap& librarySetFileNameMap,
 			std::string fileExtension);

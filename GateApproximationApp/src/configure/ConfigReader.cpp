@@ -13,16 +13,10 @@
 
 ConfigReader::ConfigReader() {
 	initLibrarySetNameMap();
+	initRotationSetNameMap();
 }
 
 ConfigReader::~ConfigReader() {
-}
-
-void ConfigReader::initLibrarySetNameMap() {
-	m_librarySetNameMap["H-T"] = L_HT;
-	m_librarySetNameMap["H-CV"] = L_HCV;
-	m_librarySetNameMap["H-T-CNOT"] = L_HTCNOT;
-	m_librarySetNameMap["H-T-CV"] = L_HTCV;
 }
 
 void ConfigReader::readCollectionAndEvaluatorConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig) {
@@ -36,7 +30,6 @@ void ConfigReader::readCollectionAndEvaluatorConfig(std::string configFile, Coll
 		sscanf(line.data(), "%[^:]:%[^\n]", prefix, librarySetName);
 		std::string librarySetNameStr(librarySetName);
 		pCollectionConfig->m_librarySet = (LibrarySet)m_librarySetNameMap[librarySetNameStr];
-		pEvaluatorConfig->m_librarySet = pCollectionConfig->m_librarySet;
 
 		std::getline(inputStream, line);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pCollectionConfig->m_maxSequenceLength));
@@ -45,7 +38,6 @@ void ConfigReader::readCollectionAndEvaluatorConfig(std::string configFile, Coll
 		std::getline(inputStream, line);
 		sscanf(line.data(), "%[^:]:%d", prefix, &nbQubits);
 		pCollectionConfig->m_nbQubits = nbQubits;
-		pEvaluatorConfig->m_nbQubits = nbQubits;
 
 		std::getline(inputStream, line);
 		sscanf(line.data(), "%[^:]:%lf", prefix, &(pEvaluatorConfig->m_collectionEpsilon));
@@ -91,4 +83,65 @@ void ConfigReader::readApproximatorConfig(std::string configFile, NearIdentityAp
 	else {
 		throw std::logic_error("Can not read config file for approximator!");
 	}
+}
+
+void ConfigReader::readTargetsConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig) {
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		char prefix[128];
+		std::string line;
+
+		int nbQubits;
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &nbQubits);
+		pCollectionConfig->m_nbQubits = nbQubits;
+
+		int nbTargets;
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &nbTargets);
+
+		for(int i = 0; i < nbTargets; i++) {
+			RotationConfig rotationConfig;
+			std::getline(inputStream, line);
+			readRotationConfigLine(line, rotationConfig);
+			pEvaluatorConfig->m_rotationTargets.push_back(rotationConfig);
+		}
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%lf", prefix, &(pEvaluatorConfig->m_collectionEpsilon));
+
+		//Set approximation epsilon to collection epsilon to avoid empty field
+		pEvaluatorConfig->m_approximatorEpsilon = pEvaluatorConfig->m_collectionEpsilon;
+
+		//Since library gates set are not required in the config file, set as unspecified
+		pCollectionConfig->m_librarySet = L_UNSPECIFIED;
+	}
+	else {
+		throw std::logic_error("Can not read config file for targets!");
+	}
+}
+
+void ConfigReader::initLibrarySetNameMap() {
+	m_librarySetNameMap["H-T"] = L_HT;
+	m_librarySetNameMap["H-CV"] = L_HCV;
+	m_librarySetNameMap["H-T-CNOT"] = L_HTCNOT;
+	m_librarySetNameMap["H-T-CV"] = L_HTCV;
+}
+
+void ConfigReader::initRotationSetNameMap() {
+	m_rotationSetNameMap["X"] = R_X;
+	m_rotationSetNameMap["Y"] = R_Y;
+	m_rotationSetNameMap["Z"] = R_Z;
+	m_rotationSetNameMap["CX"] = C_RX;
+	m_rotationSetNameMap["CY"] = C_RY;
+	m_rotationSetNameMap["CZ"] = C_RZ;
+}
+
+void ConfigReader::readRotationConfigLine(std::string line, RotationConfig& rotationConfig) {
+	char prefix[256];
+	char axis[256];
+	int piDenominator;
+	sscanf(line.data(), "%[^:]:%[^ ]%d", prefix, axis, &piDenominator);
+	rotationConfig.m_rotationType = (RotationType)m_rotationSetNameMap[axis];
+	rotationConfig.m_rotationAngle = (mreal_t)(M_PI / piDenominator);
 }

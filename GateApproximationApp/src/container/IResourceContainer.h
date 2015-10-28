@@ -16,6 +16,7 @@
 #include "EvaluateCommon.h"
 #include "IGateCombinabilityChecker.h"
 #include "AlgoInternal.h"
+#include "Config.h"
 
 /**
  * Classes to manage (supply/release) instances for universal set and combiners checkers.
@@ -33,7 +34,9 @@ public:
 
 	virtual void getMatrixOrthonormalBasis(MatrixPtrVector& pBasis, int nbQubits = 2) = 0;
 
-	virtual void getTargetGatesAndEpsilon(std::vector<GatePtr>& targets, int nbQubits = 2) = 0;
+	virtual void getIdentityTargets(std::vector<GatePtr>& targets, int nbQubits = 2) = 0;
+
+	virtual void getRotationTargets(std::vector<GatePtr>& targets, const RotationConfigs& rotationTargetsConfig, int nbQubits = 2) = 0;
 };
 
 typedef IResourceContainer* ResourceContainerPtr;

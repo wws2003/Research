@@ -32,8 +32,6 @@ private:
 	void wireDependencies();
 	void releaseDependencies();
 
-	void setupResourceContainer();
-
 	NearIdentityElementBinBasedComposer<GatePtr>::Config getComposerConfig();
 
 	MatrixFactoryPtr m_pMatrixFactory;

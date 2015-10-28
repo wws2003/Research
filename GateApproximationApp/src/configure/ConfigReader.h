@@ -21,10 +21,16 @@ public:
 
 	virtual void readApproximatorConfig(std::string configFile, NearIdentityApproximatorConfig* pApproximatorConfig);
 
+	virtual void readTargetsConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
+
 private:
 	void initLibrarySetNameMap();
+	void initRotationSetNameMap();
+
+	void readRotationConfigLine(std::string line, RotationConfig& rotationConfig);
 
 	LibrarySetNameMap m_librarySetNameMap;
+	RotationTypeNameMap m_rotationSetNameMap;
 };
 
 #endif /* CONFIGREADER_H_ */

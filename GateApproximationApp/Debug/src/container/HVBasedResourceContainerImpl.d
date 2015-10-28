@@ -6,6 +6,7 @@ src/container/HVBasedResourceContainerImpl.d: \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceConstructor.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Mreal.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
@@ -17,7 +18,7 @@ src/container/HVBasedResourceContainerImpl.d: \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
- ../src/container/GateFactory.h \
+ ../src/configure/Config.h ../src/factory/GateFactory.h \
  ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h \
  ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h \
  ../../ModuleAlgorithm/include/implement/collection/VectorBasedCollectionImpl.hpp \
@@ -202,6 +203,8 @@ src/container/HVBasedResourceContainerImpl.d: \
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
 
+../../ModuleMathConcepts/include/interface/common/Mreal.h:
+
 ../../SharedThirdParties/mpfrc++/include/mpreal.h:
 
 ../../SharedThirdParties/mpfr/include/mpfr.h:
@@ -224,7 +227,9 @@ src/container/HVBasedResourceContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
 
-../src/container/GateFactory.h:
+../src/configure/Config.h:
+
+../src/factory/GateFactory.h:
 
 ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h:
 

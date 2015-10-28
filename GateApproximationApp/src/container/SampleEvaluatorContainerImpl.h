@@ -21,7 +21,7 @@
 
 class SampleEvaluatorContainerImpl: public IEvaluatorContainer {
 public:
-	SampleEvaluatorContainerImpl(const EvaluatorConfig& config);
+	SampleEvaluatorContainerImpl(const EvaluatorConfig& config, const CollectionConfig& collectionConfig);
 	virtual ~SampleEvaluatorContainerImpl();
 
 	//Override
@@ -36,8 +36,6 @@ public:
 private:
 	void wireDependencies();
 	void releaseDependencies();
-
-	void setupResourceContainer();
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
@@ -57,6 +55,7 @@ private:
 	TimerPtr m_pTimer;
 
 	EvaluatorConfig m_evaluatorConfig;
+	CollectionConfig m_collectionConfig;
 };
 
 #endif /* SAMPLEEVALUATORCONTAINERIMPL_H_ */

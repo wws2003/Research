@@ -3,6 +3,7 @@ src/implement/MatrixRealInnerProductByTraceImpl.d: \
  ../include/implement/MatrixRealInnerProductByTraceImpl.h \
  ../include/interface/common/OperatorCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Mreal.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
@@ -16,6 +17,8 @@ src/implement/MatrixRealInnerProductByTraceImpl.d: \
 ../include/interface/common/OperatorCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleMathConcepts/include/interface/common/Mreal.h:
 
 ../../SharedThirdParties/mpfrc++/include/mpreal.h:
 
