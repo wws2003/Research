@@ -3,6 +3,7 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../src/container/IEvaluatorContainer.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Mreal.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
@@ -50,7 +51,8 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../src/command/EvaluateApproximatorCommand.h \
  ../src/command/GenerateAndStoreApproximationsCommand.h \
  ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
- ../../ModuleIO/include/interface/abstract/IWriter.h
+ ../../ModuleIO/include/interface/abstract/IWriter.h \
+ ../src/command/EvaluatePersistedCollectionForTargetsCommand.h
 
 ../src/command/CommandFactory.h:
 
@@ -61,6 +63,8 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleMathConcepts/include/interface/common/Mreal.h:
 
 ../../SharedThirdParties/mpfrc++/include/mpreal.h:
 
@@ -161,3 +165,5 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
 
 ../../ModuleIO/include/interface/abstract/IWriter.h:
+
+../src/command/EvaluatePersistedCollectionForTargetsCommand.h:

@@ -9,8 +9,7 @@
 #include "ComposerBasedGateApproximator.h"
 #include "MapBasedGateBinCollectionImpl.h"
 #include "DuplicateGateCancelationCombinerImpl.h"
-#include "HTVBasedResourceContainerImpl.h"
-#include "HVBasedResourceContainerImpl.h"
+#include "ContainerResourceFactory.h"
 #include "DummyGateDecomposer.h"
 #include "NearIdentityGateBinBasedComposer.h"
 #include "ComposerBasedGateApproximator.h"
@@ -19,6 +18,7 @@
 #include "IResourceContainer.h"
 #include "SampleLibraryMatrixStore.h"
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
+#include "ContainerResourceFactory.h"
 #include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
 
 SampleApproximatorContainerImpl::SampleApproximatorContainerImpl(NearIdentityApproximatorConfig approximatorConfig,
@@ -43,7 +43,10 @@ void SampleApproximatorContainerImpl::wireDependencies() {
 	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
 	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));
 
-	setupResourceContainer();
+	ResourceContainerFactory resourceContainerFactory;
+	m_pResourceContainer = resourceContainerFactory.getResourceContainer(m_coreCollectionConfig.m_librarySet,
+			m_pMatrixFactory,
+			m_pMatrixOperator);
 
 	GateCombinabilityCheckers checkers;
 	m_pResourceContainer->getGateCombinabilityCheckers(checkers, m_coreCollectionConfig.m_nbQubits);
@@ -84,27 +87,6 @@ void SampleApproximatorContainerImpl::releaseDependencies() {
 
 	_destroy(m_pMatrixOperator);
 	_destroy(m_pMatrixFactory);
-}
-
-void SampleApproximatorContainerImpl::setupResourceContainer() {
-	switch(m_coreCollectionConfig.m_librarySet) {
-	case L_HT:
-		m_pResourceContainer = ResourceContainerPtr(new SampleResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
-		break;
-	case L_HCV:
-		m_pResourceContainer = ResourceContainerPtr(new HVBasedResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
-		break;
-	case L_HTCNOT:
-		m_pResourceContainer = ResourceContainerPtr(new SampleResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
-		break;
-	case L_HTCV:
-		m_pResourceContainer = ResourceContainerPtr(new HTVBasedResourceContainerImpl(m_pMatrixOperator, m_pMatrixFactory));
-		break;
-	default:
-		break;
-	}
-
-	m_pResourceContainer->setup();
 }
 
 NearIdentityElementBinBasedComposer<GatePtr>::Config SampleApproximatorContainerImpl::getComposerConfig() {

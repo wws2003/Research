@@ -3,6 +3,7 @@ src/command/EvaluateCollectionCommand.d: \
  ../src/command/EvaluateCollectionCommand.h \
  ../src/common/ApplicationCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Mreal.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
@@ -19,6 +20,8 @@ src/command/EvaluateCollectionCommand.d: \
 ../src/common/ApplicationCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleMathConcepts/include/interface/common/Mreal.h:
 
 ../../SharedThirdParties/mpfrc++/include/mpreal.h:
 

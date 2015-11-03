@@ -104,16 +104,23 @@ public:
 	virtual void unitaryDediagonalize(MatrixPtr pU, const ComplexVectorRef diag, MatrixPtrRef prRoot) = 0;
 
 	/**
-	 * Just an utility
+	 * Just another utility
 	 * Transform to unitary matrix into equiivalent special unitary (det = 1), up to global phase
 	 */
 	virtual void specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef prSU) = 0;
 
 	/**
-	 * Just an utility
+	 * Just another utility
 	 * Generate basis of vector space on R of d*d Traceless Hermitian matrices
 	 */
 	virtual void getTracelessHermitianMatricesBasis(int dimension, MatrixPtrVector& pBasis) = 0;
+
+
+	/**
+	 * Just another utility
+	 * Generate rotation matrix againts the basis matrix
+	 */
+	virtual void getRotationMatrix(MatrixPtr pBasis, mreal_t rotationAngle, MatrixPtrRef pRotationMatrix) = 0;
 
 };
 

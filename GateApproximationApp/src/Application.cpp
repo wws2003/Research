@@ -13,8 +13,6 @@
 #include "AlgoCommon.h"
 #include "ISearchSpaceEvaluator.h"
 #include "EvaluateCommon.h"
-#include "SampleAppContainerImpl.h"
-#include "IAppContainer.h"
 #include "CommandParser.h"
 #include "ApplicationCommon.h"
 #include "CommandFactory.h"
@@ -62,8 +60,8 @@ void initCommands(CommandParser* pCommandParser) {
 	//For -e conf1 conf2 -I
 	pCommandParser->provideArgumentPatternForCommandCode(5, ArgumentPositions{1, 4}, Arguments{"-e", "-I"}, EVALUATE_COLLECTION_APPROXIMATOR_TO_IDENTITY);
 
-	//For -e conf1 -i db -t targetConf.
-	pCommandParser->provideArgumentPatternForCommandCode(7, ArgumentPositions{1, 3, 5}, Arguments{"-e", "-i", "-t"}, EVALUATE_PERSISTED_COLLECTION_TO_TARGET);
+	//For -e -i db -t targetConf.
+	pCommandParser->provideArgumentPatternForCommandCode(6, ArgumentPositions{1, 2, 4}, Arguments{"-e", "-i", "-t"}, EVALUATE_PERSISTED_COLLECTION_TO_TARGET);
 }
 
 void printSyntaxMessage() {
@@ -77,7 +75,7 @@ void printSyntaxMessage() {
 	std::cout << "For future purposes" << std::endl;
 
 	std::cout << "-e conf1 -t targetConf -> Evaluate collection for target" << std::endl;
-	std::cout << "-e conf1 -i db -t targetConf -> Evaluate collection for target given candidates in database file" << std::endl;
+	std::cout << "-e -i db -t targetConf -> Evaluate collection for target given candidates in database file" << std::endl;
 	std::cout << "-e conf1 conf2 -t targetConf -> Evaluate collection, approximator for target" << std::endl;
 
 }

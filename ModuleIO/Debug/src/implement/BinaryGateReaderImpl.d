@@ -4,6 +4,7 @@ src/implement/BinaryGateReaderImpl.d: \
  ../include/interface/abstract/IReader.h \
  ../include/interface/common/IOCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Mreal.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
@@ -18,6 +19,8 @@ src/implement/BinaryGateReaderImpl.d: \
 ../include/interface/common/IOCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleMathConcepts/include/interface/common/Mreal.h:
 
 ../../SharedThirdParties/mpfrc++/include/mpreal.h:
 

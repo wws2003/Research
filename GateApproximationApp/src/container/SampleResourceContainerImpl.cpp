@@ -120,7 +120,7 @@ void SampleResourceContainerImpl::getMatrixOrthonormalBasis(MatrixPtrVector& pBa
 	}
 }
 
-void SampleResourceContainerImpl::getTargetGatesAndEpsilon(std::vector<GatePtr>& targets, int nbQubits) {
+void SampleResourceContainerImpl::getIdentityTargets(std::vector<GatePtr>& targets, int nbQubits) {
 	//Just a sample for near-identity
 
 	targets.clear();
@@ -133,6 +133,16 @@ void SampleResourceContainerImpl::getTargetGatesAndEpsilon(std::vector<GatePtr>&
 		break;
 	default:
 		break;
+	}
+}
+
+void SampleResourceContainerImpl::getRotationTargets(std::vector<GatePtr>& targets, const RotationConfigs& rotationTargetsConfig, int nbQubits) {
+	//TODO Implement
+	targets.clear();
+	for(unsigned int i = 0; i < rotationTargetsConfig.size(); i++) {
+		RotationConfig rotationTargetConfig = rotationTargetsConfig[i];
+		GatePtr pGate = getRotationGate(rotationTargetConfig);
+		targets.push_back(pGate);
 	}
 }
 
@@ -270,6 +280,31 @@ void SampleResourceContainerImpl::collectLibraryGatesFromMap(const GateNameCostM
 		GatePtr pGate = pGateFactory->getLibraryGateInstance(gateName, gateCost);
 		pLibraryGates->addElement(pGate);
 	}
+}
+
+GatePtr SampleResourceContainerImpl::getRotationGate(RotationConfig rotationConfig) {
+	mreal_t phi = rotationConfig.m_rotationAngle;
+
+	MatrixPtr pBasis = NullPtr;
+
+	//TODO Implement other type C_RX, C_RY, C_RZ
+	switch (rotationConfig.m_rotationType) {
+	case R_X:
+		pBasis = m_basis2[0];
+		break;
+	case R_Y:
+		pBasis = m_basis2[1];
+		break;
+	case R_Z:
+		pBasis = m_basis2[2];
+		break;
+	default:
+		break;
+	}
+	MatrixPtr pRotationMatrix;
+	m_pMatrixOperator->getRotationMatrix(pBasis, phi, pRotationMatrix);
+
+	return GatePtr(new Gate(pRotationMatrix, 0, pRotationMatrix->getLabel()));
 }
 
 /*-----------------------Private functions-----------------------*/

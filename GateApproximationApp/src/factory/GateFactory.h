@@ -12,6 +12,7 @@
 #include "MathConceptsCommon.h"
 #include "OperatorCommon.h"
 #include "ILibraryMatrixStore.h"
+#include "Config.h"
 #include <map>
 
 typedef std::map<std::string, int> GateNameCodeMap;

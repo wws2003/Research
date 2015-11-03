@@ -24,10 +24,12 @@ Each module, except for the third party libraries, is built into shared library,
 
 ## Executable
 Currently, a part from test cases, there is only one excutable file: GateApproximationApp, located at GateApproximationApp/Debug/.  
-Run it with the LD_LIBRARY_PATH set to $(pwd)/ModuleMathConcepts/artifact:$(pwd)/ModuleOperator/artifact:$(pwd)/ModuleAlgorithm/artifact:$(pwd)/ModuleIO/artifact:$(pwd)/ModuleEvaluate/artifact. Unfortunately, at the moment (2015/10/08), it is very feature-limited.
+Run it with the LD_LIBRARY_PATH set to $(pwd)/ModuleMathConcepts/artifact:$(pwd)/ModuleOperator/artifact:$(pwd)/ModuleAlgorithm/artifact:$(pwd)/ModuleIO/artifact:$(pwd)/ModuleEvaluate/artifact/:$(pwd)/SharedThirdParties/gmp/lib:$(pwd)/SharedThirdParties/mpfr/lib. At the moment (2015/10/29), not all features are available
+
+## Installation.
+You should only need to run $make to have the software installed. Unfortunately, at the moment (2015/10/29), there are some problems preventing successful build on a 64-bit machine.
 
 ### Misc
 1. This project is based on Eclipse platform.
 2. This project has been deployed in my CI server at [http://54.201.201.43:8080/autospring/workspace/detail/4](http://54.201.201.43:8080/autospring/workspace/detail/4). 
-Test cases in TestMatrixOperator and TestEvaluate are executed there
-ModuleMathConcepts
+Test cases in TestMatrixOperator and TestEvaluate are executed

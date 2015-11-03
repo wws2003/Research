@@ -4,6 +4,7 @@ src/container/SampleApproximatorContainerImpl.d: \
  ../src/container/IApproximatorContainer.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Mreal.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
@@ -38,18 +39,15 @@ src/container/SampleApproximatorContainerImpl.d: \
  ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
- ../src/container/HTVBasedResourceContainerImpl.h \
- ../src/container/SampleResourceContainerImpl.h \
- ../src/container/GateFactory.h \
- ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h \
- ../src/container/HVBasedResourceContainerImpl.h \
+ ../src/factory/ContainerResourceFactory.h \
+ ../src/container/IResourceContainer.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleAlgorithm/include/implement/decomposer/DummyGateDecomposer.h \
  ../../ModuleAlgorithm/include/implement/decomposer/DummyElementDecomposer.h \
  ../../ModuleAlgorithm/include/implement/composer/NearIdentityGateBinBasedComposer.h \
  ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
- ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
- ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleOperator/include/implement/SampleMatrixOperator.h \
  ../../ModuleOperator/third-parties/eigen3/Eigen/Dense \
  ../../ModuleOperator/third-parties/eigen3/Eigen/Core \
@@ -202,6 +200,7 @@ src/container/SampleApproximatorContainerImpl.d: \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/./RealQZ.h \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
  ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h \
+ ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h \
  ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h \
  ../../ModuleOperator/include/implement/MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h \
  ../../ModuleOperator/include/implement/CoordinateOnOrthonormalBasisCalculatorImpl.h
@@ -213,6 +212,8 @@ src/container/SampleApproximatorContainerImpl.d: \
 ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleMathConcepts/include/interface/common/Mreal.h:
 
 ../../SharedThirdParties/mpfrc++/include/mpreal.h:
 
@@ -284,15 +285,13 @@ src/container/SampleApproximatorContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
 
-../src/container/HTVBasedResourceContainerImpl.h:
+../src/factory/ContainerResourceFactory.h:
 
-../src/container/SampleResourceContainerImpl.h:
+../src/container/IResourceContainer.h:
 
-../src/container/GateFactory.h:
+../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h:
 
-../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h:
-
-../src/container/HVBasedResourceContainerImpl.h:
+../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
 ../../ModuleAlgorithm/include/implement/decomposer/DummyGateDecomposer.h:
 
@@ -303,10 +302,6 @@ src/container/SampleApproximatorContainerImpl.d: \
 ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h:
 
 ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h:
-
-../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h:
-
-../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
 ../../ModuleOperator/include/implement/SampleMatrixOperator.h:
 
@@ -611,6 +606,8 @@ src/container/SampleApproximatorContainerImpl.d: \
 ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h:
 
 ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h:
+
+../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h:
 
 ../../ModuleOperator/include/implement/SpecialUnitaryMatrixCoordinateMapper.h:
 

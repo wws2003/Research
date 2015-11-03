@@ -3,6 +3,7 @@ src/container/SampleCollectionContainerImpl.d: \
  ../src/container/SampleCollectionContainerImpl.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Mreal.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
@@ -17,14 +18,14 @@ src/container/SampleCollectionContainerImpl.d: \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
- ../src/container/ICollectionContainer.h \
+ ../src/configure/Config.h ../src/container/ICollectionContainer.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
- ../src/common/ApplicationCommon.h ../src/configure/Config.h \
+ ../src/common/ApplicationCommon.h \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
@@ -200,14 +201,15 @@ src/container/SampleCollectionContainerImpl.d: \
  ../../ModuleAlgorithm/include/implement/iterator/VectorBasedIteratorImpl.hpp \
  ../../ModuleAlgorithm/include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../src/container/SampleResourceContainerImpl.h \
- ../src/container/GateFactory.h \
+ ../src/factory/GateFactory.h \
  ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
  ../../ModuleIO/include/implement/LabelOnlyGateWriterImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
- ../src/container/HTVBasedResourceContainerImpl.h \
- ../src/container/HVBasedResourceContainerImpl.h \
+ ../src/factory/ContainerResourceFactory.h \
+ ../src/container/IResourceContainer.h \
+ ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h
 
 ../src/container/SampleCollectionContainerImpl.h:
@@ -215,6 +217,8 @@ src/container/SampleCollectionContainerImpl.d: \
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleMathConcepts/include/interface/common/Mreal.h:
 
 ../../SharedThirdParties/mpfrc++/include/mpreal.h:
 
@@ -244,6 +248,8 @@ src/container/SampleCollectionContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
 
+../src/configure/Config.h:
+
 ../src/container/ICollectionContainer.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
@@ -259,8 +265,6 @@ src/container/SampleCollectionContainerImpl.d: \
 ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../src/common/ApplicationCommon.h:
-
-../src/configure/Config.h:
 
 ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h:
 
@@ -612,7 +616,7 @@ src/container/SampleCollectionContainerImpl.d: \
 
 ../src/container/SampleResourceContainerImpl.h:
 
-../src/container/GateFactory.h:
+../src/factory/GateFactory.h:
 
 ../../ModuleOperator/include/interface/abstract/ILibraryMatrixStore.h:
 
@@ -624,8 +628,10 @@ src/container/SampleCollectionContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h:
 
-../src/container/HTVBasedResourceContainerImpl.h:
+../src/factory/ContainerResourceFactory.h:
 
-../src/container/HVBasedResourceContainerImpl.h:
+../src/container/IResourceContainer.h:
+
+../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h:
 
 ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h:

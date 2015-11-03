@@ -42,6 +42,8 @@ public:
 
 	void getTracelessHermitianMatricesBasis(int dimension, MatrixPtrVector& pBasis) ;
 
+	void getRotationMatrix(MatrixPtr pBasis, mreal_t rotationAngle, MatrixPtrRef pRotationMatrix);
+
 private:
 	void toEigenMatrix(MatrixPtr pMatrix, MatrixXcmp& rEigenMat);
 	MatrixPtr fromEigenMatrix(MatrixXcmp& eigenMatrix, std::string label = "");

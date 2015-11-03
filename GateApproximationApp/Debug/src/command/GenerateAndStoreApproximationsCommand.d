@@ -3,6 +3,7 @@ src/command/GenerateAndStoreApproximationsCommand.d: \
  ../src/command/GenerateAndStoreApproximationsCommand.h \
  ../src/command/AbstractChainCommandExecutor.h ../src/command/ICommand.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Mreal.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
@@ -29,6 +30,8 @@ src/command/GenerateAndStoreApproximationsCommand.d: \
 ../src/command/ICommand.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleMathConcepts/include/interface/common/Mreal.h:
 
 ../../SharedThirdParties/mpfrc++/include/mpreal.h:
 

@@ -3,6 +3,7 @@ src/implement/LabelOnlyGateWriterImpl.d: \
  ../include/implement/LabelOnlyGateWriterImpl.h \
  ../include/interface/common/IOCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Mreal.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
@@ -16,6 +17,8 @@ src/implement/LabelOnlyGateWriterImpl.d: \
 ../include/interface/common/IOCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleMathConcepts/include/interface/common/Mreal.h:
 
 ../../SharedThirdParties/mpfrc++/include/mpreal.h:
 

@@ -5,15 +5,15 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/common/Gate.cpp \
-../src/common/MathConceptsCommon.cpp 
+../src/common/Mreal.cpp 
 
 OBJS += \
 ./src/common/Gate.o \
-./src/common/MathConceptsCommon.o 
+./src/common/Mreal.o 
 
 CPP_DEPS += \
 ./src/common/Gate.d \
-./src/common/MathConceptsCommon.d 
+./src/common/Mreal.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

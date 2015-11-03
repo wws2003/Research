@@ -3,6 +3,7 @@ src/implement/SimpleIdentityMatrixImpl.d: \
  ../include/implement/SimpleIdentityMatrixImpl.h \
  ../include/interface/abstract/IMatrix.h \
  ../include/interface/common/MathConceptsCommon.h \
+ ../include/interface/common/Mreal.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
@@ -13,6 +14,8 @@ src/implement/SimpleIdentityMatrixImpl.d: \
 ../include/interface/abstract/IMatrix.h:
 
 ../include/interface/common/MathConceptsCommon.h:
+
+../include/interface/common/Mreal.h:
 
 ../../SharedThirdParties/mpfrc++/include/mpreal.h:
 

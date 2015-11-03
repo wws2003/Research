@@ -16,5 +16,4 @@
 typedef class PersistableGNATItemCollectionImpl<GatePtr> PersistableGNATGateCollectionImpl;
 
 
-
 #endif /* PERSISTABLEGNATGATECOLLECTIONIMPL_H_ */
