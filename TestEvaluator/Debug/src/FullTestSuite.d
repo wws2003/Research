@@ -1,6 +1,7 @@
 src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Mreal.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
@@ -222,11 +223,15 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
  ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h \
+ ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATItemCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
  ../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h \
  ../../ModuleIO/include/interface/abstract/IReader.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleIO/include/implement/BinaryGateWriterImpl.h \
  ../../ModuleIO/include/implement/BinaryGateReaderImpl.h \
  ../../ModuleIO/include/implement/BinaryMatrixReaderImpl.h \
@@ -237,6 +242,8 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleMathConcepts/include/interface/common/Mreal.h:
 
 ../../SharedThirdParties/mpfrc++/include/mpreal.h:
 
@@ -680,6 +687,8 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 
 ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h:
 
+../../ModuleAlgorithm/include/implement/persistable/PersistableGNATItemCollectionImpl.h:
+
 ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h:
 
 ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h:
@@ -689,6 +698,12 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 ../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h:
 
 ../../ModuleIO/include/interface/abstract/IReader.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
 ../../ModuleIO/include/implement/BinaryGateWriterImpl.h:
 

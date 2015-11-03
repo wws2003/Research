@@ -91,6 +91,9 @@ private:
 	//Get sub collections in those search result can be found
 	virtual void getCandidateSubCollections(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, std::vector<int>& rCheckMap) const;
 
+	//Calculate proper number of split points
+	virtual int detectNbSplitPoints();
+
 	friend class GNATCollectionIterator<T>;
 };
 

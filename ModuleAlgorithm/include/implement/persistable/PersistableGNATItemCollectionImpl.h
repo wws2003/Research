@@ -50,7 +50,7 @@ public:
 
 	//Find the neighbor elements to the query, given distance calculator
 	IteratorPtr<GatePtr> findNearestNeighbour(GatePtr query, DistanceCalculatorPtr<GatePtr> pDistanceCalculator, mreal_t epsilon) const  {;
-		return m_pInternal->findNearestNeighbour(query, pDistanceCalculator, epsilon);
+	return m_pInternal->findNearestNeighbour(query, pDistanceCalculator, epsilon);
 	}
 
 	//Implementation for IPersistable
@@ -58,8 +58,27 @@ public:
 
 	void load(std::string fileName){m_pInternal->load(fileName);};
 
+	//Overloading
+	bool operator==(const PersistableGNATItemCollectionImpl<T>& rhs) {
+		return *m_pInternal == *rhs.m_pInternal;
+	}
+
+	//The following 2 methods are made public solely for test purpose
+
+	//Explicitly set data fields
+	void init(const SplitPointSet<T>& splitPoints,
+			const UnstructuredBuffer<T>& unStructeredBuffer,
+			const RangeMap& splitPointRanges) {
+		m_pInternal->init(splitPoints, unStructeredBuffer, splitPointRanges);
+	}
+
+	//Add sub-collection
+	void addSubCollection(CollectionPtr<T> pSubCollection) {
+		m_pInternal->addSubCollection(pSubCollection);
+	}
+
 private:
-	PersistableGNATCollectionImpl<T>* m_pInternal;
+			PersistableGNATCollectionImpl<T>* m_pInternal;
 };
 
 

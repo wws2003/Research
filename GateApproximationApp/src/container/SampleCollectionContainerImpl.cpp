@@ -142,6 +142,7 @@ void SampleCollectionContainerImpl::constructGateCollection(GateCollectionPtr pG
 			m_pUniversalSet,
 			m_collectionConfig.m_maxSequenceLength);
 
+	std::cout << "Begin to build data structure for collection of size: " << pGateCollection->size() << std::endl;
 	pGateCollection->rebuildStructure(pGateDistanceCalculator);
 }
 

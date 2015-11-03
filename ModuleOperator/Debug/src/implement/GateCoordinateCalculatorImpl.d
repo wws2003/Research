@@ -3,6 +3,7 @@ src/implement/GateCoordinateCalculatorImpl.d: \
  ../include/implement/GateCoordinateCalculatorImpl.h \
  ../include/interface/abstract/ICoordinateCalculator.h \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Mreal.h \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
@@ -18,6 +19,8 @@ src/implement/GateCoordinateCalculatorImpl.d: \
 ../include/interface/abstract/ICoordinateCalculator.h:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleMathConcepts/include/interface/common/Mreal.h:
 
 ../../SharedThirdParties/mpfrc++/include/mpreal.h:
 

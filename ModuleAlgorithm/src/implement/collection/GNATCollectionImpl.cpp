@@ -236,7 +236,7 @@ template<typename T>
 void GNATCollectionImpl<T>::initSplitPoints() {
 	m_splitPoints.clear();
 
-	int nbSplitPoints = 6; //FIXME May be modified respecting the data size
+	int nbSplitPoints = detectNbSplitPoints();
 
 #ifdef DEBUGGING_SP
 	//For debugging purpose, only take first elements from unstructured buffer to split points
@@ -336,6 +336,12 @@ void GNATCollectionImpl<T>::getCandidateSubCollections(T query, DistanceCalculat
 			}
 		}
 	}
+}
+
+template<typename T>
+int GNATCollectionImpl<T>::detectNbSplitPoints() {
+	//FIXME More sophisticated solution
+	return m_unStructeredBuffer.size() > 100000 ? 3 : 6;
 }
 
 template<typename T>
