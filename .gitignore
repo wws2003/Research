@@ -25,6 +25,13 @@
 # Data Persistence file
 *.dat
 
+# Third-parties source code folder (should be unzip manually)
+SharedThirdParties/gmp-6.0.0/
+SharedThirdParties/m4-1.4.1/
+SharedThirdParties/mpfr-3.1.3/
+SharedThirdParties/mpfrc++-3.6.2/
+SharedThirdParties/mpfrc++/
+
 # Executable file 1
 TestMatrixOperator/Debug/TestMatrixOperator
 

@@ -1,1 +1,0 @@
-../mpn/x86/p6/bdiv_q_1.asm
