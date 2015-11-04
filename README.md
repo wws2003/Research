@@ -36,4 +36,4 @@ Run it with the LD_LIBRARY_PATH set to $(pwd)/ModuleMathConcepts/artifact:$(pwd)
 ### Misc
 1. This project is based on Eclipse platform.
 2. This project has been deployed in my CI server at [http://54.201.201.43:8080/autospring/workspace/detail/4](http://54.201.201.43:8080/autospring/workspace/detail/4). 
-Test cases in TestMatrixOperator and TestEvaluate are executed. Unfortunately (again!), since the intergration of MPFR, there hasn't been any successful build (2015/11/04)
+Test cases in TestMatrixOperator and TestEvaluate are executed. 
