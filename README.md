@@ -22,12 +22,16 @@ Third parties libraries, those shared between modules. Direct third-party depend
 
 Each module, except for the third party libraries, is built into shared library, generated in the folder *Module*/artifact. Following the principles of OOD, each module only exposes to its client interfaces (normally by abstract classes) located at the folder *Module*/include/interface. Implementing classes are located at the folder *Module*/include/implementation.
 
+## Installation.
+1. Extract zip files for third party libraries  
+- $cd SharedThirdParties
+- $./reset.sh (lzip and unzip softwares are required) 
+2. Make the project  
+Run $make in the root folder to have the software installed. You need a g++ version supports c++11
+
 ## Executable
 Currently, a part from test cases, there is only one excutable file: GateApproximationApp, located at GateApproximationApp/Debug/.  
 Run it with the LD_LIBRARY_PATH set to $(pwd)/ModuleMathConcepts/artifact:$(pwd)/ModuleOperator/artifact:$(pwd)/ModuleAlgorithm/artifact:$(pwd)/ModuleIO/artifact:$(pwd)/ModuleEvaluate/artifact/:$(pwd)/SharedThirdParties/gmp/lib:$(pwd)/SharedThirdParties/mpfr/lib. At the moment (2015/10/29), not all features are available
-
-## Installation.
-You should only need to run $make to have the software installed. Unfortunately, at the moment (2015/10/29), there are some problems preventing successful build on a 64-bit machine.
 
 ### Misc
 1. This project is based on Eclipse platform.
