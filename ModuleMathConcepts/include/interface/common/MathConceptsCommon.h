@@ -44,6 +44,8 @@ typedef IMatrixFactory* MatrixFactoryPtr;
 template<typename T>
 using RealCoordinate = Coordinate<T, mreal_t>;
 
+typedef std::vector<mreal_t> real_coordinate_t;
+
 template<typename T>
 using RealCoordinatePtr = RealCoordinate<T>*;
 

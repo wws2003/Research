@@ -13,10 +13,12 @@
 #include <vector>
 #include <string>
 
+typedef std::string BinBinaryPattern;
+
 template<typename T>
 class Bin {
 public:
-	Bin(BinPattern pattern){m_pattern = pattern;};
+	Bin(BinBinaryPattern pattern){m_pattern = pattern;};
 	virtual ~Bin(){};
 
 	inline void addElement(T element){m_elements.push_back(element);};
@@ -28,7 +30,7 @@ public:
 	inline const std::vector<T>& getElements(){return m_elements;};
 
 private:
-	BinPattern m_pattern;
+	BinBinaryPattern m_pattern;
 	std::vector<T> m_elements;
 };
 

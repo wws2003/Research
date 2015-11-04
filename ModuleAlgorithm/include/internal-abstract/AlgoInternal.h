@@ -45,8 +45,6 @@ using BinIteratorPtr =  IIterator<BinPtr<T> >*;
 typedef IIterator<MatrixBinPtr> MatrixBinIterator;
 typedef MatrixBinIterator* MatrixBinIteratorPtr;
 
-typedef std::string BinPattern;
-
 typedef IMatrixBinCollection* MatrixBinCollectionPtr;
 
 template<typename T>

@@ -12,8 +12,6 @@
 #include "Bin.hpp"
 #include "IIterator.h"
 
-typedef std::vector<mreal_t> real_coordinate_t;
-
 template<typename T>
 using ApprxResultBuffer = std::vector<T>;
 

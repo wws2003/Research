@@ -140,6 +140,9 @@ void NearIdentityElementBinBasedComposer<T>::generateApproximationsFromBins(T pQ
 
 			epsilonForMergeCandidate *= m_config.m_maxCandidateEpsilonDecreaseFactor;
 		}
+
+		//Re-calculate bins for better structure
+		m_pBinCollection->restructureBins();
 	}
 
 	_destroy(pApprxTempCollection);
