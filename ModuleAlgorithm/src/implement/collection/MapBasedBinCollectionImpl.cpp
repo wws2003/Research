@@ -71,25 +71,46 @@ BinIteratorPtr<T> MapBasedBinCollectionImpl<T>::getBinIteratorPtr() {
 }
 
 template<typename T>
-BinIteratorPtr<T> MapBasedBinCollectionImpl<T>::findBinsCloseToBin(BinPtr<T> pOtherBin, int distance) {
-	//TODO Thinking of more efficient algorithm than looping
+void MapBasedBinCollectionImpl<T>::findBinSetsShouldBeCombined(std::vector<BinPtrVector<T> >& binSets, bin_combination_prior_t prior_threshold) {
+	//Only handle 2 bins ?
+	//TODO Use more efficient algorithm than looping
 
-	BinPtrVector<T> resultBins;
+	binSets.clear();
 
-	for(typename BinBinaryPatternMap<T>::const_iterator bIter = m_binMap.begin(); bIter != m_binMap.end(); bIter++) {
-		BinPtr<T> pBin = bIter->second;
-		if(pBin->distance(*pOtherBin) <= distance) {
-			resultBins.push_back(pBin);
+	for(typename BinBinaryPatternMap<T>::const_iterator lIter = m_binMap.begin(); lIter != m_binMap.end(); lIter++) {
+		BinPtr<T> pBin1 = lIter->second;
+		for(typename BinBinaryPatternMap<T>::const_iterator rIter = m_binMap.begin(); rIter != m_binMap.end(); rIter++) {
+			BinPtr<T> pBin2 = rIter->second;
+			BinPtrVector<T> bins = {pBin1, pBin2};
+			if(calculateBinCombinationPriority(bins) < prior_threshold) {
+				binSets.push_back(bins);
+			}
 		}
 	}
-	BinIteratorPtr<T> pBinIter(new VectorBasedReadOnlyIteratorImpl<BinPtr<T> >(resultBins));
-
-	return pBinIter;
 }
 
+/*
+ * Protected methods follow, focusing how to calculate bin identifier (i.e. bin pattern) and how to use
+ * the identifiers to calculate the likelihood of bin combination
+ */
 template<typename T>
-void MapBasedBinCollectionImpl<T>::findBinSetsShouldBeCombined(std::vector<BinPtrVector<T> >& binSets) {
-	//TODO Implement
+bin_combination_prior_t MapBasedBinCollectionImpl<T>::calculateBinCombinationPriority(BinPtrVector<T> bins) {
+	//FIXME  Only handle 2 bins ?
+	BinPtr<T> pBin1 = bins[0];
+	BinPtr<T> pBin2 = bins[1];
+
+	int binPatternSize = pBin1->getPattern().size();
+	BinBinaryPattern pattern1 = pBin1->getPattern();
+	BinBinaryPattern pattern2 = pBin2->getPattern();
+
+	bin_combination_prior_t priority = binPatternSize;
+
+	for(unsigned int i = 0; i < binPatternSize; i++) {
+		if(pattern1[i] != pattern2[i]) {
+			priority--;
+		}
+	}
+	return priority;
 }
 
 template<typename T>

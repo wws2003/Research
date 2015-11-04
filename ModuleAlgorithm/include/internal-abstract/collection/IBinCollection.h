@@ -12,6 +12,8 @@
 #include "AlgoCommon.h"
 #include "AlgoInternal.h"
 
+typedef int bin_combination_prior_t;
+
 template<typename T>
 class IBinCollection {
 public:
@@ -38,12 +40,13 @@ public:
 
 	virtual IteratorPtr<BinPtr<T> > getBinIteratorPtr() = 0;
 
-	//The following method is normally used when the results are composed from 2 bins
-	//and bin distance is clear to user
-	virtual IteratorPtr<BinPtr<T> > findBinsCloseToBin(BinPtr<T> pMatrixBin, int distance) = 0;
-
 	//The following method is normally used when the results are composed from more than 2 bins
-	virtual void findBinSetsShouldBeCombined(std::vector<BinPtrVector<T> >& binSets) = 0;
+	virtual void findBinSetsShouldBeCombined(std::vector<BinPtrVector<T> >& binSets, bin_combination_prior_t prior_threshold) = 0;
+
+protected:
+	//Calculate the likelihood of bins combination to compose good result
+	//For convinience, the smaller the value the better
+	virtual bin_combination_prior_t calculateBinCombinationPriority(BinPtrVector<T> bins) = 0;
 };
 
 #endif /* IBINCOLLECTION_H_ */

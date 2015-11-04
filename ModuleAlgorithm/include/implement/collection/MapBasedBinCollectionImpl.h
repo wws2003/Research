@@ -53,12 +53,12 @@ public:
 	virtual BinIteratorPtr<T> getBinIteratorPtr();
 
 	//Override
-	virtual BinIteratorPtr<T> findBinsCloseToBin(BinPtr<T> pOtherBin, int distance);
-
-	//Override
-	virtual void findBinSetsShouldBeCombined(std::vector<BinPtrVector<T> >& binSets) ;
+	virtual void findBinSetsShouldBeCombined(std::vector<BinPtrVector<T> >& binSets, bin_combination_prior_t prior_threshold) ;
 
 protected:
+	//Override
+	virtual bin_combination_prior_t calculateBinCombinationPriority(BinPtrVector<T> bins);
+
 	virtual BinBinaryPattern calculateBinPattern(T element, int targetIndex);
 
 private:

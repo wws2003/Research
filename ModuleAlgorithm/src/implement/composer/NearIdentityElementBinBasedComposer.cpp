@@ -18,12 +18,10 @@
 #include <iostream>
 
 template<typename T>
-void findApprxByMerge2Bins(BinPtr<T> pBin1,
-		BinPtr<T> pBin2,
+void evaluateAproximationCandidate(T element,
 		T pQuery,
 		mreal_t filterEpsilon,
 		mreal_t epsilon,
-		CombinerPtr<T> pCombiner,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		CollectionPtr<T> pResultCollection,
 		ApprxResultBuffer<T>& apprxResultBuffer,
@@ -111,15 +109,13 @@ void NearIdentityElementBinBasedComposer<T>::generateApproximationsFromBins(T pQ
 		//Thinking of applying SA here
 
 		//TODO Don't fix theses values
-		int maxMergeDistance = m_config.m_maxMergedBinDistance;
+		bin_combination_prior_t maxMergeDistance = m_config.m_maxMergedBinDistance;
 
-		BinIteratorPtr<T> pBinIter = m_pBinCollection->getBinIteratorPtr();
-		pBinIter->toBegin();
+		std::vector<BinPtrVector<T> > combinableBinSets;
+		m_pBinCollection->findBinSetsShouldBeCombined(combinableBinSets, maxMergeDistance);
 
-		while(!pBinIter->isDone() && apprxResultBuffer.size() < maxResultNumber) {
-			BinPtr<T> pBin = pBinIter->getObj();
-			generateApproximationsPrefixedFromBins(pBin,
-					maxMergeDistance,
+		for(unsigned int i = 0; i < combinableBinSets.size() && apprxResultBuffer.size() < maxResultNumber; i++) {
+			generateApproximationsFromCombinableBins(combinableBinSets[i],
 					pQuery,
 					pDistanceCalculator,
 					epsilonForMergeCandidate,
@@ -127,8 +123,6 @@ void NearIdentityElementBinBasedComposer<T>::generateApproximationsFromBins(T pQ
 					pApprxTempCollection,
 					apprxResultBuffer,
 					maxResultNumber);
-
-			pBinIter->next();
 		}
 
 		std::cout << "Number of results so far " << apprxResultBuffer.size() << "\r\n";
@@ -149,8 +143,7 @@ void NearIdentityElementBinBasedComposer<T>::generateApproximationsFromBins(T pQ
 }
 
 template<typename T>
-void NearIdentityElementBinBasedComposer<T>::generateApproximationsPrefixedFromBins(BinPtr<T> pBin,
-		int maxBinDistance,
+void NearIdentityElementBinBasedComposer<T>::generateApproximationsFromCombinableBins(const BinPtrVector<T>& combinableBins,
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilonForMergeCandidate,
@@ -159,25 +152,68 @@ void NearIdentityElementBinBasedComposer<T>::generateApproximationsPrefixedFromB
 		ApprxResultBuffer<T>& apprxResultBuffer,
 		int maxResultsNumber) {
 
-	BinIteratorPtr<T> pMergableBinIter = m_pBinCollection->findBinsCloseToBin(pBin, maxBinDistance);
+	try {
+		getApproximationsFromCombinableBins(NullPtr,
+				combinableBins,
+				0,
+				pQuery,
+				pDistanceCalculator,
+				epsilonForMergeCandidate,
+				approximationEpsilon,
+				pApprxTempCollection,
+				apprxResultBuffer,
+				maxResultsNumber);
+	}
+	catch (int e) {
+	}
+}
 
-	while(!pMergableBinIter->isDone()) {
-		BinPtr<T> pMergableBin = pMergableBinIter->getObj();
-		findApprxByMerge2Bins(pBin,
-				pMergableBin,
+//This implementation is good for memory cost rather than run-time cost
+template<typename T>
+void NearIdentityElementBinBasedComposer<T>::getApproximationsFromCombinableBins(T element,
+		const BinPtrVector<T>& combinableBins,
+		int binCounter,
+		T pQuery,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilonForMergeCandidate,
+		mreal_t approximationEpsilon,
+		CollectionPtr<T> pApprxTempCollection,
+		ApprxResultBuffer<T>& apprxResultBuffer,
+		int maxResultsNumber) {
+
+	if(binCounter == combinableBins.size()) {
+		evaluateAproximationCandidate(element,
 				pQuery,
 				epsilonForMergeCandidate,
 				approximationEpsilon,
-				m_pCombiner,
 				pDistanceCalculator,
 				pApprxTempCollection,
 				apprxResultBuffer,
 				maxResultsNumber);
-
-		pMergableBinIter->next();
 	}
 
-	_destroy(pMergableBinIter);
+	BinPtr<T> currentBin = combinableBins[binCounter];
+	for(unsigned int i = 0; i < currentBin->getElements().size(); i++) {
+		T nextElementToCombine = currentBin->getElements()[i];
+		T nextCombinedElement = NullPtr;
+		if(binCounter == 0) {
+			nextCombinedElement = nextElementToCombine;
+		}
+		else {
+			m_pCombiner->combine(element, nextElementToCombine, nextCombinedElement);
+		}
+		//Recursive-call
+		getApproximationsFromCombinableBins(nextCombinedElement,
+				combinableBins,
+				binCounter + 1,
+				pQuery,
+				pDistanceCalculator,
+				epsilonForMergeCandidate,
+				approximationEpsilon,
+				pApprxTempCollection,
+				apprxResultBuffer,
+				maxResultsNumber);
+	}
 }
 
 template<typename T>
@@ -202,45 +238,30 @@ void NearIdentityElementBinBasedComposer<T>::distributeResultsToBins(IteratorPtr
 }
 
 template<typename T>
-void findApprxByMerge2Bins(BinPtr<T> pBin1,
-		BinPtr<T> pBin2,
+void evaluateAproximationCandidate(T element,
 		T pQuery,
 		mreal_t filterEpsilon,
 		mreal_t epsilon,
-		CombinerPtr<T> pCombiner,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		CollectionPtr<T> pResultCollection,
 		ApprxResultBuffer<T>& apprxResultBuffer,
 		int maxResultsNumber) {
 
-	unsigned int sizeBin1 = pBin1->getElements().size();
-	unsigned int sizeBin2 = pBin2->getElements().size();
+	mreal_t distance = pDistanceCalculator->distance(element, pQuery);
 
-	std::cout << "Number of combination to check:" << (sizeBin1 * sizeBin2) << "\r\n";
-	for(unsigned int i = 0; i < sizeBin1; i++) {
-		for(unsigned int j = 0; j < sizeBin2; j++) {
-
-			T pProduct1 = NullPtr;
-			pCombiner->combine(pBin1->getElements()[i],
-					pBin2->getElements()[j],
-					pProduct1);
-
-			if(pProduct1 != NullPtr) {
-				mreal_t distance = pDistanceCalculator->distance(pProduct1, pQuery);
-
-				if(distance <= filterEpsilon || (distance <= epsilon && apprxResultBuffer.size() < maxResultsNumber)) {
-					if(distance <= filterEpsilon) {
-						pResultCollection->addElement(pProduct1);
-					}
-					if(distance <= epsilon && apprxResultBuffer.size() < maxResultsNumber) {
-						apprxResultBuffer.push_back(pProduct1);
-					}
-				}
-				else {
-					_destroy(pProduct1);
-				}
-			}
+	if(distance <= filterEpsilon || (distance <= epsilon && apprxResultBuffer.size() < maxResultsNumber)) {
+		if(distance <= filterEpsilon) {
+			pResultCollection->addElement(element);
 		}
+		if(distance <= epsilon) {
+			apprxResultBuffer.push_back(element);
+		}
+		if(apprxResultBuffer.size() >= maxResultsNumber) {
+			throw (1);
+		}
+	}
+	else {
+		_destroy(element);
 	}
 }
 

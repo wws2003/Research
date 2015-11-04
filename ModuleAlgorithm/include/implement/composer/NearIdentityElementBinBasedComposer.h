@@ -48,8 +48,18 @@ private:
 			mreal_t epsilon,
 			ApprxResultBuffer<T>& apprxResultBuffer);
 
-	void generateApproximationsPrefixedFromBins(BinPtr<T> pBin,
-			int maxBinDistance,
+	void generateApproximationsFromCombinableBins(const BinPtrVector<T>&  combinableBins,
+			T pQuery,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilonForMergeCandidate,
+			mreal_t approximationEpsilon,
+			CollectionPtr<T> pApprxTempCollection,
+			ApprxResultBuffer<T>& apprxResultBuffer,
+			int maxResultsNumber);
+
+	void getApproximationsFromCombinableBins(T element,
+			const BinPtrVector<T>& combinableBins,
+			int binCounter,
 			T pQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilonForMergeCandidate,
