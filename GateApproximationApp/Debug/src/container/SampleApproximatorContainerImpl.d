@@ -38,6 +38,7 @@ src/container/SampleApproximatorContainerImpl.d: \
  ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleAlgorithm/include/implement/bin/GBin.hpp \
  ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
@@ -284,6 +285,8 @@ src/container/SampleApproximatorContainerImpl.d: \
 ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
 
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleAlgorithm/include/implement/bin/GBin.hpp:
 
 ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h:
 

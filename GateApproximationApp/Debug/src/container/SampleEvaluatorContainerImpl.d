@@ -217,6 +217,7 @@ src/container/SampleEvaluatorContainerImpl.d: \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
  ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
+ ../../ModuleAlgorithm/include/implement/bin/GBin.hpp \
  ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
  ../src/factory/ContainerResourceFactory.h \
@@ -657,6 +658,8 @@ src/container/SampleEvaluatorContainerImpl.d: \
 ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h:
 
 ../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
+
+../../ModuleAlgorithm/include/implement/bin/GBin.hpp:
 
 ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h:
 
