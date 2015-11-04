@@ -5,7 +5,7 @@ rm -rf mpfr
 rm -rf gmp
 rm -rf mpfrc++
 
-rm -rf gmp-6-0.0 mpfr-3.1.3 mpfrc++-3.6.2 m4-1.4.1
+rm -rf gmp-6.0.0 mpfr-3.1.3 mpfrc++-3.6.2 m4-1.4.1
 
 tar -xvf gmp-6.0.0a.tar.lz
 tar -xvf mpfr-3.1.3.tar.xz
