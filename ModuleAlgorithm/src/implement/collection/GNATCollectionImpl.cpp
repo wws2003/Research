@@ -162,50 +162,55 @@ IteratorPtr<T> GNATCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalc
 	getCandidateSubCollections(query, pDistanceCalculator, epsilon, subCollectionsCheckMap);
 
 	for(unsigned int i = 0; i < nbSubCollections; i++) {
-
-#ifndef DEBUGGING
 		if(subCollectionsCheckMap[i] == 0) {
 			continue;
 		}
-#endif
 		CollectionPtr<T> pCandidateSubCollection = m_subCollections[i];
 		IteratorPtr<T> pSubResultIter = pCandidateSubCollection->findNearestNeighbour(query, pDistanceCalculator, epsilon);
-
-#ifdef DEBUGGING
-		if(subCollectionsCheckMap[i] == 0) {
-			assert(pSubResultIter->isDone());
-		}
-#endif
-
-#ifdef DEBUGGING
-		int nbResultFromSubCollection = 0;
-#endif
 
 		while(!pSubResultIter->isDone()) {
 			results.push_back(pSubResultIter->getObj());
 			pSubResultIter->next();
-#ifdef DEBUGGING
-			nbResultFromSubCollection++;
-#endif
 		}
-
-#ifdef DEBUGGING
-		int nbResultFromSubCollectionIter = 0;
-		IteratorPtr<T> pSubCollectionIter = pCandidateSubCollection->getIteratorPtr();
-		while(!pSubCollectionIter->isDone()) {
-			if(pDistanceCalculator->distance(pSubCollectionIter->getObj(), query) <= epsilon) {
-				nbResultFromSubCollectionIter++;
-			}
-			pSubCollectionIter->next();
-		}
-		assert(nbResultFromSubCollectionIter == nbResultFromSubCollection);
-		_destroy(pSubCollectionIter);
-#endif
 		_destroy(pSubResultIter);
 		continue;
 	}
+
+	//20151118 Filter results to eliminate duplicated results
+	filterResults(results, pDistanceCalculator);
+
 	return IteratorPtr<T>(new VectorBasedReadOnlyIteratorImpl<T>(results));
 }
+
+template<typename T>
+void GNATCollectionImpl<T>::filterResults(std::vector<T>& results, DistanceCalculatorPtr<T> pDistanceCalculator) const {
+	std::vector<T> resultsBuffer;
+	const mreal_t distanceToConsiderAsOne = 1e-7;
+
+	for(typename std::vector<T>::iterator rIter = results.begin(); rIter != results.end();) {
+		T result = *rIter;
+
+		//Check if the result is actually a duplicate of some other
+		bool duplicated = false;
+		for(unsigned int j = 0; j < resultsBuffer.size() && !duplicated; j++) {
+			if(pDistanceCalculator->distance(result, resultsBuffer[j]) <= distanceToConsiderAsOne) {
+				duplicated = true;
+			}
+		}
+
+		//Push to result buffer the unique result
+		if(!duplicated) {
+			//TODO Think of clone result to avoid problem with memory release later
+			resultsBuffer.push_back(result);
+		}
+
+		rIter = results.erase(rIter);
+	}
+
+	//Push back unique results
+	results.insert(results.end(), resultsBuffer.begin(), results.end());
+}
+
 
 template<typename T>
 void GNATCollectionImpl<T>::recallElements() {

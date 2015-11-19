@@ -39,6 +39,14 @@ inline mreal_t abs(const mreal_t& v) {
 #endif
 }
 
+inline mreal_t sqrt(const mreal_t& v) {
+#if MPFR_REAL
+	return mpfr::sqrt(v);
+#else
+	return std::sqrt(v);
+#endif
+}
+
 inline double toDouble(const mreal_t& v) {
 #if MPFR_REAL
 	return v.toDouble();
@@ -51,6 +59,7 @@ mreal_t norm(const ComplexVal& v);
 
 mreal_t cos(const mreal_t& angle);
 mreal_t sin(const mreal_t& angle);
+mreal_t atan2(const mreal_t& y, const mreal_t& x);
 
 }
 // namespace mreal

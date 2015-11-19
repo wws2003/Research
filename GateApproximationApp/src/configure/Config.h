@@ -60,4 +60,12 @@ typedef struct _NearIdentityApproximatorConfig {
 NearIdentityApproximatorConfig;
 
 
+typedef struct _SKApproximatorConfig {
+	mreal_t m_initialEpsilon;
+	int m_recursiveLevels;
+	int m_nbCandidates;
+}
+SKApproximatorConfig;
+
+
 #endif /* CONFIG_H_ */

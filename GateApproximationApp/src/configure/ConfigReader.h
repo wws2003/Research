@@ -17,11 +17,17 @@ public:
 	ConfigReader();
 	virtual ~ConfigReader();
 
+	virtual void readCollectionConfig(std::string configFile, CollectionConfig* pCollectionConfig);
+
 	virtual void readCollectionAndEvaluatorConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
 
-	virtual void readApproximatorConfig(std::string configFile, NearIdentityApproximatorConfig* pApproximatorConfig);
+	virtual void readNearIdentityApproximatorConfig(std::string configFile, NearIdentityApproximatorConfig* pApproximatorConfig);
+
+	virtual void readSKApproximatorConfig(std::string configFile, SKApproximatorConfig* pApproximatorConfig);
 
 	virtual void readTargetsConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
+
+	virtual void readEvaluatorConfigFromTargets(std::string configFile, EvaluatorConfig* pEvaluatorConfig);
 
 private:
 	void initLibrarySetNameMap();

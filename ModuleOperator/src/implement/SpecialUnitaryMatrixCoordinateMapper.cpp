@@ -6,6 +6,7 @@
  */
 
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
+#include "Coordinate.hpp"
 
 #define gt(x,y,eps) (x - y > eps)
 #define apprx(x,y,eps) (mreal::abs(x-y) < eps)
@@ -31,6 +32,32 @@ void SpecialUnitaryMatrixCoordinateMapper::calulateElementCoordinate(MatrixPtr p
 	m_pHermitianMatrixCoordinateCalculator->calulateElementCoordinate(pTracelessHermitian, prMatrixCoordinate);
 
 	_destroy(pTracelessHermitian);
+}
+
+void SpecialUnitaryMatrixCoordinateMapper::calculateElementFromCoordinate(MatrixRealCoordinatePtr pCoordinate) const {
+	real_coordinate_t matrixCoordinate = pCoordinate->getCoordinates();
+	int nbAxis = matrixCoordinate.size();
+
+	ComplexVector coordinateVector;
+	for(int i = 0; i < nbAxis; i++) {
+		coordinateVector.push_back(matrixCoordinate[i]);
+	}
+
+	MatrixPtrVector hermitianBasis;
+	int dimension = std::sqrt(nbAxis + 1.1);
+	m_pMatrixOperator->getTracelessHermitianMatricesBasis(dimension, hermitianBasis);
+
+	MatrixPtr pH = NullPtr;
+	m_pMatrixOperator->sumProduct(hermitianBasis, coordinateVector, pH);
+
+	MatrixPtr pU = NullPtr;
+	MatrixPtr pHi = NullPtr;
+	m_pMatrixOperator->multiplyScalar(pH, ComplexVal(0.0,1.0), pHi);
+	m_pMatrixOperator->exponential(pHi, pU);
+	_destroy(pHi);
+	_destroy(pH);
+
+	pCoordinate->setElement(pU);
 }
 
 void SpecialUnitaryMatrixCoordinateMapper::calculateTracelessHermitianFromSpecialUnitary(MatrixPtr pSpecialUnitaryMatrix, MatrixPtrRef prTracelessHermitianMatrix) const {

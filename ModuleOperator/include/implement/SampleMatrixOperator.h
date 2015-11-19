@@ -10,6 +10,7 @@
 
 #include "IMatrixOperator.h"
 #include "eigen3/Eigen/Dense"
+#include <map>
 
 typedef Eigen::Matrix<ComplexVal, Eigen::Dynamic, Eigen::Dynamic>  MatrixXcmp;
 
@@ -36,6 +37,8 @@ public:
 	virtual void log(MatrixPtr pm, MatrixPtrRef prLog);
 	virtual void eig(MatrixPtr pm, ComplexVectorRef ppEigVals, MatrixPtrRef ppEigVects);
 
+	void sumProduct(const MatrixPtrVector& matrixVector, const ComplexVector& scalaVector, MatrixPtrRef pSum);
+
 	void unitaryDediagonalize(MatrixPtr pU, const ComplexVectorRef diag, MatrixPtrRef prRoot);
 
 	void specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef prSU);
@@ -50,6 +53,9 @@ private:
 	void fromEigenMatrix(MatrixXcmp& eigenMatrix, int coloumn, ComplexVectorRef rComplexVector);
 
 	MatrixFactoryPtr m_pMatrixFactory;
+
+	typedef std::map<int, MatrixPtrVector> HermitianBasisMap;
+	HermitianBasisMap m_hermitianBasisMap;
 };
 
 

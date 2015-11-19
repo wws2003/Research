@@ -65,4 +65,10 @@ class PersistableGNATCollectionImpl;
 template<typename T>
 using PersistableGNATCollectionImplPtr = PersistableGNATCollectionImpl<T>*;
 
+template<typename T>
+class IElementSetLog;
+
+template<typename T>
+using ElementSetLogPtr = IElementSetLog<T>*;
+
 #endif /* ALGOINTERNAL_H_ */

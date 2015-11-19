@@ -25,6 +25,8 @@ public:
 
 	E getElement(){return m_element;}
 
+	inline void setElement(E element){m_element = element;};
+
 private:
 	std::vector<Field> m_coordinates;
 	E m_element;

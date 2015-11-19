@@ -167,6 +167,25 @@ void SampleMatrixOperator::log(MatrixPtr pm, MatrixPtrRef prLog) {
 	prLog = fromEigenMatrix(mpLogMat);
 }
 
+void SampleMatrixOperator::sumProduct(const MatrixPtrVector& matrixVector, const ComplexVector& scalaVector, MatrixPtrRef pSum) {
+	int nbRows, nbColumns;
+	matrixVector[0]->getSize(nbRows, nbColumns);
+
+	MatrixPtr pH = m_pMatrixFactory->getMatrixFromValues(nbRows, nbColumns, NULL, ROW_SPLICE, "");
+
+	for(unsigned int i = 0; i < matrixVector.size(); i++) {
+		MatrixPtr pPartialSum = NullPtr;
+		multiplyScalar(matrixVector[i], scalaVector[i], pPartialSum);
+		MatrixPtr pTmpSum = NullPtr;
+		add(pH, pPartialSum, pTmpSum);
+		_destroy(pPartialSum);
+		_destroy(pH);
+		pH = pTmpSum;
+	}
+
+	pSum = pH;
+}
+
 void SampleMatrixOperator::eig(MatrixPtr pm, ComplexVectorRef rEigVals, MatrixPtrRef prEigVects) {
 	MatrixXcmp eigenMat;
 	toEigenMatrix(pm, eigenMat);
@@ -220,8 +239,14 @@ void SampleMatrixOperator::specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef 
 
 void SampleMatrixOperator::getTracelessHermitianMatricesBasis(int dimension, MatrixPtrVector& pBasis) {
 	//Ref. http://mathworld.wolfram.com/GeneralizedGell-MannMatrix.html
-
 	pBasis.clear();
+
+	//Firstly try to find in cache
+	if(m_hermitianBasisMap.find(dimension) != m_hermitianBasisMap.end()) {
+		MatrixPtrVector hermitianBasis = m_hermitianBasisMap[dimension];
+		pBasis.insert(pBasis.end(), hermitianBasis.begin(), hermitianBasis.end());
+		return;
+	}
 
 	ComplexValArray pBuffer = new ComplexVal[dimension * dimension];
 	std::fill(pBuffer, pBuffer + dimension * dimension, ComplexVal(0.0, 0.0));
@@ -280,6 +305,7 @@ void SampleMatrixOperator::getTracelessHermitianMatricesBasis(int dimension, Mat
 		//Restore buffer
 		std::fill(pBuffer, pBuffer + dimension * dimension, ComplexVal(0.0, 0.0));
 	}
+	m_hermitianBasisMap[dimension] = pBasis;
 
 	delete[] pBuffer;
 }

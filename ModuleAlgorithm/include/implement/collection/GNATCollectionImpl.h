@@ -38,23 +38,22 @@ public:
 	GNATCollectionImpl();
 	virtual ~GNATCollectionImpl();
 
-	//Add one element to the collection
+	//Override
 	virtual void addElement(T pElement) ;
 
-	//Clean the collection
+	//Override
 	virtual void clear() ;
 
-	//Deeply clean the collection, i.e. release elements pointer (must be sure elements are pointer type!).
+	//Override
 	virtual void purge();
 
-	//Return iterator through a set of element reflecting the changes in the collection
+	//Override
 	virtual IteratorPtr<T> getIteratorPtr() ;
 
-	//Return iterator through a fixed set of elements, regardless the collection
-	//should be modified later
+	//Override
 	virtual IteratorPtr<T> getReadonlyIteratorPtr() ;
 
-	//Get collection size
+	//Override
 	virtual CollectionSize_t size() const ;
 
 	//(Re)Build the search data structure given distance calculator
@@ -73,6 +72,8 @@ protected:
 	RangeMap m_splitPointRanges;
 
 private:
+
+	void filterResults(std::vector<T>& results, DistanceCalculatorPtr<T> pDistanceCalculator) const;
 
 	/*--------------For constructing GNAT data structure--------------*/
 	//Re-call the points in sub collection into unstructured buffer to prepare for restructuring

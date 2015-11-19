@@ -19,6 +19,32 @@ ConfigReader::ConfigReader() {
 ConfigReader::~ConfigReader() {
 }
 
+void ConfigReader::readCollectionConfig(std::string configFile, CollectionConfig* pCollectionConfig) {
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		char prefix[128];
+		char librarySetName[128];
+		std::string line;
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%[^\n]", prefix, librarySetName);
+		std::string librarySetNameStr(librarySetName);
+		pCollectionConfig->m_librarySet = (LibrarySet)m_librarySetNameMap[librarySetNameStr];
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pCollectionConfig->m_maxSequenceLength));
+
+		int nbQubits;
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &nbQubits);
+		pCollectionConfig->m_nbQubits = nbQubits;
+
+	}
+	else {
+		throw std::logic_error("Can not read config file!");
+	}
+}
+
 void ConfigReader::readCollectionAndEvaluatorConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig) {
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
@@ -50,7 +76,7 @@ void ConfigReader::readCollectionAndEvaluatorConfig(std::string configFile, Coll
 	}
 }
 
-void ConfigReader::readApproximatorConfig(std::string configFile, NearIdentityApproximatorConfig* pApproximatorConfig) {
+void ConfigReader::readNearIdentityApproximatorConfig(std::string configFile, NearIdentityApproximatorConfig* pApproximatorConfig) {
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
@@ -85,6 +111,29 @@ void ConfigReader::readApproximatorConfig(std::string configFile, NearIdentityAp
 	}
 }
 
+void ConfigReader::readSKApproximatorConfig(std::string configFile, SKApproximatorConfig* pApproximatorConfig) {
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		char prefix[128];
+		std::string line;
+
+		std::getline(inputStream, line);
+		double initialEpsilon;
+		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
+		pApproximatorConfig->m_initialEpsilon = (mreal_t)initialEpsilon;
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_recursiveLevels));
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_nbCandidates));
+	}
+	else {
+		throw std::logic_error("Can not read config file for approximator!");
+	}
+}
+
+
 void ConfigReader::readTargetsConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig) {
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
@@ -115,6 +164,38 @@ void ConfigReader::readTargetsConfig(std::string configFile, CollectionConfig* p
 
 		//Since library gates set are not required in the config file, set as unspecified
 		pCollectionConfig->m_librarySet = L_UNSPECIFIED;
+	}
+	else {
+		throw std::logic_error("Can not read config file for targets!");
+	}
+}
+
+void ConfigReader::readEvaluatorConfigFromTargets(std::string configFile, EvaluatorConfig* pEvaluatorConfig) {
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		char prefix[128];
+		std::string line;
+
+		int nbQubits;
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &nbQubits);
+
+		int nbTargets;
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &nbTargets);
+
+		for(int i = 0; i < nbTargets; i++) {
+			RotationConfig rotationConfig;
+			std::getline(inputStream, line);
+			readRotationConfigLine(line, rotationConfig);
+			pEvaluatorConfig->m_rotationTargets.push_back(rotationConfig);
+		}
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%lf", prefix, &(pEvaluatorConfig->m_collectionEpsilon));
+
+		//Set approximation epsilon to collection epsilon to avoid empty field
+		pEvaluatorConfig->m_approximatorEpsilon = pEvaluatorConfig->m_collectionEpsilon;
 	}
 	else {
 		throw std::logic_error("Can not read config file for targets!");

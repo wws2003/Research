@@ -56,6 +56,8 @@
 
 #define DEBUGGING 1
 
+#define EXPERIMENT_BINNING 1
+
 const std::string FullTestSuite::GNAT_COLLECTION_PERSIST_FILE = "gnat2.dat";
 
 //#define IGNORE_PHASE 1
@@ -400,6 +402,7 @@ void FullTestSuite::testInverseCancelingSearchSpaceConstructor() {
 void FullTestSuite::testSampleMatrixBinCollection() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
+#if !EXPERIMENT_BINNING
 	BinPattern binPattern1 = "0011";
 	MatrixBinPtr pMatrixBin1 = new MatrixBin(binPattern1);
 
@@ -452,6 +455,7 @@ void FullTestSuite::testSampleMatrixBinCollection() {
 	delete pMatrixBin1;
 
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
+#endif
 }
 
 void FullTestSuite::testCalculateCoordinatesInSearchSpace() {

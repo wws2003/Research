@@ -34,6 +34,14 @@ mreal_t sin(const mreal_t& angle) {
 #endif
 }
 
+mreal_t atan2(const mreal_t& y, const mreal_t& x) {
+#if MPFR_REAL
+	return mpfr::atan2(y, x);
+#else
+	return mpfr::atan2(y, x);
+#endif
+}
+
 }
 
 

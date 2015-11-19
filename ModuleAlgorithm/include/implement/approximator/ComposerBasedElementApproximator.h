@@ -29,14 +29,19 @@ public:
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon);
 
-protected:
-	virtual IteratorPtr<T> getApproximateElementsForPartialQuery(CollectionPtr<T> pCoreCollection,
+private:
+	void decomposeQueryIntoBuildingBlocksBuckets(CollectionPtr<T> pCoreCollection,
+			T pQuery,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			BuildingBlockBuckets<T>& buildingBlockBuckets);
+
+	IteratorPtr<T> getApproximateElementsForPartialQuery(CollectionPtr<T> pCoreCollection,
 			T pPartialQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
-			mreal_t epsilon,
-			int level = 0);
+			mreal_t epsilon);
 
-private:
+	void releaseBuildingBlocksBuckets(BuildingBlockBuckets<T>& buildingBlockBuckets);
+
 	DecomposerPtr<T> m_pQueryDecomposer;
 	int m_nbPartialQueries;
 	ComposerPtr<T> m_pBuildingBlockComposer;

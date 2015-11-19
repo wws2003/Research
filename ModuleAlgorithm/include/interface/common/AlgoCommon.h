@@ -42,7 +42,11 @@ template<typename T>class IDecomposer;
 template<typename T>
 using DecomposerPtr = IDecomposer<T>*;
 
-template<typename T> class IPersistableCollection;
+template<typename T>
+class IPersistableCollection;
+
+template<typename T>
+using PersistableCollectionPtr = IPersistableCollection<T>*;
 
 typedef ICollection<MatrixRealCoordinatePtr> MatrixRealCoordinateCollection;
 typedef ICollection<GateRealCoordinatePtr> GateRealCoordinateCollection;

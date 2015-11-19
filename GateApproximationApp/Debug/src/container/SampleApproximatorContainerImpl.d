@@ -30,6 +30,7 @@ src/container/SampleApproximatorContainerImpl.d: \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
  ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
+ ../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h \
  ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedGateApproximator.h \
  ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedElementApproximator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
@@ -269,6 +270,8 @@ src/container/SampleApproximatorContainerImpl.d: \
 ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h:
+
+../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h:
 
 ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedGateApproximator.h:
 

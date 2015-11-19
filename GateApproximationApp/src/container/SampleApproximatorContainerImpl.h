@@ -18,6 +18,7 @@
 #include "ApplicationCommon.h"
 #include "IResourceContainer.h"
 #include "IComposer.h"
+#include "IElementSetLog.h"
 
 class SampleApproximatorContainerImpl: public IApproximatorContainer {
 public:
@@ -49,8 +50,8 @@ private:
 	CombinerPtr<GatePtr> m_pGateInBinCombiner;
 	BinCollectionPtr<GatePtr> m_pBinCollection;
 
-	ComposerPtr<GatePtr> m_pGateComposer;
-	DecomposerPtr<GatePtr> m_pGateDecomposer;
+	GateComposerPtr m_pGateComposer;
+	GateDecomposerPtr m_pGateDecomposer;
 
 	NearIdentityApproximatorConfig m_approximatorConfig;
 	CollectionConfig m_coreCollectionConfig;

@@ -10,7 +10,9 @@ src/implement/SpecialUnitaryMatrixCoordinateMapper.d: \
  ../../SharedThirdParties/gmp/include/gmp.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../include/interface/abstract/ICoordinateCalculator.h \
- ../include/interface/common/OperatorCommon.h
+ ../include/interface/common/OperatorCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h
 
 ../include/implement/SpecialUnitaryMatrixCoordinateMapper.h:
 
@@ -33,3 +35,7 @@ src/implement/SpecialUnitaryMatrixCoordinateMapper.d: \
 ../include/interface/abstract/ICoordinateCalculator.h:
 
 ../include/interface/common/OperatorCommon.h:
+
+../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
+
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:

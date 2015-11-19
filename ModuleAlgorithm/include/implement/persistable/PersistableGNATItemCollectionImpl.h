@@ -78,7 +78,7 @@ public:
 	}
 
 private:
-			PersistableGNATCollectionImpl<T>* m_pInternal;
+	PersistableGNATCollectionImpl<T>* m_pInternal;
 };
 
 

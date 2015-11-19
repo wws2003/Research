@@ -21,6 +21,8 @@ public:
 	 * and store the result to prCoordinate
 	 */
 	virtual void calulateElementCoordinate(E element, CoordinatePtrRef<E, Field> prCoordinate) const = 0;
+
+	virtual void calculateElementFromCoordinate(CoordinatePtr<E, Field> prCoordinate) const = 0;
 };
 
 

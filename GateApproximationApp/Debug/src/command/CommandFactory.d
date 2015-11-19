@@ -46,13 +46,15 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h \
+ ../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h \
  ../src/command/EvaluateCollectionCommand.h \
  ../src/command/AbstractChainCommandExecutor.h \
  ../src/command/EvaluateApproximatorCommand.h \
  ../src/command/GenerateAndStoreApproximationsCommand.h \
  ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
- ../src/command/EvaluatePersistedCollectionForTargetsCommand.h
+ ../src/command/EvaluatePersistedCollectionForTargetsCommand.h \
+ ../src/container/SKApproximatorContainerImpl.h
 
 ../src/command/CommandFactory.h:
 
@@ -154,6 +156,8 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h:
 
+../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h:
+
 ../src/command/EvaluateCollectionCommand.h:
 
 ../src/command/AbstractChainCommandExecutor.h:
@@ -167,3 +171,5 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 ../../ModuleIO/include/interface/abstract/IWriter.h:
 
 ../src/command/EvaluatePersistedCollectionForTargetsCommand.h:
+
+../src/container/SKApproximatorContainerImpl.h:

@@ -26,16 +26,31 @@ public:
 private:
 	AbstractCommandPtr getCollectionEvaluationCommandForIdentity(std::string configFileName);
 	AbstractCommandPtr getApproximatorEvaluationCommandForIdentity(std::string evaluationConfigFile, std::string approximatorConfigFileName);
-	AbstractCommandPtr getGenerateAndStoreApproximationsForIdentity(std::string evaluationConfigFile, std::string approximatorConfigFileName, std::string storeFileName);
-	AbstractCommandPtr getPersistedCollectionEvaluationForTargets(std::string storeFileName, std::string targetConfigFile);
+	AbstractCommandPtr getGenerateAndStoreApproximationsCommandForIdentity(std::string evaluationConfigFile, std::string approximatorConfigFileName, std::string storeFileName);
+	AbstractCommandPtr getPersistedCollectionEvaluationCommandForTargets(std::string storeFileName, std::string targetConfigFile);
+	AbstractCommandPtr getSKApproximatorEvaluationCommandForTargets(std::string configFile, std::string skApprxConfigFile, std::string targetConfigFile);
+
+	void readCollectionConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig);
 
 	void readCollectionAndEvaluatorConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
+
 	void readApproximatorConfig(ConfigReader configReader, std::string configFile, const CollectionConfig&  collectionConfig, NearIdentityApproximatorConfig* pApproximatorConfig);
+
 	void readTargetConfig(ConfigReader configReader, std::string targetConfigFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
 
+	void readSKConfig(ConfigReader configReader,
+			std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
+			std::string skApprxConfigFile, SKApproximatorConfig* pApproximatorConfig,
+			std::string targetConfigFile, EvaluatorConfig* pEvaluatorConfig);
+
+
 	void resetCollectionContainer(const CollectionConfig& collectionConfig);
+
 	void resetEvaluationContainer(const EvaluatorConfig& evaluatorConfig, const CollectionConfig& collectionConfig);
+
 	void resetApproximatorContainer(const NearIdentityApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig);
+
+	void resetSKApproximatorContainer(const SKApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig);
 
 	CollectionContainerPtr m_pCollectionContainer;
 	ApproximatorContainerPtr m_pApproximatorContainer;
