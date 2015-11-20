@@ -47,11 +47,12 @@ private:
 
 	void composeCandidate(const std::vector<T>& partialElements, T& result);
 
-	void output(const std::vector<T>& partialElements, T pQuery);
-
 	ElementSetLogPtr<T> m_pElementSetLog;
 	CombinerPtr<T> m_pCombiner;
 	int m_maxResultsNumber;
+
+	typedef unsigned long long combination_counter_t;
+	combination_counter_t m_combination_counter;
 
 	int m_logFolderCounter;
 };

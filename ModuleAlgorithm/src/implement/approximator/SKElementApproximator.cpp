@@ -15,11 +15,18 @@ SKElementApproximator<T>::SKElementApproximator(DecomposerPtr<T> pQueryDecompose
 		mreal_t initialEpsilon,
 		int nbCandidates,
 		int recursiveLevel) {
+
 	m_pBuildingBlockComposer = pBuildingBlockComposer;
 	m_pQueryDecomposer = pQueryDecomposer;
 	m_nbCandidates = nbCandidates;
 	m_initialEpsilon = initialEpsilon;
 	m_recursiveLevel = recursiveLevel;
+	initEpsilonForLevels();
+}
+
+template<typename T>
+SKElementApproximator<T>::~SKElementApproximator() {
+	delete[] m_epsilonForLevels;
 }
 
 template<typename T>
@@ -27,10 +34,11 @@ IteratorPtr<T> SKElementApproximator<T>::getApproximateElements(CollectionPtr<T>
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon) {
+	resetEpsilonForLevels(epsilon);
+
 	return skApproximate(pCoreCollection,
 			pQuery,
 			pDistanceCalculator,
-			epsilon,
 			m_recursiveLevel);
 }
 
@@ -38,23 +46,24 @@ template<typename T>
 IteratorPtr<T> SKElementApproximator<T>::skApproximate(CollectionPtr<T> pCoreCollection,
 		T query,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
-		mreal_t epsilon,
 		int level) {
 
-	if(level == 0) {
-		return pCoreCollection->findNearestNeighbour(query, pDistanceCalculator, m_initialEpsilon);
-	}
+	mreal_t epsilonForCurrentLevel = m_epsilonForLevels[level];
 
-	mreal_t epsilonIncreseFactor = 4.0;
-	mreal_t lowerLevelEpsilon = epsilon * epsilonIncreseFactor;
+	if(level == 0) {
+		return pCoreCollection->findNearestNeighbour(query,
+				pDistanceCalculator,
+				epsilonForCurrentLevel);
+	}
 
 	IteratorPtr<T> pRawApprxIter = skApproximate(pCoreCollection,
 			query,
 			pDistanceCalculator,
-			lowerLevelEpsilon,
 			level - 1);
 
 	IteratorVector<T> apprxCandidatesIters;
+	int nbc = m_nbCandidates;
+
 	while(pRawApprxIter != NullPtr && !pRawApprxIter->isDone()) {
 		T rawApprx = pRawApprxIter->getObj();
 
@@ -62,21 +71,22 @@ IteratorPtr<T> SKElementApproximator<T>::skApproximate(CollectionPtr<T> pCoreCol
 				pCoreCollection,
 				query,
 				pDistanceCalculator,
-				lowerLevelEpsilon,
+				epsilonForCurrentLevel,
 				level);
 
 		apprxCandidatesIters.push_back(pCandidatesIter);
 		pRawApprxIter->next();
 
-		//Break to test
-		if(level == 1) {
+		//FIXME Break to test
+		if(--nbc <= 0 || (pCandidatesIter != NullPtr && !pCandidatesIter->isDone())) {
 			break;
 		}
 	}
+
 	IteratorPtr<T> pApprxIter = filterCandidates(apprxCandidatesIters,
 			query,
 			pDistanceCalculator,
-			epsilon);
+			epsilonForCurrentLevel);
 
 	releaseIterators(apprxCandidatesIters);
 	_destroy(pRawApprxIter);
@@ -106,7 +116,6 @@ IteratorPtr<T> SKElementApproximator<T>::getCandidatesFromRawApprx(T apprx,
 	addBuildingBlocksBucketsForResidual(residual,
 			pCoreCollection,
 			pDistanceCalculator,
-			epsilon,
 			buildingBlocksBuckets,
 			level);
 
@@ -162,10 +171,29 @@ void SKElementApproximator<T>::calculateResidual(T apprx,
 }
 
 template<typename T>
+void SKElementApproximator<T>::initEpsilonForLevels() {
+	int nbEpsilonForLevels = m_recursiveLevel + 1;
+	m_epsilonForLevels = new mreal_t[nbEpsilonForLevels];
+	for(int i = 0; i < nbEpsilonForLevels; i++) {
+		m_epsilonForLevels[i] = m_initialEpsilon;
+	}
+}
+
+template<typename T>
+void SKElementApproximator<T>::resetEpsilonForLevels(mreal_t epsilon) {
+	//TODO Update lower-level epsilons properly
+	m_epsilonForLevels[m_recursiveLevel] = epsilon;
+	for(int j = m_recursiveLevel - 1; j >= 0; j--) {
+		m_epsilonForLevels[j] = m_epsilonForLevels[j + 1] / 0.9;
+	}
+	//Temporaly fix level zero epsilon
+	m_epsilonForLevels[0] = m_initialEpsilon;
+}
+
+template<typename T>
 void SKElementApproximator<T>::addBuildingBlocksBucketsForResidual(T residual,
 		CollectionPtr<T> pCoreCollection,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
-		mreal_t epsilon,
 		BuildingBlockBuckets<T>& buildingBlockBuckets,
 		int level) {
 
@@ -176,7 +204,6 @@ void SKElementApproximator<T>::addBuildingBlocksBucketsForResidual(T residual,
 		IteratorPtr<T> pPartialApprx = skApproximate(pCoreCollection,
 				residualPartitions[i],
 				pDistanceCalculator,
-				epsilon,
 				level - 1);
 		buildingBlockBuckets.push_back(pPartialApprx);
 	}

@@ -9,17 +9,16 @@
 #define IELEMENTSETLOG_H_
 
 #include "AlgoInternal.h"
+#include "IIterator.h"
 
 template<typename T>
 class IElementSetLog {
 public:
 	virtual ~IElementSetLog(){};
 
-	virtual void reset(int nbSubSet) = 0;
+	virtual void saveElementSets(std::vector<IteratorPtr<T> > elementSets) = 0;
 
-	virtual void setQuery(T query) = 0;
-
-	virtual void addElementSet(const std::vector<T>& partialElementsBuffer) = 0;
+	virtual void saveQuery(T query) = 0;
 
 	virtual void flush(std::string logFolderName) = 0;
 

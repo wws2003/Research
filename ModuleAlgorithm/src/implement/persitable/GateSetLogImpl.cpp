@@ -16,25 +16,28 @@ const std::string GateSetLogImpl::NEW_LINE = "\n";
 const int GateSetLogImpl::OUT_PRECESION = 6;
 
 GateSetLogImpl::GateSetLogImpl() {
-
-}
-
-void GateSetLogImpl::reset(int nbSubSet) {
-	m_elementRecordSet.clear();
-	for(int i = 0; i < nbSubSet; i++) {
-		m_elementRecordSet.push_back(Record());
-	}
-	m_queryRecord.clear();
 	m_queryRecord.push_back(NullPtr);
 }
 
-void GateSetLogImpl::setQuery(GatePtr pQuery) {
+void GateSetLogImpl::saveQuery(GatePtr pQuery) {
 	m_queryRecord[0] = pQuery;
 }
 
-void GateSetLogImpl::addElementSet(const std::vector<GatePtr>& partialElementsBuffer) {
-	for(unsigned int i = 0; i < partialElementsBuffer.size(); i++) {
-		m_elementRecordSet[i].push_back(partialElementsBuffer[i]);
+void GateSetLogImpl::saveElementSets(std::vector<IteratorPtr<GatePtr> > elementSets) {
+	m_elementRecordSet.clear();
+	for(unsigned int i = 0; i < elementSets.size(); i++) {
+		Record record;
+		IteratorPtr<GatePtr> pRecordIter = elementSets[i];
+
+		if(pRecordIter != NullPtr) {
+			while(!pRecordIter->isDone()) {
+				record.push_back(pRecordIter->getObj());
+				pRecordIter->next();
+			}
+			pRecordIter->toBegin();//Re-wind iterator for future purpose
+		}
+
+		m_elementRecordSet.push_back(record);
 	}
 }
 
@@ -67,6 +70,7 @@ std::string GateSetLogImpl::getRecordFileName(std::string logFolderName, int rec
 	return ss.str();
 }
 
+
 std::string GateSetLogImpl::getQueryRecordFileName(std::string logFolderName) {
 	return logFolderName + "/" + "query.txt";
 }
@@ -82,6 +86,7 @@ void GateSetLogImpl::flushRecord(const Record& record, std::string fileName) {
 				flushGateMatrixSize(pGate->getMatrix(), fs);
 				sizeFlushed = true;
 			}
+			flushGateLabel(pGate, fs);
 			flushGateMatrixValues(pGate->getMatrix(), fs);
 		}
 	}
@@ -91,6 +96,20 @@ void GateSetLogImpl::flushGateMatrixSize(MatrixPtr pMatrix, std::ostream& fstrea
 	int nbRows, nbColumns;
 	pMatrix->getSize(nbRows, nbColumns);
 	fstream << nbRows << ELEMENT_DELIMETER << nbColumns << NEW_LINE;
+}
+
+void GateSetLogImpl::flushGateLabel(GatePtr pGate, std::ostream& fstream) {
+	std::string delimeter = "*";
+	fstream << "Gate length:" << pGate->getLabelSeq().size() << ELEMENT_DELIMETER;
+	for(LabelSeq::const_iterator lIter = pGate->getLabelSeq().begin(); lIter != pGate->getLabelSeq().end(); lIter++) {
+		if(lIter == pGate->getLabelSeq().begin()) {
+			fstream << *lIter  ;
+		}
+		else {
+			fstream << delimeter << *lIter;
+		}
+	}
+	fstream << ELEMENT_DELIMETER;
 }
 
 void GateSetLogImpl::flushGateMatrixValues(MatrixPtr pMatrix, std::ostream& fstream) {

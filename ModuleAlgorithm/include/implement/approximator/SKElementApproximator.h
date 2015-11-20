@@ -26,21 +26,25 @@ public:
 			int nbCandidates,
 			int recursiveLevel);
 
-	virtual ~SKElementApproximator(){};
+	virtual ~SKElementApproximator();
 
 	//Override
 	virtual IteratorPtr<T> getApproximateElements(CollectionPtr<T> pCoreCollection,
 			T pQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon);
+
 protected:
 	virtual void calculateResidual(T apprx, T query, T& residual);
 
 private:
+	void initEpsilonForLevels();
+
+	void resetEpsilonForLevels(mreal_t epsilon);
+
 	IteratorPtr<T> skApproximate(CollectionPtr<T> pCoreCollection,
 			T pPartialQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
-			mreal_t epsilon,
 			int level);
 
 	IteratorPtr<T> getCandidatesFromRawApprx(T apprx,
@@ -58,7 +62,6 @@ private:
 	void addBuildingBlocksBucketsForResidual(T residual,
 			CollectionPtr<T> pCoreCollection,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
-			mreal_t epsilon,
 			BuildingBlockBuckets<T>& buildingBlockBuckets,
 			int level);
 
@@ -72,6 +75,7 @@ private:
 
 	int m_nbCandidates;
 	int m_recursiveLevel;
+	mreal_t* m_epsilonForLevels;
 };
 
 

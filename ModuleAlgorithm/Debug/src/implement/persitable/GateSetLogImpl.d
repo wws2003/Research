@@ -9,6 +9,7 @@ src/implement/persitable/GateSetLogImpl.d: \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
+ ../include/interface/abstract/IIterator.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h
@@ -30,6 +31,8 @@ src/implement/persitable/GateSetLogImpl.d: \
 ../../SharedThirdParties/mpfr/include/mpfr.h:
 
 ../../SharedThirdParties/gmp/include/gmp.h:
+
+../include/interface/abstract/IIterator.h:
 
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
 

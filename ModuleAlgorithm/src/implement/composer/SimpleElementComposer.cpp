@@ -20,6 +20,7 @@ SimpleElementComposer<T>::SimpleElementComposer(CombinerPtr<T> pCombiner,
 	m_maxResultsNumber = maxResultsNumber;
 	m_pElementSetLog = pElementSetLog;
 	m_logFolderCounter = 0;
+	m_combination_counter = 0;
 }
 
 template<typename T>
@@ -32,8 +33,8 @@ IteratorPtr<T> SimpleElementComposer<T>::composeApproximations(const BuildingBlo
 	VectorBasedCollectionImpl<T> resultBuffer;
 
 #if OUTPUT_INTERMEDIATE_RESULT
-	m_pElementSetLog->reset(buildingBlockBuckets.size());
-	m_pElementSetLog->setQuery(pQuery);
+	m_pElementSetLog->saveElementSets(buildingBlockBuckets);
+	m_pElementSetLog->saveQuery(pQuery);
 #endif
 
 	try {
@@ -48,6 +49,8 @@ IteratorPtr<T> SimpleElementComposer<T>::composeApproximations(const BuildingBlo
 	catch (int enough) {
 		std::cout << "Find enough results\n";
 	}
+
+	std::cout << "Number of combination checked:" << m_combination_counter << "\n";
 
 #if OUTPUT_INTERMEDIATE_RESULT
 	std::string logFolderName = getCurrentLogFolderName();
@@ -67,6 +70,7 @@ void SimpleElementComposer<T>::generateApproximations(std::vector<T>& partialEle
 		CollectionPtr<T> pResultsBuffer) {
 
 	if(bucketIndex >= buildingBlockBuckets.size()) {
+		m_combination_counter++;
 		evaluateCombination(partialElementsBuffer, pQuery, pDistanceCalculator, epsilon, pResultsBuffer);
 		return;
 	}
@@ -109,10 +113,6 @@ void SimpleElementComposer<T>::evaluateCombination(const std::vector<T>& partial
 		mreal_t epsilon,
 		CollectionPtr<T> pResultsBuffer) {
 
-#if OUTPUT_INTERMEDIATE_RESULT
-	output(partialElements, pQuery);
-#endif
-
 	T candidate;
 	composeCandidate(partialElements, candidate);
 
@@ -140,8 +140,4 @@ void SimpleElementComposer<T>::composeCandidate(const std::vector<T>& partialEle
 	result = combined;
 }
 
-template<typename T>
-void SimpleElementComposer<T>::output(const std::vector<T>& partialElementsBuffer, T pQuery) {
-	m_pElementSetLog->addElementSet(partialElementsBuffer);
-}
 

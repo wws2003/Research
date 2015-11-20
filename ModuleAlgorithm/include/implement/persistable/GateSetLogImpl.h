@@ -19,11 +19,9 @@ public:
 
 	virtual ~GateSetLogImpl(){};
 
-	void reset(int nbSubSet);
+	void saveQuery(GatePtr query);
 
-	void setQuery(GatePtr query);
-
-	void addElementSet(const std::vector<GatePtr>& partialElementsBuffer);
+	void saveElementSets(std::vector<IteratorPtr<GatePtr> > elementSets);
 
 	void flush(std::string logFolderName);
 
@@ -32,13 +30,15 @@ public:
 private:
 	void prepareFolder(std::string logFolderName);
 
-	std::string getRecordFileName(std::string logFolderName, int recordIndex);
-
 	std::string getQueryRecordFileName(std::string logFolderName);
+
+	std::string getRecordFileName(std::string logFolderName, int recordIndex);
 
 	void flushRecord(const Record& record, std::string fileName);
 
 	void flushGateMatrixSize(MatrixPtr pMatrix, std::ostream& fstream);
+
+	void flushGateLabel(GatePtr pGate, std::ostream& fstream);
 
 	void flushGateMatrixValues(MatrixPtr pMatrix, std::ostream& fstream);
 

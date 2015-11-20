@@ -17,11 +17,11 @@ src/implement/composer/SimpleMatrixComposer.d: \
  ../include/interface/abstract/IIterator.h \
  ../include/internal-abstract/persistable/IElementSetLog.h \
  ../include/internal-abstract/AlgoInternal.h \
+ ../include/interface/abstract/IIterator.h \
  ../src/implement/composer/SimpleElementComposer.cpp \
  ../include/implement/composer/SimpleElementComposer.h \
  ../include/implement/collection/VectorBasedCollectionImpl.hpp \
  ../include/implement/iterator/VectorBasedIteratorImpl.hpp \
- ../include/interface/abstract/IIterator.h \
  ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h
 
@@ -59,6 +59,8 @@ src/implement/composer/SimpleMatrixComposer.d: \
 
 ../include/internal-abstract/AlgoInternal.h:
 
+../include/interface/abstract/IIterator.h:
+
 ../src/implement/composer/SimpleElementComposer.cpp:
 
 ../include/implement/composer/SimpleElementComposer.h:
@@ -66,8 +68,6 @@ src/implement/composer/SimpleMatrixComposer.d: \
 ../include/implement/collection/VectorBasedCollectionImpl.hpp:
 
 ../include/implement/iterator/VectorBasedIteratorImpl.hpp:
-
-../include/interface/abstract/IIterator.h:
 
 ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
 
