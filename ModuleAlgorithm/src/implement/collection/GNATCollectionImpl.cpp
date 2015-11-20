@@ -208,7 +208,7 @@ void GNATCollectionImpl<T>::filterResults(std::vector<T>& results, DistanceCalcu
 	}
 
 	//Push back unique results
-	results.insert(results.end(), resultsBuffer.begin(), results.end());
+	results.insert(results.end(), resultsBuffer.begin(), resultsBuffer.end());
 }
 
 
