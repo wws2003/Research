@@ -69,6 +69,14 @@ typedef IIterator<GatePtr> GateIterator;
 typedef MatrixIterator* MatrixIteratorPtr;
 typedef GateIterator* GateIteratorPtr;
 
+template<typename T> struct LookupResult;
+
+typedef IIterator<LookupResult<MatrixPtr> > MatrixLookupResultIterator;
+typedef MatrixLookupResultIterator* MatrixLookupResultIteratorPtr;
+
+typedef IIterator<LookupResult<GatePtr> > GateLookupResultIterator;
+typedef GateLookupResultIterator* GateLookupResultIteratorPtr;
+
 typedef IIterator<MatrixRealCoordinatePtr>* MatrixRealCoordinateIteratorPtr;
 
 typedef IMatrixCollection& MatrixCollectionRef;

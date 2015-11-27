@@ -13,12 +13,13 @@ src/implement/collection/GNATGateCollectionImpl.d: \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../include/interface/abstract/IIterator.h \
  ../include/interface/abstract/IIterator.h \
+ ../include/internal-abstract/filter/ILookupResultFilter.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../src/implement/collection/GNATCollectionImpl.cpp \
  ../include/implement/collection/GNATCollectionImpl.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/implement/iterator/VectorBasedIteratorImpl.hpp \
  ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../include/implement/iterator/GNATCollectionIterator.hpp
@@ -49,6 +50,10 @@ src/implement/collection/GNATGateCollectionImpl.d: \
 
 ../include/interface/abstract/IIterator.h:
 
+../include/internal-abstract/filter/ILookupResultFilter.h:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
@@ -58,8 +63,6 @@ src/implement/collection/GNATGateCollectionImpl.d: \
 ../src/implement/collection/GNATCollectionImpl.cpp:
 
 ../include/implement/collection/GNATCollectionImpl.h:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../include/implement/iterator/VectorBasedIteratorImpl.hpp:
 

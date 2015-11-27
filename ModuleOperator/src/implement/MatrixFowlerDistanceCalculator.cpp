@@ -35,12 +35,12 @@ mreal_t MatrixFowlerDistanceCalculator::distance(MatrixPtr p1, MatrixPtr p2) {
 	ComplexVal traceM1ConjugateTranpose2 = m_pMatrixOperator->trace(pM1ConjugateTranpose2);
 	mreal_t traceM1ConjugateTranpose2Norm = mreal::norm(traceM1ConjugateTranpose2);
 
-	mreal_t distance = sqrt(((mreal_t)nbRows - traceM1ConjugateTranpose2Norm) / (mreal_t)nbRows);
+	mreal_t distance = mreal::sqrt(((mreal_t)nbRows - traceM1ConjugateTranpose2Norm) / (mreal_t)nbRows);
 
 	_destroy(pM1ConjugateTranpose2);
 	_destroy(pConjugateTranpose2);
 
-	return distance;
+	return mreal::isNAN(distance) ? 0.0 : distance;
 }
 
 

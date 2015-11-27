@@ -42,9 +42,11 @@ public:
 	//(Re)Build the search data structure given distance calculator
 	virtual void rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator);
 
-	//Find the neighbor elements to the query, given distance calculator
-	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon) const ;
-
+	//Advanced lookup function, with distance stored in results
+	virtual IteratorPtr<LookupResult<T> > findNearestNeighbours(T query,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilon,
+			bool toSortResults = false) const;
 private:
 	std::vector<T> m_elements;
 };
@@ -94,16 +96,29 @@ void VectorBasedCollectionImpl<T>::rebuildStructure(DistanceCalculatorPtr<T> pDi
 }
 
 template<typename T>
-IteratorPtr<T> VectorBasedCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon) const {
-	std::vector<T> results;
+IteratorPtr<LookupResult<T> > VectorBasedCollectionImpl<T>::findNearestNeighbours(T query,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon,
+		bool toSortResults) const {
+
+	std::vector<LookupResult<T> > results;
 	CollectionSize_t collectionSize = m_elements.size();
+
 	for(unsigned int i = 0; i < collectionSize; i++) {
 		T element = m_elements[i];
-		if(pDistanceCalculator->distance(element, query) <= epsilon) {
-			results.push_back(element);
+		mreal_t distance = pDistanceCalculator->distance(element, query);
+
+		if(distance <= epsilon) {
+			LookupResult<T> result(element, distance);
+			results.push_back(result);
 		}
 	}
-	IteratorPtr<T> pResultIter(new VectorBasedReadOnlyIteratorImpl<T>(results));
+
+	if(toSortResults) {
+		std::sort(results.begin(), results.end(), DistanceComparator<T>());
+	}
+
+	IteratorPtr<LookupResult<T> > pResultIter(new VectorBasedReadOnlyIteratorImpl<LookupResult<T> >(results));
 	return pResultIter;
 }
 

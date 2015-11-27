@@ -35,6 +35,8 @@ src/container/SKApproximatorContainerImpl.d: \
  ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedGateApproximator.h \
  ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedElementApproximator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
@@ -208,7 +210,6 @@ src/container/SKApproximatorContainerImpl.d: \
  ../../ModuleAlgorithm/include/implement/composer/SimpleGateComposer.h \
  ../../ModuleAlgorithm/include/implement/composer/SimpleElementComposer.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
- ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/implement/persistable/GateSetLogImpl.h \
  ../../ModuleAlgorithm/include/implement/approximator/SKGateApproximator.h \
  ../../ModuleAlgorithm/include/implement/approximator/SKElementApproximator.h
@@ -284,6 +285,10 @@ src/container/SKApproximatorContainerImpl.d: \
 ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedElementApproximator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
 ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h:
 
@@ -630,8 +635,6 @@ src/container/SKApproximatorContainerImpl.d: \
 ../../ModuleAlgorithm/include/implement/composer/SimpleElementComposer.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
-
-../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
 ../../ModuleAlgorithm/include/implement/persistable/GateSetLogImpl.h:
 

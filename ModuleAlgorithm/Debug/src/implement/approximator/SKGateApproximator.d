@@ -10,6 +10,8 @@ src/implement/approximator/SKGateApproximator.d: \
  ../../SharedThirdParties/gmp/include/gmp.h \
  ../include/interface/abstract/IApproximator.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
+ ../include/interface/abstract/ICollection.h \
+ ../include/interface/abstract/IIterator.h \
  ../include/interface/abstract/IComposer.h \
  ../include/interface/abstract/IDecomposer.h \
  ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h \
@@ -19,11 +21,10 @@ src/implement/approximator/SKGateApproximator.d: \
  ../src/implement/approximator/SKElementApproximator.cpp \
  ../include/implement/approximator/SKElementApproximator.h \
  ../include/interface/abstract/ICollection.h \
+ ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../include/interface/abstract/IIterator.h \
  ../include/implement/collection/VectorBasedCollectionImpl.hpp \
  ../include/implement/iterator/VectorBasedIteratorImpl.hpp \
- ../include/interface/abstract/IIterator.h \
- ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h
 
 ../include/implement/approximator/SKGateApproximator.h:
@@ -46,6 +47,10 @@ src/implement/approximator/SKGateApproximator.d: \
 
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
+../include/interface/abstract/ICollection.h:
+
+../include/interface/abstract/IIterator.h:
+
 ../include/interface/abstract/IComposer.h:
 
 ../include/interface/abstract/IDecomposer.h:
@@ -64,14 +69,12 @@ src/implement/approximator/SKGateApproximator.d: \
 
 ../include/interface/abstract/ICollection.h:
 
+../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
+
 ../include/interface/abstract/IIterator.h:
 
 ../include/implement/collection/VectorBasedCollectionImpl.hpp:
 
 ../include/implement/iterator/VectorBasedIteratorImpl.hpp:
-
-../include/interface/abstract/IIterator.h:
-
-../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
 
 ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:

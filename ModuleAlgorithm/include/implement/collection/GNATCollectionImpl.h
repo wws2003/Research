@@ -12,6 +12,7 @@
 #include "AlgoInternal.h"
 #include "ICollection.h"
 #include "IIterator.h"
+#include "ILookupResultFilter.h"
 #include <vector>
 #include <algorithm>
 #include <list>
@@ -35,7 +36,7 @@ using SplitPointSet = std::vector<T>;
 template<typename T>
 class GNATCollectionImpl : public ICollection<T> {
 public:
-	GNATCollectionImpl();
+	GNATCollectionImpl(LookupResultFilterPtr<T> pResultFilter = NullPtr);
 	virtual ~GNATCollectionImpl();
 
 	//Override
@@ -56,12 +57,14 @@ public:
 	//Override
 	virtual CollectionSize_t size() const ;
 
-	//(Re)Build the search data structure given distance calculator
+	//Override
 	virtual void rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator);
 
-	//Find the neighbor elements to the query, given distance calculator
-	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon) const ;
-
+	//Override
+	virtual IteratorPtr<LookupResult<T> > findNearestNeighbours(T query,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilon,
+			bool toSortResults = false) const;
 protected:
 	//Generate instance of a sub-collection. Subject to be overridden in sub-classes
 	virtual CollectionPtr<T> generateSubCollection();
@@ -71,9 +74,9 @@ protected:
 	UnstructuredBuffer<T> m_unStructeredBuffer;
 	RangeMap m_splitPointRanges;
 
-private:
+	LookupResultFilterPtr<T> m_pResultFilter;
 
-	void filterResults(std::vector<T>& results, DistanceCalculatorPtr<T> pDistanceCalculator) const;
+private:
 
 	/*--------------For constructing GNAT data structure--------------*/
 	//Re-call the points in sub collection into unstructured buffer to prepare for restructuring

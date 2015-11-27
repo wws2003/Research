@@ -272,10 +272,10 @@ void addApprxResultsToBufferFromCollection(CollectionPtr<T> pCollection,
 		mreal_t epsilon,
 		ApprxResultBuffer<T>& rResultBuffer,
 		int maxResultsNumber) {
-	IteratorPtr<T> pApprxResultIter = pCollection->findNearestNeighbour(pQuery, pDistanceCalculator, epsilon);
+	IteratorPtr<LookupResult<T> > pApprxResultIter = pCollection->findNearestNeighbours(pQuery, pDistanceCalculator, epsilon);
 	if(pApprxResultIter != NullPtr) {
 		while(!pApprxResultIter->isDone() && rResultBuffer.size() < maxResultsNumber) {
-			rResultBuffer.push_back(pApprxResultIter->getObj());
+			rResultBuffer.push_back(pApprxResultIter->getObj().m_resultElement);
 			pApprxResultIter->next();
 		}
 	}

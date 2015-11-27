@@ -14,6 +14,7 @@
 #include "AlgoCommon.h"
 #include "IResourceContainer.h"
 #include "AlgoInternal.h"
+#include "ILookupResultFilter.h"
 #include "ICollectionContainer.h"
 #include "ApplicationCommon.h"
 #include "Config.h"
@@ -55,6 +56,7 @@ private:
 
 	MatrixWriterPtr m_pBinaryMatrixWriter;
 	MatrixReaderPtr m_pBinaryMatrixReader;
+	GateLookupResultFilterPtr m_pGateLookupResultFilter;
 
 	GateCollectionPtr m_pUniversalSet;
 

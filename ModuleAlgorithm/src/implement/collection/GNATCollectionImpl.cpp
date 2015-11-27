@@ -11,8 +11,10 @@
 #include "VectorBasedReadOnlyIteratorImpl.hpp"
 #include "GNATCollectionIterator.hpp"
 #include <cstdlib>
+#include <algorithm>
 #include <ctime>
 #include <cassert>
+#include <iostream>
 
 //#define DEBUGGING
 //#define DEBUGGING_SP
@@ -26,16 +28,26 @@ template<typename T>
 int findClosestElementIndex(T element, const std::vector<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator);
 
 template<typename T>
-void findClosestElementsInUnStructuredBuffer(T query, const UnstructuredBuffer<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, std::vector<T>& results);
+void findClosestElementsInUnStructuredBuffer2(T query,
+		const UnstructuredBuffer<T>& dataSet,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon,
+		std::vector<LookupResult<T> >& results);
 
 template<typename T>
-void findClosestElementsInSplitPoints(T query, const SplitPointSet<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, std::vector<T>& results);
+void findClosestElementsInSplitPoints2(T query,
+		const SplitPointSet<T>& dataSet,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon,
+		std::vector<LookupResult<T> >& results);
 
 template<typename T>
 void selfTest(GNATCollectionImpl<T>* pCollection);
 
 template<typename T>
-GNATCollectionImpl<T>::GNATCollectionImpl() {
+GNATCollectionImpl<T>::GNATCollectionImpl(LookupResultFilterPtr<T> pResultFilter)
+ {
+	m_pResultFilter = pResultFilter;
 }
 
 template<typename T>
@@ -146,14 +158,17 @@ void GNATCollectionImpl<T>::rebuildStructure(DistanceCalculatorPtr<T> pDistanceC
 }
 
 template<typename T>
-IteratorPtr<T> GNATCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon) const {
-	std::vector<T> results;
+IteratorPtr<LookupResult<T> > GNATCollectionImpl<T>::findNearestNeighbours(T query,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon,
+		bool toSortResults) const {
+	std::vector<LookupResult<T> > results;
 
 	//Get results from unstructured buffer first
-	findClosestElementsInUnStructuredBuffer(query, m_unStructeredBuffer, pDistanceCalculator, epsilon, results);
+	findClosestElementsInUnStructuredBuffer2(query, m_unStructeredBuffer, pDistanceCalculator, epsilon, results);
 
 	//Then results from split points
-	findClosestElementsInSplitPoints(query, m_splitPoints, pDistanceCalculator, epsilon, results);
+	findClosestElementsInSplitPoints2(query, m_splitPoints, pDistanceCalculator, epsilon, results);
 
 	//Get results from sub collections
 	int nbSubCollections = m_subCollections.size();
@@ -166,7 +181,7 @@ IteratorPtr<T> GNATCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalc
 			continue;
 		}
 		CollectionPtr<T> pCandidateSubCollection = m_subCollections[i];
-		IteratorPtr<T> pSubResultIter = pCandidateSubCollection->findNearestNeighbour(query, pDistanceCalculator, epsilon);
+		IteratorPtr<LookupResult<T> > pSubResultIter = pCandidateSubCollection->findNearestNeighbours(query, pDistanceCalculator, epsilon);
 
 		while(!pSubResultIter->isDone()) {
 			results.push_back(pSubResultIter->getObj());
@@ -177,40 +192,18 @@ IteratorPtr<T> GNATCollectionImpl<T>::findNearestNeighbour(T query, DistanceCalc
 	}
 
 	//20151118 Filter results to eliminate duplicated results
-	filterResults(results, pDistanceCalculator);
-
-	return IteratorPtr<T>(new VectorBasedReadOnlyIteratorImpl<T>(results));
-}
-
-template<typename T>
-void GNATCollectionImpl<T>::filterResults(std::vector<T>& results, DistanceCalculatorPtr<T> pDistanceCalculator) const {
-	std::vector<T> resultsBuffer;
-	const mreal_t distanceToConsiderAsOne = 1e-7;
-
-	for(typename std::vector<T>::iterator rIter = results.begin(); rIter != results.end();) {
-		T result = *rIter;
-
-		//Check if the result is actually a duplicate of some other
-		bool duplicated = false;
-		for(unsigned int j = 0; j < resultsBuffer.size() && !duplicated; j++) {
-			if(pDistanceCalculator->distance(result, resultsBuffer[j]) <= distanceToConsiderAsOne) {
-				duplicated = true;
-			}
-		}
-
-		//Push to result buffer the unique result
-		if(!duplicated) {
-			//TODO Think of clone result to avoid problem with memory release later
-			resultsBuffer.push_back(result);
-		}
-
-		rIter = results.erase(rIter);
+	if(m_pResultFilter != NullPtr && !results.empty()) {
+		//TODO Decide to clone result or not. Temporary do clone
+		m_pResultFilter->filterLookupResults(results, pDistanceCalculator, true);
 	}
 
-	//Push back unique results
-	results.insert(results.end(), resultsBuffer.begin(), resultsBuffer.end());
-}
+	if(toSortResults) {
+		std::sort(results.begin(), results.end(), DistanceComparator<T>());
+	}
 
+	return IteratorPtr<LookupResult<T> >(new VectorBasedReadOnlyIteratorImpl<LookupResult<T> >(results));
+
+}
 
 template<typename T>
 void GNATCollectionImpl<T>::recallElements() {
@@ -381,21 +374,31 @@ int findClosestElementIndex(T element, const std::vector<T>& dataSet, DistanceCa
 }
 
 template<typename T>
-void findClosestElementsInUnStructuredBuffer(T query, const UnstructuredBuffer<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, std::vector<T>& results) {
+void findClosestElementsInUnStructuredBuffer2(T query,
+		const UnstructuredBuffer<T>& dataSet,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon,
+		std::vector<LookupResult<T> >& results) {
 	for(typename UnstructuredBuffer<T>::const_iterator eIter = dataSet.begin(); eIter != dataSet.end(); eIter++) {
 		T element = *eIter;
-		if(pDistanceCalculator->distance(element, query) <= epsilon) {
-			results.push_back(element);
+		mreal_t distance = pDistanceCalculator->distance(element, query);
+		if(distance <= epsilon) {
+			results.push_back(LookupResult<T>(element, distance));
 		}
 	}
 }
 
 template<typename T>
-void findClosestElementsInSplitPoints(T query, const SplitPointSet<T>& dataSet, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, std::vector<T>& results) {
+void findClosestElementsInSplitPoints2(T query,
+		const SplitPointSet<T>& dataSet,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon,
+		std::vector<LookupResult<T> >& results) {
 	for(typename SplitPointSet<T>::const_iterator eIter = dataSet.begin(); eIter != dataSet.end(); eIter++) {
 		T element = *eIter;
-		if(pDistanceCalculator->distance(element, query) <= epsilon) {
-			results.push_back(element);
+		mreal_t distance = pDistanceCalculator->distance(element, query);
+		if(distance <= epsilon) {
+			results.push_back(LookupResult<T>(element, distance));
 		}
 	}
 }

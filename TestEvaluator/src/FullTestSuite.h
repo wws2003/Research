@@ -32,6 +32,7 @@ private:
 	void testGNATCollectionBuild();
 	void testGNATCollectionPersistence();
 	void testGNATSearch();
+	void testFilteredGNATSearch();
 
 	void freeTestGateCollectionEvaluator();
 

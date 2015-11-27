@@ -8,8 +8,8 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include src/internal-abstract/subdir.mk
 -include src/implement/persitable/subdir.mk
+-include src/implement/filter/subdir.mk
 -include src/implement/decomposer/subdir.mk
 -include src/implement/composer/subdir.mk
 -include src/implement/combiner/subdir.mk

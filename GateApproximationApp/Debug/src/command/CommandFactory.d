@@ -30,6 +30,7 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
+ ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h \
  ../src/container/ICollectionContainer.h \
  ../src/container/SampleEvaluatorContainerImpl.h \
  ../src/container/IEvaluatorContainer.h \
@@ -123,6 +124,8 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
+
+../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h:
 
 ../src/container/ICollectionContainer.h:
 

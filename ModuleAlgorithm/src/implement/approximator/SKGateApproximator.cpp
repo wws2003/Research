@@ -27,7 +27,7 @@ void SKGateApproximator::calculateResidual(GatePtr apprx, GatePtr query, GatePtr
 	m_pMatrixOperator->conjugateTranpose(apprx->getMatrix(), pInverseApprx);
 	m_pMatrixOperator->multiply(pInverseApprx, query->getMatrix(), pResidualMatrix);
 	_destroy(pInverseApprx);
-	residual = new Gate(pResidualMatrix, apprx->getCost(), "");
+	residual = GatePtr(new Gate(pResidualMatrix, apprx->getCost(), ""));
 }
 
 

@@ -222,6 +222,7 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleIO/include/implement/FullGateWriterImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATGateCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
+ ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h \
  ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATItemCollectionImpl.h \
@@ -233,6 +234,8 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
+ ../../ModuleAlgorithm/include/implement/filter/DuplicateGateLookupResultFilterImpl.h \
+ ../../ModuleAlgorithm/include/implement/filter/DuplicateLookupResultFilterImpl.h \
  ../../ModuleIO/include/implement/BinaryGateWriterImpl.h \
  ../../ModuleIO/include/implement/BinaryGateReaderImpl.h \
  ../../ModuleIO/include/implement/BinaryMatrixReaderImpl.h \
@@ -686,6 +689,8 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 
 ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h:
 
+../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h:
+
 ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h:
 
 ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h:
@@ -707,6 +712,10 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
+
+../../ModuleAlgorithm/include/implement/filter/DuplicateGateLookupResultFilterImpl.h:
+
+../../ModuleAlgorithm/include/implement/filter/DuplicateLookupResultFilterImpl.h:
 
 ../../ModuleIO/include/implement/BinaryGateWriterImpl.h:
 

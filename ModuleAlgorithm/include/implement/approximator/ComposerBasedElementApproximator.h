@@ -24,7 +24,7 @@ public:
 	virtual ~ComposerBasedElementApproximator(){};
 
 	//Override
-	virtual IteratorPtr<T> getApproximateElements(CollectionPtr<T> pCoreCollection,
+	virtual IteratorPtr<LookupResult<T> > getApproximateElements(CollectionPtr<T> pCoreCollection,
 			T pQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon);
@@ -35,12 +35,17 @@ private:
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			BuildingBlockBuckets<T>& buildingBlockBuckets);
 
-	IteratorPtr<T> getApproximateElementsForPartialQuery(CollectionPtr<T> pCoreCollection,
+	IteratorPtr<LookupResult<T> > getApproximateElementsForPartialQuery(CollectionPtr<T> pCoreCollection,
 			T pPartialQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon);
 
 	void releaseBuildingBlocksBuckets(BuildingBlockBuckets<T>& buildingBlockBuckets);
+
+	IteratorPtr<T> getExtractedElementIterator(IteratorPtr<LookupResult<T> > pLookupResultIter);
+
+	IteratorPtr<LookupResult<T> > getFullResultIterator(IteratorPtr<T> pResultIter, T pQuery,
+			DistanceCalculatorPtr<T> pDistanceCalculator);
 
 	DecomposerPtr<T> m_pQueryDecomposer;
 	int m_nbPartialQueries;

@@ -24,6 +24,7 @@
 #include "SampleLibraryMatrixStore.h"
 #include "PersistableGNATCollectionImpl.h"
 #include "IPersistableCollection.h"
+#include "DuplicateGateLookupResultFilterImpl.h"
 #include <stdexcept>
 
 const std::string SampleCollectionContainerImpl::DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT = "dat";
@@ -39,7 +40,8 @@ SampleCollectionContainerImpl::~SampleCollectionContainerImpl() {
 
 GateCollectionPtr SampleCollectionContainerImpl::getGateCollection(GateDistanceCalculatorPtr pGateDistanceCalculator) {
 	PersitableGateCollectionPtr pGateCollection = PersitableGateCollectionPtr(new PersistableGNATGateCollectionImpl(m_pBinaryGateWriter,
-			m_pBinaryGateReader));
+			m_pBinaryGateReader,
+			m_pGateLookupResultFilter));
 
 	std::string persitenceFileName = getGateCollectionPersistenceFileFullName(m_collectionConfig,
 			m_librarySetPersistFileNameMap,
@@ -59,7 +61,8 @@ GateCollectionPtr SampleCollectionContainerImpl::getGateCollection(GateDistanceC
 
 PersitableGateCollectionPtr SampleCollectionContainerImpl::getPersitableGateCollection() {
 	return PersitableGateCollectionPtr(new PersistableGNATGateCollectionImpl(m_pBinaryGateWriter,
-			m_pBinaryGateReader));
+			m_pBinaryGateReader,
+			m_pGateLookupResultFilter));
 }
 
 void SampleCollectionContainerImpl::initLibrarySetPersistFileNameMap() {
@@ -83,6 +86,7 @@ void SampleCollectionContainerImpl::wireDependencies() {
 	m_pBinaryGateWriter = GateWriterPtr(new BinaryGateWriterImpl(NullPtr));
 	m_pBinaryGateReader = GateReaderPtr(new BinaryGateReaderImpl(NullPtr));
 
+	m_pGateLookupResultFilter = GateLookupResultFilterPtr(new DuplicateLookupResultFilterImpl<GatePtr>());
 	m_pUniversalSet = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>());
 	m_pResourceContainer->getUniversalGates(m_pUniversalSet, m_collectionConfig.m_nbQubits);
 
@@ -99,6 +103,8 @@ void SampleCollectionContainerImpl::releaseDependencies() {
 	_destroy(m_pGateCombiner);
 
 	_destroy(m_pUniversalSet);
+
+	_destroy(m_pGateLookupResultFilter);
 
 	_destroy(m_pBinaryGateReader);
 	_destroy(m_pBinaryGateWriter);

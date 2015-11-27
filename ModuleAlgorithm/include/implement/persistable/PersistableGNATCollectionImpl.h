@@ -15,11 +15,12 @@
 #include "GNATCollectionBlock.h"
 #include "IPersistableCollection.h"
 #include "IReader.h"
+#include "AlgoInternal.h"
 
 template<typename T>
 class  PersistableGNATCollectionImpl: public GNATCollectionImpl<T>, public IPersistable {
 public:
-	PersistableGNATCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader);
+	PersistableGNATCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader, LookupResultFilterPtr<T> pResultFilter = NullPtr);
 
 	virtual ~PersistableGNATCollectionImpl(){};
 
@@ -46,7 +47,7 @@ public:
 	bool operator==(const PersistableGNATCollectionImpl<T>& rhs);
 
 private:
-	PersistableGNATCollectionImpl();
+	PersistableGNATCollectionImpl(LookupResultFilterPtr<T> pLookupResultFilter);
 
 	//Methods for saving
 	void saveGNATCollection(GNATCollectionIdType parentId, GNATCollectionIdType *pCurrentMaxId, std::vector<GNATCollectionWriteBlock<T>* >& rBlocks);

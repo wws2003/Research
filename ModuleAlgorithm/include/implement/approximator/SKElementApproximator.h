@@ -29,7 +29,7 @@ public:
 	virtual ~SKElementApproximator();
 
 	//Override
-	virtual IteratorPtr<T> getApproximateElements(CollectionPtr<T> pCoreCollection,
+	virtual IteratorPtr<LookupResult<T> > getApproximateElements(CollectionPtr<T> pCoreCollection,
 			T pQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon);
@@ -42,7 +42,7 @@ private:
 
 	void resetEpsilonForLevels(mreal_t epsilon);
 
-	IteratorPtr<T> skApproximate(CollectionPtr<T> pCoreCollection,
+	IteratorPtr<LookupResult<T> > skApproximate(CollectionPtr<T> pCoreCollection,
 			T pPartialQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			int level);
@@ -54,16 +54,18 @@ private:
 			mreal_t epsilon,
 			int level);
 
-	IteratorPtr<T> filterCandidates(const IteratorVector<T>& buildingBlockBuckets,
-				T query,
-				DistanceCalculatorPtr<T> pDistanceCalculator,
-				mreal_t epsilon);
+	IteratorPtr<LookupResult<T> >  filterCandidates(const IteratorVector<T>& buildingBlockBuckets,
+			T query,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilon);
 
 	void addBuildingBlocksBucketsForResidual(T residual,
 			CollectionPtr<T> pCoreCollection,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			BuildingBlockBuckets<T>& buildingBlockBuckets,
 			int level);
+
+	IteratorPtr<T> getExtractedElementIterator(IteratorPtr<LookupResult<T> > pLookupResultIter);
 
 	void releaseIterators(std::vector<IteratorPtr<T> >& buildingBlockBuckets);
 

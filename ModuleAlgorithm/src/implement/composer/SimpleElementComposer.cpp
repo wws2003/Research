@@ -20,7 +20,7 @@ SimpleElementComposer<T>::SimpleElementComposer(CombinerPtr<T> pCombiner,
 	m_maxResultsNumber = maxResultsNumber;
 	m_pElementSetLog = pElementSetLog;
 	m_logFolderCounter = 0;
-	m_combination_counter = 0;
+	m_combinationCounter = 0;
 }
 
 template<typename T>
@@ -50,7 +50,7 @@ IteratorPtr<T> SimpleElementComposer<T>::composeApproximations(const BuildingBlo
 		std::cout << "Find enough results\n";
 	}
 
-	std::cout << "Number of combination checked:" << m_combination_counter << "\n";
+	std::cout << "Number of combination checked:" << m_combinationCounter << "\n";
 
 #if OUTPUT_INTERMEDIATE_RESULT
 	std::string logFolderName = getCurrentLogFolderName();
@@ -70,14 +70,14 @@ void SimpleElementComposer<T>::generateApproximations(std::vector<T>& partialEle
 		CollectionPtr<T> pResultsBuffer) {
 
 	if(bucketIndex >= buildingBlockBuckets.size()) {
-		m_combination_counter++;
+		m_combinationCounter++;
 		evaluateCombination(partialElementsBuffer, pQuery, pDistanceCalculator, epsilon, pResultsBuffer);
 		return;
 	}
 
 	IteratorPtr<T> pBuildingBlockIter = buildingBlockBuckets[bucketIndex];
 	do {
-		bool bucketEmpty = (pBuildingBlockIter == NullPtr) || pBuildingBlockIter->isDone();
+		bool bucketEmpty = pBuildingBlockIter->isDone();
 		T nextPartialElement = bucketEmpty ? NullPtr : pBuildingBlockIter->getObj();
 
 		partialElementsBuffer.push_back(nextPartialElement);
@@ -96,7 +96,9 @@ void SimpleElementComposer<T>::generateApproximations(std::vector<T>& partialEle
 			pBuildingBlockIter->next();
 		}
 	}
-	while(pBuildingBlockIter != NullPtr && !pBuildingBlockIter->isDone());
+	while(!pBuildingBlockIter->isDone());
+
+	pBuildingBlockIter->toBegin();
 }
 
 template<typename T>

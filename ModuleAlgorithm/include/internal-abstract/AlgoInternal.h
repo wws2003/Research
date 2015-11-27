@@ -71,4 +71,12 @@ class IElementSetLog;
 template<typename T>
 using ElementSetLogPtr = IElementSetLog<T>*;
 
+template<typename T> class ILookupResultFilter;
+
+template<typename T>
+using LookupResultFilterPtr = ILookupResultFilter<T>*;
+
+typedef LookupResultFilterPtr<GatePtr> GateLookupResultFilterPtr;
+typedef LookupResultFilterPtr<MatrixPtr> MatrixLookupResultFilterPtr;
+
 #endif /* ALGOINTERNAL_H_ */

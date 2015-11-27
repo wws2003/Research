@@ -14,7 +14,8 @@ src/command/EvaluateApproximatorCommand.d: \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
- ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h
+ ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h
 
 ../src/command/EvaluateApproximatorCommand.h:
 
@@ -47,3 +48,5 @@ src/command/EvaluateApproximatorCommand.d: \
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:

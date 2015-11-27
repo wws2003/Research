@@ -33,9 +33,9 @@ public:
 	void doExecute();
 
 private:
-	GateIteratorPtr getApproximatorResultIter(GatePtr pTarget);
+	GateLookupResultIteratorPtr getApproximatorResultIter(GatePtr pTarget);
 
-	void storeResultsToPersistableCollection(GateIteratorPtr pGateIter);
+	void storeResultsToPersistableCollection(GateLookupResultIteratorPtr pGateIter);
 
 	void rebuildPersistableCollection();
 

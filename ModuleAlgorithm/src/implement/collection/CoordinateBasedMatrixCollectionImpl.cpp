@@ -49,21 +49,6 @@ MatrixCollectionSize_t CoordinateBasedMatrixCollectionImpl::size() const {
 	return m_pInternalMatrixCoordinateCollection->size();
 }
 
-MatrixIteratorPtr CoordinateBasedMatrixCollectionImpl::findApproxElements(MatrixPtr pQuery, MatrixDistanceCalculatorPtr pDistanceCalculator, mreal_t epsilon) const  {
-
-	MatrixRealCoordinatePtr pTargetCoordinate = NullPtr;
-	m_pMatrixCoordinateCalculator->calulateElementCoordinate(pQuery, pTargetCoordinate);
-	MatrixRealCoordinateIteratorPtr pApproxMatrixCoordinateIter = m_pInternalMatrixCoordinateCollection->findNearestNeighbour(pTargetCoordinate, m_pMatrixCoordinateDistanceCalculator, epsilon);
-
-	pApproxMatrixCoordinateIter->toBegin();
-
-	MatrixPtrVector pResultMatrices;
-
-	matrixVectorFromCoordinateIterator(pApproxMatrixCoordinateIter, pResultMatrices);
-
-	return new InnerVectorMatrixIterator(pResultMatrices);
-}
-
 CoordinateBasedMatrixCollectionImpl::InnerVectorMatrixIterator::InnerVectorMatrixIterator(const MatrixPtrVector& pMatrices) : m_counter(0) {
 	m_pMatrices.clear();
 	m_pMatrices.insert(m_pMatrices.end(), pMatrices.begin(), pMatrices.end());

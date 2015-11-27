@@ -9,6 +9,8 @@
 #include "IIterator.h"
 #include "ICollection.h"
 #include "IComposer.h"
+#include "IDistanceCalculator.h"
+#include "VectorBasedReadOnlyIteratorImpl.hpp"
 
 template<typename T>
 ComposerBasedElementApproximator<T>::ComposerBasedElementApproximator(DecomposerPtr<T> pQueryDecomposer,
@@ -23,7 +25,7 @@ ComposerBasedElementApproximator<T>::ComposerBasedElementApproximator(Decomposer
 }
 
 template<typename T>
-IteratorPtr<T> ComposerBasedElementApproximator<T>::getApproximateElements(CollectionPtr<T> pCoreCollection,
+IteratorPtr<LookupResult<T> > ComposerBasedElementApproximator<T>::getApproximateElements(CollectionPtr<T> pCoreCollection,
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon) {
@@ -38,7 +40,10 @@ IteratorPtr<T> ComposerBasedElementApproximator<T>::getApproximateElements(Colle
 
 	releaseBuildingBlocksBuckets(buildingBlockBuckets);
 
-	return pFinalResultIter;
+	IteratorPtr<LookupResult<T> > pFullResultIter = getFullResultIterator(pFinalResultIter, pQuery, pDistanceCalculator);
+	_destroy(pFinalResultIter);
+
+	return pFullResultIter;
 }
 
 template<typename T>
@@ -55,26 +60,30 @@ void ComposerBasedElementApproximator<T>::decomposeQueryIntoBuildingBlocksBucket
 
 	for(unsigned int i = 0; i < partialQueries.size(); i++) {
 		//Get buiding block list for partial query
-		IteratorPtr<T> pBuildingBlockIter = getApproximateElementsForPartialQuery(pCoreCollection,
+		IteratorPtr<LookupResult<T> > pLookupIter = getApproximateElementsForPartialQuery(pCoreCollection,
 				partialQueries[i],
 				pDistanceCalculator,
 				m_initialEpsilon);
 
 		//Add found building blocks to the bucket to compose later
-		buildingBlockBuckets.push_back(pBuildingBlockIter);
+		buildingBlockBuckets.push_back(getExtractedElementIterator(pLookupIter));
+
+		_destroy(pLookupIter);
 	}
 
 	//TODO Release elements in partialQueries
 }
 
 template<typename T>
-IteratorPtr<T> ComposerBasedElementApproximator<T>::getApproximateElementsForPartialQuery(CollectionPtr<T> pCoreCollection,
+IteratorPtr<LookupResult<T> > ComposerBasedElementApproximator<T>::getApproximateElementsForPartialQuery(CollectionPtr<T> pCoreCollection,
 		T pPartialQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon) {
 	//In this base class, just return result from core collection.
 	//Derived class may override this method to implement other logic
-	return pCoreCollection->findNearestNeighbour(pPartialQuery, pDistanceCalculator, epsilon);
+	return pCoreCollection->findNearestNeighbours(pPartialQuery,
+			pDistanceCalculator,
+			epsilon);
 }
 
 template<typename T>
@@ -84,4 +93,32 @@ void ComposerBasedElementApproximator<T>::releaseBuildingBlocksBuckets(BuildingB
 		bIter = buildingBlockBuckets.erase(bIter);
 		_destroy(pIter);
 	}
+}
+
+template<typename T>
+IteratorPtr<T> ComposerBasedElementApproximator<T>::getExtractedElementIterator(IteratorPtr<LookupResult<T> > pLookupResultIter) {
+	std::vector<T> elements;
+	while(!pLookupResultIter->isDone()) {
+		elements.push_back(pLookupResultIter->getObj().m_resultElement);
+		pLookupResultIter->next();
+	}
+	return IteratorPtr<T>(new VectorBasedReadOnlyIteratorImpl<T>(elements));
+}
+
+template<typename T>
+IteratorPtr<LookupResult<T> > ComposerBasedElementApproximator<T>::getFullResultIterator(IteratorPtr<T> pResultIter, T pQuery,
+		DistanceCalculatorPtr<T> pDistanceCalculator) {
+	std::vector<LookupResult<T> > fullResults;
+
+	if(pResultIter != NullPtr) {
+		while(!pResultIter->isDone()) {
+			pResultIter->next();
+			T resultElement = pResultIter->getObj();
+			mreal_t distance = pDistanceCalculator->distance(resultElement, pQuery);
+			fullResults.push_back(LookupResult<T>(resultElement, distance));
+		}
+		pResultIter->toBegin();
+		std::sort(fullResults.begin(), fullResults.end(), DistanceComparator<T>());
+	}
+	return IteratorPtr<LookupResult<T> >(new VectorBasedReadOnlyIteratorImpl<LookupResult<T> >(fullResults));
 }

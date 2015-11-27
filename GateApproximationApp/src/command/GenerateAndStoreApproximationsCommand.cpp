@@ -37,7 +37,7 @@ void GenerateAndStoreApproximationsCommand::doExecute() {
 	for(unsigned int i = 0; i < m_targets.size(); i++) {
 		GatePtr pTarget = m_targets[i];
 
-		GateIteratorPtr pGateIter = getApproximatorResultIter(pTarget);
+		GateLookupResultIteratorPtr pGateIter = getApproximatorResultIter(pTarget);
 		storeResultsToPersistableCollection(pGateIter);
 		_destroy(pGateIter);
 	}
@@ -47,17 +47,20 @@ void GenerateAndStoreApproximationsCommand::doExecute() {
 	persistResultsToStorage();
 }
 
-GateIteratorPtr GenerateAndStoreApproximationsCommand::getApproximatorResultIter(GatePtr pTarget) {
-	return m_pApproximator->getApproximateElements(m_pCoreCollection, pTarget, m_pGateDistanceCalculator, m_approximatorEpsilon);
+GateLookupResultIteratorPtr GenerateAndStoreApproximationsCommand::getApproximatorResultIter(GatePtr pTarget) {
+	return m_pApproximator->getApproximateElements(m_pCoreCollection,
+			pTarget,
+			m_pGateDistanceCalculator,
+			m_approximatorEpsilon);
 }
 
-void GenerateAndStoreApproximationsCommand::storeResultsToPersistableCollection(GateIteratorPtr pGateIter) {
+void GenerateAndStoreApproximationsCommand::storeResultsToPersistableCollection(GateLookupResultIteratorPtr pGateIter) {
 	if(pGateIter == NullPtr) {
 		return;
 	}
 	long nbResults = 0;
 	while(!pGateIter->isDone()) {
-		GatePtr pGate = pGateIter->getObj();
+		GatePtr pGate = pGateIter->getObj().m_resultElement;
 		m_pPersistableGateCollection->addElement(pGate);
 		nbResults++;
 		pGateIter->next();

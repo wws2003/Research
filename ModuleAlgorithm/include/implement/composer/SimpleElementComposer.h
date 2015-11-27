@@ -52,7 +52,7 @@ private:
 	int m_maxResultsNumber;
 
 	typedef unsigned long long combination_counter_t;
-	combination_counter_t m_combination_counter;
+	combination_counter_t m_combinationCounter;
 
 	int m_logFolderCounter;
 };

@@ -28,6 +28,8 @@ src/IOTestSuite.d: ../src/IOTestSuite.cpp ../src/IOTestSuite.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
  ../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h \
@@ -93,6 +95,10 @@ src/IOTestSuite.d: ../src/IOTestSuite.cpp ../src/IOTestSuite.h \
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
 

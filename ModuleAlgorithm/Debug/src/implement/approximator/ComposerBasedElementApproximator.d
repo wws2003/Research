@@ -9,11 +9,14 @@ src/implement/approximator/ComposerBasedElementApproximator.d: \
  ../../SharedThirdParties/gmp/include/gmp.h \
  ../include/interface/abstract/IApproximator.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
+ ../include/interface/abstract/ICollection.h \
+ ../include/interface/abstract/IIterator.h \
  ../include/interface/abstract/IComposer.h \
  ../include/interface/abstract/IDecomposer.h \
  ../include/interface/abstract/IIterator.h \
  ../include/interface/abstract/ICollection.h \
- ../include/interface/abstract/IIterator.h
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
+ ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp
 
 ../include/implement/approximator/ComposerBasedElementApproximator.h:
 
@@ -33,6 +36,10 @@ src/implement/approximator/ComposerBasedElementApproximator.d: \
 
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
+../include/interface/abstract/ICollection.h:
+
+../include/interface/abstract/IIterator.h:
+
 ../include/interface/abstract/IComposer.h:
 
 ../include/interface/abstract/IDecomposer.h:
@@ -41,4 +48,6 @@ src/implement/approximator/ComposerBasedElementApproximator.d: \
 
 ../include/interface/abstract/ICollection.h:
 
-../include/interface/abstract/IIterator.h:
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
+../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:

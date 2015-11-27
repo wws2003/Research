@@ -26,27 +26,19 @@
 #define END_LINE "\r\n"
 
 template<typename T>
-struct ElementWithDistance_ {
-	T element;
-	mreal_t distance;
-
-	bool operator < (const ElementWithDistance_& e) const
-	{
-		return (distance < e.distance);
-	}
-};
+using ElementWithDistances = std::vector<LookupResult<T> >;
 
 template<typename T>
-using ElementWithDistance = ElementWithDistance_<T>;
+void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCollection,
+		T target,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon,
+		IteratorPtr<LookupResult<T> >&  prFindIter,
+		TimerPtr pTimer,
+		double* pSearchTime);
 
 template<typename T>
-using ElementWithDistances = std::vector<ElementWithDistance<T> >;
-
-template<typename T>
-void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCollection, T target, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, IteratorPtr<T>&  prFindIter, TimerPtr pTimer, double* pSearchTime);
-
-template<typename T>
-void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
+void logAllSearchResultsFoundIterator(IteratorPtr<LookupResult<T> > pFindResultIter,
 		DistanceCalculatorPtr<T> pDistanceCaculator,
 		RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
 		RealCoordinateWriterPtr<T> pRealCoordinateWriter,
@@ -57,7 +49,7 @@ void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
 		std::ostream& outputStream);
 
 template<typename T>
-void getSortedResults(IteratorPtr<T> pFindResultIter,
+void getSortedResults(IteratorPtr<LookupResult<T> > pFindResultIter,
 		DistanceCalculatorPtr<T> pDistanceCaculator,
 		T pTarget,
 		ElementWithDistances<T>& sortedResults);
@@ -104,7 +96,7 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateCollection(CollectionPtr<T> pColl
 	for(size_t i = 0; i < numberOfCases; i++) {
 		T target = m_targets[i];
 		double searchTime = 0;
-		IteratorPtr<T> pFindResultIter = NullPtr; //Imply no result found
+		IteratorPtr<LookupResult<T> > pFindResultIter = NullPtr; //Imply no result found
 
 		findTargetAndMeasureTime<T>(NullPtr,
 				pCollection,
@@ -135,7 +127,7 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateApproximator(ApproximatorPtr<T> p
 		T target = m_targets[i];
 
 		double searchTime = 0;
-		IteratorPtr<T> pFindResultIter = NullPtr; //Imply no result found
+		IteratorPtr<LookupResult<T> > pFindResultIter = NullPtr; //Imply no result found
 
 		findTargetAndMeasureTime(pApproximator,
 				pCoreCollection,
@@ -159,7 +151,15 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateApproximator(ApproximatorPtr<T> p
 }
 
 template<typename T>
-void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCollection, T target, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon, IteratorPtr<T>&  prFindIter, TimerPtr pTimer, double* pSearchTime) {
+void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator,
+		CollectionPtr<T> pCollection,
+		T target,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon,
+		IteratorPtr<LookupResult<T> >&  prFindIter,
+		TimerPtr pTimer,
+		double* pSearchTime) {
+
 	//Use try catch and make use of scope timer
 	try {
 		ScopeTimer scopeTimer(pTimer, pSearchTime);
@@ -169,7 +169,10 @@ void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T>
 			prFindIter = pApproximator->getApproximateElements(pCollection, target, pDistanceCalculator, epsilon);
 		}
 		else {
-			prFindIter = pCollection->findNearestNeighbour(target, pDistanceCalculator, epsilon);
+			prFindIter = pCollection->findNearestNeighbours(target,
+					pDistanceCalculator,
+					epsilon,
+					true);
 		}
 	}
 	catch (std::exception & e) {
@@ -179,7 +182,7 @@ void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T>
 
 //Sort found results by precision (distance to query) then output
 template<typename T>
-void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
+void logAllSearchResultsFoundIterator(IteratorPtr<LookupResult<T> > pFindResultIter,
 		DistanceCalculatorPtr<T> pDistanceCaculator,
 		RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
 		RealCoordinateWriterPtr<T> pRealCoordinateWriter,
@@ -211,8 +214,8 @@ void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
 
 	//Output (log) each result
 	for(unsigned int i = 0; i < results.size(); i++) {
-		T result = results[i].element;
-		mreal_t precision = results[i].distance;
+		T result = results[i].m_resultElement;
+		mreal_t precision = results[i].m_distanceToTarget;
 
 		//outputStream << "Result " << i << END_LINE;
 
@@ -236,7 +239,7 @@ void logAllSearchResultsFoundIterator(IteratorPtr<T> pFindResultIter,
 }
 
 template<typename T>
-void getSortedResults(IteratorPtr<T> pFindResultIter,
+void getSortedResults(IteratorPtr<LookupResult<T> > pFindResultIter,
 		DistanceCalculatorPtr<T> pDistanceCaculator,
 		T pTarget,
 		ElementWithDistances<T>& sortedResults) {
@@ -245,16 +248,10 @@ void getSortedResults(IteratorPtr<T> pFindResultIter,
 
 	//Traverse iterator to get element and push to results vector
 	while(!pFindResultIter->isDone()) {
-		T element = pFindResultIter->getObj();
-		mreal_t precision = pDistanceCaculator->distance(element, pTarget);
 
 #ifdef DENOISING
-		if(precision >= NOISE_THRESOLD) {
-			ElementWithDistance<T> result;
-			result.element = element;
-			result.distance = precision;
-
-			sortedResults.push_back(result);
+		if(pFindResultIter->getObj().m_distanceToTarget >= NOISE_THRESOLD) {
+			sortedResults.push_back(pFindResultIter->getObj());
 		}
 #endif
 
@@ -263,9 +260,6 @@ void getSortedResults(IteratorPtr<T> pFindResultIter,
 
 	//Wind-back the iterator for future purpose
 	pFindResultIter->toBegin();
-
-	//Sort the results vector by precision
-	std::sort(sortedResults.begin(), sortedResults.end());
 }
 
 template<typename T>
@@ -291,6 +285,8 @@ void logSearchResult(T pQuery,
 	outputStream << "Search time: " ;
 	outputStream << searchTime << delimeter;
 	outputStream << "Result:" << END_LINE;*/
+
+	outputStream << "Search time: "  << searchTime << delimeter;
 
 	if(pResult != NullPtr) {
 		pWriter->write(pResult, outputStream);

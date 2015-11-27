@@ -9,6 +9,8 @@
 #define MREAL_H_
 
 #include "mpreal.h"
+#include <cmath>
+#include <cfloat>
 
 #define MPFR_REAL 1
 
@@ -52,6 +54,14 @@ inline double toDouble(const mreal_t& v) {
 	return v.toDouble();
 #else
 	return v;
+#endif
+}
+
+inline bool isNAN(const mreal_t& v) {
+#if MPFR_REAL
+	return mpfr::isnan(v);
+#else
+	return std::isnan(v);
 #endif
 }
 

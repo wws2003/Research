@@ -14,6 +14,24 @@
 #include "IIterator.h"
 
 template<typename T>
+struct LookupResult{
+	LookupResult(T resultElement, mreal_t distanceToTarget){m_resultElement = resultElement; m_distanceToTarget = distanceToTarget;};
+	T m_resultElement;
+	mreal_t m_distanceToTarget;
+};
+
+template<typename T>
+struct _DistanceComparator {
+	bool operator()(const LookupResult<T>& r1, const LookupResult<T>& r2)
+	{
+		return r1.m_distanceToTarget < r2.m_distanceToTarget;
+	}
+};
+
+template<typename T>
+using DistanceComparator = struct _DistanceComparator<T>;
+
+template<typename T>
 class ICollection {
 public:
 	virtual ~ICollection(){};
@@ -40,9 +58,11 @@ public:
 	//(Re)Build the search data structure given distance calculator
 	virtual void rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator) = 0;
 
-	//Find the neighbor elements to the query, given distance calculator
-	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon) const = 0;
-
+	//Advanced lookup function, with distance stored in results
+	virtual IteratorPtr<LookupResult<T> > findNearestNeighbours(T query,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilon,
+			bool toSortResults = false) const = 0;
 };
 
 

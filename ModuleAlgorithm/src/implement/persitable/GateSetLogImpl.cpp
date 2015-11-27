@@ -86,7 +86,7 @@ void GateSetLogImpl::flushRecord(const Record& record, std::string fileName) {
 				flushGateMatrixSize(pGate->getMatrix(), fs);
 				sizeFlushed = true;
 			}
-			flushGateLabel(pGate, fs);
+			//flushGateLabel(pGate, fs);
 			flushGateMatrixValues(pGate->getMatrix(), fs);
 		}
 	}
