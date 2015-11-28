@@ -12,7 +12,8 @@ src/implement/persitable/GateSetLogImpl.d: \
  ../include/interface/abstract/IIterator.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
- ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h
+ ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
+ ../../ModuleIO/include/interface/common/IOUtil.h
 
 ../include/implement/persistable/GateSetLogImpl.h:
 
@@ -39,3 +40,5 @@ src/implement/persitable/GateSetLogImpl.d: \
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
+
+../../ModuleIO/include/interface/common/IOUtil.h:

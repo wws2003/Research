@@ -16,6 +16,8 @@ class IElementSetLog {
 public:
 	virtual ~IElementSetLog(){};
 
+	virtual void prepareLogRootFolder(std::string logRootFolder) = 0;
+
 	virtual void saveElementSets(std::vector<IteratorPtr<T> > elementSets) = 0;
 
 	virtual void saveQuery(T query) = 0;

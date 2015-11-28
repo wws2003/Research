@@ -29,6 +29,7 @@ public:
 			mreal_t epsilon);
 
 private:
+
 	void generateApproximations(std::vector<T>& partialElementsBuffer,
 			int bucketIndex,
 			const BuildingBlockBuckets<T>& buildingBlockBuckets,
@@ -46,6 +47,8 @@ private:
 			CollectionPtr<T> pResultsBuffer);
 
 	void composeCandidate(const std::vector<T>& partialElements, T& result);
+
+	static const std::string LOG_ROOT_FOLDER;
 
 	ElementSetLogPtr<T> m_pElementSetLog;
 	CombinerPtr<T> m_pCombiner;

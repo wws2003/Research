@@ -19,6 +19,9 @@ public:
 
 	virtual ~GateSetLogImpl(){};
 
+	//Override
+	void prepareLogRootFolder(std::string logRootFolder);
+
 	void saveQuery(GatePtr query);
 
 	void saveElementSets(std::vector<IteratorPtr<GatePtr> > elementSets);

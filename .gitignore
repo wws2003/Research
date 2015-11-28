@@ -56,6 +56,10 @@ SharedThirdParties/gmp
 SharedThirdParties/m4
 SharedThirdParties/mpfr
 
+# Auto-generated gitignore
+*/Debug/src/implement/.gitignore
+*/Debug/*/.gitignore
+
 # Misc metadata
 .metadata
 

@@ -6,6 +6,7 @@
  */
 
 #include "GateSetLogImpl.h"
+#include "IOUtil.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -17,6 +18,10 @@ const int GateSetLogImpl::OUT_PRECESION = 6;
 
 GateSetLogImpl::GateSetLogImpl() {
 	m_queryRecord.push_back(NullPtr);
+}
+
+void GateSetLogImpl::prepareLogRootFolder(std::string logRootFolder) {
+	prepareFolder(logRootFolder);
 }
 
 void GateSetLogImpl::saveQuery(GatePtr pQuery) {
@@ -57,10 +62,11 @@ void GateSetLogImpl::load(std::string logFolderName, RecordSet& elementSet, Reco
 }
 
 void GateSetLogImpl::prepareFolder(std::string logFolderName) {
-	struct stat st = {0};
-
-	if (stat(logFolderName.c_str(), &st) == -1) {
-		mkdir(logFolderName.c_str(), 0766);
+	if(!isFolderExisting(logFolderName)) {
+		createFolder(logFolderName);
+	}
+	else {
+		emptyFolder(logFolderName);
 	}
 }
 
@@ -69,7 +75,6 @@ std::string GateSetLogImpl::getRecordFileName(std::string logFolderName, int rec
 	ss << logFolderName << "/partial_" << recordIndex << ".txt";
 	return ss.str();
 }
-
 
 std::string GateSetLogImpl::getQueryRecordFileName(std::string logFolderName) {
 	return logFolderName + "/" + "query.txt";

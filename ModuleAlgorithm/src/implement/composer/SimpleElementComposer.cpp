@@ -13,14 +13,20 @@
 #define OUTPUT_INTERMEDIATE_RESULT 1
 
 template<typename T>
+const std::string SimpleElementComposer<T>::LOG_ROOT_FOLDER = "IntermediateLog";
+
+template<typename T>
 SimpleElementComposer<T>::SimpleElementComposer(CombinerPtr<T> pCombiner,
 		int maxResultsNumber,
 		ElementSetLogPtr<T> pElementSetLog) {
+
 	m_pCombiner = pCombiner;
 	m_maxResultsNumber = maxResultsNumber;
 	m_pElementSetLog = pElementSetLog;
 	m_logFolderCounter = 0;
 	m_combinationCounter = 0;
+
+	pElementSetLog->prepareLogRootFolder(LOG_ROOT_FOLDER);
 }
 
 template<typename T>
@@ -104,7 +110,7 @@ void SimpleElementComposer<T>::generateApproximations(std::vector<T>& partialEle
 template<typename T>
 std::string SimpleElementComposer<T>::getCurrentLogFolderName() {
 	std::stringstream ss;
-	ss << "IntermediateLog/" << ++m_logFolderCounter;
+	ss << LOG_ROOT_FOLDER  << "/" << ++m_logFolderCounter;
 	return ss.str();
 }
 
