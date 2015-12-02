@@ -17,6 +17,7 @@
 #include "IWriter.h"
 #include "ICoordinateWriter.h"
 #include "ICoordinateCalculator.h"
+#include "Coordinate.hpp"
 #include <exception>
 #include <algorithm>
 
@@ -116,6 +117,8 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateCollection(CollectionPtr<T> pColl
 				m_collectionEpsilon,
 				m_pWriter,
 				m_ostream);
+
+		releaseResultIter(pFindResultIter);
 	}
 }
 
@@ -147,7 +150,20 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateApproximator(ApproximatorPtr<T> p
 				m_approximatorEpsilon,
 				m_pWriter,
 				m_ostream);
+
+		releaseResultIter(pFindResultIter);
 	}
+}
+
+template<typename T>
+void SearchSpaceTimerEvaluatorImpl<T>::releaseResultIter(IteratorPtr<LookupResult<T> >& pFindResultIter) {
+	while(pFindResultIter != NullPtr && !pFindResultIter->isDone()) {
+		T element = pFindResultIter->getObj().m_resultElement;
+		pFindResultIter->next();
+		_destroy(element);
+	}
+	_destroy(pFindResultIter);
+	pFindResultIter = NullPtr;
 }
 
 template<typename T>
@@ -210,6 +226,7 @@ void logAllSearchResultsFoundIterator(IteratorPtr<LookupResult<T> > pFindResultI
 		outputStream << "Query coordinate:" << END_LINE;
 		pRealCoordinateWriter->writeCoordinate(*pQueryCoordinate, outputStream);
 		outputStream << END_LINE;
+		_destroy(pQueryCoordinate);
 	}
 
 	//Output (log) each result
@@ -235,6 +252,8 @@ void logAllSearchResultsFoundIterator(IteratorPtr<LookupResult<T> > pFindResultI
 				pCoordinate,
 				pRealCoordinateWriter,
 				outputStream);
+
+		_destroy(pCoordinate);
 	}
 }
 

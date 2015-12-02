@@ -5,7 +5,7 @@
  *      Author: pham
  */
 
-#include "MatrixSearchSpaceTimerEvaluatorImpl.h"
+#include "GateSearchSpaceTimerEvaluatorImpl.h"
 #include "SearchSpaceTimerEvaluator.cpp"
 
 template class SearchSpaceTimerEvaluatorImpl<GatePtr>;

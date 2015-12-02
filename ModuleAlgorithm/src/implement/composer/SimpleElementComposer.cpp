@@ -130,18 +130,19 @@ void SimpleElementComposer<T>::evaluateCombination(const std::vector<T>& partial
 			throw (1);
 		}
 	}
+	else {
+		_destroy(candidate);
+	}
 }
 
 template<typename T>
 void SimpleElementComposer<T>::composeCandidate(const std::vector<T>& partialElements, T& result) {
-	T combined = partialElements.empty() ? NullPtr : partialElements[0];
+	T combined = partialElements.empty() ? NullPtr : partialElements[0]->clone();
 	for(unsigned int i = 1; i < partialElements.size() && combined != NullPtr; i++) {
 		if(partialElements[i] != NullPtr) {
 			T tmp = NullPtr;
 			m_pCombiner->combine(combined, partialElements[i], tmp);
-			if(i > 1) {
-				_destroy(combined);
-			}
+			_destroy(combined);
 			combined = tmp;
 		}
 	}

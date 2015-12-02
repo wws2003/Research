@@ -79,6 +79,7 @@ SampleResourceContainerImpl::~SampleResourceContainerImpl() {
 
 	_destroy(m_pGateFactory);
 	_destroy(m_pLibraryMatrixStore);
+
 }
 
 void SampleResourceContainerImpl::getUniversalGates(GateCollectionPtr pLibraryGates, int nbQubits) {
@@ -137,7 +138,6 @@ void SampleResourceContainerImpl::getIdentityTargets(std::vector<GatePtr>& targe
 }
 
 void SampleResourceContainerImpl::getRotationTargets(std::vector<GatePtr>& targets, const RotationConfigs& rotationTargetsConfig, int nbQubits) {
-	//TODO Implement
 	targets.clear();
 	for(unsigned int i = 0; i < rotationTargetsConfig.size(); i++) {
 		RotationConfig rotationTargetConfig = rotationTargetsConfig[i];

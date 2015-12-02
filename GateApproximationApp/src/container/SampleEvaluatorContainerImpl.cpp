@@ -42,11 +42,8 @@ SampleEvaluatorContainerImpl::~SampleEvaluatorContainerImpl() {
 }
 
 GateSearchSpaceEvaluatorPtr SampleEvaluatorContainerImpl::getGateSearchSpaceEvaluator() {
-	TargetElements<GatePtr> targets;
 
-	getTargetsForEvaluation(targets);
-
-	GateSearchSpaceEvaluatorPtr pGateSearchSpaceEvaluator = new GateSearchSpaceTimerEvaluatorImpl(targets,
+	GateSearchSpaceEvaluatorPtr pGateSearchSpaceEvaluator = new GateSearchSpaceTimerEvaluatorImpl(m_targetGates,
 			m_evaluatorConfig.m_collectionEpsilon,
 			m_evaluatorConfig.m_approximatorEpsilon,
 			m_pGateDistanceCalculator,
@@ -83,6 +80,8 @@ void SampleEvaluatorContainerImpl::wireDependencies() {
 			m_pMatrixFactory,
 			m_pMatrixOperator);
 
+	getTargetsForEvaluation(m_targetGates);
+
 	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(m_pMatrixOperator));
 	m_pLibraryMatrixStore = LibraryMatrixStorePtr(new SampleLibraryMatrixStore(m_pMatrixFactory, m_pMatrixOperator));
 
@@ -112,6 +111,19 @@ void SampleEvaluatorContainerImpl::releaseDependencies() {
 	_destroy(m_pGateWriterInEvaluator);
 
 	_destroy(m_pGateDistanceCalculator);
+
+	_destroy(m_pLibraryMatrixStore);
+
+	_destroy(m_pMatrixDistanceCalculator);
+
+	//Release generate targets
+	/*for(std::vector<GatePtr>::iterator gIter = m_targetGates.begin(); gIter != m_targetGates.end();) {
+		GatePtr pGate = *gIter;
+		gIter = m_targetGates.erase(gIter);
+		_destroy(pGate);
+	}*/
+	//Try foreach !
+	std::for_each(m_targetGates.begin(), m_targetGates.end(), [](GatePtr pGate){_destroy(pGate);});
 
 	_destroy(m_pResourceContainer);
 

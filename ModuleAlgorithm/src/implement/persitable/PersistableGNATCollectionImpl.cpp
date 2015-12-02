@@ -21,15 +21,15 @@ using GNATCollectionMap = std::map<GNATCollectionIdType, PersistableGNATCollecti
 /*---------------------------------------------------*/
 
 template<typename T>
-PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl(LookupResultFilterPtr<T> pLookupResultFilter) : GNATCollectionImpl<T>(pLookupResultFilter) {
-	m_pWriter = NullPtr;
-	m_pReader = NullPtr;
+PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader, LookupResultFilterPtr<T> pResultFilter) : GNATCollectionImpl<T>(pResultFilter, true) {
+	m_pWriter = pWriter;
+	m_pReader = pReader;
 }
 
 template<typename T>
-PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader, LookupResultFilterPtr<T> pResultFilter) : GNATCollectionImpl<T>(pResultFilter) {
-	m_pWriter = pWriter;
-	m_pReader = pReader;
+PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl(LookupResultFilterPtr<T> pLookupResultFilter) : GNATCollectionImpl<T>(pLookupResultFilter, false) {
+	m_pWriter = NullPtr;
+	m_pReader = NullPtr;
 }
 
 template<typename T>

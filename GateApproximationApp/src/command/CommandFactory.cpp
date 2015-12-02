@@ -23,6 +23,7 @@ CommandFactory::CommandFactory() : m_pCollectionContainer(NullPtr), m_pApproxima
 CommandFactory::~CommandFactory() {
 	_destroy(m_pCollectionContainer);
 	_destroy(m_pEvaluatorContainer);
+	_destroy(m_pApproximatorContainer);
 }
 
 CommandPtr CommandFactory::getCommand(int commandCode, const CommandParams& commandParams) {

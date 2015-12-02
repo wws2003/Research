@@ -42,6 +42,8 @@ private:
 
 	ResourceContainerPtr m_pResourceContainer;
 
+	std::vector<GatePtr> m_targetGates;
+
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
 	LibraryMatrixStorePtr m_pLibraryMatrixStore;
 	GateDistanceCalculatorPtr m_pGateDistanceCalculator;

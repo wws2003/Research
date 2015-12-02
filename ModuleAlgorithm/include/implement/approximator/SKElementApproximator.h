@@ -71,6 +71,8 @@ private:
 
 	void releaseElementsInIterator(IteratorPtr<T> pIter);
 
+	void releaseElementsInResultsIterator(IteratorPtr<LookupResult<T> > pIter);
+
 	DecomposerPtr<T> m_pQueryDecomposer;
 	ComposerPtr<T> m_pBuildingBlockComposer;
 	mreal_t m_initialEpsilon;

@@ -45,9 +45,10 @@ template<typename T>
 void selfTest(GNATCollectionImpl<T>* pCollection);
 
 template<typename T>
-GNATCollectionImpl<T>::GNATCollectionImpl(LookupResultFilterPtr<T> pResultFilter)
+GNATCollectionImpl<T>::GNATCollectionImpl(LookupResultFilterPtr<T> pResultFilter, bool toCloneFilteredResults)
  {
 	m_pResultFilter = pResultFilter;
+	m_toCloneFilteredResults = toCloneFilteredResults;
 }
 
 template<typename T>
@@ -193,8 +194,10 @@ IteratorPtr<LookupResult<T> > GNATCollectionImpl<T>::findNearestNeighbours(T que
 
 	//20151118 Filter results to eliminate duplicated results
 	if(m_pResultFilter != NullPtr && !results.empty()) {
-		//TODO Decide to clone result or not. Temporary do clone
-		m_pResultFilter->filterLookupResults(results, pDistanceCalculator, true);
+		//TODO Decide to clone result or not. Temporary do clone only in the root collection
+		m_pResultFilter->filterLookupResults(results,
+				pDistanceCalculator,
+				m_toCloneFilteredResults);
 	}
 
 	if(toSortResults) {
@@ -227,7 +230,7 @@ void GNATCollectionImpl<T>::recallElements() {
 
 template<typename T>
 CollectionPtr<T> GNATCollectionImpl<T>::generateSubCollection() {
-	return new GNATCollectionImpl<T>();
+	return new GNATCollectionImpl<T>(m_pResultFilter, false);
 }
 
 template<typename T>

@@ -1,6 +1,6 @@
 src/implement/GateSearchSpaceTimerEvaluatorImpl.d: \
  ../src/implement/GateSearchSpaceTimerEvaluatorImpl.cpp \
- ../include/implement/MatrixSearchSpaceTimerEvaluatorImpl.h \
+ ../include/implement/GateSearchSpaceTimerEvaluatorImpl.h \
  ../include/implement/SearchSpaceEvaluatorImpl.h \
  ../include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
@@ -12,6 +12,7 @@ src/implement/GateSearchSpaceTimerEvaluatorImpl.d: \
  ../include/interface/common/EvaluateCommon.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
+ ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../src/implement/SearchSpaceTimerEvaluator.cpp \
@@ -26,9 +27,11 @@ src/implement/GateSearchSpaceTimerEvaluatorImpl.d: \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
  ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h \
- ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h
+ ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
+ ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h
 
-../include/implement/MatrixSearchSpaceTimerEvaluatorImpl.h:
+../include/implement/GateSearchSpaceTimerEvaluatorImpl.h:
 
 ../include/implement/SearchSpaceEvaluatorImpl.h:
 
@@ -51,6 +54,8 @@ src/implement/GateSearchSpaceTimerEvaluatorImpl.d: \
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
 ../../ModuleIO/include/interface/common/IOCommon.h:
+
+../../ModuleMathConcepts/include/interface/common/Gate.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
@@ -81,3 +86,7 @@ src/implement/GateSearchSpaceTimerEvaluatorImpl.d: \
 ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h:
 
 ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
+
+../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
+
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:

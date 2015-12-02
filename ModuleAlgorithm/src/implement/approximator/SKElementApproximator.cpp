@@ -68,9 +68,10 @@ IteratorPtr<LookupResult<T> > SKElementApproximator<T>::skApproximate(Collection
 			level - 1);
 
 	IteratorVector<T> apprxCandidatesIters;
-	int nbc = m_nbCandidates;
 
-	while(pRawApprxIter != NullPtr && !pRawApprxIter->isDone()) {
+	int candidateCounter = 0;
+
+	while((candidateCounter++ < m_nbCandidates) && (pRawApprxIter != NullPtr && !pRawApprxIter->isDone())) {
 		T rawApprx = pRawApprxIter->getObj().m_resultElement;
 
 		IteratorPtr<T> pCandidatesIter = getCandidatesFromRawApprx(rawApprx,
@@ -80,13 +81,14 @@ IteratorPtr<LookupResult<T> > SKElementApproximator<T>::skApproximate(Collection
 				epsilonForCurrentLevel,
 				level);
 
-		apprxCandidatesIters.push_back(pCandidatesIter);
-		pRawApprxIter->next();
-
-		//FIXME Break to test
-		if(--nbc <= 0 || (pCandidatesIter != NullPtr && !pCandidatesIter->isDone())) {
-			break;
+		if(pCandidatesIter != NullPtr && !pCandidatesIter->isDone()) {
+			apprxCandidatesIters.push_back(pCandidatesIter);;
 		}
+		else {
+			_destroy(pCandidatesIter);
+		}
+
+		pRawApprxIter->next();
 	}
 
 	IteratorPtr<LookupResult<T> > pApprxIter = filterCandidates(apprxCandidatesIters,
@@ -94,8 +96,15 @@ IteratorPtr<LookupResult<T> > SKElementApproximator<T>::skApproximate(Collection
 			pDistanceCalculator,
 			epsilonForCurrentLevel);
 
+	//Release apprximation candidates
 	releaseIterators(apprxCandidatesIters);
-	_destroy(pRawApprxIter);
+
+	//Release raw approximations
+	if(pRawApprxIter) {
+		pRawApprxIter->toBegin();
+		releaseElementsInResultsIterator(pRawApprxIter);
+		_destroy(pRawApprxIter);
+	}
 
 	return pApprxIter;
 }
@@ -218,16 +227,27 @@ void SKElementApproximator<T>::addBuildingBlocksBucketsForResidual(T residual,
 
 		_destroy(pPartialApprx);
 	}
+
+	//Destroy partial targets
+	for(unsigned int i = 0; i < residualPartitions.size(); i++) {
+		_destroy(residualPartitions[i]);
+	}
 }
 
 template<typename T>
 IteratorPtr<T> SKElementApproximator<T>::getExtractedElementIterator(IteratorPtr<LookupResult<T> > pLookupResultIter) {
 	std::vector<T> elements;
 	int elementCounter = 0;
-	while(!pLookupResultIter->isDone() && ++elementCounter <= m_nbCandidates) {
-		elements.push_back(pLookupResultIter->getObj().m_resultElement);
+	while(!pLookupResultIter->isDone()) {
+		if(++elementCounter <= m_nbCandidates) {
+			elements.push_back(pLookupResultIter->getObj().m_resultElement);
+		}
+		else {
+			_destroy(pLookupResultIter->getObj().m_resultElement);
+		}
 		pLookupResultIter->next();
 	}
+
 	std::cout << "Nb Sub-Results: " << elements.size() << "\n";
 	return IteratorPtr<T>(new VectorBasedReadOnlyIteratorImpl<T>(elements));
 }
@@ -250,3 +270,13 @@ void SKElementApproximator<T>::releaseElementsInIterator(IteratorPtr<T> pIter) {
 		_destroy(element);
 	}
 }
+
+template<typename T>
+void SKElementApproximator<T>::releaseElementsInResultsIterator(IteratorPtr<LookupResult<T> > pIter) {
+	while(pIter != NullPtr && !pIter->isDone()) {
+		T element = pIter->getObj().m_resultElement;
+		pIter->next();
+		_destroy(element);
+	}
+}
+

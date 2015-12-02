@@ -36,16 +36,20 @@ public:
 	virtual ~SearchSpaceTimerEvaluatorImpl(){};
 
 	/**
+	 * Override
 	 *Evaluate given matrix/gate collection, possibly about running time to find approximation, etc.
 	 */
 	virtual void evaluateCollection(CollectionPtr<T> pCollection);
 
 	/**
+	 * Overide
 	 *Evaluate given matrix/gate approximator, possibly about running time to get approximation, etc.
 	 */
 	virtual void evaluateApproximator(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCoreCollection);
 
 private:
+	void releaseResultIter(IteratorPtr<LookupResult<T> >& pFindResultIter);
+
 	TargetElements<T> m_targets;
 	mreal_t m_collectionEpsilon;
 	mreal_t m_approximatorEpsilon;

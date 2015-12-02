@@ -36,7 +36,7 @@ using SplitPointSet = std::vector<T>;
 template<typename T>
 class GNATCollectionImpl : public ICollection<T> {
 public:
-	GNATCollectionImpl(LookupResultFilterPtr<T> pResultFilter = NullPtr);
+	GNATCollectionImpl(LookupResultFilterPtr<T> pResultFilter = NullPtr, bool toCloneFilteredResults = false);
 	virtual ~GNATCollectionImpl();
 
 	//Override
@@ -75,6 +75,7 @@ protected:
 	RangeMap m_splitPointRanges;
 
 	LookupResultFilterPtr<T> m_pResultFilter;
+	bool m_toCloneFilteredResults;
 
 private:
 
