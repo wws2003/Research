@@ -14,8 +14,11 @@
 template<typename E, typename Field>
 class Coordinate {
 public:
+
+	Coordinate(){m_element = NullPtr;};
+
 	Coordinate(E element, const std::vector<Field>& coordinates):m_element(element){
-		m_coordinates.clear();
+		m_coordinates.reserve(coordinates.size());
 		m_coordinates.insert(m_coordinates.end(), coordinates.begin(), coordinates.end());
 	};
 
@@ -23,9 +26,51 @@ public:
 
 	const std::vector<Field>& getCoordinates() const {return m_coordinates;};
 
-	E getElement(){return m_element;}
+	E getElement() const {return m_element;}
 
 	inline void setElement(E element){m_element = element;};
+
+	Coordinate<E, Field> operator+(const Coordinate<E, Field>& rhs) const {
+		std::vector<Field> coordinates;
+		int nbDimensional = m_coordinates.size();
+
+		coordinates.reserve(nbDimensional);
+		for(unsigned int i = 0; i < nbDimensional; i++) {
+			coordinates.push_back(m_coordinates[i] + rhs.m_coordinates[i]);
+		}
+		return Coordinate<E, Field>(NullPtr, coordinates);
+	}
+
+	Coordinate<E, Field> operator-(const Coordinate<E, Field>& rhs) const {
+		std::vector<Field> coordinates;
+		int nbDimensional = m_coordinates.size();
+
+		coordinates.reserve(nbDimensional);
+		for(unsigned int i = 0; i < nbDimensional; i++) {
+			coordinates.push_back(m_coordinates[i] - rhs.m_coordinates[i]);
+		}
+		return Coordinate<E, Field>(NullPtr, coordinates);
+	}
+
+	Coordinate<E, Field>& operator+=(const Coordinate<E, Field>& rhs) {
+		int nbDimensional = m_coordinates.size();
+
+		for(unsigned int i = 0; i < nbDimensional; i++) {
+			m_coordinates[i] += rhs.m_coordinates[i];
+		}
+		//NOTE: This operator doesn't automatically update the element field if this instance
+		return *this;
+	}
+
+	Coordinate<E, Field>& operator-=(const Coordinate<E, Field>& rhs) {
+		int nbDimensional = m_coordinates.size();
+
+		for(unsigned int i = 0; i < nbDimensional; i++) {
+			m_coordinates[i] -= rhs.m_coordinates[i];
+		}
+		//NOTE: This operator doesn't automatically update the element field if this instance
+		return *this;
+	}
 
 private:
 	std::vector<Field> m_coordinates;

@@ -26,6 +26,7 @@ SUBDIRS := \
 src/implement/persitable \
 src/implement/filter \
 src/implement/decomposer \
+src/implement/converter \
 src/implement/composer \
 src/implement/combiner \
 src/implement/collection \

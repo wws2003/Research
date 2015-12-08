@@ -35,37 +35,37 @@ RotationConfig;
 
 typedef std::vector<RotationConfig> RotationConfigs;
 
-typedef struct _CollectionConfig {
+struct CollectionConfig {
 	LibrarySet m_librarySet;
 	int m_maxSequenceLength;
 	int m_nbQubits;
-}
-CollectionConfig;
+};
 
-typedef struct _EvaluatorConfig {
+struct EvaluatorConfig {
 	double m_collectionEpsilon;
 	double m_approximatorEpsilon;
 	RotationConfigs m_rotationTargets;
-}
-EvaluatorConfig;
+};
 
-typedef struct _NearIdentityApproximatorConfig {
+struct NearIdentityApproximatorConfig {
 	int m_maxMergedBinDistance;
 	mreal_t m_maxCandidateEpsilon;
 	mreal_t m_maxCandidateEpsilonDecreaseFactor;
 	int m_iterationMaxSteps;
 	int m_maxResultNumber;
 	mreal_t m_initialEpsilon;
-}
-NearIdentityApproximatorConfig;
+};
 
-
-typedef struct _SKApproximatorConfig {
+struct SKApproximatorConfig {
 	mreal_t m_initialEpsilon;
 	int m_recursiveLevels;
 	int m_nbCandidates;
-}
-SKApproximatorConfig;
+};
 
+
+struct SKApproximatorConfig2 : public SKApproximatorConfig {
+	mreal_t m_coordinateEpsilon;
+	int m_coordinateComparatorType;
+};
 
 #endif /* CONFIG_H_ */

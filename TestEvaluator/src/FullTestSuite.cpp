@@ -49,6 +49,10 @@
 #include "BinaryGateReaderImpl.h"
 #include "BinaryMatrixReaderImpl.h"
 #include "BinaryMatrixWriterImpl.h"
+#include "CoordinateAdditionBasedGateComposer.h"
+#include "DictionaryOrderCoordinateComparator.hpp"
+#include "VectorBasedIteratorImpl.hpp"
+#include "GateCoordinateCombinerImpl.h"
 #include <iostream>
 #include <cmath>
 #include <cstdio>
@@ -146,11 +150,12 @@ void FullTestSuite::test(){
 	testSimpleEvaluator();
 	testInverseCancelingSearchSpaceConstructor();
 	testSampleMatrixBinCollection();
-	testCalculateCoordinatesInSearchSpace();
+	/*testCalculateCoordinatesInSearchSpace();
 	testGNATCollectionBuild();
 	testGNATCollectionPersistence();
 	testGNATSearch();
-	testFilteredGNATSearch();
+	testFilteredGNATSearch();*/
+	testAddtionBasedCoordinateComposer();
 	//freeTestGateCollectionEvaluator();
 }
 
@@ -842,6 +847,78 @@ void FullTestSuite::testFilteredGNATSearch() {
 	delete pGateCombiner;
 	std::cout << __func__ << " passed"  <<  std::endl ;
 }
+
+void FullTestSuite::testAddtionBasedCoordinateComposer() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+
+	BuildingBlockBuckets<GateRealCoordinate> buckets;
+
+	//Bucket1
+	//(0,0), (0,1), (0,2), (0,3), (0,4),
+	std::vector<GateRealCoordinate> buildingBlocks1;
+	for(int i = 0; i <= 4; i++) {
+		GateRealCoordinate c(NullPtr, {0.0, i + 0.0});
+		buildingBlocks1.push_back(c);
+	}
+	IteratorPtr<GateRealCoordinate> pGateCoordIter1 = new VectorBasedIteratorImpl<GateRealCoordinate>(&buildingBlocks1);
+	buckets.push_back(pGateCoordIter1);
+
+	//Bucket2
+	//(1,0), (1,1), (1,2), (1,3), (1,4),
+	std::vector<GateRealCoordinate> buildingBlocks2;
+	for(int i = 0; i <= 4; i++) {
+		GateRealCoordinate c(NullPtr, {1.0, i + 0.0});
+		buildingBlocks2.push_back(c);
+	}
+	IteratorPtr<GateRealCoordinate> pGateCoordIter2 = new VectorBasedIteratorImpl<GateRealCoordinate>(&buildingBlocks2);
+	buckets.push_back(pGateCoordIter2);
+
+	GateRealCoordinate zeroEpsilon(NullPtr, {0.0,0.0});
+
+	GateRealCoordinate target(NullPtr, {1.0, 5.0});
+
+	ComparatorPtr<GateRealCoordinate> pCoordinateComparator = new DictionaryOrderCoordinateComparator<GatePtr>();
+	CombinerPtr<GateRealCoordinate> pCoordinateCombiner = new GateCoordinateCombinerImpl(NullPtr);
+
+	int maxResultsNumber = 5;
+
+	CoordinateAdditionBasedGateComposer additionBasedComposer(pCoordinateComparator,
+			pCoordinateCombiner,
+			zeroEpsilon,
+			maxResultsNumber);
+
+	IteratorPtr<GateRealCoordinate> pComposeIter = additionBasedComposer.composeApproximations(buckets, target, NullPtr, 0.1);
+
+	assert(pComposeIter != NullPtr && !pComposeIter->isDone());
+
+	int nbResults = 0;
+	int expectedNbResults = 4;
+
+	while(!pComposeIter->isDone()) {
+		/*Print result to review*/
+		GateRealCoordinate gateCoord = pComposeIter->getObj();
+		printf("Result [%d] 's coordinate \n---[", nbResults + 1);
+		for(unsigned int i = 0; i < gateCoord.getCoordinates().size(); i++) {
+			printf("%f,", mreal::toDouble(gateCoord.getCoordinates()[i]));
+		}
+		printf("]\n");
+		nbResults++;
+		pComposeIter->next();
+	}
+
+	assert(nbResults == expectedNbResults);
+
+	delete pComposeIter;
+
+	delete pCoordinateCombiner;
+	delete pCoordinateComparator;
+
+	delete pGateCoordIter2;
+	delete pGateCoordIter1;
+
+	std::cout << __func__ << " passed"  <<  std::endl ;
+}
+
 
 void FullTestSuite::freeTestGateCollectionEvaluator() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;

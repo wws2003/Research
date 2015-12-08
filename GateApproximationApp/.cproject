@@ -21,7 +21,7 @@
 							<builder buildPath="${workspace_loc:/Application}/Debug" id="cdt.managedbuild.target.gnu.builder.exe.debug.1634414578" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.exe.debug"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.736895272" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1089064921" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug">
-								<option id="gnu.cpp.compiler.exe.debug.option.optimization.level.1266415790" name="Optimization Level" superClass="gnu.cpp.compiler.exe.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
+								<option id="gnu.cpp.compiler.exe.debug.option.optimization.level.1266415790" name="Optimization Level" superClass="gnu.cpp.compiler.exe.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.more" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.exe.debug.option.debugging.level.1583596459" name="Debug Level" superClass="gnu.cpp.compiler.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1417889712" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="../src/command"/>
@@ -56,17 +56,21 @@
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/approximator"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/bin"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/filter"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/comparator"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/converter"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/internal-abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/collection"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/combiner"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/persistable"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/comparator"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/converter"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/filter"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/implement"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.299868399" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.299868399" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC -pg" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1044727360" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1308549997" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>

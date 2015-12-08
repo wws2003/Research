@@ -28,7 +28,8 @@ private:
 	AbstractCommandPtr getApproximatorEvaluationCommandForIdentity(std::string evaluationConfigFile, std::string approximatorConfigFileName);
 	AbstractCommandPtr getGenerateAndStoreApproximationsCommandForIdentity(std::string evaluationConfigFile, std::string approximatorConfigFileName, std::string storeFileName);
 	AbstractCommandPtr getPersistedCollectionEvaluationCommandForTargets(std::string storeFileName, std::string targetConfigFile);
-	AbstractCommandPtr getSKApproximatorEvaluationCommandForTargets(std::string configFile, std::string skApprxConfigFile, std::string targetConfigFile);
+	AbstractCommandPtr getSKApproximatorEvaluationCommandForTargets(std::string collectionConfigFile, std::string skApprxConfigFile, std::string targetConfigFile);
+	AbstractCommandPtr getSK2ApproximatorEvaluationCommandForTargets(std::string collectionConfigFile, std::string skApprxConfigFile, std::string targetConfigFile);
 
 	void readCollectionConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig);
 
@@ -43,6 +44,10 @@ private:
 			std::string skApprxConfigFile, SKApproximatorConfig* pApproximatorConfig,
 			std::string targetConfigFile, EvaluatorConfig* pEvaluatorConfig);
 
+	void readSK2Config(ConfigReader configReader,
+				std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
+				std::string skApprxConfigFile, SKApproximatorConfig2* pApproximatorConfig,
+				std::string targetConfigFile, EvaluatorConfig* pEvaluatorConfig);
 
 	void resetCollectionContainer(const CollectionConfig& collectionConfig);
 
@@ -51,6 +56,8 @@ private:
 	void resetApproximatorContainer(const NearIdentityApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig);
 
 	void resetSKApproximatorContainer(const SKApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig);
+
+	void resetSK2ApproximatorContainer(const SKApproximatorConfig2& approximatorConfig, const CollectionConfig& collectionConfig);
 
 	CollectionContainerPtr m_pCollectionContainer;
 	ApproximatorContainerPtr m_pApproximatorContainer;

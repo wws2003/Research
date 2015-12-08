@@ -30,7 +30,7 @@
 							<builder buildPath="${workspace_loc:/ModuleTestConsumer}/Debug" id="cdt.managedbuild.target.gnu.builder.so.debug.1135364781" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.so.debug"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.2045077464" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.so.debug.632934722" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.so.debug">
-								<option id="gnu.cpp.compiler.so.debug.option.optimization.level.447677856" name="Optimization Level" superClass="gnu.cpp.compiler.so.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
+								<option id="gnu.cpp.compiler.so.debug.option.optimization.level.447677856" name="Optimization Level" superClass="gnu.cpp.compiler.so.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.more" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.so.debug.option.debugging.level.869435567" name="Debug Level" superClass="gnu.cpp.compiler.so.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1577282929" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/abstract"/>
@@ -44,7 +44,7 @@
 									<listOptionValue builtIn="false" value="../third-parties"/>
 									<listOptionValue builtIn="false" value="../third-parties/eigen3"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.1953989415" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC -ffloat-store" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.1953989415" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC -ffloat-store -pg" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.other.pic.996447265" name="Position Independent Code (-fPIC)" superClass="gnu.cpp.compiler.option.other.pic" value="false" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.2067102770" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>

@@ -24,6 +24,7 @@
 
 # Data Persistence file
 *.dat
+**/callgrind.out.*
 
 # Third-parties source code folder (should be unzip manually)
 SharedThirdParties/gmp-6.0.0/

@@ -68,8 +68,8 @@ SampleResourceContainerImpl::~SampleResourceContainerImpl() {
 	m_pTwoQubitLibraryGates->purge();
 	m_pSingleQubitLibraryGates->purge();
 
-	_destroy(m_pIdentity4);
-	_destroy(m_pIdentity2);
+	//_destroy(m_pIdentity4);
+	//_destroy(m_pIdentity2);
 
 	purgePtrVector<MatrixPtr>(m_basis4);
 	purgePtrVector<MatrixPtr>(m_basis2);

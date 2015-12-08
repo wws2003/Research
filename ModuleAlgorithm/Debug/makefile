@@ -11,6 +11,7 @@ RM := rm -rf
 -include src/implement/persitable/subdir.mk
 -include src/implement/filter/subdir.mk
 -include src/implement/decomposer/subdir.mk
+-include src/implement/converter/subdir.mk
 -include src/implement/composer/subdir.mk
 -include src/implement/combiner/subdir.mk
 -include src/implement/collection/subdir.mk

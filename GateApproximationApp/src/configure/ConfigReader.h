@@ -25,6 +25,8 @@ public:
 
 	virtual void readSKApproximatorConfig(std::string configFile, SKApproximatorConfig* pApproximatorConfig);
 
+	virtual void readSKApproximatorConfig2(std::string configFile, SKApproximatorConfig2* pApproximatorConfig);
+
 	virtual void readTargetsConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
 
 	virtual void readEvaluatorConfigFromTargets(std::string configFile, EvaluatorConfig* pEvaluatorConfig);

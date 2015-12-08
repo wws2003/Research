@@ -15,6 +15,7 @@
 #include "GenerateAndStoreApproximationsCommand.h"
 #include "EvaluatePersistedCollectionForTargetsCommand.h"
 #include "SKApproximatorContainerImpl.h"
+#include "SK2ApproximatorContainerImpl.h"
 #include "ConfigReader.h"
 
 CommandFactory::CommandFactory() : m_pCollectionContainer(NullPtr), m_pApproximatorContainer(NullPtr), m_pEvaluatorContainer(NullPtr){
@@ -47,6 +48,9 @@ CommandPtr CommandFactory::getCommand(int commandCode, const CommandParams& comm
 	case EVALUATE_SK_APPROXIMATOR_TO_TARGET: {
 		return getSKApproximatorEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2]);
 	}
+	case EVALUATE_SK2_APPROXIMATOR_TO_TARGET: {
+			return getSK2ApproximatorEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2]);
+		}
 	default:
 		return CommandPtr(new NotAvailableCommand());
 	}
@@ -169,6 +173,34 @@ AbstractCommandPtr CommandFactory::getSKApproximatorEvaluationCommandForTargets(
 	return pApproximatorEvaluationCommand;
 }
 
+AbstractCommandPtr CommandFactory::getSK2ApproximatorEvaluationCommandForTargets(std::string collectionConfigFile, std::string skApprxConfigFile, std::string targetConfigFile) {
+	ConfigReader configReader;
+
+	CollectionConfig collectionConfig;
+	SKApproximatorConfig2 skApproximatorConfig;
+	EvaluatorConfig evaluatorConfig;
+
+	readSK2Config(configReader,
+			collectionConfigFile,
+			&collectionConfig,
+			skApprxConfigFile,
+			&skApproximatorConfig,
+			targetConfigFile,
+			&evaluatorConfig);
+
+	GateApproximatorPtr pApproximator = m_pApproximatorContainer->getGateApproximator();
+	GateSearchSpaceEvaluatorPtr pEvaluator = m_pEvaluatorContainer->getGateSearchSpaceEvaluator();
+	GateDistanceCalculatorPtr pGateDistanceCalculator = m_pEvaluatorContainer->getGateDistanceCalculatorForEvaluation();
+	GateCollectionPtr pCollection = m_pCollectionContainer->getGateCollection(pGateDistanceCalculator);
+
+	AbstractCommandPtr pApproximatorEvaluationCommand = AbstractCommandPtr(new EvaluateApproximatorCommand(pApproximator,
+			pCollection,
+			pEvaluator));
+
+	return pApproximatorEvaluationCommand;
+}
+
+
 void CommandFactory::readCollectionConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig) {
 	configReader.readCollectionConfig(configFile, pCollectionConfig);
 	resetCollectionContainer(*pCollectionConfig);
@@ -206,6 +238,20 @@ void CommandFactory::readSKConfig(ConfigReader configReader,
 	resetEvaluationContainer(*pEvaluatorConfig, *pCollectionConfig);
 }
 
+void CommandFactory::readSK2Config(ConfigReader configReader,
+		std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
+		std::string skApprxConfigFile, SKApproximatorConfig2* pApproximatorConfig,
+		std::string targetConfigFile, EvaluatorConfig* pEvaluatorConfig) {
+
+	configReader.readCollectionConfig(collectionConfigFile, pCollectionConfig);
+	configReader.readEvaluatorConfigFromTargets(targetConfigFile, pEvaluatorConfig);
+	configReader.readSKApproximatorConfig2(skApprxConfigFile, pApproximatorConfig);
+
+	resetCollectionContainer(*pCollectionConfig);
+	resetSK2ApproximatorContainer(*pApproximatorConfig, *pCollectionConfig);
+	resetEvaluationContainer(*pEvaluatorConfig, *pCollectionConfig);
+}
+
 void CommandFactory::resetCollectionContainer(const CollectionConfig& collectionConfig) {
 	_destroy(m_pCollectionContainer);
 	m_pCollectionContainer = CollectionContainerPtr(new SampleCollectionContainerImpl(collectionConfig));
@@ -224,4 +270,10 @@ void CommandFactory::resetApproximatorContainer(const NearIdentityApproximatorCo
 void CommandFactory::resetSKApproximatorContainer(const SKApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig) {
 	_destroy(m_pApproximatorContainer);
 	m_pApproximatorContainer = ApproximatorContainerPtr(new SKApproximatorContainerImpl(approximatorConfig, collectionConfig));
+}
+
+void CommandFactory::resetSK2ApproximatorContainer(const SKApproximatorConfig2& approximatorConfig, const CollectionConfig& collectionConfig) {
+	_destroy(m_pApproximatorContainer);
+	m_pApproximatorContainer = ApproximatorContainerPtr(new SK2ApproximatorContainerImpl(approximatorConfig, collectionConfig));
+
 }

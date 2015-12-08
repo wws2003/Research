@@ -239,7 +239,13 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleIO/include/implement/BinaryGateWriterImpl.h \
  ../../ModuleIO/include/implement/BinaryGateReaderImpl.h \
  ../../ModuleIO/include/implement/BinaryMatrixReaderImpl.h \
- ../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h
+ ../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h \
+ ../../ModuleAlgorithm/include/implement/composer/CoordinateAdditionBasedGateComposer.h \
+ ../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
+ ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h \
+ ../../ModuleAlgorithm/include/implement/comparator/DictionaryOrderCoordinateComparator.hpp \
+ ../../ModuleAlgorithm/include/implement/combiner/GateCoordinateCombinerImpl.h
 
 ../src/FullTestSuite.h:
 
@@ -724,3 +730,15 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 ../../ModuleIO/include/implement/BinaryMatrixReaderImpl.h:
 
 ../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h:
+
+../../ModuleAlgorithm/include/implement/composer/CoordinateAdditionBasedGateComposer.h:
+
+../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IComposer.h:
+
+../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h:
+
+../../ModuleAlgorithm/include/implement/comparator/DictionaryOrderCoordinateComparator.hpp:
+
+../../ModuleAlgorithm/include/implement/combiner/GateCoordinateCombinerImpl.h:

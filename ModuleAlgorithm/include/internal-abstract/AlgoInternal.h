@@ -79,4 +79,16 @@ using LookupResultFilterPtr = ILookupResultFilter<T>*;
 typedef LookupResultFilterPtr<GatePtr> GateLookupResultFilterPtr;
 typedef LookupResultFilterPtr<MatrixPtr> MatrixLookupResultFilterPtr;
 
+template<typename T>
+class IElementComparator;
+
+template<typename T>
+using ComparatorPtr = IElementComparator<T>*;
+
+template<typename T1, typename T2>
+class IConverter;
+
+template<typename T1, typename T2>
+using ConverterPtr = IConverter<T1, T2>*;
+
 #endif /* ALGOINTERNAL_H_ */

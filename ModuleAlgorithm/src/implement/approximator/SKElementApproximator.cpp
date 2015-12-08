@@ -155,28 +155,27 @@ IteratorPtr<LookupResult<T> > SKElementApproximator<T>::filterCandidates(const I
 		mreal_t epsilon) {
 
 	std::vector<LookupResult<T> > results;
-	try {
-		for(unsigned int i = 0; i < buildingBlockBuckets.size(); i++) {
-			IteratorPtr<T> pCandidateIterator = buildingBlockBuckets[i];
+	for(unsigned int i = 0; i < buildingBlockBuckets.size(); i++) {
+		IteratorPtr<T> pCandidateIterator = buildingBlockBuckets[i];
 
-			while(pCandidateIterator != NullPtr && !pCandidateIterator->isDone()) {
-				T candidate = pCandidateIterator->getObj();
-				mreal_t distance = pDistanceCalculator->distance(candidate, query);
+		while(pCandidateIterator != NullPtr && !pCandidateIterator->isDone()) {
+			T candidate = pCandidateIterator->getObj();
+			mreal_t distance = pDistanceCalculator->distance(candidate, query);
 
-				if(distance <= epsilon) {
-					results.push_back(LookupResult<T>(candidate->clone(), distance));
-					if(m_nbCandidates > 0 && results.size() >= m_nbCandidates) {
-						throw (1);
-					}
-				}
-
-				pCandidateIterator->next();
+			if(distance <= epsilon) {
+				results.push_back(LookupResult<T>(candidate->clone(), distance));
 			}
+
+			pCandidateIterator->next();
 		}
 	}
-	catch (int e) {
-	}
+
 	std::sort(results.begin(), results.end(), DistanceComparator<T>());
+
+	if(results.size() > m_nbCandidates) {
+		results.resize(m_nbCandidates, LookupResult<T>(NullPtr, 1000.0));
+	}
+
 	return IteratorPtr<LookupResult<T> >(new VectorBasedReadOnlyIteratorImpl<LookupResult<T> >(results));
 }
 

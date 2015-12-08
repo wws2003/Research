@@ -133,6 +133,36 @@ void ConfigReader::readSKApproximatorConfig(std::string configFile, SKApproximat
 	}
 }
 
+void ConfigReader::readSKApproximatorConfig2(std::string configFile, SKApproximatorConfig2* pApproximatorConfig) {
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		char prefix[128];
+		std::string line;
+
+		std::getline(inputStream, line);
+		double initialEpsilon;
+		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
+		pApproximatorConfig->m_initialEpsilon = (mreal_t)initialEpsilon;
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_recursiveLevels));
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_nbCandidates));
+
+		std::getline(inputStream, line);
+		double coordinateEpsilon;
+		sscanf(line.data(), "%[^:]:%lf", prefix, &coordinateEpsilon);
+		pApproximatorConfig->m_coordinateEpsilon = coordinateEpsilon;
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_coordinateComparatorType));
+	}
+	else {
+		throw std::logic_error("Can not read config file for approximator!");
+	}
+}
+
 
 void ConfigReader::readTargetsConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig) {
 	std::ifstream inputStream(configFile, std::ifstream::in);
