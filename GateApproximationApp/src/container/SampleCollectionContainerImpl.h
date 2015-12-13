@@ -36,6 +36,8 @@ private:
 
 	void wireDependencies();
 
+	std::string getMatrixDBFileName(const CollectionConfig& config);
+
 	std::string getGateCollectionPersistenceFileFullName(const CollectionConfig& config,
 			const LibrarySetFileNameMap& librarySetFileNameMap,
 			std::string fileExtension);

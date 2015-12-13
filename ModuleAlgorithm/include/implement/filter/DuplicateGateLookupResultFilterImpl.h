@@ -11,7 +11,11 @@
 #include "Gate.h"
 #include "DuplicateLookupResultFilterImpl.h"
 
-typedef class DuplicateLookupResultFilterImpl<GatePtr> DuplicateGateLookupResultFilterImpl;
+class DuplicateGateLookupResultFilterImpl : public DuplicateLookupResultFilterImpl<GatePtr> {
+protected:
+	//Override
+	bool sameElement(const GatePtr& pGate1, const GatePtr& pGate2) const;
+};
 
 
 #endif /* DUPLICATEGATELOOKUPRESULTFILTERIMPL_H_ */

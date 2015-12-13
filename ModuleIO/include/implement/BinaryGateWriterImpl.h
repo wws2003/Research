@@ -20,6 +20,9 @@ public:
 	virtual ~BinaryGateWriterImpl(){};
 	virtual void write(GatePtr pGate, std::ostream& ouputStream);
 
+protected:
+	virtual void writeMatrix(std::string label, MatrixPtr pMatrix, std::ostream& ouputStream);
+
 private:
 	MatrixWriterPtr m_pMatrixWriter;
 };

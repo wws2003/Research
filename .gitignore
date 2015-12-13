@@ -25,6 +25,8 @@
 # Data Persistence file
 *.dat
 **/callgrind.out.*
+*.sqlite
+*.db
 
 # Third-parties source code folder (should be unzip manually)
 SharedThirdParties/gmp-6.0.0/
@@ -65,3 +67,5 @@ SharedThirdParties/mpfr
 # Misc metadata
 .metadata
 
+# Backup files
+*.bck

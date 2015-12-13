@@ -46,7 +46,7 @@ void selfTest(GNATCollectionImpl<T>* pCollection);
 
 template<typename T>
 GNATCollectionImpl<T>::GNATCollectionImpl(LookupResultFilterPtr<T> pResultFilter, bool toCloneFilteredResults)
- {
+{
 	m_pResultFilter = pResultFilter;
 	m_toCloneFilteredResults = toCloneFilteredResults;
 }
@@ -163,7 +163,9 @@ IteratorPtr<LookupResult<T> > GNATCollectionImpl<T>::findNearestNeighbours(T que
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
 		bool toSortResults) const {
-	std::vector<LookupResult<T> > results;
+
+	std::vector<LookupResult<T> > results ;
+	results.reserve(30);//Tekitou-ni
 
 	//Get results from unstructured buffer first
 	findClosestElementsInUnStructuredBuffer2(query, m_unStructeredBuffer, pDistanceCalculator, epsilon, results);
@@ -189,12 +191,12 @@ IteratorPtr<LookupResult<T> > GNATCollectionImpl<T>::findNearestNeighbours(T que
 			pSubResultIter->next();
 		}
 		_destroy(pSubResultIter);
-		continue;
 	}
+
 
 	//20151118 Filter results to eliminate duplicated results
 	if(m_pResultFilter != NullPtr && !results.empty()) {
-		//TODO Decide to clone result or not. Temporary do clone only in the root collection
+		//Decide to clone result or not. Temporary do clone only in the root collection
 		m_pResultFilter->filterLookupResults(results,
 				pDistanceCalculator,
 				m_toCloneFilteredResults);
@@ -329,11 +331,13 @@ void GNATCollectionImpl<T>::getCandidateSubCollections(T query, DistanceCalculat
 		Range solutionDistanceToSplitPointRange(dSplitPointQuery > epsilon ? dSplitPointQuery - epsilon : 0, epsilon + dSplitPointQuery);
 
 		for(unsigned int subCollectionIndex = 0; subCollectionIndex < m_subCollections.size(); subCollectionIndex++) {
-			//If range of distance of solution to split point is not in the range of distance between sub collection and split point
-			//, then conclude the sub collection can't contain any solution
-			Range subCollectionDistanceToSplitPointRange = m_splitPointRanges[splitPointIndex][subCollectionIndex];
-			if(solutionDistanceToSplitPointRange.second < subCollectionDistanceToSplitPointRange.first || solutionDistanceToSplitPointRange.first > subCollectionDistanceToSplitPointRange.second) {
-				rCheckMap[subCollectionIndex] = 0;
+			if(rCheckMap[subCollectionIndex]) {
+				//If range of distance of solution to split point is not in the range of distance between sub collection and split point
+				//, then conclude the sub collection can't contain any solution
+				Range subCollectionDistanceToSplitPointRange = m_splitPointRanges[splitPointIndex][subCollectionIndex];
+				if(solutionDistanceToSplitPointRange.second < subCollectionDistanceToSplitPointRange.first || solutionDistanceToSplitPointRange.first > subCollectionDistanceToSplitPointRange.second) {
+					rCheckMap[subCollectionIndex] = 0;
+				}
 			}
 		}
 	}

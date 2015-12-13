@@ -9,7 +9,7 @@
 #include "SimpleDenseMatrixFactoryImpl.h"
 #include "SampleMatrixOperator.h"
 #include "PersistableGNATGateCollectionImpl.h"
-#include "BinaryGateWriterImpl.h"
+#include "SQLiteGateWriterImpl.h"
 #include "BinaryGateReaderImpl.h"
 #include "BinaryMatrixWriterImpl.h"
 #include "BinaryMatrixReaderImpl.h"
@@ -83,10 +83,12 @@ void SampleCollectionContainerImpl::wireDependencies() {
 
 	m_pBinaryMatrixWriter = MatrixWriterPtr(new BinaryMatrixWriterImpl());
 	m_pBinaryMatrixReader = MatrixReaderPtr(new BinaryMatrixReaderImpl(m_pMatrixFactory));
-	m_pBinaryGateWriter = GateWriterPtr(new BinaryGateWriterImpl(NullPtr));
+
+	std::string matrixDBName = getMatrixDBFileName(m_collectionConfig);
+	m_pBinaryGateWriter = GateWriterPtr(new SQLiteGateWriterImpl(NullPtr, matrixDBName));
 	m_pBinaryGateReader = GateReaderPtr(new BinaryGateReaderImpl(NullPtr));
 
-	m_pGateLookupResultFilter = GateLookupResultFilterPtr(new DuplicateLookupResultFilterImpl<GatePtr>());
+	m_pGateLookupResultFilter = GateLookupResultFilterPtr(new DuplicateGateLookupResultFilterImpl());
 	m_pUniversalSet = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>());
 	m_pResourceContainer->getUniversalGates(m_pUniversalSet, m_collectionConfig.m_nbQubits);
 
@@ -115,6 +117,22 @@ void SampleCollectionContainerImpl::releaseDependencies() {
 
 	_destroy(m_pMatrixOperator);
 	_destroy(m_pMatrixFactory);
+}
+
+std::string SampleCollectionContainerImpl::getMatrixDBFileName(const CollectionConfig& config) {
+
+	#if MPFR_REAL
+	std::string precisionPostFix = "_mpfr";
+#else
+	std::string precisionPostFix = "";
+#endif
+
+	char fullName[256];
+	sprintf(fullName, "db_%d%s.sqlite",
+			config.m_nbQubits,
+			precisionPostFix.c_str());
+
+	return std::string(fullName);
 }
 
 std::string SampleCollectionContainerImpl::getGateCollectionPersistenceFileFullName(const CollectionConfig& config,

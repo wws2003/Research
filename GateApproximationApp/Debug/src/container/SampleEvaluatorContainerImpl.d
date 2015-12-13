@@ -223,6 +223,7 @@ src/container/SampleEvaluatorContainerImpl.d: \
  ../src/factory/ContainerResourceFactory.h \
  ../src/container/IResourceContainer.h ../src/common/ApplicationCommon.h \
  ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h \
+ ../../ModuleOperator/include/implement/SQLiteLazyGateDistanceCalculator.h \
  ../../ModuleOperator/include/implement/LazyGateDistanceCalculatorImpl.h
 
 ../src/container/SampleEvaluatorContainerImpl.h:
@@ -672,5 +673,7 @@ src/container/SampleEvaluatorContainerImpl.d: \
 ../src/common/ApplicationCommon.h:
 
 ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h:
+
+../../ModuleOperator/include/implement/SQLiteLazyGateDistanceCalculator.h:
 
 ../../ModuleOperator/include/implement/LazyGateDistanceCalculatorImpl.h:

@@ -11,7 +11,10 @@
 #include "IMatrix.h"
 #include "DuplicateLookupResultFilterImpl.h"
 
-typedef class DuplicateLookupResultFilterImpl<MatrixPtr> DuplicateMatrixLookupResultFilterImpl;
+class DuplicateMatrixLookupResultFilterImpl: public DuplicateLookupResultFilterImpl<MatrixPtr> {
+protected:
+	bool sameElement(const MatrixPtr& pMatrix1, const MatrixPtr& pMatrix2) const;
+};
 
 
 

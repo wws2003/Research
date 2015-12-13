@@ -20,7 +20,15 @@ public:
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			bool toCloneResult = false);
 
+protected:
+	virtual bool sameElement(const T& t1, const T& t2) const = 0;
+
 private:
+	bool isDuplicateFound(const std::vector<LookupResult<T> >& lookupResults,
+			int nonDuplicateLastPivot,
+			LookupResult<T> result,
+			DistanceCalculatorPtr<T> pDistanceCalculator);
+
 	LookupResult<T> cloneLookupResult(const LookupResult<T>& lookupResult);
 };
 

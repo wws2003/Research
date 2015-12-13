@@ -73,9 +73,15 @@ ComplexVal SampleMatrixOperator::det(MatrixPtr pm) {
 }
 
 ComplexVal SampleMatrixOperator::trace(MatrixPtr pm) {
-	MatrixXcmp eigenMat;
-	toEigenMatrix(pm, eigenMat);
-	return eigenMat.trace();
+	int nbRows, nbColumns;
+	pm->getSize(nbRows, nbColumns);
+
+	ComplexVal trVal(0.0, 0.0);
+	for(int i = 0; i < nbRows; i++) {
+		trVal += pm->getValue(i, i);
+	}
+
+	return trVal;
 }
 
 void SampleMatrixOperator::power(MatrixPtr pm, int exponent, MatrixPtrRef prPower) {
@@ -185,6 +191,18 @@ void SampleMatrixOperator::sumProduct(const MatrixPtrVector& matrixVector, const
 
 	pSum = pH;
 }
+
+void SampleMatrixOperator::multiplyConjugateTranspose(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prProduct) {
+	MatrixXcmp eigenMat1, eigenMat2;
+	toEigenMatrix(pm1, eigenMat1);
+	toEigenMatrix(pm2, eigenMat2);
+	eigenMat2.transposeInPlace();
+
+	MatrixXcmp eigProduct = eigenMat1 * eigenMat2.conjugate();
+
+	prProduct = fromEigenMatrix(eigProduct, pm1->getLabel() + pm2->getLabel());
+}
+
 
 void SampleMatrixOperator::eig(MatrixPtr pm, ComplexVectorRef rEigVals, MatrixPtrRef prEigVects) {
 	MatrixXcmp eigenMat;

@@ -35,6 +35,9 @@ public:
 
 private:
 	void wireDependencies();
+
+	std::string getMatrixDBFileName(const CollectionConfig& config);
+
 	void releaseDependencies();
 
 	MatrixFactoryPtr m_pMatrixFactory;

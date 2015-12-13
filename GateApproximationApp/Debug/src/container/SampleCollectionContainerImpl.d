@@ -192,6 +192,7 @@ src/container/SampleCollectionContainerImpl.d: \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
  ../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h \
  ../../ModuleIO/include/interface/abstract/IReader.h \
+ ../../ModuleIO/include/implement/SQLiteGateWriterImpl.h \
  ../../ModuleIO/include/implement/BinaryGateWriterImpl.h \
  ../../ModuleIO/include/implement/BinaryGateReaderImpl.h \
  ../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h \
@@ -599,6 +600,8 @@ src/container/SampleCollectionContainerImpl.d: \
 ../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h:
 
 ../../ModuleIO/include/interface/abstract/IReader.h:
+
+../../ModuleIO/include/implement/SQLiteGateWriterImpl.h:
 
 ../../ModuleIO/include/implement/BinaryGateWriterImpl.h:
 

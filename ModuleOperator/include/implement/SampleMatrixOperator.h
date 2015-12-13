@@ -39,6 +39,8 @@ public:
 
 	void sumProduct(const MatrixPtrVector& matrixVector, const ComplexVector& scalaVector, MatrixPtrRef pSum);
 
+	void multiplyConjugateTranspose(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prProduct);
+
 	void unitaryDediagonalize(MatrixPtr pU, const ComplexVectorRef diag, MatrixPtrRef prRoot);
 
 	void specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef prSU);

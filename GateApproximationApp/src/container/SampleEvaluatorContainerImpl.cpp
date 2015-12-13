@@ -30,7 +30,7 @@
 #include "DuplicateGateCancelationCombinerImpl.h"
 #include "ContainerResourceFactory.h"
 #include "SampleLibraryMatrixStore.h"
-#include "LazyGateDistanceCalculatorImpl.h"
+#include "SQLiteLazyGateDistanceCalculator.h"
 #include <stdexcept>
 
 SampleEvaluatorContainerImpl::SampleEvaluatorContainerImpl(const EvaluatorConfig& config, const CollectionConfig& collectionConfig) : m_evaluatorConfig(config), m_collectionConfig(collectionConfig) {
@@ -85,9 +85,14 @@ void SampleEvaluatorContainerImpl::wireDependencies() {
 	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(m_pMatrixOperator));
 	m_pLibraryMatrixStore = LibraryMatrixStorePtr(new SampleLibraryMatrixStore(m_pMatrixFactory, m_pMatrixOperator));
 
-	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new LazyGateDistanceCalculatorImpl(m_pMatrixDistanceCalculator,
-			m_pMatrixOperator,
-			m_pLibraryMatrixStore));
+	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new SQLiteLazyGateDistanceCalculator(m_pMatrixDistanceCalculator,
+			m_pMatrixFactory,
+			getMatrixDBFileName(m_collectionConfig),
+			m_collectionConfig.m_nbQubits == 1 ? 2 : 4));
+
+	/*m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new LazyGateDistanceCalculatorImpl(m_pMatrixDistanceCalculator,
+				m_pMatrixOperator,
+				m_pLibraryMatrixStore));*/
 
 	MatrixPtrVector pBasis;
 	m_pResourceContainer->getMatrixOrthonormalBasis(pBasis, m_collectionConfig.m_nbQubits);
@@ -100,6 +105,22 @@ void SampleEvaluatorContainerImpl::wireDependencies() {
 
 	m_pTimer = TimerPtr(new CpuTimer());
 }
+
+std::string SampleEvaluatorContainerImpl::getMatrixDBFileName(const CollectionConfig& config) {
+#if MPFR_REAL
+	std::string precisionPostFix = "_mpfr";
+#else
+	std::string precisionPostFix = "";
+#endif
+
+	char fullName[256];
+	sprintf(fullName, "db_%d%s.sqlite",
+			config.m_nbQubits,
+			precisionPostFix.c_str());
+
+	return std::string(fullName);
+}
+
 
 void SampleEvaluatorContainerImpl::releaseDependencies() {
 	_destroy(m_pTimer);
