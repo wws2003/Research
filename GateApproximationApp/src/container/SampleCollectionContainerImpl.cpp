@@ -25,6 +25,9 @@
 #include "PersistableGNATCollectionImpl.h"
 #include "IPersistableCollection.h"
 #include "DuplicateGateLookupResultFilterImpl.h"
+#include "BackgroundGateLookupResultsFilterProcessor.h"
+#include "MatrixFowlerDistanceCalculator.h"
+#include "GateDistanceCalculatorByMatrixImpl.h"
 #include <stdexcept>
 
 const std::string SampleCollectionContainerImpl::DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT = "dat";
@@ -41,7 +44,7 @@ SampleCollectionContainerImpl::~SampleCollectionContainerImpl() {
 GateCollectionPtr SampleCollectionContainerImpl::getGateCollection(GateDistanceCalculatorPtr pGateDistanceCalculator) {
 	PersitableGateCollectionPtr pGateCollection = PersitableGateCollectionPtr(new PersistableGNATGateCollectionImpl(m_pBinaryGateWriter,
 			m_pBinaryGateReader,
-			m_pGateLookupResultFilter));
+			m_pGateLookupResultProcessor));
 
 	std::string persitenceFileName = getGateCollectionPersistenceFileFullName(m_collectionConfig,
 			m_librarySetPersistFileNameMap,
@@ -62,7 +65,7 @@ GateCollectionPtr SampleCollectionContainerImpl::getGateCollection(GateDistanceC
 PersitableGateCollectionPtr SampleCollectionContainerImpl::getPersitableGateCollection() {
 	return PersitableGateCollectionPtr(new PersistableGNATGateCollectionImpl(m_pBinaryGateWriter,
 			m_pBinaryGateReader,
-			m_pGateLookupResultFilter));
+			m_pGateLookupResultProcessor));
 }
 
 void SampleCollectionContainerImpl::initLibrarySetPersistFileNameMap() {
@@ -88,7 +91,11 @@ void SampleCollectionContainerImpl::wireDependencies() {
 	m_pBinaryGateWriter = GateWriterPtr(new SQLiteGateWriterImpl(NullPtr, matrixDBName));
 	m_pBinaryGateReader = GateReaderPtr(new BinaryGateReaderImpl(NullPtr));
 
-	m_pGateLookupResultFilter = GateLookupResultFilterPtr(new DuplicateGateLookupResultFilterImpl());
+	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(m_pMatrixOperator));
+	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new GateDistanceCalculatorByMatrixImpl(m_pMatrixDistanceCalculator));
+	m_pGateLookupResultProcessor = GateLookupResultProcessorPtr(new BackgroundGateLookupResultsFilterProcessor(m_pGateDistanceCalculator));
+	m_pGateLookupResultProcessor->init();
+
 	m_pUniversalSet = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>());
 	m_pResourceContainer->getUniversalGates(m_pUniversalSet, m_collectionConfig.m_nbQubits);
 
@@ -106,7 +113,9 @@ void SampleCollectionContainerImpl::releaseDependencies() {
 
 	_destroy(m_pUniversalSet);
 
-	_destroy(m_pGateLookupResultFilter);
+	_destroy(m_pGateLookupResultProcessor);
+	_destroy(m_pGateDistanceCalculator);
+	_destroy(m_pMatrixDistanceCalculator);
 
 	_destroy(m_pBinaryGateReader);
 	_destroy(m_pBinaryGateWriter);

@@ -12,13 +12,13 @@
 #include "AlgoInternal.h"
 #include "ICollection.h"
 #include "IIterator.h"
-#include "ILookupResultFilter.h"
+#include "ILookupResultProcessor.h"
 #include <vector>
 #include <algorithm>
 #include <list>
 
 template<typename T>
-using CollectionVector = std::vector<CollectionPtr<T> >;
+using GNATCollectionVector = std::vector<GNATCollectionImplPtr<T> >;
 
 typedef std::pair<mreal_t, mreal_t> Range;
 
@@ -36,7 +36,7 @@ using SplitPointSet = std::vector<T>;
 template<typename T>
 class GNATCollectionImpl : public ICollection<T> {
 public:
-	GNATCollectionImpl(LookupResultFilterPtr<T> pResultFilter = NullPtr, bool toCloneFilteredResults = false);
+	GNATCollectionImpl(LookupResultProcessorPtr<T> pLookupResultProcessor = NullPtr, bool toCloneFilteredResults = false);
 	virtual ~GNATCollectionImpl();
 
 	//Override
@@ -66,15 +66,20 @@ public:
 			mreal_t epsilon,
 			bool toSortResults = false) const;
 protected:
+	virtual void findAndProcessNearestNeighbours(T query,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilon,
+			LookupResultProcessorPtr<T> pLookupResultProcessor) const;
+
 	//Generate instance of a sub-collection. Subject to be overridden in sub-classes
-	virtual CollectionPtr<T> generateSubCollection();
+	virtual GNATCollectionImplPtr<T> generateSubCollection();
 
 	SplitPointSet<T> m_splitPoints;
-	CollectionVector<T> m_subCollections;
+	GNATCollectionVector<T> m_subCollections;
 	UnstructuredBuffer<T> m_unStructeredBuffer;
 	RangeMap m_splitPointRanges;
 
-	LookupResultFilterPtr<T> m_pResultFilter;
+	LookupResultProcessorPtr<T> m_pLookupResultProcessor;
 	bool m_toCloneFilteredResults;
 
 private:

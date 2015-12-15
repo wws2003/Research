@@ -59,6 +59,13 @@ void BackgroundLookupResultProcessor<T>::reset() {
 }
 
 template<typename T>
+void BackgroundLookupResultProcessor<T>::addLookupResultsBatch(const std::vector<LookupResult<T> >& results) {
+	if(!results.empty()) {
+		notifyNewRequestsBatch(results);
+	}
+}
+
+template<typename T>
 void BackgroundLookupResultProcessor<T>::addLookupResult(const LookupResult<T>& result) {
 	notifyNewRequest(result);
 }
@@ -79,6 +86,16 @@ void BackgroundLookupResultProcessor<T>::notifyNewRequest(const LookupResult<T>&
 }
 
 template<typename T>
+void BackgroundLookupResultProcessor<T>::notifyNewRequestsBatch(const std::vector<LookupResult<T> >& results) {
+	pthread_mutex_lock(&m_requestQueueMutex);
+	for(typename std::vector<LookupResult<T> >::const_iterator rIter = results.begin(); rIter != results.end(); rIter++) {
+		m_requestQueue.push_back(*rIter);
+	}
+	pthread_cond_signal(&m_requestQueueCondVar);
+	pthread_mutex_unlock(&m_requestQueueMutex);
+}
+
+template<typename T>
 void BackgroundLookupResultProcessor<T>::notifyTerminate() {
 	pthread_mutex_lock(&m_requestQueueMutex);
 	m_terminateFlag = true;
@@ -90,25 +107,29 @@ template<typename T>
 void BackgroundLookupResultProcessor<T>::doBackgroundJob() {
 	pthread_mutex_lock(&m_requestQueueMutex);
 
-	while(m_requestQueue.empty() && !m_terminateFlag) {
-		pthread_cond_wait(&m_requestQueueCondVar, &m_requestQueueMutex);
+	while (!m_terminateFlag) {
+		while(m_requestQueue.empty() && !m_terminateFlag) {
+			pthread_cond_wait(&m_requestQueueCondVar, &m_requestQueueMutex);
+		}
 
 		//Request queue has been locked again, but still need to check to make sure
-		if(m_requestQueue.empty()) {
-			continue;
+		if(!m_requestQueue.empty() && !m_terminateFlag) {
+			LookupResult<T> request = m_requestQueue.front();
+			m_requestQueue.pop_front();
+
+			//Unlock request queue to allow new request
+			pthread_mutex_unlock(&m_requestQueueMutex);
+
+			//Lock internal container to process with new request
+			pthread_mutex_lock(&m_internalContainerMutex);
+			processOnBackground(request);
+			pthread_mutex_unlock(&m_internalContainerMutex);
+
+			pthread_mutex_lock(&m_requestQueueMutex);
 		}
-		LookupResult<T> request = m_requestQueue.front();
-		m_requestQueue.pop_front();
-
-		//Unlock request queue to allow new request
-		pthread_mutex_unlock(&m_requestQueueMutex);
-
-		pthread_mutex_lock(&m_internalContainerMutex);
-		processOnBackground(request);
-		pthread_mutex_unlock(&m_internalContainerMutex);
-
-		pthread_mutex_lock(&m_requestQueueMutex);
 	}
+
+	pthread_mutex_unlock(&m_requestQueueMutex);
 }
 
 

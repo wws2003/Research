@@ -188,6 +188,7 @@ src/container/SampleCollectionContainerImpl.d: \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultProcessor.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
  ../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h \
@@ -215,7 +216,12 @@ src/container/SampleCollectionContainerImpl.d: \
  ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/filter/DuplicateGateLookupResultFilterImpl.h \
- ../../ModuleAlgorithm/include/implement/filter/DuplicateLookupResultFilterImpl.h
+ ../../ModuleAlgorithm/include/implement/filter/DuplicateLookupResultFilterImpl.h \
+ ../../ModuleAlgorithm/include/implement/filter/BackgroundGateLookupResultsFilterProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/BackgroundLookupResultsFilterProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/BackgroundLookupResultProcessor.h \
+ ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h \
+ ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h
 
 ../src/container/SampleCollectionContainerImpl.h:
 
@@ -593,6 +599,8 @@ src/container/SampleCollectionContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
+../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultProcessor.h:
+
 ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
 
 ../../ModuleIO/include/interface/abstract/IWriter.h:
@@ -648,3 +656,13 @@ src/container/SampleCollectionContainerImpl.d: \
 ../../ModuleAlgorithm/include/implement/filter/DuplicateGateLookupResultFilterImpl.h:
 
 ../../ModuleAlgorithm/include/implement/filter/DuplicateLookupResultFilterImpl.h:
+
+../../ModuleAlgorithm/include/implement/filter/BackgroundGateLookupResultsFilterProcessor.h:
+
+../../ModuleAlgorithm/include/implement/filter/BackgroundLookupResultsFilterProcessor.h:
+
+../../ModuleAlgorithm/include/implement/filter/BackgroundLookupResultProcessor.h:
+
+../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h:
+
+../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:

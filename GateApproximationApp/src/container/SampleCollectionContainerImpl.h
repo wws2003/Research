@@ -58,7 +58,11 @@ private:
 
 	MatrixWriterPtr m_pBinaryMatrixWriter;
 	MatrixReaderPtr m_pBinaryMatrixReader;
-	GateLookupResultFilterPtr m_pGateLookupResultFilter;
+
+	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
+	GateDistanceCalculatorPtr m_pGateDistanceCalculator;
+
+	GateLookupResultProcessorPtr m_pGateLookupResultProcessor;
 
 	GateCollectionPtr m_pUniversalSet;
 

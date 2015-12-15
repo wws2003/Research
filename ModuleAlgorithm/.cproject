@@ -66,7 +66,7 @@
 									<listOptionValue builtIn="false" value="../src/implement/composer"/>
 									<listOptionValue builtIn="false" value="../src/implement/persitable"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.1870982613" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC -pg" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.1870982613" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC -pg -pthread" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.other.pic.1786971405" name="Position Independent Code (-fPIC)" superClass="gnu.cpp.compiler.option.other.pic" value="false" valueType="boolean"/>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.995807832" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1094081949" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>

@@ -21,20 +21,20 @@ using GNATCollectionMap = std::map<GNATCollectionIdType, PersistableGNATCollecti
 /*---------------------------------------------------*/
 
 template<typename T>
-PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader, LookupResultFilterPtr<T> pResultFilter) : GNATCollectionImpl<T>(pResultFilter, true) {
+PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader, LookupResultProcessorPtr<T> pLookupResultProcessor) : GNATCollectionImpl<T>(pLookupResultProcessor, true) {
 	m_pWriter = pWriter;
 	m_pReader = pReader;
 }
 
 template<typename T>
-PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl(LookupResultFilterPtr<T> pLookupResultFilter) : GNATCollectionImpl<T>(pLookupResultFilter, false) {
+PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl() : GNATCollectionImpl<T>(NullPtr, false) {
 	m_pWriter = NullPtr;
 	m_pReader = NullPtr;
 }
 
 template<typename T>
-CollectionPtr<T> PersistableGNATCollectionImpl<T>::generateSubCollection() {
-	return new PersistableGNATCollectionImpl<T>(GNATCollectionImpl<T>::m_pResultFilter);
+GNATCollectionImplPtr<T> PersistableGNATCollectionImpl<T>::generateSubCollection() {
+	return new PersistableGNATCollectionImpl<T>();
 }
 
 template<typename T>
@@ -102,7 +102,7 @@ void PersistableGNATCollectionImpl<T>::init(const SplitPointSet<T>& splitPoints,
 }
 
 template<typename T>
-void PersistableGNATCollectionImpl<T>::addSubCollection(CollectionPtr<T> pSubCollection) {
+void PersistableGNATCollectionImpl<T>::addSubCollection(GNATCollectionImplPtr<T> pSubCollection) {
 	GNATCollectionImpl<T>::m_subCollections.push_back(pSubCollection);
 }
 
@@ -119,7 +119,7 @@ void PersistableGNATCollectionImpl<T>::saveGNATCollection(GNATCollectionIdType p
 
 	//Recursively make sub-blocks and write to output stream
 	GNATCollectionIdType subBlockParentId = pBlock->m_id;
-	for(typename CollectionVector<T>::const_iterator cIter = GNATCollectionImpl<T>::m_subCollections.begin(); cIter != GNATCollectionImpl<T>::m_subCollections.end(); cIter++) {
+	for(typename GNATCollectionVector<T>::const_iterator cIter = GNATCollectionImpl<T>::m_subCollections.begin(); cIter != GNATCollectionImpl<T>::m_subCollections.end(); cIter++) {
 		PersistableGNATCollectionImpl<T>* pSubCollection = dynamic_cast<PersistableGNATCollectionImpl<T>*>(*cIter);
 		pSubCollection->saveGNATCollection(subBlockParentId, pCurrentMaxId, rBlocks);
 	}

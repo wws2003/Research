@@ -101,6 +101,7 @@
 									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfr/lib"/>
 									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfrc++/lib"/>
 								</option>
+								<option id="gnu.cpp.link.option.flags.135559381" superClass="gnu.cpp.link.option.flags" value="-pthread" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1788292761" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>

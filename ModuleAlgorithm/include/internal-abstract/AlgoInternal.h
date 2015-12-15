@@ -60,6 +60,12 @@ template<typename T>
 class GNATCollectionIterator;
 
 template<typename T>
+class GNATCollectionImpl;
+
+template<typename T>
+using GNATCollectionImplPtr = GNATCollectionImpl<T>*;
+
+template<typename T>
 class PersistableGNATCollectionImpl;
 
 template<typename T>

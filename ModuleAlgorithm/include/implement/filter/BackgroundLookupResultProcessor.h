@@ -27,6 +27,9 @@ public:
 	void reset();
 
 	//Override
+	void addLookupResultsBatch(const std::vector<LookupResult<T> >& result);
+
+	//Override
 	void addLookupResult(const LookupResult<T>& result);
 
 	//Override
@@ -43,6 +46,8 @@ protected:
 
 private:
 	void notifyNewRequest(const LookupResult<T>& result);
+
+	void notifyNewRequestsBatch(const std::vector<LookupResult<T> >& results);
 
 	void notifyTerminate();
 

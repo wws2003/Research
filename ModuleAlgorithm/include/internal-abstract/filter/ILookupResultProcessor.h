@@ -22,6 +22,8 @@ public:
 
 	virtual void reset() = 0;
 
+	virtual void addLookupResultsBatch(const std::vector<LookupResult<T> >& result) = 0;
+
 	virtual void addLookupResult(const LookupResult<T>& result) = 0;
 
 	virtual void retrieveProcessedLookupResults(std::vector<LookupResult<T> >& results, bool toSortResults = true) = 0;

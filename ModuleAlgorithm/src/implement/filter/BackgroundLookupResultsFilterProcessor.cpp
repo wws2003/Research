@@ -47,11 +47,10 @@ typename BackgroundLookupResultsFilterProcessor<T>::rmap::iterator BackgroundLoo
 	LookupResult<T> upperResult(NullPtr, lDistanceToTarget + DISTANCE_TO_CONSIDER_AS_ONE);
 
 	typename rmap::const_iterator lIter = m_resultMap.lower_bound(lowerResult);
-	typename rmap::const_iterator uIter = m_resultMap.lower_bound(upperResult);
+	typename rmap::const_iterator uIter = m_resultMap.upper_bound(upperResult);
 
 	for(typename rmap::const_iterator rIter = lIter; rIter != uIter; rIter++) {
 		T rElement = rIter->m_resultElement;
-		mreal_t rDistanceToTarget = rIter->m_distanceToTarget;
 
 		if(m_pDistanceCalculator->distance(lElement, rElement) <= DISTANCE_TO_CONSIDER_AS_ONE) {
 			isDuplicate = true;

@@ -19,8 +19,8 @@
 template<typename T>
 class PersistableGNATItemCollectionImpl : public IPersistableCollection<T> {
 public:
-	PersistableGNATItemCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader, LookupResultFilterPtr<T> pResultFilter = NullPtr){
-		m_pInternal = new PersistableGNATCollectionImpl<T>(pWriter, pReader, pResultFilter);
+	PersistableGNATItemCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader, LookupResultProcessorPtr<T> pProcessor = NullPtr){
+		m_pInternal = new PersistableGNATCollectionImpl<T>(pWriter, pReader, pProcessor);
 	};
 
 	virtual ~PersistableGNATItemCollectionImpl(){_destroy(m_pInternal);};
@@ -76,7 +76,7 @@ public:
 	}
 
 	//Add sub-collection
-	void addSubCollection(CollectionPtr<T> pSubCollection) {
+	void addSubCollection(GNATCollectionImplPtr<T> pSubCollection) {
 		m_pInternal->addSubCollection(pSubCollection);
 	}
 

@@ -15,9 +15,10 @@
 
 template<typename T>
 class BackgroundLookupResultsFilterProcessor: public BackgroundLookupResultProcessor<T> {
-protected:
-
+public:
 	BackgroundLookupResultsFilterProcessor(DistanceCalculatorPtr<T> pDistanceCalculator);
+
+protected:
 
 	//Override
 	void processOnBackground(const LookupResult<T>& result);
