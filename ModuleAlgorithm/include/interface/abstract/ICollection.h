@@ -22,7 +22,7 @@ struct LookupResult{
 
 template<typename T>
 struct _DistanceComparator {
-	bool operator()(const LookupResult<T>& r1, const LookupResult<T>& r2)
+	bool operator()(const LookupResult<T>& r1, const LookupResult<T>& r2) const
 	{
 		return r1.m_distanceToTarget < r2.m_distanceToTarget;
 	}

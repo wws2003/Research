@@ -79,6 +79,14 @@ using LookupResultFilterPtr = ILookupResultFilter<T>*;
 typedef LookupResultFilterPtr<GatePtr> GateLookupResultFilterPtr;
 typedef LookupResultFilterPtr<MatrixPtr> MatrixLookupResultFilterPtr;
 
+template<typename T> class ILookupResultProcessor;
+
+template<typename T>
+using LookupResultProcessorPtr = ILookupResultProcessor<T>*;
+
+typedef LookupResultProcessorPtr<GatePtr> GateLookupResultProcessorPtr;
+typedef LookupResultProcessorPtr<MatrixPtr> MatrixLookupResultProcessorPtr;
+
 template<typename T>
 class IElementComparator;
 

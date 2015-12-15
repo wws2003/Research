@@ -4,16 +4,34 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/implement/filter/BackgroundGateLookupResultProcessor.cpp \
+../src/implement/filter/BackgroundGateLookupResultsFilterProcessor.cpp \
+../src/implement/filter/BackgroundLookupResultProcessor.cpp \
+../src/implement/filter/BackgroundLookupResultsFilterProcessor.cpp \
+../src/implement/filter/BackgroundMatrixLookupResultProcessor.cpp \
+../src/implement/filter/BackgroundMatrixLookupResultsFilterProcessor.cpp \
 ../src/implement/filter/DuplicateGateLookupResultFilterImpl.cpp \
 ../src/implement/filter/DuplicateLookupResultFilterImpl.cpp \
 ../src/implement/filter/DuplicateMatrixLookupResultFilterImpl.cpp 
 
 OBJS += \
+./src/implement/filter/BackgroundGateLookupResultProcessor.o \
+./src/implement/filter/BackgroundGateLookupResultsFilterProcessor.o \
+./src/implement/filter/BackgroundLookupResultProcessor.o \
+./src/implement/filter/BackgroundLookupResultsFilterProcessor.o \
+./src/implement/filter/BackgroundMatrixLookupResultProcessor.o \
+./src/implement/filter/BackgroundMatrixLookupResultsFilterProcessor.o \
 ./src/implement/filter/DuplicateGateLookupResultFilterImpl.o \
 ./src/implement/filter/DuplicateLookupResultFilterImpl.o \
 ./src/implement/filter/DuplicateMatrixLookupResultFilterImpl.o 
 
 CPP_DEPS += \
+./src/implement/filter/BackgroundGateLookupResultProcessor.d \
+./src/implement/filter/BackgroundGateLookupResultsFilterProcessor.d \
+./src/implement/filter/BackgroundLookupResultProcessor.d \
+./src/implement/filter/BackgroundLookupResultsFilterProcessor.d \
+./src/implement/filter/BackgroundMatrixLookupResultProcessor.d \
+./src/implement/filter/BackgroundMatrixLookupResultsFilterProcessor.d \
 ./src/implement/filter/DuplicateGateLookupResultFilterImpl.d \
 ./src/implement/filter/DuplicateLookupResultFilterImpl.d \
 ./src/implement/filter/DuplicateMatrixLookupResultFilterImpl.d 
