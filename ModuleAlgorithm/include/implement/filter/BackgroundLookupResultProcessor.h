@@ -40,6 +40,8 @@ public:
 protected:
 	virtual void processOnBackground(const LookupResult<T>& result) = 0;
 
+	virtual void processOnBackground(const std::vector<LookupResult<T> > requestsBuffer) = 0;
+
 	virtual void exportInternalContainerToResults(std::vector<LookupResult<T> >& results, bool toSortResults = true) const = 0;
 
 	virtual void resetInternalContainer() = 0;

@@ -10,6 +10,9 @@ CPP_SRCS += \
 ../src/implement/filter/BackgroundLookupResultsFilterProcessor.cpp \
 ../src/implement/filter/BackgroundMatrixLookupResultProcessor.cpp \
 ../src/implement/filter/BackgroundMatrixLookupResultsFilterProcessor.cpp \
+../src/implement/filter/DummyGateLookupResultProcessor.cpp \
+../src/implement/filter/DummyLookupResultProcessor.cpp \
+../src/implement/filter/DummyMatrixLookupResultProcessor.cpp \
 ../src/implement/filter/DuplicateGateLookupResultFilterImpl.cpp \
 ../src/implement/filter/DuplicateLookupResultFilterImpl.cpp \
 ../src/implement/filter/DuplicateMatrixLookupResultFilterImpl.cpp 
@@ -21,6 +24,9 @@ OBJS += \
 ./src/implement/filter/BackgroundLookupResultsFilterProcessor.o \
 ./src/implement/filter/BackgroundMatrixLookupResultProcessor.o \
 ./src/implement/filter/BackgroundMatrixLookupResultsFilterProcessor.o \
+./src/implement/filter/DummyGateLookupResultProcessor.o \
+./src/implement/filter/DummyLookupResultProcessor.o \
+./src/implement/filter/DummyMatrixLookupResultProcessor.o \
 ./src/implement/filter/DuplicateGateLookupResultFilterImpl.o \
 ./src/implement/filter/DuplicateLookupResultFilterImpl.o \
 ./src/implement/filter/DuplicateMatrixLookupResultFilterImpl.o 
@@ -32,6 +38,9 @@ CPP_DEPS += \
 ./src/implement/filter/BackgroundLookupResultsFilterProcessor.d \
 ./src/implement/filter/BackgroundMatrixLookupResultProcessor.d \
 ./src/implement/filter/BackgroundMatrixLookupResultsFilterProcessor.d \
+./src/implement/filter/DummyGateLookupResultProcessor.d \
+./src/implement/filter/DummyLookupResultProcessor.d \
+./src/implement/filter/DummyMatrixLookupResultProcessor.d \
 ./src/implement/filter/DuplicateGateLookupResultFilterImpl.d \
 ./src/implement/filter/DuplicateLookupResultFilterImpl.d \
 ./src/implement/filter/DuplicateMatrixLookupResultFilterImpl.d 

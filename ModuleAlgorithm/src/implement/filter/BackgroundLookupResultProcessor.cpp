@@ -114,15 +114,18 @@ void BackgroundLookupResultProcessor<T>::doBackgroundJob() {
 
 		//Request queue has been locked again, but still need to check to make sure
 		if(!m_requestQueue.empty() && !m_terminateFlag) {
-			LookupResult<T> request = m_requestQueue.front();
-			m_requestQueue.pop_front();
+			std::vector<LookupResult<T> > requestBuffer;
+			while(!m_requestQueue.empty()) {
+				requestBuffer.push_back(m_requestQueue.front());
+				m_requestQueue.pop_front();
+			}
 
 			//Unlock request queue to allow new request
 			pthread_mutex_unlock(&m_requestQueueMutex);
 
 			//Lock internal container to process with new request
 			pthread_mutex_lock(&m_internalContainerMutex);
-			processOnBackground(request);
+			processOnBackground(requestBuffer);
 			pthread_mutex_unlock(&m_internalContainerMutex);
 
 			pthread_mutex_lock(&m_requestQueueMutex);

@@ -108,6 +108,8 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateCollection(CollectionPtr<T> pColl
 				m_pTimer,
 				&searchTime);
 
+		m_ostream << "Collection search time: "  << searchTime << "\n";
+
 		logAllSearchResultsFoundIterator(pFindResultIter,
 				m_pDistanceCalculator,
 				m_pRealCoordinateCalculator,
@@ -140,6 +142,8 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateApproximator(ApproximatorPtr<T> p
 				pFindResultIter,
 				m_pTimer,
 				&searchTime);
+
+		m_ostream << "Approximating time: "  << searchTime << "\n";
 
 		logAllSearchResultsFoundIterator(pFindResultIter,
 				m_pDistanceCalculator,
@@ -255,6 +259,7 @@ void logAllSearchResultsFoundIterator(IteratorPtr<LookupResult<T> > pFindResultI
 
 		_destroy(pCoordinate);
 	}
+	outputStream << "Number of results:" << results.size() << END_LINE;
 }
 
 template<typename T>

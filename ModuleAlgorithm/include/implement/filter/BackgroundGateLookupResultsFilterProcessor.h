@@ -11,6 +11,13 @@
 #include "Gate.h"
 #include "BackgroundLookupResultsFilterProcessor.h"
 
-typedef BackgroundLookupResultsFilterProcessor<GatePtr> BackgroundGateLookupResultsFilterProcessor;
+class BackgroundGateLookupResultsFilterProcessor: public BackgroundLookupResultsFilterProcessor<GatePtr> {
+public:
+	BackgroundGateLookupResultsFilterProcessor(DistanceCalculatorPtr<GatePtr> pDistanceCalculator);
+
+protected:
+	//Override
+	bool sameElement(const GatePtr& pGate1, const GatePtr& pGate2) const;
+};
 
 #endif /* BACKGROUNDGATELOOKUPRESULTSFILTERPROCESSOR_H_ */

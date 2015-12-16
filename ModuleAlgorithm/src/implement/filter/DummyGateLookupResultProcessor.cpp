@@ -1,20 +1,20 @@
 /*
- * BackgroundGateLookupResultsFilterProcessor.cpp
+ * DummyGateLookupResultProcessor.cpp
  *
- *  Created on: Dec 15, 2015
+ *  Created on: Dec 16, 2015
  *      Author: pham
  */
 
-#include "BackgroundGateLookupResultsFilterProcessor.h"
-#include "BackgroundLookupResultsFilterProcessor.cpp"
+#include "DummyGateLookupResultProcessor.h"
+#include "DummyLookupResultProcessor.cpp"
 
-template class BackgroundLookupResultsFilterProcessor<GatePtr>;
+template class DummyLookupResultProcessor<GatePtr>;
 
-BackgroundGateLookupResultsFilterProcessor::BackgroundGateLookupResultsFilterProcessor(DistanceCalculatorPtr<GatePtr> pDistanceCalculator) : BackgroundLookupResultsFilterProcessor(pDistanceCalculator) {
+DummyGateLookupResultProcessor::DummyGateLookupResultProcessor(DistanceCalculatorPtr<GatePtr> pDistanceCalculator, storage_t storageType) : DummyLookupResultProcessor<GatePtr>(pDistanceCalculator, storageType){
 
 }
 
-bool BackgroundGateLookupResultsFilterProcessor::sameElement(const GatePtr& pGate1, const GatePtr& pGate2) const {
+bool DummyGateLookupResultProcessor::sameElement(const GatePtr& pGate1, const GatePtr& pGate2) const {
 	MatrixPtr pMatrix1 = pGate1->getMatrix();
 	MatrixPtr pMatrix2 = pGate2->getMatrix();
 
@@ -39,4 +39,5 @@ bool BackgroundGateLookupResultsFilterProcessor::sameElement(const GatePtr& pGat
 	const mreal_t sqr_norm = 1e-30;
 	return (deltaReal * deltaReal + deltaImg * deltaImg <= sqr_norm);
 }
+
 

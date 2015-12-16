@@ -28,7 +28,7 @@ void fromLdToMp(const MatrixXcld& mLd, MatrixXcmp& mMp);
 #endif
 
 SampleMatrixOperator::SampleMatrixOperator(MatrixFactoryPtr pMatrixFactory) : m_pMatrixFactory(pMatrixFactory) {
-
+	 Eigen::initParallel();
 }
 
 void SampleMatrixOperator::add(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prSum) {

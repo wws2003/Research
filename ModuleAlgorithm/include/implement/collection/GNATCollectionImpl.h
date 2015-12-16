@@ -69,7 +69,8 @@ protected:
 	virtual void findAndProcessNearestNeighbours(T query,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
-			LookupResultProcessorPtr<T> pLookupResultProcessor) const;
+			LookupResultProcessorPtr<T> pLookupResultProcessor,
+			std::vector<LookupResult<T> >& finalResults) const;
 
 	//Generate instance of a sub-collection. Subject to be overridden in sub-classes
 	virtual GNATCollectionImplPtr<T> generateSubCollection();

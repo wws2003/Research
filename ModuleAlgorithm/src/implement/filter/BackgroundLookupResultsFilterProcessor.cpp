@@ -24,6 +24,14 @@ void BackgroundLookupResultsFilterProcessor<T>::processOnBackground(const Lookup
 }
 
 template<typename T>
+void BackgroundLookupResultsFilterProcessor<T>::processOnBackground(const std::vector<LookupResult<T> > requestsBuffer) {
+	for(unsigned int i = 0; i < requestsBuffer.size(); i++) {
+		processOnBackground(requestsBuffer[i]);
+	}
+}
+
+
+template<typename T>
 void BackgroundLookupResultsFilterProcessor<T>::exportInternalContainerToResults(std::vector<LookupResult<T> >& results, bool toSortResults) const {
 	results.reserve(m_resultMap.size());
 	results.insert(results.end(), m_resultMap.begin(), m_resultMap.end());
@@ -52,7 +60,7 @@ typename BackgroundLookupResultsFilterProcessor<T>::rmap::iterator BackgroundLoo
 	for(typename rmap::const_iterator rIter = lIter; rIter != uIter; rIter++) {
 		T rElement = rIter->m_resultElement;
 
-		if(m_pDistanceCalculator->distance(lElement, rElement) <= DISTANCE_TO_CONSIDER_AS_ONE) {
+		if(sameElement(lElement, rElement) || m_pDistanceCalculator->distance(lElement, rElement) <= DISTANCE_TO_CONSIDER_AS_ONE) {
 			isDuplicate = true;
 			return rIter;
 		}

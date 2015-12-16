@@ -42,6 +42,20 @@ void findClosestElementsInSplitPoints2(T query,
 		std::vector<LookupResult<T> >& results);
 
 template<typename T>
+void findClosestElementsInUnStructuredBuffer3(T query,
+		const UnstructuredBuffer<T>& dataSet,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon,
+		LookupResultProcessorPtr<T> pLookupResultProcessor);
+
+template<typename T>
+void findClosestElementsInSplitPoints3(T query,
+		const SplitPointSet<T>& dataSet,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon,
+		LookupResultProcessorPtr<T> pLookupResultProcessor);
+
+template<typename T>
 void selfTest(GNATCollectionImpl<T>* pCollection);
 
 template<typename T>
@@ -169,9 +183,15 @@ IteratorPtr<LookupResult<T> > GNATCollectionImpl<T>::findNearestNeighbours(T que
 
 	std::vector<LookupResult<T> > results ;
 
-	findAndProcessNearestNeighbours(query, pDistanceCalculator, epsilon, m_pLookupResultProcessor);
+	findAndProcessNearestNeighbours(query,
+			pDistanceCalculator,
+			epsilon,
+			m_pLookupResultProcessor,
+			results);
 
-	m_pLookupResultProcessor->retrieveProcessedLookupResults(results, toSortResults);
+	if(toSortResults) {
+		std::sort(results.begin(), results.end(), DistanceComparator<T>());
+	}
 
 	if(m_toCloneFilteredResults) {
 		for(unsigned int i = 0; i < results.size(); i++) {
@@ -185,21 +205,32 @@ template<typename T>
 void GNATCollectionImpl<T>::findAndProcessNearestNeighbours(T query,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		LookupResultProcessorPtr<T> pLookupResultProcessor) const {
+		LookupResultProcessorPtr<T> pLookupResultProcessor,
+		std::vector<LookupResult<T> >& finalResults) const {
 
-	std::vector<LookupResult<T> > results;
-	results.reserve(30);//Tekitou-ni
+	std::vector<LookupResult<T> > tmpResults;
 
 	//Get results from unstructured buffer first
-	findClosestElementsInUnStructuredBuffer2(query, m_unStructeredBuffer, pDistanceCalculator, epsilon, results);
-	//Add results to processor
-	pLookupResultProcessor->addLookupResultsBatch(results);
+	findClosestElementsInUnStructuredBuffer3(query,
+			m_unStructeredBuffer,
+			pDistanceCalculator,
+			epsilon,
+			pLookupResultProcessor);
 
-	//Then results from split points
-	results.clear();
-	findClosestElementsInSplitPoints2(query, m_splitPoints, pDistanceCalculator, epsilon, results);
-	//Add results to processor
-	pLookupResultProcessor->addLookupResultsBatch(results);
+	findClosestElementsInSplitPoints3(query,
+			m_splitPoints,
+			pDistanceCalculator,
+			epsilon,
+			pLookupResultProcessor);
+
+	//Retrieve temporary results
+	pLookupResultProcessor->retrieveProcessedLookupResults(tmpResults, false);
+
+	//Reset processor
+	pLookupResultProcessor->reset();
+
+	//Merge temporary results to final results
+	finalResults.insert(finalResults.end(), tmpResults.begin(), tmpResults.end());
 
 	//Get results from sub collections
 	int nbSubCollections = m_subCollections.size();
@@ -218,7 +249,8 @@ void GNATCollectionImpl<T>::findAndProcessNearestNeighbours(T query,
 		pCandidateSubCollection->findAndProcessNearestNeighbours(query,
 				pDistanceCalculator,
 				epsilon,
-				pLookupResultProcessor);
+				pLookupResultProcessor,
+				finalResults);
 	}
 }
 
@@ -418,6 +450,36 @@ void findClosestElementsInSplitPoints2(T query,
 		mreal_t distance = pDistanceCalculator->distance(element, query);
 		if(distance <= epsilon) {
 			results.push_back(LookupResult<T>(element, distance));
+		}
+	}
+}
+
+template<typename T>
+void findClosestElementsInUnStructuredBuffer3(T query,
+		const UnstructuredBuffer<T>& dataSet,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon,
+		LookupResultProcessorPtr<T> pLookupResultProcessor) {
+	for(typename UnstructuredBuffer<T>::const_iterator eIter = dataSet.begin(); eIter != dataSet.end(); eIter++) {
+		T element = *eIter;
+		mreal_t distance = pDistanceCalculator->distance(element, query);
+		if(distance <= epsilon) {
+			pLookupResultProcessor->addLookupResult(LookupResult<T>(element, distance));
+		}
+	}
+}
+
+template<typename T>
+void findClosestElementsInSplitPoints3(T query,
+		const SplitPointSet<T>& dataSet,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon,
+		LookupResultProcessorPtr<T> pLookupResultProcessor) {
+	for(typename SplitPointSet<T>::const_iterator eIter = dataSet.begin(); eIter != dataSet.end(); eIter++) {
+		T element = *eIter;
+		mreal_t distance = pDistanceCalculator->distance(element, query);
+		if(distance <= epsilon) {
+			pLookupResultProcessor->addLookupResult(LookupResult<T>(element, distance));
 		}
 	}
 }
