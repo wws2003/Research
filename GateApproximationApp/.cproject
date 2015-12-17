@@ -70,7 +70,7 @@
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/implement"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.299868399" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC -pg" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.299868399" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC -pg -fopenmp" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1044727360" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1308549997" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -101,7 +101,7 @@
 									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfr/lib"/>
 									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfrc++/lib"/>
 								</option>
-								<option id="gnu.cpp.link.option.flags.135559381" superClass="gnu.cpp.link.option.flags" value="-pthread" valueType="string"/>
+								<option id="gnu.cpp.link.option.flags.135559381" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-pthread -fopenmp" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1788292761" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>

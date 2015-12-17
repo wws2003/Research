@@ -44,7 +44,7 @@ all: ../artifact/libModuleOperator.so
 ../artifact/libModuleOperator.so: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -shared -o "../artifact/libModuleOperator.so" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -fopenmp -shared -o "../artifact/libModuleOperator.so" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

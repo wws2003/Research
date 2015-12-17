@@ -182,6 +182,7 @@ IteratorPtr<LookupResult<T> > GNATCollectionImpl<T>::findNearestNeighbours(T que
 		bool toSortResults) const {
 
 	std::vector<LookupResult<T> > results ;
+	results.reserve(128); //Tekitou-ni
 
 	findAndProcessNearestNeighbours(query,
 			pDistanceCalculator,
@@ -189,9 +190,13 @@ IteratorPtr<LookupResult<T> > GNATCollectionImpl<T>::findNearestNeighbours(T que
 			m_pLookupResultProcessor,
 			results);
 
-	if(toSortResults) {
-		std::sort(results.begin(), results.end(), DistanceComparator<T>());
-	}
+	//Final check and collect results
+	m_pLookupResultProcessor->reset();
+
+	m_pLookupResultProcessor->addLookupResultsBatch(results);
+
+	results.clear();
+	m_pLookupResultProcessor->retrieveProcessedLookupResults(results, toSortResults);
 
 	if(m_toCloneFilteredResults) {
 		for(unsigned int i = 0; i < results.size(); i++) {

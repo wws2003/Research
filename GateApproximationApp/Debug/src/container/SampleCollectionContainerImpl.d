@@ -220,8 +220,10 @@ src/container/SampleCollectionContainerImpl.d: \
  ../../ModuleAlgorithm/include/implement/filter/BackgroundGateLookupResultsFilterProcessor.h \
  ../../ModuleAlgorithm/include/implement/filter/BackgroundLookupResultsFilterProcessor.h \
  ../../ModuleAlgorithm/include/implement/filter/BackgroundLookupResultProcessor.h \
- ../../ModuleAlgorithm/include/implement/filter/DummyGateLookupResultProcessor.h \
- ../../ModuleAlgorithm/include/implement/filter/DummyLookupResultProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/SetBasedGateLookupResultProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/SetBasedLookupResultProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/VectorBasedGateLookupResultProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/VectorBasedLookupResultProcessor.h \
  ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h \
  ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h
 
@@ -665,9 +667,13 @@ src/container/SampleCollectionContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/implement/filter/BackgroundLookupResultProcessor.h:
 
-../../ModuleAlgorithm/include/implement/filter/DummyGateLookupResultProcessor.h:
+../../ModuleAlgorithm/include/implement/filter/SetBasedGateLookupResultProcessor.h:
 
-../../ModuleAlgorithm/include/implement/filter/DummyLookupResultProcessor.h:
+../../ModuleAlgorithm/include/implement/filter/SetBasedLookupResultProcessor.h:
+
+../../ModuleAlgorithm/include/implement/filter/VectorBasedGateLookupResultProcessor.h:
+
+../../ModuleAlgorithm/include/implement/filter/VectorBasedLookupResultProcessor.h:
 
 ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h:
 

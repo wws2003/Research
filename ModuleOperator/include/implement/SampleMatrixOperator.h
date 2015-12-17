@@ -13,6 +13,8 @@
 #include <map>
 
 typedef Eigen::Matrix<ComplexVal, Eigen::Dynamic, Eigen::Dynamic>  MatrixXcmp;
+typedef Eigen::Matrix<ComplexVal, 2, 2>  Matrix2Xcmp;
+typedef Eigen::Matrix<ComplexVal, 4, 4>  Matrix4Xcmp;
 
 class SampleMatrixOperator: public IMatrixOperator {
 public:

@@ -26,7 +26,8 @@
 #include "IPersistableCollection.h"
 #include "DuplicateGateLookupResultFilterImpl.h"
 #include "BackgroundGateLookupResultsFilterProcessor.h"
-#include "DummyGateLookupResultProcessor.h"
+#include "SetBasedGateLookupResultProcessor.h"
+#include "VectorBasedGateLookupResultProcessor.h"
 #include "MatrixFowlerDistanceCalculator.h"
 #include "GateDistanceCalculatorByMatrixImpl.h"
 #include <stdexcept>
@@ -92,11 +93,11 @@ void SampleCollectionContainerImpl::wireDependencies() {
 	m_pBinaryGateWriter = GateWriterPtr(new SQLiteGateWriterImpl(NullPtr, matrixDBName));
 	m_pBinaryGateReader = GateReaderPtr(new BinaryGateReaderImpl(NullPtr));
 
-	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(m_pMatrixOperator));
+	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(NullPtr));
 	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new GateDistanceCalculatorByMatrixImpl(m_pMatrixDistanceCalculator));
 
 	//m_pGateLookupResultProcessor = GateLookupResultProcessorPtr(new BackgroundGateLookupResultsFilterProcessor(m_pGateDistanceCalculator));
-	m_pGateLookupResultProcessor = GateLookupResultProcessorPtr(new DummyGateLookupResultProcessor(m_pGateDistanceCalculator, DummyGateLookupResultProcessor::STRG_SET));
+	m_pGateLookupResultProcessor = GateLookupResultProcessorPtr(new SetBasedGateLookupResultProcessor(m_pGateDistanceCalculator));
 	m_pGateLookupResultProcessor->init();
 
 	m_pUniversalSet = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>());

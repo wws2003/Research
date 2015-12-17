@@ -5,23 +5,19 @@
  *      Author: pham
  */
 
-#ifndef DUMMYLOOKUPRESULTPROCESSOR_H_
-#define DUMMYLOOKUPRESULTPROCESSOR_H_
+#ifndef VECTORBASEDLOOKUPRESULTPROCESSOR_H_
+#define VECTORBASEDLOOKUPRESULTPROCESSOR_H_
 
 #include "ILookupResultProcessor.h"
 #include <set>
 
 template<typename T>
-class DummyLookupResultProcessor: public ILookupResultProcessor<T> {
+class VectorBasedLookupResultProcessor: public ILookupResultProcessor<T> {
 public:
-	enum storage_t {
-		STRG_SET,
-		STRG_VECTOR
-	};
 
-	DummyLookupResultProcessor(DistanceCalculatorPtr<T> pDistanceCalculator, storage_t storageType = STRG_VECTOR);
+	VectorBasedLookupResultProcessor(DistanceCalculatorPtr<T> pDistanceCalculator);
 
-	virtual ~DummyLookupResultProcessor(){};
+	virtual ~VectorBasedLookupResultProcessor(){};
 
 	//Override
 	void init();
@@ -39,9 +35,6 @@ public:
 	void retrieveProcessedLookupResults(std::vector<LookupResult<T> >& results, bool toSortResults = true);
 
 protected:
-	typedef std::multiset<LookupResult<T>, DistanceComparator<T> > rmap;
-
-	typename rmap::iterator checkDuplicateResult(const LookupResult<T>& result, bool& isDuplicate) const;
 
 	virtual void filterLookupResults(std::vector<LookupResult<T> >& lookupResults,
 			DistanceCalculatorPtr<T> pDistanceCalculator);
@@ -54,11 +47,8 @@ protected:
 	virtual bool sameElement(const T& t1, const T& t2) const = 0;
 
 private:
-	storage_t m_storageType;
 
 	std::vector<LookupResult<T> > m_storage;
-
-	rmap m_resultMap;
 
 	DistanceCalculatorPtr<T> m_pDistanceCalculator;
 };

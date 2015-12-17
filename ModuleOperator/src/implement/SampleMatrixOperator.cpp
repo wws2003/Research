@@ -28,7 +28,8 @@ void fromLdToMp(const MatrixXcld& mLd, MatrixXcmp& mMp);
 #endif
 
 SampleMatrixOperator::SampleMatrixOperator(MatrixFactoryPtr pMatrixFactory) : m_pMatrixFactory(pMatrixFactory) {
-	 Eigen::initParallel();
+	 //Eigen::initParallel();
+	std::cout << "Number of openMP threads used by eigen:" << Eigen::nbThreads( ) << "\n";
 }
 
 void SampleMatrixOperator::add(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prSum) {
@@ -198,11 +199,10 @@ void SampleMatrixOperator::multiplyConjugateTranspose(MatrixPtr pm1, MatrixPtr p
 	toEigenMatrix(pm2, eigenMat2);
 	eigenMat2.transposeInPlace();
 
-	MatrixXcmp eigProduct = eigenMat1 * eigenMat2.conjugate();
+	eigenMat1 *= eigenMat2.conjugate();
 
-	prProduct = fromEigenMatrix(eigProduct, pm1->getLabel() + pm2->getLabel());
+	prProduct = fromEigenMatrix(eigenMat1, pm1->getLabel() + pm2->getLabel());
 }
-
 
 void SampleMatrixOperator::eig(MatrixPtr pm, ComplexVectorRef rEigVals, MatrixPtrRef prEigVects) {
 	MatrixXcmp eigenMat;
@@ -350,7 +350,17 @@ void SampleMatrixOperator::toEigenMatrix(MatrixPtr pMatrix, MatrixXcmp& rEigenMa
 	int nbRows, nbColumns;
 	pMatrix->getSize(nbRows, nbColumns);
 
-	rEigenMat = MatrixXcmp(nbRows, nbColumns);
+	if(nbRows == 2 && nbColumns == 2) {
+		rEigenMat = Matrix2Xcmp();
+	}
+	else {
+		if(nbRows == 4 && nbColumns == 4) {
+			rEigenMat = Matrix4Xcmp();
+		}
+		else {
+			rEigenMat = MatrixXcmp(nbRows, nbColumns);
+		}
+	}
 
 	for(int i = 0; i < nbRows; i++) {
 		for(int j = 0; j < nbColumns; j++) {
