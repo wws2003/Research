@@ -11,6 +11,8 @@
 #include <fstream>
 #include <stdexcept>
 
+void readLineAndLog(std::istream& inputStream, std::string& line, std::ostream& outstream);
+
 ConfigReader::ConfigReader() {
 	initLibrarySetNameMap();
 	initRotationSetNameMap();
@@ -20,22 +22,23 @@ ConfigReader::~ConfigReader() {
 }
 
 void ConfigReader::readCollectionConfig(std::string configFile, CollectionConfig* pCollectionConfig) {
+	std::cout << "Collection config:\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
 		char librarySetName[128];
 		std::string line;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%[^\n]", prefix, librarySetName);
 		std::string librarySetNameStr(librarySetName);
 		pCollectionConfig->m_librarySet = (LibrarySet)m_librarySetNameMap[librarySetNameStr];
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pCollectionConfig->m_maxSequenceLength));
 
 		int nbQubits;
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &nbQubits);
 		pCollectionConfig->m_nbQubits = nbQubits;
 
@@ -46,29 +49,30 @@ void ConfigReader::readCollectionConfig(std::string configFile, CollectionConfig
 }
 
 void ConfigReader::readCollectionAndEvaluatorConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig) {
+	std::cout << "ReadCollectionAndEvaluator config:\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
 		char librarySetName[128];
 		std::string line;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%[^\n]", prefix, librarySetName);
 		std::string librarySetNameStr(librarySetName);
 		pCollectionConfig->m_librarySet = (LibrarySet)m_librarySetNameMap[librarySetNameStr];
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pCollectionConfig->m_maxSequenceLength));
 
 		int nbQubits;
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &nbQubits);
 		pCollectionConfig->m_nbQubits = nbQubits;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%lf", prefix, &(pEvaluatorConfig->m_collectionEpsilon));
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%lf", prefix, &(pEvaluatorConfig->m_approximatorEpsilon));
 	}
 	else {
@@ -77,33 +81,34 @@ void ConfigReader::readCollectionAndEvaluatorConfig(std::string configFile, Coll
 }
 
 void ConfigReader::readNearIdentityApproximatorConfig(std::string configFile, NearIdentityApproximatorConfig* pApproximatorConfig) {
+	std::cout << "NearIdentityApproximator config:\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
 		std::string line;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		double initialEpsilon;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
 		pApproximatorConfig->m_initialEpsilon = (mreal_t)initialEpsilon;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_maxMergedBinDistance));
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		double maxCandidateEpsilon;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &maxCandidateEpsilon);
 		pApproximatorConfig->m_maxCandidateEpsilon = (mreal_t)maxCandidateEpsilon;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		double maxCandidateEpsilonDecreaseFactor;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &maxCandidateEpsilonDecreaseFactor);
 		pApproximatorConfig->m_maxCandidateEpsilonDecreaseFactor = (mreal_t)maxCandidateEpsilonDecreaseFactor;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_iterationMaxSteps));
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_maxResultNumber));
 	}
 	else {
@@ -112,20 +117,21 @@ void ConfigReader::readNearIdentityApproximatorConfig(std::string configFile, Ne
 }
 
 void ConfigReader::readSKApproximatorConfig(std::string configFile, SKApproximatorConfig* pApproximatorConfig) {
+	std::cout << "SK config:\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
 		std::string line;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		double initialEpsilon;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
 		pApproximatorConfig->m_initialEpsilon = (mreal_t)initialEpsilon;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_recursiveLevels));
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_nbCandidates));
 	}
 	else {
@@ -134,28 +140,29 @@ void ConfigReader::readSKApproximatorConfig(std::string configFile, SKApproximat
 }
 
 void ConfigReader::readSKApproximatorConfig2(std::string configFile, SKApproximatorConfig2* pApproximatorConfig) {
+	std::cout << "SK2 config:\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
 		std::string line;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		double initialEpsilon;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
 		pApproximatorConfig->m_initialEpsilon = (mreal_t)initialEpsilon;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_recursiveLevels));
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_nbCandidates));
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		double coordinateEpsilon;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &coordinateEpsilon);
 		pApproximatorConfig->m_coordinateEpsilon = coordinateEpsilon;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_coordinateComparatorType));
 	}
 	else {
@@ -165,28 +172,29 @@ void ConfigReader::readSKApproximatorConfig2(std::string configFile, SKApproxima
 
 
 void ConfigReader::readTargetsConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig) {
+	std::cout << "Target config:\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
 		std::string line;
 
 		int nbQubits;
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &nbQubits);
 		pCollectionConfig->m_nbQubits = nbQubits;
 
 		int nbTargets;
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &nbTargets);
 
 		for(int i = 0; i < nbTargets; i++) {
 			RotationConfig rotationConfig;
-			std::getline(inputStream, line);
+			readLineAndLog(inputStream, line, std::cout);
 			readRotationConfigLine(line, rotationConfig);
 			pEvaluatorConfig->m_rotationTargets.push_back(rotationConfig);
 		}
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%lf", prefix, &(pEvaluatorConfig->m_collectionEpsilon));
 
 		//Set approximation epsilon to collection epsilon to avoid empty field
@@ -201,27 +209,28 @@ void ConfigReader::readTargetsConfig(std::string configFile, CollectionConfig* p
 }
 
 void ConfigReader::readEvaluatorConfigFromTargets(std::string configFile, EvaluatorConfig* pEvaluatorConfig) {
+	std::cout << "Evaluator config:\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
 		std::string line;
 
 		int nbQubits;
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &nbQubits);
 
 		int nbTargets;
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &nbTargets);
 
 		for(int i = 0; i < nbTargets; i++) {
 			RotationConfig rotationConfig;
-			std::getline(inputStream, line);
+			readLineAndLog(inputStream, line, std::cout);
 			readRotationConfigLine(line, rotationConfig);
 			pEvaluatorConfig->m_rotationTargets.push_back(rotationConfig);
 		}
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%lf", prefix, &(pEvaluatorConfig->m_collectionEpsilon));
 
 		//Set approximation epsilon to collection epsilon to avoid empty field
@@ -256,3 +265,9 @@ void ConfigReader::readRotationConfigLine(std::string line, RotationConfig& rota
 	rotationConfig.m_rotationType = (RotationType)m_rotationSetNameMap[axis];
 	rotationConfig.m_rotationAngle = (mreal_t)(M_PI / piDenominator);
 }
+
+void readLineAndLog(std::istream& inputStream, std::string& line, std::ostream& outstream) {
+	std::getline(inputStream, line);
+	outstream << "--" << line << "\n";
+}
+

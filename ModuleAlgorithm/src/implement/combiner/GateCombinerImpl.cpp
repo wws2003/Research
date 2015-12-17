@@ -34,10 +34,10 @@ void GateCombinerImpl::combine(GatePtr pGate1, GatePtr pGate2, GatePtr& result) 
 	m_pMatrixOperator->multiply(pGate1->getMatrix(), pGate2->getMatrix(), pCombinedMatrix);
 
 	//If combined matrix is actually identity, abort the combination
-	if(!checkIdentity(pCombinedMatrix)) {
+	/*if(!checkIdentity(pCombinedMatrix)) {
 		_destroy(pCombinedMatrix);
 		return;
-	}
+	}*/
 
 	cost_t combinedCost = pGate1->getCost() + pGate2->getCost();
 

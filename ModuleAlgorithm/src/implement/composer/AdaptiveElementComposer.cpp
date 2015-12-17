@@ -100,7 +100,6 @@ void AdaptiveElementComposer<T1, T2>::convertToOriginalIter(const IteratorPtr<T2
 				std::cout << "An abnormal case: Null orginal pointer\n";
 			}
 
-
 			pDerivedIter->next();
 		}
 		pDerivedIter->toBegin();

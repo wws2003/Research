@@ -9,7 +9,7 @@
 *.pch
 
 # Compiled Dynamic libraries
-*.so
+**/artifact/*.so
 *.dylib
 *.dll
 
@@ -45,6 +45,7 @@ TestEvaluator/Debug/TestEvaluator
 *.exe
 *.out
 *.app
+GateApproximationApp/Debug/GateApproximationApp
 run_test_operator.sh
 run_test_evaluator.sh
 gdb_test_operator.txt
@@ -53,8 +54,7 @@ gdb_test_evaluator.txt
 # Output files
 GateApproximationApp/Debug/out
 GateApproximationApp/Debug/*.txt
-GateApproximationApp/Debug/IntermediateLog*
-GateApproximationApp/Debug/GateApproximationApp
+**/IntermediateLog*
 
 # Third parties artifact
 SharedThirdParties/gmp
