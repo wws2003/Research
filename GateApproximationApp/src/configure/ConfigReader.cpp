@@ -22,7 +22,7 @@ ConfigReader::~ConfigReader() {
 }
 
 void ConfigReader::readCollectionConfig(std::string configFile, CollectionConfig* pCollectionConfig) {
-	std::cout << "Collection config:\n";
+	std::cout << "Collection config " << configFile << ":\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
@@ -49,7 +49,7 @@ void ConfigReader::readCollectionConfig(std::string configFile, CollectionConfig
 }
 
 void ConfigReader::readCollectionAndEvaluatorConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig) {
-	std::cout << "ReadCollectionAndEvaluator config:\n";
+	std::cout << "ReadCollectionAndEvaluator config " << configFile << ":\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
@@ -81,7 +81,7 @@ void ConfigReader::readCollectionAndEvaluatorConfig(std::string configFile, Coll
 }
 
 void ConfigReader::readNearIdentityApproximatorConfig(std::string configFile, NearIdentityApproximatorConfig* pApproximatorConfig) {
-	std::cout << "NearIdentityApproximator config:\n";
+	std::cout << "NearIdentityApproximator config " << configFile << ":\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
@@ -117,7 +117,7 @@ void ConfigReader::readNearIdentityApproximatorConfig(std::string configFile, Ne
 }
 
 void ConfigReader::readSKApproximatorConfig(std::string configFile, SKApproximatorConfig* pApproximatorConfig) {
-	std::cout << "SK config:\n";
+	std::cout << "SK config " << configFile << " <<:\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
@@ -140,7 +140,7 @@ void ConfigReader::readSKApproximatorConfig(std::string configFile, SKApproximat
 }
 
 void ConfigReader::readSKApproximatorConfig2(std::string configFile, SKApproximatorConfig2* pApproximatorConfig) {
-	std::cout << "SK2 config:\n";
+	std::cout << "SK2 config " << configFile << ":\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
@@ -172,7 +172,7 @@ void ConfigReader::readSKApproximatorConfig2(std::string configFile, SKApproxima
 
 
 void ConfigReader::readTargetsConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig) {
-	std::cout << "Target config:\n";
+	std::cout << "Target config" << configFile << ":\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
@@ -209,7 +209,7 @@ void ConfigReader::readTargetsConfig(std::string configFile, CollectionConfig* p
 }
 
 void ConfigReader::readEvaluatorConfigFromTargets(std::string configFile, EvaluatorConfig* pEvaluatorConfig) {
-	std::cout << "Evaluator config:\n";
+	std::cout << "Evaluator config" << configFile << ":\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];

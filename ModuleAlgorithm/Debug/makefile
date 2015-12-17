@@ -54,13 +54,18 @@ all: ../artifact/libModuleAlgorithm.so
 	g++ -shared -o "../artifact/libModuleAlgorithm.so" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
+	$(MAKE) --no-print-directory post-build
 
 # Other Targets
 clean:
 	-$(RM) $(OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(LIBRARIES)$(CPP_DEPS)$(CXX_DEPS)$(C_UPPER_DEPS) ../artifact/libModuleAlgorithm.so
 	-@echo ' '
 
+post-build:
+	-./postBuild.sh
+	-@echo ' '
+
 .PHONY: all clean dependents
-.SECONDARY:
+.SECONDARY: post-build
 
 -include ../makefile.targets

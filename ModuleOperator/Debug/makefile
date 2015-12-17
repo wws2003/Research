@@ -47,13 +47,18 @@ all: ../artifact/libModuleOperator.so
 	g++ -fopenmp -shared -o "../artifact/libModuleOperator.so" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
+	$(MAKE) --no-print-directory post-build
 
 # Other Targets
 clean:
 	-$(RM) $(OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(LIBRARIES)$(CPP_DEPS)$(CXX_DEPS)$(C_UPPER_DEPS) ../artifact/libModuleOperator.so
 	-@echo ' '
 
+post-build:
+	-./postBuild.sh
+	-@echo ' '
+
 .PHONY: all clean dependents
-.SECONDARY:
+.SECONDARY: post-build
 
 -include ../makefile.targets
