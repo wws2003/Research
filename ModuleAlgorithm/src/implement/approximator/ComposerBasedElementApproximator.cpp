@@ -59,7 +59,7 @@ void ComposerBasedElementApproximator<T>::decomposeQueryIntoBuildingBlocksBucket
 			m_nbPartialQueries);
 
 	for(unsigned int i = 0; i < partialQueries.size(); i++) {
-		//Get buiding block list for partial query
+		//Get building block list for partial query
 		IteratorPtr<LookupResult<T> > pLookupIter = getApproximateElementsForPartialQuery(pCoreCollection,
 				partialQueries[i],
 				pDistanceCalculator,

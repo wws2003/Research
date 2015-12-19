@@ -55,6 +55,9 @@ GateApproximationApp/Debug/*.txt
 GateApproximationApp/Debug/IntermediateLog*
 GateApproximationApp/Debug/GateApproximationApp
 
+# Experiment folder (not used for debug)
+Experiment/*
+
 # Third parties artifact
 SharedThirdParties/gmp
 SharedThirdParties/m4

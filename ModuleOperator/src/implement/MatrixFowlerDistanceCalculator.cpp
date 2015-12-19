@@ -18,22 +18,35 @@ mreal_t MatrixFowlerDistanceCalculator::distance(MatrixPtr p1, MatrixPtr p2) {
 	int nbRows, nbColumns;
 	p1->getSize(nbRows, nbColumns);
 
+	ComplexVal traceM1ConjugateTranpose2(0.0, 0.0);
+
 	/**Fowler distance
 	 * d = size(m2) = size(m1)
 	 * dist(m1, m2) = sqrt((d - |trace(m1 * m2')|) / d);
 	 */
 
+	//Try directly compute instead to avoid overhead !
+	for(int r1 = 0; r1 < nbRows; r1++) {
+		for(int c1 = 0; c1 < nbColumns; c1++) {
+			traceM1ConjugateTranpose2 += p1->getValue(r1, c1) * std::conj(p2->getValue(r1, c1));
+		}
+	}
+
+	/*
 	//m1 * m2'
 	MatrixPtr pM1ConjugateTranpose2 = NullPtr;
 	m_pMatrixOperator->multiplyConjugateTranspose(p1, p2, pM1ConjugateTranpose2);
 
 	//Trace(m1 * m2')
 	ComplexVal traceM1ConjugateTranpose2 = m_pMatrixOperator->trace(pM1ConjugateTranpose2);
+
+	_destroy(pM1ConjugateTranpose2);
+
+	 */
+
 	mreal_t traceM1ConjugateTranpose2Norm = mreal::norm(traceM1ConjugateTranpose2);
 
 	mreal_t distance = mreal::sqrt(1.0 - (traceM1ConjugateTranpose2Norm) / (mreal_t)nbRows);
-
-	_destroy(pM1ConjugateTranpose2);
 
 	return mreal::isNAN(distance) ? 0.0 : distance;
 }
