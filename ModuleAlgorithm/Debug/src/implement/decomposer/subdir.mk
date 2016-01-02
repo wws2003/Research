@@ -8,21 +8,24 @@ CPP_SRCS += \
 ../src/implement/decomposer/DummyGateDecomposer.cpp \
 ../src/implement/decomposer/DummyMatrixDecomposer.cpp \
 ../src/implement/decomposer/HarrowElementDecomposer.cpp \
-../src/implement/decomposer/HarrowGateDecomposer.cpp 
+../src/implement/decomposer/HarrowGateDecomposer.cpp \
+../src/implement/decomposer/NearHalfBalanceGateDecomposer.cpp 
 
 OBJS += \
 ./src/implement/decomposer/DummyElementDecomposer.o \
 ./src/implement/decomposer/DummyGateDecomposer.o \
 ./src/implement/decomposer/DummyMatrixDecomposer.o \
 ./src/implement/decomposer/HarrowElementDecomposer.o \
-./src/implement/decomposer/HarrowGateDecomposer.o 
+./src/implement/decomposer/HarrowGateDecomposer.o \
+./src/implement/decomposer/NearHalfBalanceGateDecomposer.o 
 
 CPP_DEPS += \
 ./src/implement/decomposer/DummyElementDecomposer.d \
 ./src/implement/decomposer/DummyGateDecomposer.d \
 ./src/implement/decomposer/DummyMatrixDecomposer.d \
 ./src/implement/decomposer/HarrowElementDecomposer.d \
-./src/implement/decomposer/HarrowGateDecomposer.d 
+./src/implement/decomposer/HarrowGateDecomposer.d \
+./src/implement/decomposer/NearHalfBalanceGateDecomposer.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

@@ -112,10 +112,10 @@ IteratorPtr<LookupResult<T> > ComposerBasedElementApproximator<T>::getFullResult
 
 	if(pResultIter != NullPtr) {
 		while(!pResultIter->isDone()) {
-			pResultIter->next();
 			T resultElement = pResultIter->getObj();
 			mreal_t distance = pDistanceCalculator->distance(resultElement, pQuery);
 			fullResults.push_back(LookupResult<T>(resultElement, distance));
+			pResultIter->next();
 		}
 		pResultIter->toBegin();
 		std::sort(fullResults.begin(), fullResults.end(), DistanceComparator<T>());
