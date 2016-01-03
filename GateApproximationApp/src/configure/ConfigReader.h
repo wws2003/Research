@@ -23,6 +23,8 @@ public:
 
 	virtual void readNearIdentityApproximatorConfig(std::string configFile, NearIdentityApproximatorConfig* pApproximatorConfig);
 
+	virtual void readComposerBasedApproximatorConfig(std::string configFile, ComposerBasedApproximatorConfig* pApproximatorConfig);
+
 	virtual void readSKApproximatorConfig(std::string configFile, SKApproximatorConfig* pApproximatorConfig);
 
 	virtual void readSKApproximatorConfig2(std::string configFile, SKApproximatorConfig2* pApproximatorConfig);

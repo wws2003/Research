@@ -55,13 +55,16 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
  ../src/command/EvaluatePersistedCollectionForTargetsCommand.h \
+ ../src/container/ComposerBasedApproximatorContainer.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../src/container/SKApproximatorContainerImpl.h \
  ../src/container/SK2ApproximatorContainerImpl.h \
  ../../ModuleAlgorithm/include/implement/composer/CoordinateAdditionBasedGateComposer.h \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h \
- ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
  ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h \
  ../../ModuleAlgorithm/include/internal-abstract/converter/IConverter.h
 
@@ -183,6 +186,14 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../src/command/EvaluatePersistedCollectionForTargetsCommand.h:
 
+../src/container/ComposerBasedApproximatorContainer.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
+
+../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h:
+
+../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
+
 ../src/container/SKApproximatorContainerImpl.h:
 
 ../src/container/SK2ApproximatorContainerImpl.h:
@@ -194,8 +205,6 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
 
 ../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h:
-
-../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h:
 

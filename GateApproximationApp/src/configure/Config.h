@@ -56,12 +56,20 @@ struct NearIdentityApproximatorConfig {
 	mreal_t m_initialEpsilon;
 };
 
+struct ComposerBasedApproximatorConfig {
+	int m_nbPartialQueries;
+	mreal_t m_initialEpsilon;
+	int m_nbCandidates;
+	int m_composerBasedApproximatorType;
+	int m_queryDecomposerType;
+	int m_buildingBlockComposerType;
+};
+
 struct SKApproximatorConfig {
 	mreal_t m_initialEpsilon;
 	int m_recursiveLevels;
 	int m_nbCandidates;
 };
-
 
 struct SKApproximatorConfig2 : public SKApproximatorConfig {
 	mreal_t m_coordinateEpsilon;

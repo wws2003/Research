@@ -28,6 +28,8 @@ private:
 	AbstractCommandPtr getApproximatorEvaluationCommandForIdentity(std::string evaluationConfigFile, std::string approximatorConfigFileName);
 	AbstractCommandPtr getGenerateAndStoreApproximationsCommandForIdentity(std::string evaluationConfigFile, std::string approximatorConfigFileName, std::string storeFileName);
 	AbstractCommandPtr getPersistedCollectionEvaluationCommandForTargets(std::string storeFileName, std::string targetConfigFile);
+
+	AbstractCommandPtr getComposerBasedApproximatorEvaluationCommandForTargets(std::string collectionConfigFile, std::string skApprxConfigFile, std::string targetConfigFile);
 	AbstractCommandPtr getSKApproximatorEvaluationCommandForTargets(std::string collectionConfigFile, std::string skApprxConfigFile, std::string targetConfigFile);
 	AbstractCommandPtr getSK2ApproximatorEvaluationCommandForTargets(std::string collectionConfigFile, std::string skApprxConfigFile, std::string targetConfigFile);
 
@@ -38,6 +40,11 @@ private:
 	void readApproximatorConfig(ConfigReader configReader, std::string configFile, const CollectionConfig&  collectionConfig, NearIdentityApproximatorConfig* pApproximatorConfig);
 
 	void readTargetConfig(ConfigReader configReader, std::string targetConfigFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
+
+	void readComposerBasedApproximatorConfig(ConfigReader configReader,
+			std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
+			std::string cbApprxConfigFile, ComposerBasedApproximatorConfig* pApproximatorConfig,
+			std::string targetConfigFile, EvaluatorConfig* pEvaluatorConfig);
 
 	void readSKConfig(ConfigReader configReader,
 			std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
@@ -54,6 +61,8 @@ private:
 	void resetEvaluationContainer(const EvaluatorConfig& evaluatorConfig, const CollectionConfig& collectionConfig);
 
 	void resetApproximatorContainer(const NearIdentityApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig);
+
+	void resetComposerBasedApproximatorContainer(const ComposerBasedApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig);
 
 	void resetSKApproximatorContainer(const SKApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig);
 

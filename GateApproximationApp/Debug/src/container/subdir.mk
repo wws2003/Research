@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/container/ComposerBasedApproximatorContainer.cpp \
 ../src/container/HTVBasedResourceContainerImpl.cpp \
 ../src/container/HVBasedResourceContainerImpl.cpp \
 ../src/container/SK2ApproximatorContainerImpl.cpp \
@@ -14,6 +15,7 @@ CPP_SRCS += \
 ../src/container/SampleResourceContainerImpl.cpp 
 
 OBJS += \
+./src/container/ComposerBasedApproximatorContainer.o \
 ./src/container/HTVBasedResourceContainerImpl.o \
 ./src/container/HVBasedResourceContainerImpl.o \
 ./src/container/SK2ApproximatorContainerImpl.o \
@@ -24,6 +26,7 @@ OBJS += \
 ./src/container/SampleResourceContainerImpl.o 
 
 CPP_DEPS += \
+./src/container/ComposerBasedApproximatorContainer.d \
 ./src/container/HTVBasedResourceContainerImpl.d \
 ./src/container/HVBasedResourceContainerImpl.d \
 ./src/container/SK2ApproximatorContainerImpl.d \

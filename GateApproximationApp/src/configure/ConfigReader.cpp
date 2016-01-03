@@ -116,6 +116,37 @@ void ConfigReader::readNearIdentityApproximatorConfig(std::string configFile, Ne
 	}
 }
 
+void ConfigReader::readComposerBasedApproximatorConfig(std::string configFile, ComposerBasedApproximatorConfig* pApproximatorConfig) {
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		char prefix[128];
+		std::string line;
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_nbPartialQueries));
+
+		std::getline(inputStream, line);
+		double initialEpsilon;
+		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
+		pApproximatorConfig->m_initialEpsilon = (mreal_t)initialEpsilon;
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_nbCandidates));
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_composerBasedApproximatorType));
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_queryDecomposerType));
+
+		std::getline(inputStream, line);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_buildingBlockComposerType));
+	}
+	else {
+		throw std::logic_error("Can not read config file for approximator!");
+	}
+}
+
 void ConfigReader::readSKApproximatorConfig(std::string configFile, SKApproximatorConfig* pApproximatorConfig) {
 	std::cout << "SK config " << configFile << " <<:\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);

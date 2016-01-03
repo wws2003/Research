@@ -71,6 +71,8 @@ mreal_t cos(const mreal_t& angle);
 mreal_t sin(const mreal_t& angle);
 mreal_t atan2(const mreal_t& y, const mreal_t& x);
 
+//Random number in [0, 1]
+mreal_t rand();
 }
 // namespace mreal
 
