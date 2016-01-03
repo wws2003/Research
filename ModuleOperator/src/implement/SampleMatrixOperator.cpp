@@ -29,7 +29,7 @@ void fromLdToMp(const MatrixXcld& mLd, MatrixXcmp& mMp);
 
 SampleMatrixOperator::SampleMatrixOperator(MatrixFactoryPtr pMatrixFactory) : m_pMatrixFactory(pMatrixFactory) {
 	 //Eigen::initParallel();
-	std::cout << "Number of openMP threads used by eigen:" << Eigen::nbThreads( ) << "\n";
+	std::cout << "Number of threads used by eigen:" << Eigen::nbThreads( ) << "\n";
 }
 
 void SampleMatrixOperator::add(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prSum) {

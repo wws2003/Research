@@ -198,6 +198,9 @@ IteratorPtr<LookupResult<T> > GNATCollectionImpl<T>::findNearestNeighbours(T que
 	results.clear();
 	m_pLookupResultProcessor->retrieveProcessedLookupResults(results, toSortResults);
 
+	//Reset again to maintain post condition
+	m_pLookupResultProcessor->reset();
+
 	if(m_toCloneFilteredResults) {
 		for(unsigned int i = 0; i < results.size(); i++) {
 			results[i] = LookupResult<T>(results[i].m_resultElement->clone(), results[i].m_distanceToTarget);

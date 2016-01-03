@@ -195,7 +195,7 @@ void constructSampleGNATCollection(PersistableGNATGateCollectionImpl* pSampleCol
 			{Range(1,5)}};
 
 	//Sub Collection 1
-	PersistableGNATGateCollectionImpl* pSubCollection1 = new PersistableGNATGateCollectionImpl(NullPtr, NullPtr);
+	PersistableGNATCollectionImpl<GatePtr>* pSubCollection1 = new PersistableGNATCollectionImpl<GatePtr>(NullPtr, NullPtr);
 
 	//---Unstructured buffer: 3 points
 	UnstructuredBuffer<GatePtr> subUnStructeredBuffer1 = {pGates[gateCounter++],
@@ -213,7 +213,7 @@ void constructSampleGNATCollection(PersistableGNATGateCollectionImpl* pSampleCol
 	pSubCollection1->init(subSplitPoints1, subUnStructeredBuffer1, subSplitPointRanges1);
 
 	//Sub Collection 2
-	PersistableGNATGateCollectionImpl* pSubCollection2 = new PersistableGNATGateCollectionImpl(NullPtr, NullPtr);
+	PersistableGNATCollectionImpl<GatePtr>* pSubCollection2 = new PersistableGNATCollectionImpl<GatePtr>(NullPtr, NullPtr);
 
 	//---Unstructured buffer: 3 points
 	UnstructuredBuffer<GatePtr> subUnStructeredBuffer2 = {pGates[gateCounter++],

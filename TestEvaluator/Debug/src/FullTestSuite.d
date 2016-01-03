@@ -222,7 +222,7 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleIO/include/implement/FullGateWriterImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATGateCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
- ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h \
+ ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultProcessor.h \
  ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATItemCollectionImpl.h \
@@ -236,6 +236,7 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/implement/filter/DuplicateGateLookupResultFilterImpl.h \
  ../../ModuleAlgorithm/include/implement/filter/DuplicateLookupResultFilterImpl.h \
+ ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h \
  ../../ModuleIO/include/implement/BinaryGateWriterImpl.h \
  ../../ModuleIO/include/implement/BinaryGateReaderImpl.h \
  ../../ModuleIO/include/implement/BinaryMatrixReaderImpl.h \
@@ -245,7 +246,9 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
  ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h \
  ../../ModuleAlgorithm/include/implement/comparator/DictionaryOrderCoordinateComparator.hpp \
- ../../ModuleAlgorithm/include/implement/combiner/GateCoordinateCombinerImpl.h
+ ../../ModuleAlgorithm/include/implement/combiner/GateCoordinateCombinerImpl.h \
+ ../../ModuleAlgorithm/include/implement/filter/SetBasedGateLookupResultProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/SetBasedLookupResultProcessor.h
 
 ../src/FullTestSuite.h:
 
@@ -695,7 +698,7 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 
 ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h:
 
-../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h:
+../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultProcessor.h:
 
 ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h:
 
@@ -723,6 +726,8 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 
 ../../ModuleAlgorithm/include/implement/filter/DuplicateLookupResultFilterImpl.h:
 
+../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h:
+
 ../../ModuleIO/include/implement/BinaryGateWriterImpl.h:
 
 ../../ModuleIO/include/implement/BinaryGateReaderImpl.h:
@@ -742,3 +747,7 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 ../../ModuleAlgorithm/include/implement/comparator/DictionaryOrderCoordinateComparator.hpp:
 
 ../../ModuleAlgorithm/include/implement/combiner/GateCoordinateCombinerImpl.h:
+
+../../ModuleAlgorithm/include/implement/filter/SetBasedGateLookupResultProcessor.h:
+
+../../ModuleAlgorithm/include/implement/filter/SetBasedLookupResultProcessor.h:

@@ -53,6 +53,7 @@
 #include "DictionaryOrderCoordinateComparator.hpp"
 #include "VectorBasedIteratorImpl.hpp"
 #include "GateCoordinateCombinerImpl.h"
+#include "SetBasedGateLookupResultProcessor.h"
 #include <iostream>
 #include <cmath>
 #include <cstdio>
@@ -150,11 +151,11 @@ void FullTestSuite::test(){
 	testSimpleEvaluator();
 	testInverseCancelingSearchSpaceConstructor();
 	testSampleMatrixBinCollection();
-	/*testCalculateCoordinatesInSearchSpace();
-	testGNATCollectionBuild();
+	testCalculateCoordinatesInSearchSpace();
+	//testGNATCollectionBuild();
 	testGNATCollectionPersistence();
 	testGNATSearch();
-	testFilteredGNATSearch();*/
+	testFilteredGNATSearch();
 	testAddtionBasedCoordinateComposer();
 	//freeTestGateCollectionEvaluator();
 }
@@ -814,8 +815,13 @@ void FullTestSuite::testFilteredGNATSearch() {
 	GateCollectionPtr pUniversalSet = NullPtr;
 	initTwoQubitsGateUniversalSet(m_pMatrixOperator, pUniversalSet);
 
+	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(NullPtr);
+	//MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(m_pMatrixOperator);
+	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(pMatrixDistanceCalculator);
+
 	LookupResultFilterPtr<GatePtr> pGateLookupResultFilter = new DuplicateGateLookupResultFilterImpl();
-	GateCollectionPtr pGateGNATCollection = new GNATGateCollectionImpl(pGateLookupResultFilter);
+	SetBasedGateLookupResultProcessor* pGateLookupResultProcessor = new SetBasedGateLookupResultProcessor(pGateDistanceCalculator);
+	GateCollectionPtr pGateGNATCollection = new GNATGateCollectionImpl(pGateLookupResultProcessor);
 
 	int maxSequenceLength = 5;
 
@@ -826,22 +832,20 @@ void FullTestSuite::testFilteredGNATSearch() {
 	TargetElements<GatePtr> targets;
 	getNearIdentityGate(m_pMatrixOperator, pBasis4, targets);
 
-	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(m_pMatrixOperator);
-	//MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(m_pMatrixOperator);
-	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(pMatrixDistanceCalculator);
-
 	evalFilteredFindNeighbours(pGateGNATCollection, targets, pGateDistanceCalculator, epsilon);
 
 	/* After constructing data structure */
 	pGateGNATCollection->rebuildStructure(pGateDistanceCalculator);
 	evalFilteredFindNeighbours(pGateGNATCollection, targets, pGateDistanceCalculator, epsilon);
 
-	delete pMatrixDistanceCalculator;
-	delete pGateDistanceCalculator;
 	delete pGateSearchSpaceConstructor;
 
 	delete pGateGNATCollection;
+	delete pGateLookupResultProcessor;
 	delete pGateLookupResultFilter;
+
+	delete pMatrixDistanceCalculator;
+	delete pGateDistanceCalculator;
 
 	releaseTwoQubitsGateUniversalSet(pUniversalSet);
 	delete pGateCombiner;

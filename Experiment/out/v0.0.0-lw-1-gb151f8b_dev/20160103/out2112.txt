@@ -1,0 +1,590 @@
+b151f8bc2160d334294c21c68d26541c7cda2d08
+./GateApproximationApp -e in1_16.conf -sk2 sk2_1.conf -t target2_sk1.conf
+Collection config in1_16.conf:
+--Library gates:H-T
+--Max sequence length:16
+--Number of qubits:1
+Evaluator configtarget2_sk1.conf:
+--Number of qubits:1
+--Number of targets:1
+--Target:X 128
+--Epsilon:12e-2
+SK2 config sk2_1.conf:
+--Initial epsilon:2e-1
+--Recursive level:1
+--Max candidates:40
+--Coordinate eps:6e-3
+--ComparatorType:2
+Number of threads used by eigen:1
+SQL command CREATE TABLE IF NOT EXISTS matrices (label TEXT UNIQUE NOT NULL, vals TEXT  NOT NULL);
+Table created successfully
+Number of threads used by eigen:1
+Number of threads used by eigen:1
+Collection loaded from storage. Distance calculator is ignored !
+Start evaluate approximator
+U:
+3.12932 1.13694e-14 -1.65001e-14 
+-----------
+V:
+6.67209e-15 2.42409e-29 1.25086 
+-----------
+W:
+-4.46802e-15 1.25086 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-2.81816 -0.0108093 -0.880779 
+-----------
+V:
+-0.362448 -0.0013902 1.15971 
+-----------
+W:
+0.00466034 -1.21502 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-2.81816 0.0108093 0.880779 
+-----------
+V:
+0.362448 -0.0013902 1.15971 
+-----------
+W:
+-0.00466034 -1.21502 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-1.89901 -2.09486 -0.837753 
+-----------
+V:
+-0.231681 -0.255576 1.16426 
+-----------
+W:
+0.899656 -0.815544 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-1.89901 2.09486 0.837753 
+-----------
+V:
+0.231681 -0.255576 1.16426 
+-----------
+W:
+-0.899656 -0.815544 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-1.89901 2.07367 -0.888912 
+-----------
+V:
+-0.247199 0.269935 1.15781 
+-----------
+W:
+-0.895517 -0.820087 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.124029 0.0547158 -0.136821 
+-----------
+V:
+0.201692 0.088977 0.218418 
+-----------
+W:
+-0.125255 0.283926 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-1.89901 -2.07367 0.888912 
+-----------
+V:
+0.247199 0.269935 1.15781 
+-----------
+W:
+0.895517 -0.820087 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-1.89901 0.888912 2.07367 
+-----------
+V:
+0.773335 -0.361992 0.86337 
+-----------
+W:
+-0.514792 -1.09976 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-1.89901 0.837753 -2.09486 
+-----------
+V:
+-0.789206 0.348161 0.854653 
+-----------
+W:
+-0.490113 -1.11098 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-1.89901 -0.888912 -2.07367 
+-----------
+V:
+-0.773335 -0.361992 0.86337 
+-----------
+W:
+0.514792 -1.09976 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.187394 -0.020943 0.0523696 
+-----------
+V:
+-0.0831909 0.00929737 0.3014 
+-----------
+W:
+0.034743 0.310873 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.187394 0.0222219 0.0518399 
+-----------
+V:
+-0.0822856 -0.00975776 0.301634 
+-----------
+W:
+-0.036836 0.310632 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.187394 0.020943 -0.0523696 
+-----------
+V:
+0.0831909 0.00929737 0.3014 
+-----------
+W:
+-0.034743 0.310873 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.187394 -0.0222219 -0.0518399 
+-----------
+V:
+0.0822856 -0.00975776 0.301634 
+-----------
+W:
+0.036836 0.310632 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.0443011 -0.00236341 -0.192578 
+-----------
+V:
+0.305884 -0.0163186 0.0705665 
+-----------
+W:
+0.016746 0.313896 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.0443011 0.00236341 0.192578 
+-----------
+V:
+-0.305884 -0.0163186 0.0705665 
+-----------
+W:
+-0.016746 0.313896 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-0.659951 -2.05346 -2.00367 
+-----------
+V:
+-0.252654 -0.786142 0.888894 
+-----------
+W:
+1.15507 -0.371221 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.0443011 -0.137845 -0.134502 
+-----------
+V:
+0.0654601 -0.203682 0.230304 
+-----------
+W:
+0.299267 0.0961797 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-0.659951 -2.00367 2.05346 
+-----------
+V:
+0.264744 0.803786 0.869381 
+-----------
+W:
+1.15236 -0.379552 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.0443011 -0.134502 0.137845 
+-----------
+V:
+-0.0685925 0.208253 0.225248 
+-----------
+W:
+0.298564 0.0983384 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.144254 -0.125175 0.053658 
+-----------
+V:
+-0.0643394 0.0558296 0.303211 
+-----------
+W:
+0.206415 0.237878 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.144254 -0.126454 -0.0505699 
+-----------
+V:
+0.0603708 -0.0529212 0.304546 
+-----------
+W:
+0.207611 0.236836 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.144254 0.125175 -0.053658 
+-----------
+V:
+0.0643394 0.0558296 0.303211 
+-----------
+W:
+-0.206415 0.237878 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.144254 0.126454 0.0505699 
+-----------
+V:
+-0.0603708 -0.0529212 0.304546 
+-----------
+W:
+-0.207611 0.236836 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.177028 -2.80649 0.859534 
+-----------
+V:
+-0.0223127 0.353733 1.15958 
+-----------
+W:
+1.21013 0.0763327 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.177028 -2.82674 -0.790401 
+-----------
+V:
+0.0203717 -0.325291 1.16791 
+-----------
+W:
+1.21017 0.0757881 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.177028 2.80649 -0.859534 
+-----------
+V:
+0.0223127 0.353733 1.15958 
+-----------
+W:
+-1.21013 0.0763327 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.177028 2.82674 0.790401 
+-----------
+V:
+-0.0203717 -0.325291 1.16791 
+-----------
+W:
+-1.21017 0.0757881 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-0.0685404 -0.0023645 -0.192668 
+-----------
+V:
+-0.301078 -0.0103866 0.107234 
+-----------
+W:
+0.011025 -0.319583 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-0.0685404 0.0023645 0.192668 
+-----------
+V:
+0.301078 -0.0103866 0.107234 
+-----------
+W:
+-0.011025 -0.319583 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-0.0685404 -0.137908 -0.134565 
+-----------
+V:
+-0.093644 -0.188419 0.240799 
+-----------
+W:
+0.286357 -0.142319 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.984349 -1.93256 1.98059 
+-----------
+V:
+-0.370893 0.728169 0.894846 
+-----------
+W:
+1.07983 0.55001 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+-0.0685404 -0.134565 0.137908 
+-----------
+V:
+0.0978694 0.192146 0.236128 
+-----------
+W:
+0.28494 -0.145134 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.984349 -1.98059 -1.93256 
+-----------
+V:
+0.35488 -0.714045 0.912547 
+-----------
+W:
+1.0852 0.539342 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.0400436 0.019146 -0.199865 
+-----------
+V:
+0.281786 0.13473 0.0693633 
+-----------
+W:
+-0.138012 0.288651 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.0400436 -0.0240451 -0.199335 
+-----------
+V:
+0.267063 -0.160364 0.0729934 
+-----------
+W:
+0.164708 0.274296 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.0400436 -0.123949 0.157953 
+-----------
+V:
+-0.0758845 0.234888 0.203558 
+-----------
+W:
+0.304454 0.098359 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.0400436 -0.127788 -0.154864 
+-----------
+V:
+0.0723678 -0.230941 0.209275 
+-----------
+W:
+0.30531 0.095672 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+U:
+0.0400436 0.123949 -0.157953 
+-----------
+V:
+0.0758845 0.234888 0.203558 
+-----------
+W:
+-0.304454 0.098359 -0 
+-----------
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Nb Sub-Results: 40
+Approximating time: 210099
+--------------------------
+Number of results:40
+Query coordinate:
+-0.012271846303085129359,0,0,
+Search time: 210099, Gate length:74,T*H*t*H*t*H*t*H*T*H*T*H*t*H*T*H*T*T*H*t*H*T*H*T*H*t*H*T*H*t*t*H*t*H*T*H*t*H*t*H*T*H*T*H*t*H*t*t*t*t*t*H*t*H*T*T*T*T*H*T*T*H*T*H*t*t*t*H*T*H*T*T*H*t,3.0655533987759750555,0.11469478965622937969,-0.63489689697595329845,Distance to target:0.00284206
+Search time: 210099, Gate length:80,t*H*t*H*T*H*T*H*T*H*t*H*t*H*T*H*H*T*H*t*t*H*T*H*T*H*t*H*T*H*t*H*T*H*t*H*t*H*T*H*t*H*T*H*T*H*t*H*H*T*H*T*H*t*t*H*T*H*T*H*t*H*T*H*T*H*T*H*t*H*t*H*t*H*t*H*T*H*T*H,-0.0085978088923545600916,0.00068994465722073721581,-0.0021256368535629713546,Distance to target:0.00304078
+Search time: 210099, Gate length:74,T*H*t*H*t*H*t*H*T*H*T*H*t*H*T*H*H*T*T*H*T*H*T*H*t*H*t*H*T*H*T*H*t*H*t*t*H*T*H*T*T*T*H*T*H*t*H*T*H*t*H*T*H*T*H*t*H*T*H*t*H*T*H*T*H*T*H*t*H*t*H*T*H*t,-0.0093760206818536904562,-0.0036089660416627642067,-0.0012277238998673027429,Distance to target:0.00338504
+Search time: 210099, Gate length:76,t*t*t*H*T*T*T*H*T*H*t*H*T*H*t*t*T*H*t*H*T*H*T*H*t*t*t*H*T*H*T*H*T*H*t*t*H*t*H*T*T*T*H*T*H*T*H*t*H*t*H*T*H*t*H*t*H*T*H*T*H*T*H*T*H*T*H*t*H*t*H*t*H*T*H*T,-0.016593366536331551223,0.0013404795177568301309,0.0044953696317943610051,Distance to target:0.00450996
+Search time: 210099, Gate length:80,t*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*H*T*H*t*H*T*H*T*H*t*H*t*H*t*H*T*t*H*t*H*t*H*T*H*T*H*T*H*T*H*t*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*t*H*T*H*t*H*T*H*t*t*t*t*H*T*T*T*H*T,-0.011358226353677447857,0.0032538363260415487422,0.0059796033854863921156,Distance to target:0.00485671
+Search time: 210099, Gate length:78,t*t*H*T*T*T*H*T*H*t*H*T*H*t*t*t*t*H*t*t*H*T*H*T*H*t*t*t*H*t*H*t*H*T*H*T*H*t*H*t*H*t*H*T*H*T*H*t*t*H*T*H*T*H*T*H*t*H*t*H*T*H*T*H*T*H*T*T*H*T*H*T*T*H*t*H*t*H,-0.018503877859559572549,-0.00021248489803248675609,0.0029898894092116967888,Distance to target:0.0048899
+Search time: 210099, Gate length:77,H*T*H*T*H*t*H*t*H*t*H*T*H*T*H*t*T*T*T*H*t*H*T*H*T*H*t*t*t*t*H*t*H*T*H*t*H*t*H*T*H*t*H*T*H*H*t*t*H*T*H*T*H*t*H*T*H*T*H*T*H*t*t*t*H*T*H*t*t*H*T*H*t*H*T*H*t,-0.0081923020194525507759,-0.0059430755900549276691,8.8010474932072404058e-05,Distance to target:0.00509748
+Search time: 210099, Gate length:76,T*H*t*H*t*H*t*H*T*H*T*H*t*H*T*H*t*H*t*H*t*H*t*H*T*H*t*H*t*t*H*t*T*H*T*H*t*H*t*t*t*H*t*H*T*H*T*T*T*H*t*H*t*H*T*H*T*H*T*H*T*H*T*H*t*H*t*H*T*H*T*H*T*H*t*t,2.4949118244165510528,-0.31455175151026944047,1.8622956498710187005,Distance to target:0.00556087
+Search time: 210099, Gate length:78,t*H*t*H*T*H*T*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*T*H*T*H*t*H*t*H*t*H*H*T*H*T*H*T*H*t*H*t*H*T*T*T*H*T*H*T*H*T*H*t*H*t*H*t*H*T*H*T*H*t*H*t*H*t*H*T*T*H*T*H*t*t*t*t,-0.014189963908597929141,0.0023556932091109285643,0.0079081153509689235643,Distance to target:0.00599011
+Search time: 210099, Gate length:74,H*T*H*T*H*t*H*t*H*t*H*T*H*T*H*H*t*H*T*H*T*H*T*T*H*t*H*t*t*t*H*T*H*t*H*t*H*t*H*T*H*T*T*H*t*t*H*t*t*t*H*T*H*T*H*t*t*t*H*T*H*T*H*T*T*T*H*T*H*T*H*t*H*t,-0.014189963908597938802,0.0039261553485181516048,-0.007257608633632888159,Distance to target:0.00599011
+Search time: 210099, Gate length:76,H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*t*H*T*H*T*H*t*H*t*H*T*H*T*H*T*T*t*t*H*T*H*t*H*T*T*H*T*T*H*t*t*t*t*t*H*T*T*T*H*T*H*t*H*T*H*t*t*t*H*T*H*t*H*t*t*t*H*t*t*H*t,-0.014189963908597854768,-0.003926155348518066997,0.0072576086336332249342,Distance to target:0.00599011
+Search time: 210099, Gate length:75,H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*t*t*t*t*t*H*t*H*t*t*t*H*T*H*T*H*T*T*T*T*H*t*H*T*H*T*H*t*t*t*t*t*t*H*T*T*T*H*T*H*t*H*T*H*t*t*t*H*T*H*t*H*t*t*t*H*t*t*H*t,-0.014189963908597948716,-0.0039261553485181303531,0.0072576086336331677288,Distance to target:0.00599011
+Search time: 210099, Gate length:73,H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*t*T*H*T*H*T*H*t*H*t*H*T*H*T*H*T*T*T*H*T*H*T*H*t*H*t*H*t*H*t*H*T*H*T*H*T*H*T*H*T*H*T*H*T*T*H*T*H*T*H*T*H*t*H*t*H*t*t,-0.0072694874259099271275,-0.0050416159186235267119,-0.004917150311343952081,Distance to target:0.00610806
+Search time: 210099, Gate length:73,H*T*H*t*H*t*H*T*H*t*H*t*H*T*H*t*t*t*t*H*t*H*t*t*t*H*T*H*T*H*T*T*T*H*T*H*T*H*t*H*t*H*t*H*t*H*T*H*T*H*T*H*T*H*T*H*T*H*T*T*H*T*H*T*H*T*H*t*H*t*H*t*t,-0.0072694874259099270233,-0.0050416159186235662781,-0.0049171503113438221218,Distance to target:0.00610806
+Search time: 210099, Gate length:77,H*T*H*t*H*t*H*T*H*t*H*t*H*T*H*T*H*t*t*t*H*t*H*t*t*t*H*T*H*H*t*H*t*H*T*H*T*H*T*H*T*H*t*H*t*T*H*t*H*t*H*T*H*t*H*t*H*T*H*T*H*t*H*t*H*T*H*T*H*T*H*T*H*t*H*t*H,-0.013864710549929880287,0.0040214198516683467369,-0.0078128508478187922555,Distance to target:0.00631448
+Search time: 210099, Gate length:78,H*T*H*T*H*t*H*t*H*t*H*T*H*T*H*t*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*T*H*t*H*t*t*t*t*t*H*t*H*T*T*T*T*t*H*T*H*T*H*t*H*T*H*T*H*t*H*t*H*T*T*H*T*H*t*H*T*H*T*H*T*H*T*H,-0.0051113677712759627041,0.0035391616293496969445,0.0052282825630760329391,Distance to target:0.0067502
+Search time: 210099, Gate length:80,t*t*H*T*T*T*H*T*H*t*H*T*H*t*t*t*H*t*H*t*H*t*H*T*H*T*H*t*H*T*H*T*H*T*H*T*H*t*H*T*H*T*H*t*H*t*H*t*H*T*H*t*H*T*H*t*H*t*H*T*H*t*t*H*H*T*H*T*H*t*t*H*T*H*T*H*t*H*T*H,-0.0088062553098589095591,0.0092054339433615021218,-0.0015442426658286922277,Distance to target:0.00704024
+Search time: 210099, Gate length:76,H*T*H*T*H*t*H*t*H*t*H*T*H*T*H*T*T*H*T*H*T*H*T*H*T*H*t*H*T*H*H*T*H*T*H*T*H*T*H*t*H*T*H*T*T*H*T*H*t*H*t*H*t*H*T*H*T*H*t*H*T*T*H*T*H*T*H*t*t*H*t*H*t*t*t*t,-0.0024767726246888199596,0.0044041341539883596009,0.0020002709080174205912,Distance to target:0.00772459
+Search time: 210099, Gate length:77,t*t*H*T*T*T*H*T*H*t*H*T*H*t*t*t*T*H*T*T*H*T*H*T*H*t*H*t*H*T*T*H*t*H*T*H*T*H*t*H*T*H*T*H*t*H*t*H*H*t*t*H*T*H*T*H*T*H*t*H*t*H*T*H*H*T*H*T*H*T*H*T*H*T*H*T*H,-0.0043465351852286381466,0.003886572080414710627,0.0067021535911985459524,Distance to target:0.00783679
+Search time: 210099, Gate length:78,H*t*H*t*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*t*H*t*H*T*T*T*H*T*H*T*T*T*H*t*t*H*H*t*H*t*H*T*H*T*H*T*H*t*H*t*H*T*H*T*T*H*T*H*t*t*t*H*T*H*T*T*H*t,-0.018071558420214550788,0.0034331256697704374203,-0.0089257603295913450105,Distance to target:0.00790842
+Search time: 210099, Gate length:73,H*t*H*T*H*T*H*T*H*t*H*t*H*T*H*t*T*H*T*H*T*H*T*H*T*H*t*H*t*H*t*H*T*H*t*H*t*H*T*H*T*H*T*T*T*H*T*H*t*H*t*H*t*H*T*H*T*H*T*H*t*H*t*H*t*H*T*H*T*H*t*H*T,-0.018283302804225897512,0.0026711503688301759026,-0.0090821095548599387622,Distance to target:0.00792942
+Search time: 210099, Gate length:77,H*t*H*t*H*T*H*t*H*t*H*T*H*T*H*T*H*t*t*H*t*H*T*T*T*H*t*H*t*H*H*T*H*T*T*T*H*T*H*t*H*T*H*T*H*t*t*t*H*T*H*t*H*t*H*t*H*T*H*t*t*H*T*T*H*T*H*t*t*t*H*T*H*T*T*H*t,-0.011699546347119424421,0.0083680930620046168155,-0.0079081153509687813187,Distance to target:0.00815116
+Search time: 210099, Gate length:78,t*t*t*H*T*T*T*H*T*H*t*H*T*H*t*t*H*T*H*T*T*T*H*T*H*T*H*t*H*t*H*T*T*T*H*T*H*t*H*T*H*T*H*T*H*T*H*H*T*H*T*H*t*H*t*H*t*H*T*H*T*H*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*t,-0.0014873145019872091282,0.0012383863123443517202,-0.0050780093441989062288,Distance to target:0.00847416
+Search time: 210099, Gate length:79,H*t*H*t*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*t*H*T*T*H*T*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*t,-0.0028884661238511758107,-0.0067462823097840407419,0.0035081601378438929967,Distance to target:0.00853998
+Search time: 210099, Gate length:78,H*T*H*t*H*t*H*T*H*t*H*t*H*T*H*H*t*H*T*H*T*H*t*H*t*H*t*H*T*H*T*H*T*T*H*t*H*T*H*T*H*t*H*T*H*t*H*H*T*H*T*H*t*t*H*T*H*T*H*t*H*T*H*H*T*H*T*H*T*H*t*H*t*H*t*H*t*H,2.110173165026083557e-17,-3.6789308251256684795e-18,6.6985955259146086259e-18,Distance to target:0.00867745
+Search time: 210099, Gate length:78,H*t*H*t*H*T*H*t*H*t*H*T*H*T*H*T*t*H*t*H*T*H*T*H*t*H*T*H*T*H*t*H*H*T*H*T*T*T*H*T*H*T*H*t*H*t*H*T*H*t*H*t*H*T*H*T*H*t*H*T*H*T*H*H*T*T*T*H*T*H*T*H*T*H*T*H*t*H,-4.3018988573090642654e-17,5.0744027209213718837e-17,-6.2093284562584836286e-17,Distance to target:0.00867745
+Search time: 210099, Gate length:73,T*H*t*H*t*H*T*H*t*H*t*H*T*H*T*H*H*t*H*T*H*T*H*t*H*t*H*t*H*T*T*H*T*T*H*T*H*T*H*t*H*t*H*t*H*t*T*H*T*H*T*H*T*H*T*H*T*H*T*H*t*H*t*H*T*H*t*H*T*H*T*H*t,2.173998595480060259e-17,3.694183869472077195e-17,-1.0148962400296942594e-16,Distance to target:0.00867745
+Search time: 210099, Gate length:73,t*H*T*H*T*H*t*H*t*H*t*H*T*H*T*H*H*t*H*t*H*T*H*T*T*T*H*T*H*t*t*t*t*H*t*H*t*H*t*H*t*H*T*H*t*H*H*T*H*T*H*T*H*T*H*t*H*t*H*t*H*H*T*H*T*H*T*H*t*H*t*H*t,-1.65108544129248976,0.89635291252639943136,-2.5179504795074444066,Distance to target:0.00867745
+Search time: 210099, Gate length:76,t*H*t*H*T*H*T*H*T*H*t*H*t*H*T*H*H*T*H*t*t*H*T*H*T*H*t*H*T*H*t*H*H*t*H*T*H*T*H*T*H*t*H*t*t*t*t*H*t*H*t*H*T*H*T*H*t*H*t*H*H*t*H*t*H*t*t*t*H*t*H*t*H*T*H*T,-0.8903306227066260038,-0.33440067836935494873,-2.9941763424465006638,Distance to target:0.00867745
+Search time: 210099, Gate length:73,H*T*H*t*H*t*H*T*H*t*H*t*H*T*H*H*t*H*T*H*T*H*t*H*t*H*t*H*T*H*T*t*H*t*H*t*H*T*H*T*H*T*H*T*t*H*t*H*T*H*T*H*T*H*t*H*t*H*T*H*H*T*T*T*H*T*H*T*T*H*t*H*t,-5.0864246208355994774e-17,2.2685771099903160931e-17,-5.4741428826337358756e-17,Distance to target:0.00867745
+Search time: 210099, Gate length:76,t*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*H*T*H*t*H*t*H*t*H*T*H*T*H*t*H*t*H*t*H*t*H*t*H*t*H*T*H*t*H*t*H*t*H*T*T*H*t*t*H*t*H*T*T*H*t*H*T*H*t*H*T*H*T*H*T*H*T*H*T*T,-1.5583037019386649231e-17,-3.096974252216842288e-17,-1.8527142080040194317e-18,Distance to target:0.00867745
+Search time: 210099, Gate length:76,H*t*H*t*H*T*H*t*H*t*H*T*H*T*H*T*t*H*t*H*T*H*T*H*t*H*T*H*T*H*t*H*H*T*H*T*T*T*H*T*H*T*H*t*H*t*H*T*H*t*H*T*H*T*H*t*H*T*H*T*H*t*H*H*T*H*t*H*t*t*t*H*t*t*H*t,3.16774724140202489e-17,1.0069957468250974669e-17,-1.2031635943292692059e-17,Distance to target:0.00867745
+Search time: 210099, Gate length:75,H*T*H*t*H*T*H*T*H*t*H*t*H*t*H*T*T*T*T*H*t*H*T*H*T*H*t*t*t*t*H*T*H*T*T*H*T*H*T*H*T*H*T*H*H*t*H*t*H*t*H*T*H*T*H*T*H*T*H*H*T*H*t*t*H*T*H*T*H*t*H*T*H*t*H,-3.4669976909611652511e-17,8.8509437595604932041e-18,-8.6594913981680010156e-17,Distance to target:0.00867745
+Search time: 210099, Gate length:72,H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*t*T*H*t*H*t*H*T*H*t*H*t*H*H*T*H*T*H*T*H*T*H*t*H*t*H*t*H*H*t*t*t*H*t*H*T*H*t*H*t*t*t*H*t*t*t*H*t*H*t*H*T*H*T*H*t*H,2.8150257887041486783e-17,7.2721414737312532477e-18,9.5877817451317226098e-17,Distance to target:0.00867745
+Search time: 210099, Gate length:71,H*T*H*T*H*T*H*t*H*t*H*T*H*t*H*t*H*T*H*T*T*H*T*H*t*H*t*t*H*t*t*H*t*H*T*H*t*H*t*H*T*H*H*t*H*t*H*t*H*T*H*t*H*t*t*H*t*T*H*t*H*t*H*T*T*T*H*t*H*t*H,7.0634920927725282541e-18,4.4502885146636495787e-17,-5.6393466645614838372e-18,Distance to target:0.00867745
+Search time: 210099, Gate length:77,H*t*H*t*H*T*H*t*H*t*H*T*H*T*H*T*T*H*T*T*H*T*H*T*H*t*H*t*H*T*T*H*H*t*t*H*t*t*t*H*T*H*T*H*t*t*t*H*t*H*t*H*T*H*T*H*t*H*T*H*T*H*H*T*T*T*H*T*H*T*H*T*H*T*H*t*H,-6.5678551154841452894e-17,7.6195820750251998763e-17,-4.5801378602024494808e-18,Distance to target:0.00867745
+Search time: 210099, Gate length:73,t*t*H*T*T*T*H*T*H*t*H*T*H*t*t*t*t*H*T*H*T*H*t*H*t*H*t*H*T*H*T*H*H*t*H*T*H*t*H*t*H*T*H*H*t*H*T*H*t*H*t*H*T*H*T*H*T*H*t*T*H*t*H*t*H*T*H*T*H*T*H*t*t,2.2681398042526417383e-17,0,1.4654881706176801433e-16,Distance to target:0.00867745
+Search time: 210099, Gate length:73,t*H*t*H*T*H*T*H*T*H*t*H*t*H*T*H*H*t*H*T*H*T*H*t*H*t*H*t*H*T*H*T*T*T*H*t*H*T*H*T*H*t*t*t*t*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*H*T*H*t*H*t*t*t*H*t*t*H*t,3.5994916494661776999e-17,3.2045998873543782608e-17,-2.3772554794572328437e-17,Distance to target:0.00867745
+Search time: 210099, Gate length:79,t*H*T*H*t*H*t*H*T*H*T*H*T*H*t*H*t*t*t*t*H*t*H*t*t*t*H*T*H*T*H*T*t*H*t*H*T*H*T*H*t*H*t*H*t*t*t*H*H*T*H*T*H*t*H*t*H*t*H*T*H*T*H*H*t*H*t*H*t*t*t*H*t*H*t*H*T*H*T,-2.5107155399424112142e-17,-6.328814455636941298e-17,1.825512644992697844e-16,Distance to target:0.00867745
+Search time: 210099, Gate length:79,H*t*H*t*H*T*H*t*H*t*H*T*H*T*H*T*t*H*t*H*T*H*T*H*t*H*T*H*T*H*t*H*H*T*H*T*T*T*H*T*H*T*H*t*H*t*H*T*T*T*H*t*H*T*H*T*H*T*T*T*T*T*T*H*t*t*H*T*H*T*H*t*H*T*H*T*H*T*H,-1.1729392839815612822,0.76101446194759711573,2.8133033080755751687,Distance to target:0.00867745
+Number of results:40
