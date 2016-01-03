@@ -12,6 +12,7 @@ src/implement/collection/GNATCollectionImpl.d: \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../include/interface/abstract/IIterator.h \
  ../include/interface/abstract/IIterator.h \
+ ../include/internal-abstract/filter/ILookupResultProcessor.h \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/implement/iterator/VectorBasedIteratorImpl.hpp \
  ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
@@ -40,6 +41,8 @@ src/implement/collection/GNATCollectionImpl.d: \
 ../include/interface/abstract/IIterator.h:
 
 ../include/interface/abstract/IIterator.h:
+
+../include/internal-abstract/filter/ILookupResultProcessor.h:
 
 ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 

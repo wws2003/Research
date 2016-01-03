@@ -17,7 +17,11 @@ public:
 	GateCoordinateCalculatorImpl(MatrixRealCoordinateCalculatorPtr pMatrixRealCoordinateCalculator);
 	virtual ~GateCoordinateCalculatorImpl(){};
 
-	virtual void calulateElementCoordinate(GatePtr pGate, GateRealCoordinatePtrRef& prGateRealCoordinatePtr) const;
+	//Override
+	void calulateElementCoordinate(GatePtr pGate, GateRealCoordinatePtrRef& prGateRealCoordinatePtr) const;
+
+	//Override
+	void calculateElementFromCoordinate(GateRealCoordinatePtr pCoordinate) const;
 
 private:
 	MatrixRealCoordinateCalculatorPtr m_pMatrixRealCoordinateCalculator;

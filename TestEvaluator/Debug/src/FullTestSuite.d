@@ -197,11 +197,14 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
  ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
  ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
+ ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
+ ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleAlgorithm/include/implement/bin/GBin.hpp \
  ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h \
  ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h \
  ../../ModuleOperator/include/implement/MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h \
  ../../ModuleOperator/include/implement/CoordinateOnOrthonormalBasisCalculatorImpl.h \
- ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
  ../../ModuleEvaluate/include/implement/MatrixSearchSpaceTimerEvaluatorImpl.h \
  ../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h \
  ../../ModuleEvaluate/include/implement/GateSearchSpaceTimerEvaluatorImpl.h \
@@ -215,12 +218,11 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleIO/include/implement/LabelOnlyGateWriterImpl.h \
  ../../ModuleIO/include/implement/SampleRealCoordinateWriterImpl.hpp \
  ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h \
- ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
- ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h \
  ../../ModuleIO/include/implement/FullGateWriterImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATGateCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
+ ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultProcessor.h \
  ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATGateCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATItemCollectionImpl.h \
@@ -232,10 +234,21 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
+ ../../ModuleAlgorithm/include/implement/filter/DuplicateGateLookupResultFilterImpl.h \
+ ../../ModuleAlgorithm/include/implement/filter/DuplicateLookupResultFilterImpl.h \
+ ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h \
  ../../ModuleIO/include/implement/BinaryGateWriterImpl.h \
  ../../ModuleIO/include/implement/BinaryGateReaderImpl.h \
  ../../ModuleIO/include/implement/BinaryMatrixReaderImpl.h \
- ../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h
+ ../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h \
+ ../../ModuleAlgorithm/include/implement/composer/CoordinateAdditionBasedGateComposer.h \
+ ../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
+ ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h \
+ ../../ModuleAlgorithm/include/implement/comparator/DictionaryOrderCoordinateComparator.hpp \
+ ../../ModuleAlgorithm/include/implement/combiner/GateCoordinateCombinerImpl.h \
+ ../../ModuleAlgorithm/include/implement/filter/SetBasedGateLookupResultProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/SetBasedLookupResultProcessor.h
 
 ../src/FullTestSuite.h:
 
@@ -635,6 +648,14 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 
 ../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
 
+../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
+
+../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
+
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleAlgorithm/include/implement/bin/GBin.hpp:
+
 ../../ModuleOperator/include/implement/MatrixRealInnerProductByTraceImpl.h:
 
 ../../ModuleOperator/include/interface/abstract/IInnerProductCalculator.h:
@@ -642,8 +663,6 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 ../../ModuleOperator/include/implement/MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h:
 
 ../../ModuleOperator/include/implement/CoordinateOnOrthonormalBasisCalculatorImpl.h:
-
-../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
 
 ../../ModuleEvaluate/include/implement/MatrixSearchSpaceTimerEvaluatorImpl.h:
 
@@ -671,10 +690,6 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 
 ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h:
 
-../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
-
-../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
-
 ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:
 
 ../../ModuleIO/include/implement/FullGateWriterImpl.h:
@@ -682,6 +697,8 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 ../../ModuleAlgorithm/include/implement/collection/GNATGateCollectionImpl.h:
 
 ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h:
+
+../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultProcessor.h:
 
 ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h:
 
@@ -705,6 +722,12 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
+../../ModuleAlgorithm/include/implement/filter/DuplicateGateLookupResultFilterImpl.h:
+
+../../ModuleAlgorithm/include/implement/filter/DuplicateLookupResultFilterImpl.h:
+
+../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h:
+
 ../../ModuleIO/include/implement/BinaryGateWriterImpl.h:
 
 ../../ModuleIO/include/implement/BinaryGateReaderImpl.h:
@@ -712,3 +735,19 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 ../../ModuleIO/include/implement/BinaryMatrixReaderImpl.h:
 
 ../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h:
+
+../../ModuleAlgorithm/include/implement/composer/CoordinateAdditionBasedGateComposer.h:
+
+../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IComposer.h:
+
+../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h:
+
+../../ModuleAlgorithm/include/implement/comparator/DictionaryOrderCoordinateComparator.hpp:
+
+../../ModuleAlgorithm/include/implement/combiner/GateCoordinateCombinerImpl.h:
+
+../../ModuleAlgorithm/include/implement/filter/SetBasedGateLookupResultProcessor.h:
+
+../../ModuleAlgorithm/include/implement/filter/SetBasedLookupResultProcessor.h:

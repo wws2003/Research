@@ -15,11 +15,12 @@
 #include "GNATCollectionBlock.h"
 #include "IPersistableCollection.h"
 #include "IReader.h"
+#include "AlgoInternal.h"
 
 template<typename T>
 class  PersistableGNATCollectionImpl: public GNATCollectionImpl<T>, public IPersistable {
 public:
-	PersistableGNATCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader);
+	PersistableGNATCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader, LookupResultProcessorPtr<T> pLookupResultProcessor = NullPtr);
 
 	virtual ~PersistableGNATCollectionImpl(){};
 
@@ -28,7 +29,7 @@ public:
 	 * order to keep persistability
 	 *
 	 */
-	virtual CollectionPtr<T> generateSubCollection();
+	virtual GNATCollectionImplPtr<T> generateSubCollection();
 
 	virtual void save(std::string fileName);
 
@@ -40,7 +41,7 @@ public:
 			const RangeMap& splitPointRanges);
 
 	//Add sub-collection
-	void addSubCollection(CollectionPtr<T> pSubCollection);
+	void addSubCollection(GNATCollectionImplPtr<T> pSubCollection);
 
 	//Overload
 	bool operator==(const PersistableGNATCollectionImpl<T>& rhs);

@@ -217,11 +217,13 @@ src/container/SampleEvaluatorContainerImpl.d: \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
  ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
+ ../../ModuleAlgorithm/include/implement/bin/GBin.hpp \
  ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
  ../src/factory/ContainerResourceFactory.h \
  ../src/container/IResourceContainer.h ../src/common/ApplicationCommon.h \
  ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h \
+ ../../ModuleOperator/include/implement/SQLiteLazyGateDistanceCalculator.h \
  ../../ModuleOperator/include/implement/LazyGateDistanceCalculatorImpl.h
 
 ../src/container/SampleEvaluatorContainerImpl.h:
@@ -658,6 +660,8 @@ src/container/SampleEvaluatorContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
 
+../../ModuleAlgorithm/include/implement/bin/GBin.hpp:
+
 ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h:
 
 ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h:
@@ -669,5 +673,7 @@ src/container/SampleEvaluatorContainerImpl.d: \
 ../src/common/ApplicationCommon.h:
 
 ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h:
+
+../../ModuleOperator/include/implement/SQLiteLazyGateDistanceCalculator.h:
 
 ../../ModuleOperator/include/implement/LazyGateDistanceCalculatorImpl.h:

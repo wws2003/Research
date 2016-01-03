@@ -26,7 +26,7 @@ MatrixPtr SimpleDenseMatrixFactoryImpl::getMatrixFromValues(int rows, int column
 	MatrixPtr pMatrix = new SimpleDenseMatrixImpl(array, arraySpliceType, rows, columns, label);
 
 	if(createArrayFlag) {
-		delete array;
+		delete[] array;
 	}
 
 	return pMatrix;

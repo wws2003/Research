@@ -17,7 +17,11 @@ public:
 	SpecialUnitaryMatrixCoordinateMapper(MatrixOperatorPtr pMatrixOperator, MatrixRealCoordinateCalculatorPtr pHermitianMatrixCoordinateCalculator);
 	virtual ~SpecialUnitaryMatrixCoordinateMapper(){};
 
-	virtual void calulateElementCoordinate(MatrixPtr pSpecialUnitaryMatrix, MatrixCoordinatePtrRef prMatrixCoordinate) const;
+	//Override
+	void calulateElementCoordinate(MatrixPtr pSpecialUnitaryMatrix, MatrixCoordinatePtrRef prMatrixCoordinate) const;
+
+	//Override
+	void calculateElementFromCoordinate(MatrixRealCoordinatePtr pCoordinate) const;
 
 private:
 	void calculateTracelessHermitianFromSpecialUnitary(MatrixPtr pSpecialUnitaryMatrix, MatrixPtrRef prTracelessHermitianMatrix) const;

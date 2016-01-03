@@ -14,6 +14,7 @@
 #include "AlgoCommon.h"
 #include "IResourceContainer.h"
 #include "AlgoInternal.h"
+#include "ILookupResultFilter.h"
 #include "ICollectionContainer.h"
 #include "ApplicationCommon.h"
 #include "Config.h"
@@ -35,6 +36,8 @@ private:
 
 	void wireDependencies();
 
+	std::string getMatrixDBFileName(const CollectionConfig& config);
+
 	std::string getGateCollectionPersistenceFileFullName(const CollectionConfig& config,
 			const LibrarySetFileNameMap& librarySetFileNameMap,
 			std::string fileExtension);
@@ -55,6 +58,11 @@ private:
 
 	MatrixWriterPtr m_pBinaryMatrixWriter;
 	MatrixReaderPtr m_pBinaryMatrixReader;
+
+	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
+	GateDistanceCalculatorPtr m_pGateDistanceCalculator;
+
+	GateLookupResultProcessorPtr m_pGateLookupResultProcessor;
 
 	GateCollectionPtr m_pUniversalSet;
 

@@ -35,12 +35,17 @@ public:
 
 private:
 	void wireDependencies();
+
+	std::string getMatrixDBFileName(const CollectionConfig& config);
+
 	void releaseDependencies();
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
 
 	ResourceContainerPtr m_pResourceContainer;
+
+	std::vector<GatePtr> m_targetGates;
 
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
 	LibraryMatrixStorePtr m_pLibraryMatrixStore;

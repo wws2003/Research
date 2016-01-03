@@ -42,7 +42,11 @@ template<typename T>class IDecomposer;
 template<typename T>
 using DecomposerPtr = IDecomposer<T>*;
 
-template<typename T> class IPersistableCollection;
+template<typename T>
+class IPersistableCollection;
+
+template<typename T>
+using PersistableCollectionPtr = IPersistableCollection<T>*;
 
 typedef ICollection<MatrixRealCoordinatePtr> MatrixRealCoordinateCollection;
 typedef ICollection<GateRealCoordinatePtr> GateRealCoordinateCollection;
@@ -64,6 +68,14 @@ typedef IIterator<GatePtr> GateIterator;
 
 typedef MatrixIterator* MatrixIteratorPtr;
 typedef GateIterator* GateIteratorPtr;
+
+template<typename T> struct LookupResult;
+
+typedef IIterator<LookupResult<MatrixPtr> > MatrixLookupResultIterator;
+typedef MatrixLookupResultIterator* MatrixLookupResultIteratorPtr;
+
+typedef IIterator<LookupResult<GatePtr> > GateLookupResultIterator;
+typedef GateLookupResultIterator* GateLookupResultIteratorPtr;
 
 typedef IIterator<MatrixRealCoordinatePtr>* MatrixRealCoordinateIteratorPtr;
 

@@ -21,6 +21,9 @@ public:
 	//Override
 	virtual void calulateElementCoordinate(E element, CoordinatePtrRef<E, Field> prCoordinate) const ;
 
+	//Override
+	virtual void calculateElementFromCoordinate(CoordinatePtr<E, Field> prCoordinate) const;
+
 private:
 	std::vector<E> m_basis;
 	InnerProductCalculatorPtr<E, Field> m_pInnerProductCalculator;

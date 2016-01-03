@@ -9,6 +9,8 @@
 #define MREAL_H_
 
 #include "mpreal.h"
+#include <cmath>
+#include <cfloat>
 
 #define MPFR_REAL 1
 
@@ -39,6 +41,14 @@ inline mreal_t abs(const mreal_t& v) {
 #endif
 }
 
+inline mreal_t sqrt(const mreal_t& v) {
+#if MPFR_REAL
+	return mpfr::sqrt(v);
+#else
+	return std::sqrt(v);
+#endif
+}
+
 inline double toDouble(const mreal_t& v) {
 #if MPFR_REAL
 	return v.toDouble();
@@ -47,11 +57,22 @@ inline double toDouble(const mreal_t& v) {
 #endif
 }
 
+inline bool isNAN(const mreal_t& v) {
+#if MPFR_REAL
+	return mpfr::isnan(v);
+#else
+	return std::isnan(v);
+#endif
+}
+
 mreal_t norm(const ComplexVal& v);
 
 mreal_t cos(const mreal_t& angle);
 mreal_t sin(const mreal_t& angle);
+mreal_t atan2(const mreal_t& y, const mreal_t& x);
 
+//Random number in [0, 1]
+mreal_t rand();
 }
 // namespace mreal
 

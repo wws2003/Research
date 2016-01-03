@@ -98,6 +98,16 @@ public:
 	virtual void eig(MatrixPtr pm, ComplexVectorRef prEigVals, MatrixPtrRef prEigVects) = 0;
 
 	/**
+	 * Just an utility operation to calculate S = sum(scalar[i] * U[i])
+	 */
+	virtual void sumProduct(const MatrixPtrVector& matrixVector, const ComplexVector& scalaVector, MatrixPtrRef pSum) = 0;
+
+	/**
+	 * Just an utility operation to calculate P = pm1 * pm2'
+	 */
+	virtual void multiplyConjugateTranspose(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prProduct) = 0;
+
+	/**
 	 * Just an utility operation for U*diag*U'
 	 * return root = U*diag*U'
 	 */

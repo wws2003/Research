@@ -7,6 +7,7 @@
 
 #include "CoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "Coordinate.hpp"
+#include <exception>
 
 template<typename E, typename Field>
 CoordinateOnOrthonormalBasisCalculatorImpl<E, Field>::CoordinateOnOrthonormalBasisCalculatorImpl(InnerProductCalculatorPtr<E, Field> pInnerProductCalculator, std::vector<E> basis) {
@@ -30,5 +31,10 @@ void CoordinateOnOrthonormalBasisCalculatorImpl<E, Field>::calulateElementCoordi
 	}
 
 	prCoordinate = new Coordinate<E, Field>(element, coordinates);
+}
+
+template<typename E, typename Field>
+void CoordinateOnOrthonormalBasisCalculatorImpl<E, Field>::calculateElementFromCoordinate(CoordinatePtr<E, Field> prCoordinate) const {
+	throw std::logic_error("Not implemented yet. Sorry");
 }
 

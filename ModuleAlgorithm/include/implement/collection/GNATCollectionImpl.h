@@ -12,12 +12,13 @@
 #include "AlgoInternal.h"
 #include "ICollection.h"
 #include "IIterator.h"
+#include "ILookupResultProcessor.h"
 #include <vector>
 #include <algorithm>
 #include <list>
 
 template<typename T>
-using CollectionVector = std::vector<CollectionPtr<T> >;
+using GNATCollectionVector = std::vector<GNATCollectionImplPtr<T> >;
 
 typedef std::pair<mreal_t, mreal_t> Range;
 
@@ -35,42 +36,52 @@ using SplitPointSet = std::vector<T>;
 template<typename T>
 class GNATCollectionImpl : public ICollection<T> {
 public:
-	GNATCollectionImpl();
+	GNATCollectionImpl(LookupResultProcessorPtr<T> pLookupResultProcessor = NullPtr, bool toCloneFilteredResults = false);
 	virtual ~GNATCollectionImpl();
 
-	//Add one element to the collection
+	//Override
 	virtual void addElement(T pElement) ;
 
-	//Clean the collection
+	//Override
 	virtual void clear() ;
 
-	//Deeply clean the collection, i.e. release elements pointer (must be sure elements are pointer type!).
+	//Override
 	virtual void purge();
 
-	//Return iterator through a set of element reflecting the changes in the collection
+	//Override
 	virtual IteratorPtr<T> getIteratorPtr() ;
 
-	//Return iterator through a fixed set of elements, regardless the collection
-	//should be modified later
+	//Override
 	virtual IteratorPtr<T> getReadonlyIteratorPtr() ;
 
-	//Get collection size
+	//Override
 	virtual CollectionSize_t size() const ;
 
-	//(Re)Build the search data structure given distance calculator
+	//Override
 	virtual void rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator);
 
-	//Find the neighbor elements to the query, given distance calculator
-	virtual IteratorPtr<T> findNearestNeighbour(T query, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon) const ;
-
+	//Override
+	virtual IteratorPtr<LookupResult<T> > findNearestNeighbours(T query,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilon,
+			bool toSortResults = false) const;
 protected:
+	virtual void findAndProcessNearestNeighbours(T query,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilon,
+			LookupResultProcessorPtr<T> pLookupResultProcessor,
+			std::vector<LookupResult<T> >& finalResults) const;
+
 	//Generate instance of a sub-collection. Subject to be overridden in sub-classes
-	virtual CollectionPtr<T> generateSubCollection();
+	virtual GNATCollectionImplPtr<T> generateSubCollection();
 
 	SplitPointSet<T> m_splitPoints;
-	CollectionVector<T> m_subCollections;
+	GNATCollectionVector<T> m_subCollections;
 	UnstructuredBuffer<T> m_unStructeredBuffer;
 	RangeMap m_splitPointRanges;
+
+	LookupResultProcessorPtr<T> m_pLookupResultProcessor;
+	bool m_toCloneFilteredResults;
 
 private:
 

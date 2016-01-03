@@ -12,8 +12,6 @@
 #include "Bin.hpp"
 #include "IIterator.h"
 
-typedef std::vector<mreal_t> real_coordinate_t;
-
 template<typename T>
 using ApprxResultBuffer = std::vector<T>;
 
@@ -28,8 +26,7 @@ public:
 		int m_maxResultNumber;
 	} Config;
 
-	NearIdentityElementBinBasedComposer(RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
-			CombinerPtr<T> pCombiner,
+	NearIdentityElementBinBasedComposer(CombinerPtr<T> pCombiner,
 			BinCollectionPtr<T> pBinCollection,
 			const Config& config);
 
@@ -44,20 +41,15 @@ public:
 private:
 	void initBinCollection(IteratorPtr<T> pBuildingBlockIter,
 			T pQuery,
-			const real_coordinate_t& queryCoordinate,
-			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon);
 
 	void generateApproximationsFromBins(T pQuery,
-			const real_coordinate_t& queryCoordinate,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
 			ApprxResultBuffer<T>& apprxResultBuffer);
 
-	void generateApproximationsPrefixedFromBins(BinPtr<T> pBin,
-			int maxBinDistance,
+	void generateApproximationsFromCombinableBins(const BinPtrVector<T>&  combinableBins,
 			T pQuery,
-			const real_coordinate_t& queryCoordinate,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilonForMergeCandidate,
 			mreal_t approximationEpsilon,
@@ -65,17 +57,21 @@ private:
 			ApprxResultBuffer<T>& apprxResultBuffer,
 			int maxResultsNumber);
 
-	void distributeResultsToBins(const real_coordinate_t& queryCoordinate,
-			IteratorPtr<T> pApprxIter,
-			RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
+	void getApproximationsFromCombinableBins(T element,
+			const BinPtrVector<T>& combinableBins,
+			int binCounter,
+			T pQuery,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilonForMergeCandidate,
+			mreal_t approximationEpsilon,
+			CollectionPtr<T> pApprxTempCollection,
+			ApprxResultBuffer<T>& apprxResultBuffer,
+			int maxResultsNumber);
+
+	void distributeResultsToBins(IteratorPtr<T> pApprxIter,
 			BinCollectionPtr<T> pBinCollection,
 			bool toDestroyApprxIter = true);
 
-	void calculateBinPattern(const real_coordinate_t& queryCoordinate,
-			const real_coordinate_t& apprxCoordinate,
-			BinPattern& binPattern);
-
-	RealCoordinateCalculatorPtr<T> m_pRealCoordinateCalculator;
 	CombinerPtr<T> m_pCombiner;
 	BinCollectionPtr<T> m_pBinCollection;
 

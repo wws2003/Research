@@ -23,9 +23,12 @@ src/implement/MatrixSearchSpaceTimerEvaluatorImpl.d: \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
  ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h \
- ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h
+ ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
+ ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h
 
 ../include/implement/MatrixSearchSpaceTimerEvaluatorImpl.h:
 
@@ -73,8 +76,14 @@ src/implement/MatrixSearchSpaceTimerEvaluatorImpl.d: \
 
 ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
 
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
+
 ../../ModuleIO/include/interface/abstract/IWriter.h:
 
 ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h:
 
 ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
+
+../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
+
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:

@@ -41,6 +41,7 @@ private:
 
 template<typename T>
 VectorBasedReadOnlyIteratorImpl<T>::VectorBasedReadOnlyIteratorImpl(const std::vector<T>& elements) {
+	m_elements.reserve(elements.size());
 	m_elements.insert(m_elements.end(), elements.begin(), elements.end());
 	toBegin();
 }

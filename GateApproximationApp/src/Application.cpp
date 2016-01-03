@@ -62,20 +62,33 @@ void initCommands(CommandParser* pCommandParser) {
 
 	//For -e -i db -t targetConf.
 	pCommandParser->provideArgumentPatternForCommandCode(6, ArgumentPositions{1, 2, 4}, Arguments{"-e", "-i", "-t"}, EVALUATE_PERSISTED_COLLECTION_TO_TARGET);
+
+	//For -e conf1 -cb conf2 -t targetConf
+	pCommandParser->provideArgumentPatternForCommandCode(7, ArgumentPositions{1, 3, 5}, Arguments{"-e", "-cb", "-t"}, EVALUATE_CB_APPROXIMATOR_TO_TARGET);
+
+	//For -e conf1 -sk conf2 -t targetConf
+	pCommandParser->provideArgumentPatternForCommandCode(7, ArgumentPositions{1, 3, 5}, Arguments{"-e", "-sk", "-t"}, EVALUATE_SK_APPROXIMATOR_TO_TARGET);
+
+	//For -e conf1 -sk2 conf2 -t targetConf
+	pCommandParser->provideArgumentPatternForCommandCode(7, ArgumentPositions{1, 3, 5}, Arguments{"-e", "-sk2", "-t"}, EVALUATE_SK2_APPROXIMATOR_TO_TARGET);
+
 }
 
 void printSyntaxMessage() {
-	std::cout << "As of 2015/10/27, acceptable command arguments are:" << std::endl;
+	std::cout << "As of 2016/01/02, acceptable command arguments are:" << std::endl;
 
-	std::cout << "-g conf1 conf2 -o outputFile -> Generate near identity sequences (then persist to storage)" << std::endl;
+	std::cout << "-g conf1 conf2 -o outputFile -> Generate near identity sequences (then persist to storage)." << std::endl;
+	std::cout << "-e conf1 -I  -> Evaluate collection for identity." << std::endl;
+	std::cout << "-e conf1 conf2 -I -> Evaluate collection, approximator for identity." << std::endl;
+	std::cout << "-e -i db -t targetConf -> Evaluate collection for target given candidates in database file." << std::endl;
 
-	std::cout << "-e conf1 -I  -> Evaluate collection for identity" << std::endl;
-	std::cout << "-e conf1 conf2 -I -> Evaluate collection, approximator for identity" << std::endl;
+	std::cout << "-e conf1 -cb conf2 -t targetConf -> Evaluate composer-based approximator" << std::endl;
+	std::cout << "-e conf1 -sk conf2 -t targetConf -> Evaluate SK approximator based on the configured collection." << std::endl;
+	std::cout << "-e conf1 -sk2 conf2 -t targetConf -> Evaluate SK approximator based on the configured collection, with a smart filter for intermediate results. " << std::endl;
 
 	std::cout << "For future purposes" << std::endl;
 
 	std::cout << "-e conf1 -t targetConf -> Evaluate collection for target" << std::endl;
-	std::cout << "-e -i db -t targetConf -> Evaluate collection for target given candidates in database file" << std::endl;
 	std::cout << "-e conf1 conf2 -t targetConf -> Evaluate collection, approximator for target" << std::endl;
 
 }

@@ -23,6 +23,14 @@ void GateCoordinateCalculatorImpl::calulateElementCoordinate(GatePtr pGate, Gate
 	_destroy(pMatrixRealCoordinate);
 }
 
+void GateCoordinateCalculatorImpl::calculateElementFromCoordinate(GateRealCoordinatePtr pGateCoordinate) const {
+	RealCoordinate<MatrixPtr> realCoordinate(NullPtr, pGateCoordinate->getCoordinates());
+	m_pMatrixRealCoordinateCalculator->calculateElementFromCoordinate(&realCoordinate);
+
+	GatePtr pGate = GatePtr(new Gate(realCoordinate.getElement(), 0, ""));
+	pGateCoordinate->setElement(pGate);
+}
+
 
 
 

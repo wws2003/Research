@@ -44,10 +44,16 @@
 #include "SampleRealCoordinateWriterImpl.hpp"
 #include "MatrixFowlerDistanceCalculator.h"
 #include "PersistableGNATGateCollectionImpl.h"
+#include "DuplicateGateLookupResultFilterImpl.h"
 #include "BinaryGateWriterImpl.h"
 #include "BinaryGateReaderImpl.h"
 #include "BinaryMatrixReaderImpl.h"
 #include "BinaryMatrixWriterImpl.h"
+#include "CoordinateAdditionBasedGateComposer.h"
+#include "DictionaryOrderCoordinateComparator.hpp"
+#include "VectorBasedIteratorImpl.hpp"
+#include "GateCoordinateCombinerImpl.h"
+#include "SetBasedGateLookupResultProcessor.h"
 #include <iostream>
 #include <cmath>
 #include <cstdio>
@@ -55,6 +61,8 @@
 #include <cstdlib>
 
 #define DEBUGGING 1
+
+#define EXPERIMENT_BINNING 1
 
 const std::string FullTestSuite::GNAT_COLLECTION_PERSIST_FILE = "gnat2.dat";
 
@@ -82,7 +90,16 @@ void getGateCancelationCombinabilityChecker(GateCombinabilityCheckerPtr& pGateCa
 
 void getNearIdentityGate(MatrixOperatorPtr pMatrixOperator, MatrixPtrVector pHermitianBasis, TargetElements<GatePtr>& targets);
 
-void getNumberOfNeighbors(GateCollectionPtr pCollection, const TargetElements<GatePtr>& targets, GateDistanceCalculatorPtr pDistanceCalculator, double epsilon, std::vector<int>& resultNumbers);
+void evalFindNeighbours(GateCollectionPtr pCollection,
+		const TargetElements<GatePtr>& targets,
+		GateDistanceCalculatorPtr pDistanceCalculator,
+		double epsilon,
+		std::vector<int>& resultNumbers);
+
+void evalFilteredFindNeighbours(GateCollectionPtr pCollection,
+		const TargetElements<GatePtr>& targets,
+		GateDistanceCalculatorPtr pDistanceCalculator,
+		double epsilon);
 
 void getNumberOfNeighborsFromIterator(GateCollectionPtr pCollection, const TargetElements<GatePtr>& targets, GateDistanceCalculatorPtr pDistanceCalculator, double epsilon, std::vector<int>& resultNumbers);
 
@@ -135,9 +152,11 @@ void FullTestSuite::test(){
 	testInverseCancelingSearchSpaceConstructor();
 	testSampleMatrixBinCollection();
 	testCalculateCoordinatesInSearchSpace();
-	testGNATCollectionBuild();
+	//testGNATCollectionBuild();
 	testGNATCollectionPersistence();
 	testGNATSearch();
+	testFilteredGNATSearch();
+	testAddtionBasedCoordinateComposer();
 	//freeTestGateCollectionEvaluator();
 }
 
@@ -201,7 +220,7 @@ void FullTestSuite::testSimpleCollection() {
 	MatrixPtr pI = m_pMatrixFactory->getIdentityMatrix(2);
 	double epsilon = 1;
 
-	MatrixIteratorPtr pResultIter = pMatrixCollection->findNearestNeighbour(pI, m_pMatrixDistanceCalculator, epsilon);
+	IteratorPtr<LookupResult<MatrixPtr> > pResultIter = pMatrixCollection->findNearestNeighbours(pI, m_pMatrixDistanceCalculator, epsilon);
 	pResultIter->toBegin();
 
 	//Must find T because d(T,I) ~ 0.76537 < epsilon = 1
@@ -209,7 +228,7 @@ void FullTestSuite::testSimpleCollection() {
 
 	assert(!pResultIter->isDone());
 
-	MatrixPtr pResult = pResultIter->getObj();
+	MatrixPtr pResult = pResultIter->getObj().m_resultElement;
 	assert(pResult == pMatrixT);
 
 	pResultIter->next();
@@ -266,7 +285,7 @@ void FullTestSuite::testSimpleSearchSpaceConstructor() {
 	MatrixPtr pHTHTH = NullPtr;
 	m_pMatrixOperator->multiply(pHTHT, pMatrixT, pHTHTH);
 
-	MatrixIteratorPtr pResultIter = pMatrixCollection->findNearestNeighbour(pHTHTH, m_pMatrixDistanceCalculator, 0);
+	MatrixLookupResultIteratorPtr pResultIter = pMatrixCollection->findNearestNeighbours(pHTHTH, m_pMatrixDistanceCalculator, 0);
 	assert(pResultIter != NullPtr);
 	pResultIter->toBegin();
 	assert(!pResultIter->isDone());
@@ -274,7 +293,7 @@ void FullTestSuite::testSimpleSearchSpaceConstructor() {
 	//I = H*H
 	MatrixPtr pHH = NullPtr;
 	m_pMatrixOperator->multiply(pMatrixH, pMatrixH, pHH);
-	pResultIter = pMatrixCollection->findNearestNeighbour(pHH, m_pMatrixDistanceCalculator, 0);
+	pResultIter = pMatrixCollection->findNearestNeighbours(pHH, m_pMatrixDistanceCalculator, 0);
 	assert(pResultIter != NullPtr);
 	pResultIter->toBegin();
 	assert(!pResultIter->isDone());
@@ -400,6 +419,7 @@ void FullTestSuite::testInverseCancelingSearchSpaceConstructor() {
 void FullTestSuite::testSampleMatrixBinCollection() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
+#if !EXPERIMENT_BINNING
 	BinPattern binPattern1 = "0011";
 	MatrixBinPtr pMatrixBin1 = new MatrixBin(binPattern1);
 
@@ -452,6 +472,7 @@ void FullTestSuite::testSampleMatrixBinCollection() {
 	delete pMatrixBin1;
 
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
+#endif
 }
 
 void FullTestSuite::testCalculateCoordinatesInSearchSpace() {
@@ -743,8 +764,8 @@ void FullTestSuite::testGNATSearch() {
 	std::vector<int> gnatCollectionResultNumbers;
 
 	/* Before constructing data structure */
-	getNumberOfNeighbors(pGateVectorCollection, targets, pGateDistanceCalculator, epsilon, vectorCollectionResultNumbers);
-	getNumberOfNeighbors(pGateGNATCollection, targets, pGateDistanceCalculator, epsilon, gnatCollectionResultNumbers);
+	evalFindNeighbours(pGateVectorCollection, targets, pGateDistanceCalculator, epsilon, vectorCollectionResultNumbers);
+	evalFindNeighbours(pGateGNATCollection, targets, pGateDistanceCalculator, epsilon, gnatCollectionResultNumbers);
 
 	assert(gnatCollectionResultNumbers.size() == vectorCollectionResultNumbers.size());
 
@@ -761,7 +782,7 @@ void FullTestSuite::testGNATSearch() {
 		assert(gnatCollectionResultNumbers[i] == vectorCollectionResultNumbers[i]);
 	}
 
-	getNumberOfNeighbors(pGateGNATCollection, targets, pGateDistanceCalculator, epsilon, gnatCollectionResultNumbers);
+	evalFindNeighbours(pGateGNATCollection, targets, pGateDistanceCalculator, epsilon, gnatCollectionResultNumbers);
 	for(unsigned int i = 0; i < gnatCollectionResultNumbers.size(); i++) {
 		assert(gnatCollectionResultNumbers[i] == vectorCollectionResultNumbers[i]);
 	}
@@ -778,6 +799,130 @@ void FullTestSuite::testGNATSearch() {
 	delete pGateCombiner;
 	std::cout << __func__ << " passed"  <<  std::endl ;
 }
+
+void FullTestSuite::testFilteredGNATSearch() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+	MatrixPtrVector pBasis4;
+	m_pMatrixOperator->getTracelessHermitianMatricesBasis(4, pBasis4);
+
+	assert(pBasis4.size() == 15);
+
+	GateCombinabilityCheckers combinabilityCheckers;
+	initTwoQubitsGateCombinabilityCheckers(combinabilityCheckers);
+
+	CombinerPtr<GatePtr> pGateCombiner = new GateCombinerImpl(combinabilityCheckers, m_pMatrixOperator);
+
+	GateCollectionPtr pUniversalSet = NullPtr;
+	initTwoQubitsGateUniversalSet(m_pMatrixOperator, pUniversalSet);
+
+	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixFowlerDistanceCalculator(NullPtr);
+	//MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(m_pMatrixOperator);
+	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(pMatrixDistanceCalculator);
+
+	LookupResultFilterPtr<GatePtr> pGateLookupResultFilter = new DuplicateGateLookupResultFilterImpl();
+	SetBasedGateLookupResultProcessor* pGateLookupResultProcessor = new SetBasedGateLookupResultProcessor(pGateDistanceCalculator);
+	GateCollectionPtr pGateGNATCollection = new GNATGateCollectionImpl(pGateLookupResultProcessor);
+
+	int maxSequenceLength = 5;
+
+	GateSearchSpaceConstructorPtr pGateSearchSpaceConstructor = new GateSearchSpaceConstructorImpl(pGateCombiner);
+	pGateSearchSpaceConstructor->constructSearchSpace(pGateGNATCollection, pUniversalSet, maxSequenceLength);
+
+	double epsilon = 0.5;
+	TargetElements<GatePtr> targets;
+	getNearIdentityGate(m_pMatrixOperator, pBasis4, targets);
+
+	evalFilteredFindNeighbours(pGateGNATCollection, targets, pGateDistanceCalculator, epsilon);
+
+	/* After constructing data structure */
+	pGateGNATCollection->rebuildStructure(pGateDistanceCalculator);
+	evalFilteredFindNeighbours(pGateGNATCollection, targets, pGateDistanceCalculator, epsilon);
+
+	delete pGateSearchSpaceConstructor;
+
+	delete pGateGNATCollection;
+	delete pGateLookupResultProcessor;
+	delete pGateLookupResultFilter;
+
+	delete pMatrixDistanceCalculator;
+	delete pGateDistanceCalculator;
+
+	releaseTwoQubitsGateUniversalSet(pUniversalSet);
+	delete pGateCombiner;
+	std::cout << __func__ << " passed"  <<  std::endl ;
+}
+
+void FullTestSuite::testAddtionBasedCoordinateComposer() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+
+	BuildingBlockBuckets<GateRealCoordinate> buckets;
+
+	//Bucket1
+	//(0,0), (0,1), (0,2), (0,3), (0,4),
+	std::vector<GateRealCoordinate> buildingBlocks1;
+	for(int i = 0; i <= 4; i++) {
+		GateRealCoordinate c(NullPtr, {0.0, i + 0.0});
+		buildingBlocks1.push_back(c);
+	}
+	IteratorPtr<GateRealCoordinate> pGateCoordIter1 = new VectorBasedIteratorImpl<GateRealCoordinate>(&buildingBlocks1);
+	buckets.push_back(pGateCoordIter1);
+
+	//Bucket2
+	//(1,0), (1,1), (1,2), (1,3), (1,4),
+	std::vector<GateRealCoordinate> buildingBlocks2;
+	for(int i = 0; i <= 4; i++) {
+		GateRealCoordinate c(NullPtr, {1.0, i + 0.0});
+		buildingBlocks2.push_back(c);
+	}
+	IteratorPtr<GateRealCoordinate> pGateCoordIter2 = new VectorBasedIteratorImpl<GateRealCoordinate>(&buildingBlocks2);
+	buckets.push_back(pGateCoordIter2);
+
+	GateRealCoordinate zeroEpsilon(NullPtr, {0.0,0.0});
+
+	GateRealCoordinate target(NullPtr, {1.0, 5.0});
+
+	ComparatorPtr<GateRealCoordinate> pCoordinateComparator = new DictionaryOrderCoordinateComparator<GatePtr>();
+	CombinerPtr<GateRealCoordinate> pCoordinateCombiner = new GateCoordinateCombinerImpl(NullPtr);
+
+	int maxResultsNumber = 5;
+
+	CoordinateAdditionBasedGateComposer additionBasedComposer(pCoordinateComparator,
+			pCoordinateCombiner,
+			zeroEpsilon,
+			maxResultsNumber);
+
+	IteratorPtr<GateRealCoordinate> pComposeIter = additionBasedComposer.composeApproximations(buckets, target, NullPtr, 0.1);
+
+	assert(pComposeIter != NullPtr && !pComposeIter->isDone());
+
+	int nbResults = 0;
+	int expectedNbResults = 4;
+
+	while(!pComposeIter->isDone()) {
+		/*Print result to review*/
+		GateRealCoordinate gateCoord = pComposeIter->getObj();
+		printf("Result [%d] 's coordinate \n---[", nbResults + 1);
+		for(unsigned int i = 0; i < gateCoord.getCoordinates().size(); i++) {
+			printf("%f,", mreal::toDouble(gateCoord.getCoordinates()[i]));
+		}
+		printf("]\n");
+		nbResults++;
+		pComposeIter->next();
+	}
+
+	assert(nbResults == expectedNbResults);
+
+	delete pComposeIter;
+
+	delete pCoordinateCombiner;
+	delete pCoordinateComparator;
+
+	delete pGateCoordIter2;
+	delete pGateCoordIter1;
+
+	std::cout << __func__ << " passed"  <<  std::endl ;
+}
+
 
 void FullTestSuite::freeTestGateCollectionEvaluator() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
@@ -1110,20 +1255,69 @@ void getNearIdentityGate(MatrixOperatorPtr pMatrixOperator, MatrixPtrVector pHer
 
 }
 
-void getNumberOfNeighbors(GateCollectionPtr pCollection, const TargetElements<GatePtr>& targets, GateDistanceCalculatorPtr pDistanceCalculator, double epsilon, std::vector<int>& resultNumbers) {
+void evalFindNeighbours(GateCollectionPtr pCollection, const TargetElements<GatePtr>& targets, GateDistanceCalculatorPtr pDistanceCalculator, double epsilon, std::vector<int>& resultNumbers) {
 	resultNumbers.clear();
 	for(TargetElements<GatePtr>::const_iterator eIter = targets.begin(); eIter != targets.end(); eIter++) {
 		GatePtr pQuery = *eIter;
+
 		//printf("----------------------------\n");
-		GateIteratorPtr pGateIter = pCollection->findNearestNeighbour(pQuery, pDistanceCalculator, epsilon);
+		GateLookupResultIteratorPtr pGateResultIter = pCollection->findNearestNeighbours(pQuery,
+				pDistanceCalculator,
+				epsilon,
+				true);
+
 		//printf("----------------------------\n");
 		int nbResults = 0;
-		while(pGateIter != NullPtr && !pGateIter->isDone()) {
+
+		//Also test order of results
+		mreal_t prevDistance = -0.001;
+		while(pGateResultIter != NullPtr && !pGateResultIter->isDone()) {
 			nbResults++;
-			pGateIter->next();
+
+			mreal_t currentDistance = pGateResultIter->getObj().m_distanceToTarget;
+			assert(currentDistance >= prevDistance);
+			prevDistance = currentDistance;
+
+			pGateResultIter->next();
 		}
 		resultNumbers.push_back(nbResults);
-		_destroy(pGateIter);
+		_destroy(pGateResultIter);
+	}
+}
+
+void evalFilteredFindNeighbours(GateCollectionPtr pCollection,
+		const TargetElements<GatePtr>& targets,
+		GateDistanceCalculatorPtr pGateDistanceCalculator,
+		double epsilon) {
+
+	for(unsigned int i = 0; i < targets.size(); i++) {
+		GateLookupResultIteratorPtr pLookupResultIter = pCollection->findNearestNeighbours(targets[i],
+				pGateDistanceCalculator,
+				epsilon,
+				true);
+
+		//Just a simple check, may not enough but detect simple errors
+		//But assume the results are sorted, the check should be considered correct
+		if(pLookupResultIter != NullPtr) {
+			GatePtr pPrevResult = NullPtr;
+			const mreal_t maxDistanceToConsdiredOne = 1e-7;
+
+			int nbResults = 0;
+			while(!pLookupResultIter->isDone()) {
+				GatePtr pCurrentResult = pLookupResultIter->getObj().m_resultElement;
+
+				if(pPrevResult != NullPtr) {
+					mreal_t distanceBetweenResult = pGateDistanceCalculator->distance(pCurrentResult, pPrevResult);
+					assert(distanceBetweenResult >= maxDistanceToConsdiredOne);
+				}
+				pPrevResult = pCurrentResult;
+
+				pLookupResultIter->next();
+
+				nbResults++;
+			}
+			printf("Number of results for query %d: [Filtered GNAT: %d]\n", i, nbResults);
+		}
 	}
 }
 

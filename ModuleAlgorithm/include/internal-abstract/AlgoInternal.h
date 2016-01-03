@@ -45,8 +45,6 @@ using BinIteratorPtr =  IIterator<BinPtr<T> >*;
 typedef IIterator<MatrixBinPtr> MatrixBinIterator;
 typedef MatrixBinIterator* MatrixBinIteratorPtr;
 
-typedef std::string BinPattern;
-
 typedef IMatrixBinCollection* MatrixBinCollectionPtr;
 
 template<typename T>
@@ -62,9 +60,49 @@ template<typename T>
 class GNATCollectionIterator;
 
 template<typename T>
+class GNATCollectionImpl;
+
+template<typename T>
+using GNATCollectionImplPtr = GNATCollectionImpl<T>*;
+
+template<typename T>
 class PersistableGNATCollectionImpl;
 
 template<typename T>
 using PersistableGNATCollectionImplPtr = PersistableGNATCollectionImpl<T>*;
+
+template<typename T>
+class IElementSetLog;
+
+template<typename T>
+using ElementSetLogPtr = IElementSetLog<T>*;
+
+template<typename T> class ILookupResultFilter;
+
+template<typename T>
+using LookupResultFilterPtr = ILookupResultFilter<T>*;
+
+typedef LookupResultFilterPtr<GatePtr> GateLookupResultFilterPtr;
+typedef LookupResultFilterPtr<MatrixPtr> MatrixLookupResultFilterPtr;
+
+template<typename T> class ILookupResultProcessor;
+
+template<typename T>
+using LookupResultProcessorPtr = ILookupResultProcessor<T>*;
+
+typedef LookupResultProcessorPtr<GatePtr> GateLookupResultProcessorPtr;
+typedef LookupResultProcessorPtr<MatrixPtr> MatrixLookupResultProcessorPtr;
+
+template<typename T>
+class IElementComparator;
+
+template<typename T>
+using ComparatorPtr = IElementComparator<T>*;
+
+template<typename T1, typename T2>
+class IConverter;
+
+template<typename T1, typename T2>
+using ConverterPtr = IConverter<T1, T2>*;
 
 #endif /* ALGOINTERNAL_H_ */

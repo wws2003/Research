@@ -18,13 +18,15 @@ src/container/SampleCollectionContainerImpl.d: \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
- ../src/configure/Config.h ../src/container/ICollectionContainer.h \
+ ../src/configure/Config.h \
+ ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
+ ../src/container/ICollectionContainer.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../src/common/ApplicationCommon.h \
  ../../ModuleMathConcepts/include/implement/SimpleDenseMatrixFactoryImpl.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
@@ -186,10 +188,12 @@ src/container/SampleCollectionContainerImpl.d: \
  ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/GNATCollectionImpl.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultProcessor.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
  ../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h \
  ../../ModuleIO/include/interface/abstract/IReader.h \
+ ../../ModuleIO/include/implement/SQLiteGateWriterImpl.h \
  ../../ModuleIO/include/implement/BinaryGateWriterImpl.h \
  ../../ModuleIO/include/implement/BinaryGateReaderImpl.h \
  ../../ModuleIO/include/implement/BinaryMatrixWriterImpl.h \
@@ -210,7 +214,18 @@ src/container/SampleCollectionContainerImpl.d: \
  ../src/factory/ContainerResourceFactory.h \
  ../src/container/IResourceContainer.h \
  ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h \
- ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h
+ ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h \
+ ../../ModuleAlgorithm/include/implement/filter/DuplicateGateLookupResultFilterImpl.h \
+ ../../ModuleAlgorithm/include/implement/filter/DuplicateLookupResultFilterImpl.h \
+ ../../ModuleAlgorithm/include/implement/filter/BackgroundGateLookupResultsFilterProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/BackgroundLookupResultsFilterProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/BackgroundLookupResultProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/SetBasedGateLookupResultProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/SetBasedLookupResultProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/VectorBasedGateLookupResultProcessor.h \
+ ../../ModuleAlgorithm/include/implement/filter/VectorBasedLookupResultProcessor.h \
+ ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h \
+ ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h
 
 ../src/container/SampleCollectionContainerImpl.h:
 
@@ -250,19 +265,21 @@ src/container/SampleCollectionContainerImpl.d: \
 
 ../src/configure/Config.h:
 
-../src/container/ICollectionContainer.h:
+../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
+../src/container/ICollectionContainer.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../src/common/ApplicationCommon.h:
 
@@ -586,6 +603,8 @@ src/container/SampleCollectionContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
+../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultProcessor.h:
+
 ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
 
 ../../ModuleIO/include/interface/abstract/IWriter.h:
@@ -593,6 +612,8 @@ src/container/SampleCollectionContainerImpl.d: \
 ../../ModuleAlgorithm/include/implement/persistable/GNATCollectionBlock.h:
 
 ../../ModuleIO/include/interface/abstract/IReader.h:
+
+../../ModuleIO/include/implement/SQLiteGateWriterImpl.h:
 
 ../../ModuleIO/include/implement/BinaryGateWriterImpl.h:
 
@@ -635,3 +656,25 @@ src/container/SampleCollectionContainerImpl.d: \
 ../../ModuleOperator/include/implement/SampleLibraryMatrixStore.h:
 
 ../../ModuleAlgorithm/include/implement/persistable/PersistableGNATCollectionImpl.h:
+
+../../ModuleAlgorithm/include/implement/filter/DuplicateGateLookupResultFilterImpl.h:
+
+../../ModuleAlgorithm/include/implement/filter/DuplicateLookupResultFilterImpl.h:
+
+../../ModuleAlgorithm/include/implement/filter/BackgroundGateLookupResultsFilterProcessor.h:
+
+../../ModuleAlgorithm/include/implement/filter/BackgroundLookupResultsFilterProcessor.h:
+
+../../ModuleAlgorithm/include/implement/filter/BackgroundLookupResultProcessor.h:
+
+../../ModuleAlgorithm/include/implement/filter/SetBasedGateLookupResultProcessor.h:
+
+../../ModuleAlgorithm/include/implement/filter/SetBasedLookupResultProcessor.h:
+
+../../ModuleAlgorithm/include/implement/filter/VectorBasedGateLookupResultProcessor.h:
+
+../../ModuleAlgorithm/include/implement/filter/VectorBasedLookupResultProcessor.h:
+
+../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h:
+
+../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:

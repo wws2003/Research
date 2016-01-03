@@ -61,11 +61,10 @@ void SampleApproximatorContainerImpl::wireDependencies() {
 
 	GateCombinabilityCheckers emptyCheckers;
 	m_pGateInBinCombiner = CombinerPtr<GatePtr>(new DuplicateGateCancelationCombinerImpl(emptyCheckers, m_pMatrixOperator));
-	m_pBinCollection = BinCollectionPtr<GatePtr>(new MapBasedGateBinCollectionImpl());
+	m_pBinCollection = BinCollectionPtr<GatePtr>(new MapBasedGateBinCollectionImpl(m_pGateRealCoordinateCalculator));
 
 	m_pGateDecomposer = DecomposerPtr<GatePtr>(new DummyGateDecomposer());
-	m_pGateComposer = ComposerPtr<GatePtr>(new NearIdentityGateBinBasedComposer(m_pGateRealCoordinateCalculator,
-			m_pGateCombiner,
+	m_pGateComposer = ComposerPtr<GatePtr>(new NearIdentityGateBinBasedComposer(m_pGateCombiner,
 			m_pBinCollection,
 			getComposerConfig()));
 }

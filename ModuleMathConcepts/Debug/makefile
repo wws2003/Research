@@ -49,13 +49,18 @@ all: ../artifact/libModuleMathConcepts.so
 	g++ -shared -o "../artifact/libModuleMathConcepts.so" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
+	$(MAKE) --no-print-directory post-build
 
 # Other Targets
 clean:
 	-$(RM) $(OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(LIBRARIES)$(CPP_DEPS)$(CXX_DEPS)$(C_UPPER_DEPS) ../artifact/libModuleMathConcepts.so
 	-@echo ' '
 
+post-build:
+	-./postBuild.sh
+	-@echo ' '
+
 .PHONY: all clean dependents
-.SECONDARY:
+.SECONDARY: post-build
 
 -include ../makefile.targets

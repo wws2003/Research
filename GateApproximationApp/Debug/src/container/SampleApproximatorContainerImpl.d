@@ -30,12 +30,18 @@ src/container/SampleApproximatorContainerImpl.d: \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
  ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
+ ../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h \
  ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedGateApproximator.h \
  ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedElementApproximator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
+ ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleAlgorithm/include/implement/bin/GBin.hpp \
  ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/combiner/GateCombinerImpl.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
@@ -267,17 +273,29 @@ src/container/SampleApproximatorContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h:
 
+../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h:
+
 ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedGateApproximator.h:
 
 ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedElementApproximator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
 
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
 ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h:
 
 ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h:
+
+../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
+
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleAlgorithm/include/implement/bin/GBin.hpp:
 
 ../../ModuleAlgorithm/include/implement/combiner/DuplicateGateCancelationCombinerImpl.h:
 

@@ -6,6 +6,9 @@
  */
 
 #include "Mreal.h"
+#include <cstdlib>
+#include <cstdio>
+#include <ctime>
 
 namespace mreal {
 mreal_t norm(const ComplexVal& cVal) {
@@ -31,6 +34,26 @@ mreal_t sin(const mreal_t& angle) {
 	return mpfr::sin(angle);
 #else
 	return std::sin(angle);
+#endif
+}
+
+mreal_t atan2(const mreal_t& y, const mreal_t& x) {
+#if MPFR_REAL
+	return mpfr::atan2(y, x);
+#else
+	return mpfr::atan2(y, x);
+#endif
+}
+
+mreal_t rand() {
+	/* initialize random seed: */
+
+#if MPFR_REAL
+	return mpfr::random(time(NULL));
+#else
+	srand(time(NULL));
+	int randNumber = std::rand();
+	return (double)randNumber / RAND_MAX;
 #endif
 }
 

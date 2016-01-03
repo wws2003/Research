@@ -9,7 +9,7 @@
 *.pch
 
 # Compiled Dynamic libraries
-*.so
+**/artifact/*.so
 *.dylib
 *.dll
 
@@ -24,6 +24,9 @@
 
 # Data Persistence file
 *.dat
+**/callgrind.out.*
+*.sqlite
+*.db
 
 # Third-parties source code folder (should be unzip manually)
 SharedThirdParties/gmp-6.0.0/
@@ -42,19 +45,28 @@ TestEvaluator/Debug/TestEvaluator
 *.exe
 *.out
 *.app
+GateApproximationApp/Debug/GateApproximationApp
 run_test_operator.sh
 run_test_evaluator.sh
 gdb_test_operator.txt
 gdb_test_evaluator.txt
 
 # Output files
+GateApproximationApp/Debug/out
 GateApproximationApp/Debug/*.txt
+**/IntermediateLog*
 
 # Third parties artifact
 SharedThirdParties/gmp
 SharedThirdParties/m4
 SharedThirdParties/mpfr
 
+# Auto-generated gitignore
+*/Debug/src/implement/.gitignore
+*/Debug/*/.gitignore
+
 # Misc metadata
 .metadata
 
+# Backup files
+*.bck

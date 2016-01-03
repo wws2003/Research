@@ -11,6 +11,8 @@ src/command/GenerateAndStoreApproximationsCommand.d: \
  ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
@@ -19,9 +21,7 @@ src/command/GenerateAndStoreApproximationsCommand.d: \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h \
- ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
- ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
- ../../ModuleAlgorithm/include/interface/abstract/IIterator.h
+ ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h
 
 ../src/command/GenerateAndStoreApproximationsCommand.h:
 
@@ -47,6 +47,10 @@ src/command/GenerateAndStoreApproximationsCommand.d: \
 
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
 ../../ModuleIO/include/interface/abstract/IWriter.h:
 
 ../../ModuleIO/include/interface/common/IOCommon.h:
@@ -64,7 +68,3 @@ src/command/GenerateAndStoreApproximationsCommand.d: \
 ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
-
-../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
-
-../../ModuleAlgorithm/include/interface/abstract/IIterator.h:

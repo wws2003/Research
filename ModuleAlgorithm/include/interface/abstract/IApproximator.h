@@ -10,6 +10,7 @@
 
 #include "AlgoCommon.h"
 #include "OperatorCommon.h"
+#include "ICollection.h"
 
 template<typename T>
 class IApproximator {
@@ -18,9 +19,14 @@ public:
 
 	/**
 	 * Find in given collection, and moreover, if possible generate from it
-		 approximate elements to query (distance smaller than epsilon)
+		 approximate elements to query (distance smaller than epsilon).
+	   Results should be sorted in the ascending order of distance to query
 	 */
-	virtual IteratorPtr<T> getApproximateElements(CollectionPtr<T> pCoreCollection, T pQuery, DistanceCalculatorPtr<T> pDistanceCalculator, mreal_t epsilon) = 0;
+
+	virtual IteratorPtr<LookupResult<T> > getApproximateElements(CollectionPtr<T> pCoreCollection,
+			T pQuery,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilon) = 0;
 };
 
 #endif /* IAPPROXIMATOR_H_ */

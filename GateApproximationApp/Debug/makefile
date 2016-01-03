@@ -48,16 +48,21 @@ all: GateApproximationApp
 GateApproximationApp: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -L../../ModuleMathConcepts/artifact -L../../ModuleOperator/artifact -L../../ModuleIO/artifact -L../../ModuleAlgorithm/artifact -L../../ModuleEvaluate/artifact -L../../SharedThirdParties/gmp/lib -L../../SharedThirdParties/mpfr/lib -L../../SharedThirdParties/mpfrc++/lib -o "GateApproximationApp" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L../../ModuleMathConcepts/artifact -L../../ModuleOperator/artifact -L../../ModuleIO/artifact -L../../ModuleAlgorithm/artifact -L../../ModuleEvaluate/artifact -L../../SharedThirdParties/gmp/lib -L../../SharedThirdParties/mpfr/lib -L../../SharedThirdParties/mpfrc++/lib -pthread -o "GateApproximationApp" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
+	$(MAKE) --no-print-directory post-build
 
 # Other Targets
 clean:
 	-$(RM) $(OBJS)$(C++_DEPS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) GateApproximationApp
 	-@echo ' '
 
+post-build:
+	-./postBuild.sh
+	-@echo ' '
+
 .PHONY: all clean dependents
-.SECONDARY:
+.SECONDARY: post-build
 
 -include ../makefile.targets

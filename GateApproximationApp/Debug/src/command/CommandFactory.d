@@ -30,6 +30,7 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
+ ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h \
  ../src/container/ICollectionContainer.h \
  ../src/container/SampleEvaluatorContainerImpl.h \
  ../src/container/IEvaluatorContainer.h \
@@ -46,13 +47,26 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h \
+ ../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h \
  ../src/command/EvaluateCollectionCommand.h \
  ../src/command/AbstractChainCommandExecutor.h \
  ../src/command/EvaluateApproximatorCommand.h \
  ../src/command/GenerateAndStoreApproximationsCommand.h \
  ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
- ../src/command/EvaluatePersistedCollectionForTargetsCommand.h
+ ../src/command/EvaluatePersistedCollectionForTargetsCommand.h \
+ ../src/container/ComposerBasedApproximatorContainer.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
+ ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
+ ../src/container/SKApproximatorContainerImpl.h \
+ ../src/container/SK2ApproximatorContainerImpl.h \
+ ../../ModuleAlgorithm/include/implement/composer/CoordinateAdditionBasedGateComposer.h \
+ ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h \
+ ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h \
+ ../../ModuleAlgorithm/include/internal-abstract/converter/IConverter.h
 
 ../src/command/CommandFactory.h:
 
@@ -122,6 +136,8 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
 
+../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h:
+
 ../src/container/ICollectionContainer.h:
 
 ../src/container/SampleEvaluatorContainerImpl.h:
@@ -154,6 +170,8 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../../ModuleAlgorithm/include/interface/abstract/IDecomposer.h:
 
+../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h:
+
 ../src/command/EvaluateCollectionCommand.h:
 
 ../src/command/AbstractChainCommandExecutor.h:
@@ -167,3 +185,27 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 ../../ModuleIO/include/interface/abstract/IWriter.h:
 
 ../src/command/EvaluatePersistedCollectionForTargetsCommand.h:
+
+../src/container/ComposerBasedApproximatorContainer.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICombiner.h:
+
+../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h:
+
+../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
+
+../src/container/SKApproximatorContainerImpl.h:
+
+../src/container/SK2ApproximatorContainerImpl.h:
+
+../../ModuleAlgorithm/include/implement/composer/CoordinateAdditionBasedGateComposer.h:
+
+../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
+
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h:
+
+../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h:
+
+../../ModuleAlgorithm/include/internal-abstract/converter/IConverter.h:

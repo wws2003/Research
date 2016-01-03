@@ -8,8 +8,14 @@ src/implement/collection/MapBasedBinCollectionImpl.d: \
  ../../SharedThirdParties/mpfrc++/include/mpreal.h \
  ../../SharedThirdParties/mpfr/include/mpfr.h \
  ../../SharedThirdParties/gmp/include/gmp.h \
+ ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../include/internal-abstract/collection/IBinCollection.h \
  ../include/implement/bin/Bin.hpp \
+ ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
+ ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
+ ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
+ ../include/implement/bin/GBin.hpp \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../include/interface/abstract/IIterator.h
 
@@ -29,9 +35,21 @@ src/implement/collection/MapBasedBinCollectionImpl.d: \
 
 ../../SharedThirdParties/gmp/include/gmp.h:
 
+../../ModuleOperator/include/interface/common/OperatorCommon.h:
+
 ../include/internal-abstract/collection/IBinCollection.h:
 
 ../include/implement/bin/Bin.hpp:
+
+../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h:
+
+../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
+
+../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h:
+
+../include/implement/bin/GBin.hpp:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
 

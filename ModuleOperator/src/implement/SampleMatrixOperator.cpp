@@ -28,7 +28,8 @@ void fromLdToMp(const MatrixXcld& mLd, MatrixXcmp& mMp);
 #endif
 
 SampleMatrixOperator::SampleMatrixOperator(MatrixFactoryPtr pMatrixFactory) : m_pMatrixFactory(pMatrixFactory) {
-
+	 //Eigen::initParallel();
+	std::cout << "Number of threads used by eigen:" << Eigen::nbThreads( ) << "\n";
 }
 
 void SampleMatrixOperator::add(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prSum) {
@@ -73,9 +74,15 @@ ComplexVal SampleMatrixOperator::det(MatrixPtr pm) {
 }
 
 ComplexVal SampleMatrixOperator::trace(MatrixPtr pm) {
-	MatrixXcmp eigenMat;
-	toEigenMatrix(pm, eigenMat);
-	return eigenMat.trace();
+	int nbRows, nbColumns;
+	pm->getSize(nbRows, nbColumns);
+
+	ComplexVal trVal(0.0, 0.0);
+	for(int i = 0; i < nbRows; i++) {
+		trVal += pm->getValue(i, i);
+	}
+
+	return trVal;
 }
 
 void SampleMatrixOperator::power(MatrixPtr pm, int exponent, MatrixPtrRef prPower) {
@@ -167,6 +174,36 @@ void SampleMatrixOperator::log(MatrixPtr pm, MatrixPtrRef prLog) {
 	prLog = fromEigenMatrix(mpLogMat);
 }
 
+void SampleMatrixOperator::sumProduct(const MatrixPtrVector& matrixVector, const ComplexVector& scalaVector, MatrixPtrRef pSum) {
+	int nbRows, nbColumns;
+	matrixVector[0]->getSize(nbRows, nbColumns);
+
+	MatrixPtr pH = m_pMatrixFactory->getMatrixFromValues(nbRows, nbColumns, NULL, ROW_SPLICE, "");
+
+	for(unsigned int i = 0; i < matrixVector.size(); i++) {
+		MatrixPtr pPartialSum = NullPtr;
+		multiplyScalar(matrixVector[i], scalaVector[i], pPartialSum);
+		MatrixPtr pTmpSum = NullPtr;
+		add(pH, pPartialSum, pTmpSum);
+		_destroy(pPartialSum);
+		_destroy(pH);
+		pH = pTmpSum;
+	}
+
+	pSum = pH;
+}
+
+void SampleMatrixOperator::multiplyConjugateTranspose(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prProduct) {
+	MatrixXcmp eigenMat1, eigenMat2;
+	toEigenMatrix(pm1, eigenMat1);
+	toEigenMatrix(pm2, eigenMat2);
+	eigenMat2.transposeInPlace();
+
+	eigenMat1 *= eigenMat2.conjugate();
+
+	prProduct = fromEigenMatrix(eigenMat1, pm1->getLabel() + pm2->getLabel());
+}
+
 void SampleMatrixOperator::eig(MatrixPtr pm, ComplexVectorRef rEigVals, MatrixPtrRef prEigVects) {
 	MatrixXcmp eigenMat;
 	toEigenMatrix(pm, eigenMat);
@@ -220,8 +257,14 @@ void SampleMatrixOperator::specialUnitaryFromUnitary(MatrixPtr pU, MatrixPtrRef 
 
 void SampleMatrixOperator::getTracelessHermitianMatricesBasis(int dimension, MatrixPtrVector& pBasis) {
 	//Ref. http://mathworld.wolfram.com/GeneralizedGell-MannMatrix.html
-
 	pBasis.clear();
+
+	//Firstly try to find in cache
+	if(m_hermitianBasisMap.find(dimension) != m_hermitianBasisMap.end()) {
+		MatrixPtrVector hermitianBasis = m_hermitianBasisMap[dimension];
+		pBasis.insert(pBasis.end(), hermitianBasis.begin(), hermitianBasis.end());
+		return;
+	}
 
 	ComplexValArray pBuffer = new ComplexVal[dimension * dimension];
 	std::fill(pBuffer, pBuffer + dimension * dimension, ComplexVal(0.0, 0.0));
@@ -280,6 +323,7 @@ void SampleMatrixOperator::getTracelessHermitianMatricesBasis(int dimension, Mat
 		//Restore buffer
 		std::fill(pBuffer, pBuffer + dimension * dimension, ComplexVal(0.0, 0.0));
 	}
+	m_hermitianBasisMap[dimension] = pBasis;
 
 	delete[] pBuffer;
 }
@@ -306,7 +350,17 @@ void SampleMatrixOperator::toEigenMatrix(MatrixPtr pMatrix, MatrixXcmp& rEigenMa
 	int nbRows, nbColumns;
 	pMatrix->getSize(nbRows, nbColumns);
 
-	rEigenMat = MatrixXcmp(nbRows, nbColumns);
+	if(nbRows == 2 && nbColumns == 2) {
+		rEigenMat = Matrix2Xcmp();
+	}
+	else {
+		if(nbRows == 4 && nbColumns == 4) {
+			rEigenMat = Matrix4Xcmp();
+		}
+		else {
+			rEigenMat = MatrixXcmp(nbRows, nbColumns);
+		}
+	}
 
 	for(int i = 0; i < nbRows; i++) {
 		for(int j = 0; j < nbColumns; j++) {

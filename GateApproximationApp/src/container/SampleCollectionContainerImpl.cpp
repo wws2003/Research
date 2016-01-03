@@ -9,7 +9,7 @@
 #include "SimpleDenseMatrixFactoryImpl.h"
 #include "SampleMatrixOperator.h"
 #include "PersistableGNATGateCollectionImpl.h"
-#include "BinaryGateWriterImpl.h"
+#include "SQLiteGateWriterImpl.h"
 #include "BinaryGateReaderImpl.h"
 #include "BinaryMatrixWriterImpl.h"
 #include "BinaryMatrixReaderImpl.h"
@@ -24,6 +24,12 @@
 #include "SampleLibraryMatrixStore.h"
 #include "PersistableGNATCollectionImpl.h"
 #include "IPersistableCollection.h"
+#include "DuplicateGateLookupResultFilterImpl.h"
+#include "BackgroundGateLookupResultsFilterProcessor.h"
+#include "SetBasedGateLookupResultProcessor.h"
+#include "VectorBasedGateLookupResultProcessor.h"
+#include "MatrixFowlerDistanceCalculator.h"
+#include "GateDistanceCalculatorByMatrixImpl.h"
 #include <stdexcept>
 
 const std::string SampleCollectionContainerImpl::DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT = "dat";
@@ -39,7 +45,8 @@ SampleCollectionContainerImpl::~SampleCollectionContainerImpl() {
 
 GateCollectionPtr SampleCollectionContainerImpl::getGateCollection(GateDistanceCalculatorPtr pGateDistanceCalculator) {
 	PersitableGateCollectionPtr pGateCollection = PersitableGateCollectionPtr(new PersistableGNATGateCollectionImpl(m_pBinaryGateWriter,
-			m_pBinaryGateReader));
+			m_pBinaryGateReader,
+			m_pGateLookupResultProcessor));
 
 	std::string persitenceFileName = getGateCollectionPersistenceFileFullName(m_collectionConfig,
 			m_librarySetPersistFileNameMap,
@@ -59,7 +66,8 @@ GateCollectionPtr SampleCollectionContainerImpl::getGateCollection(GateDistanceC
 
 PersitableGateCollectionPtr SampleCollectionContainerImpl::getPersitableGateCollection() {
 	return PersitableGateCollectionPtr(new PersistableGNATGateCollectionImpl(m_pBinaryGateWriter,
-			m_pBinaryGateReader));
+			m_pBinaryGateReader,
+			m_pGateLookupResultProcessor));
 }
 
 void SampleCollectionContainerImpl::initLibrarySetPersistFileNameMap() {
@@ -80,8 +88,17 @@ void SampleCollectionContainerImpl::wireDependencies() {
 
 	m_pBinaryMatrixWriter = MatrixWriterPtr(new BinaryMatrixWriterImpl());
 	m_pBinaryMatrixReader = MatrixReaderPtr(new BinaryMatrixReaderImpl(m_pMatrixFactory));
-	m_pBinaryGateWriter = GateWriterPtr(new BinaryGateWriterImpl(NullPtr));
+
+	std::string matrixDBName = getMatrixDBFileName(m_collectionConfig);
+	m_pBinaryGateWriter = GateWriterPtr(new SQLiteGateWriterImpl(NullPtr, matrixDBName));
 	m_pBinaryGateReader = GateReaderPtr(new BinaryGateReaderImpl(NullPtr));
+
+	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(NullPtr));
+	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new GateDistanceCalculatorByMatrixImpl(m_pMatrixDistanceCalculator));
+
+	//m_pGateLookupResultProcessor = GateLookupResultProcessorPtr(new BackgroundGateLookupResultsFilterProcessor(m_pGateDistanceCalculator));
+	m_pGateLookupResultProcessor = GateLookupResultProcessorPtr(new SetBasedGateLookupResultProcessor(m_pGateDistanceCalculator));
+	m_pGateLookupResultProcessor->init();
 
 	m_pUniversalSet = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>());
 	m_pResourceContainer->getUniversalGates(m_pUniversalSet, m_collectionConfig.m_nbQubits);
@@ -100,6 +117,10 @@ void SampleCollectionContainerImpl::releaseDependencies() {
 
 	_destroy(m_pUniversalSet);
 
+	_destroy(m_pGateLookupResultProcessor);
+	_destroy(m_pGateDistanceCalculator);
+	_destroy(m_pMatrixDistanceCalculator);
+
 	_destroy(m_pBinaryGateReader);
 	_destroy(m_pBinaryGateWriter);
 	_destroy(m_pBinaryMatrixReader);
@@ -109,6 +130,22 @@ void SampleCollectionContainerImpl::releaseDependencies() {
 
 	_destroy(m_pMatrixOperator);
 	_destroy(m_pMatrixFactory);
+}
+
+std::string SampleCollectionContainerImpl::getMatrixDBFileName(const CollectionConfig& config) {
+
+	#if MPFR_REAL
+	std::string precisionPostFix = "_mpfr";
+#else
+	std::string precisionPostFix = "";
+#endif
+
+	char fullName[256];
+	sprintf(fullName, "db_%d%s.sqlite",
+			config.m_nbQubits,
+			precisionPostFix.c_str());
+
+	return std::string(fullName);
 }
 
 std::string SampleCollectionContainerImpl::getGateCollectionPersistenceFileFullName(const CollectionConfig& config,

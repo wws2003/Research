@@ -56,7 +56,7 @@ bool sameLabel(IMatrix& lhs, const IMatrix& rhs) {
 
 bool sameValue(const ComplexVal& lhs, const ComplexVal& rhs) {
 #if MPFR_REAL
-	return std::norm(lhs - rhs) < REAL_TOLERANCE;
+	return mreal::norm(lhs - rhs) < REAL_TOLERANCE;
 #else
 	return lhs == rhs;
 #endif
