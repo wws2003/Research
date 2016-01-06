@@ -19,6 +19,7 @@
 #include "IResourceContainer.h"
 #include "IComposer.h"
 #include "IElementSetLog.h"
+#include "ILookupResultFilter.h"
 
 class SampleApproximatorContainerImpl: public IApproximatorContainer {
 public:
@@ -52,6 +53,8 @@ private:
 
 	GateComposerPtr m_pGateComposer;
 	GateDecomposerPtr m_pGateDecomposer;
+
+	GateLookupResultFilterPtr m_pGateLookupResultFilter;
 
 	NearIdentityApproximatorConfig m_approximatorConfig;
 	CollectionConfig m_coreCollectionConfig;

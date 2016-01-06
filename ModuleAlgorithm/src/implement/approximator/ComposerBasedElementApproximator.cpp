@@ -16,12 +16,14 @@ template<typename T>
 ComposerBasedElementApproximator<T>::ComposerBasedElementApproximator(DecomposerPtr<T> pQueryDecomposer,
 		int nbPartialQueries,
 		ComposerPtr<T> pBuildingBlockComposer,
-		mreal_t initialEpsilon) {
+		mreal_t initialEpsilon,
+		LookupResultFilterPtr<T> pLookupResultFilter) {
 
 	m_pQueryDecomposer = pQueryDecomposer;
 	m_nbPartialQueries = nbPartialQueries;
 	m_pBuildingBlockComposer = pBuildingBlockComposer;
 	m_initialEpsilon = initialEpsilon;
+	m_pLookupResultFilter = pLookupResultFilter;
 }
 
 template<typename T>
@@ -118,6 +120,12 @@ IteratorPtr<LookupResult<T> > ComposerBasedElementApproximator<T>::getFullResult
 			pResultIter->next();
 		}
 		pResultIter->toBegin();
+
+		//Filter results before sort
+		if(m_pLookupResultFilter != NullPtr) {
+			m_pLookupResultFilter->filterLookupResults(fullResults, pDistanceCalculator, false);
+		}
+
 		std::sort(fullResults.begin(), fullResults.end(), DistanceComparator<T>());
 	}
 	return IteratorPtr<LookupResult<T> >(new VectorBasedReadOnlyIteratorImpl<LookupResult<T> >(fullResults));

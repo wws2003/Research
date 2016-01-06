@@ -12,6 +12,7 @@
 #include "IApproximator.h"
 #include "IComposer.h"
 #include "IDecomposer.h"
+#include "ILookupResultFilter.h"
 
 template<typename T>
 class ComposerBasedElementApproximator : public IApproximator<T> {
@@ -19,7 +20,8 @@ public:
 	ComposerBasedElementApproximator(DecomposerPtr<T> pQueryDecomposer,
 			int nbPartialQueries,
 			ComposerPtr<T> pBuildingBlockComposer,
-			mreal_t initialEpsilon);
+			mreal_t initialEpsilon,
+			LookupResultFilterPtr<T> pLookupResultFilter);
 
 	virtual ~ComposerBasedElementApproximator(){};
 
@@ -51,6 +53,7 @@ private:
 	int m_nbPartialQueries;
 	ComposerPtr<T> m_pBuildingBlockComposer;
 	mreal_t m_initialEpsilon;
+	LookupResultFilterPtr<T> m_pLookupResultFilter;
 };
 
 

@@ -19,6 +19,7 @@
 #include "GateCoordinateCalculatorImpl.h"
 #include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "NearHalfBalanceGateDecomposer.h"
+#include "DuplicateGateLookupResultFilterImpl.h"
 
 ComposerBasedApproximatorContainer::ComposerBasedApproximatorContainer(ComposerBasedApproximatorConfig approximatorConfig,
 		CollectionConfig coreCollectionConfig) : m_approximatorConfig(approximatorConfig), m_coreCollectionConfig(coreCollectionConfig) {
@@ -33,7 +34,8 @@ GateApproximatorPtr ComposerBasedApproximatorContainer::getGateApproximator() {
 	return GateApproximatorPtr(new ComposerBasedGateApproximator(m_pGateDecomposer,
 			m_approximatorConfig.m_nbPartialQueries,
 			m_pGateComposer,
-			m_approximatorConfig.m_initialEpsilon));
+			m_approximatorConfig.m_initialEpsilon,
+			m_pGateLookupResultFilter));
 }
 
 void ComposerBasedApproximatorContainer::wireDependencies() {
@@ -67,9 +69,18 @@ void ComposerBasedApproximatorContainer::wireDependencies() {
 	else {
 		//TODO Implement
 	}
+
+	if(m_approximatorConfig.m_userFilter) {
+		m_pGateLookupResultFilter = GateLookupResultFilterPtr(new DuplicateGateLookupResultFilterImpl());
+	}
+	else {
+		m_pGateLookupResultFilter = NullPtr;
+	}
 }
 
 void ComposerBasedApproximatorContainer::releaseDependencies() {
+	_destroy(m_pGateLookupResultFilter);
+
 	_destroy(m_pGateDecomposer);
 
 	_destroy(m_pGateRealCoordinateCalculator);

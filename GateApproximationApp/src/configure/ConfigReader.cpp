@@ -122,25 +122,30 @@ void ConfigReader::readComposerBasedApproximatorConfig(std::string configFile, C
 		char prefix[128];
 		std::string line;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_nbPartialQueries));
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		double initialEpsilon;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
 		pApproximatorConfig->m_initialEpsilon = (mreal_t)initialEpsilon;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_nbCandidates));
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_composerBasedApproximatorType));
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_queryDecomposerType));
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_buildingBlockComposerType));
+
+		readLineAndLog(inputStream, line, std::cout);
+		int useFilter = 0;
+		sscanf(line.data(), "%[^:]:%d", prefix, &(useFilter));
+		pApproximatorConfig->m_userFilter = !(useFilter == 0);
 	}
 	else {
 		throw std::logic_error("Can not read config file for approximator!");

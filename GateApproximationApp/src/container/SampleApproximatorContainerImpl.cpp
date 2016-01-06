@@ -34,7 +34,8 @@ GateApproximatorPtr SampleApproximatorContainerImpl::getGateApproximator() {
 	GateApproximatorPtr pGateApproximator = GateApproximatorPtr(new ComposerBasedGateApproximator(m_pGateDecomposer,
 			1,
 			m_pGateComposer,
-			m_approximatorConfig.m_initialEpsilon));
+			m_approximatorConfig.m_initialEpsilon,
+			m_pGateLookupResultFilter));
 
 	return pGateApproximator;
 }
@@ -67,9 +68,14 @@ void SampleApproximatorContainerImpl::wireDependencies() {
 	m_pGateComposer = ComposerPtr<GatePtr>(new NearIdentityGateBinBasedComposer(m_pGateCombiner,
 			m_pBinCollection,
 			getComposerConfig()));
+
+	//TODO Implement properly
+	m_pGateLookupResultFilter = NullPtr;
 }
 
 void SampleApproximatorContainerImpl::releaseDependencies() {
+	_destroy(m_pGateLookupResultFilter);
+
 	_destroy(m_pGateDecomposer);
 	_destroy(m_pGateComposer);
 

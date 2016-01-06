@@ -24,7 +24,8 @@ public:
 			ComposerPtr<T> pBuildingBlockComposer,
 			mreal_t initialEpsilon,
 			int nbCandidates,
-			int recursiveLevel);
+			int recursiveLevel,
+			ApproximatorPtr<T> pHelperApproximator);
 
 	virtual ~SKElementApproximator();
 
@@ -46,6 +47,11 @@ private:
 			T pPartialQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			int level);
+
+	IteratorPtr<LookupResult<T> > initialStageApproximate(CollectionPtr<T> pCoreCollection,
+			T target,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilon);
 
 	IteratorPtr<T> getCandidatesFromRawApprx(T apprx,
 			CollectionPtr<T> pCoreCollection,
@@ -75,6 +81,8 @@ private:
 
 	DecomposerPtr<T> m_pQueryDecomposer;
 	ComposerPtr<T> m_pBuildingBlockComposer;
+	ApproximatorPtr<T> m_pHelperApproximator;
+
 	mreal_t m_initialEpsilon;
 
 	int m_nbCandidates;

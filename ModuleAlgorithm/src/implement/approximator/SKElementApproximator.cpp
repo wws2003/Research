@@ -16,10 +16,13 @@ SKElementApproximator<T>::SKElementApproximator(DecomposerPtr<T> pQueryDecompose
 		ComposerPtr<T> pBuildingBlockComposer,
 		mreal_t initialEpsilon,
 		int nbCandidates,
-		int recursiveLevel) {
+		int recursiveLevel,
+		ApproximatorPtr<T> pHelperApproximator) {
 
 	m_pBuildingBlockComposer = pBuildingBlockComposer;
 	m_pQueryDecomposer = pQueryDecomposer;
+	m_pHelperApproximator = pHelperApproximator;
+
 	m_nbCandidates = nbCandidates;
 	m_initialEpsilon = initialEpsilon;
 	m_recursiveLevel = recursiveLevel;
@@ -56,10 +59,7 @@ IteratorPtr<LookupResult<T> > SKElementApproximator<T>::skApproximate(Collection
 	mreal_t epsilonForCurrentLevel = m_epsilonForLevels[level];
 
 	if(level == 0) {
-		return pCoreCollection->findNearestNeighbours(query,
-				pDistanceCalculator,
-				epsilonForCurrentLevel,
-				true);
+		return initialStageApproximate(pCoreCollection, query, pDistanceCalculator, epsilonForCurrentLevel);
 	}
 
 	IteratorPtr<LookupResult<T> > pRawApprxIter = skApproximate(pCoreCollection,
@@ -107,6 +107,25 @@ IteratorPtr<LookupResult<T> > SKElementApproximator<T>::skApproximate(Collection
 	}
 
 	return pApprxIter;
+}
+
+template<typename T>
+IteratorPtr<LookupResult<T> > SKElementApproximator<T>::initialStageApproximate(CollectionPtr<T> pCoreCollection,
+		T target,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon) {
+	if(m_pHelperApproximator != NullPtr) {
+		return m_pHelperApproximator->getApproximateElements(pCoreCollection,
+				target,
+				pDistanceCalculator,
+				epsilon);
+	}
+	else {
+		return pCoreCollection->findNearestNeighbours(target,
+				pDistanceCalculator,
+				epsilon,
+				true);
+	}
 }
 
 template<typename T>

@@ -14,14 +14,16 @@ src/implement/approximator/ComposerBasedGateApproximator.d: \
  ../include/interface/abstract/IIterator.h \
  ../include/interface/abstract/IComposer.h \
  ../include/interface/abstract/IDecomposer.h \
+ ../include/internal-abstract/filter/ILookupResultFilter.h \
+ ../include/internal-abstract/AlgoInternal.h \
+ ../include/interface/abstract/ICollection.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
  ../src/implement/approximator/ComposerBasedElementApproximator.cpp \
  ../include/implement/approximator/ComposerBasedElementApproximator.h \
  ../include/interface/abstract/IIterator.h \
- ../include/interface/abstract/ICollection.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp
 
 ../include/implement/approximator/ComposerBasedGateApproximator.h:
@@ -52,6 +54,14 @@ src/implement/approximator/ComposerBasedGateApproximator.d: \
 
 ../include/interface/abstract/IDecomposer.h:
 
+../include/internal-abstract/filter/ILookupResultFilter.h:
+
+../include/internal-abstract/AlgoInternal.h:
+
+../include/interface/abstract/ICollection.h:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
@@ -63,9 +73,5 @@ src/implement/approximator/ComposerBasedGateApproximator.d: \
 ../include/implement/approximator/ComposerBasedElementApproximator.h:
 
 ../include/interface/abstract/IIterator.h:
-
-../include/interface/abstract/ICollection.h:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:

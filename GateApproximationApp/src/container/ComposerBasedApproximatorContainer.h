@@ -19,6 +19,7 @@
 #include "IElementSetLog.h"
 #include "ICoordinateCalculator.h"
 #include "IResourceContainer.h"
+#include "ILookupResultFilter.h"
 
 class ComposerBasedApproximatorContainer: public IApproximatorContainer {
 public:
@@ -45,6 +46,8 @@ private:
 	GateRealCoordinateCalculatorPtr m_pGateRealCoordinateCalculator;
 
 	GateDecomposerPtr m_pGateDecomposer;
+
+	GateLookupResultFilterPtr m_pGateLookupResultFilter;
 
 	ComposerBasedApproximatorConfig m_approximatorConfig;
 	CollectionConfig m_coreCollectionConfig;

@@ -63,6 +63,7 @@ struct ComposerBasedApproximatorConfig {
 	int m_composerBasedApproximatorType;
 	int m_queryDecomposerType;
 	int m_buildingBlockComposerType;
+	bool m_userFilter;
 };
 
 struct SKApproximatorConfig {

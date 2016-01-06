@@ -30,6 +30,7 @@
 
 SK2ApproximatorContainerImpl::SK2ApproximatorContainerImpl(SKApproximatorConfig2 config,
 		CollectionConfig coreCollectionConfig) : m_approximatorConfig(config), m_coreCollectionConfig(coreCollectionConfig) {
+	m_pGateCoordinateDistanceCalculator = NullPtr;
 	wireDependencies();
 }
 
@@ -43,7 +44,8 @@ GateApproximatorPtr SK2ApproximatorContainerImpl::getGateApproximator() {
 			m_approximatorConfig.m_initialEpsilon,
 			m_approximatorConfig.m_nbCandidates,
 			m_approximatorConfig.m_recursiveLevels,
-			m_pMatrixOperator));
+			m_pMatrixOperator,
+			NullPtr));
 }
 
 void SK2ApproximatorContainerImpl::wireDependencies() {

@@ -66,7 +66,9 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h \
  ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h \
- ../../ModuleAlgorithm/include/internal-abstract/converter/IConverter.h
+ ../../ModuleAlgorithm/include/internal-abstract/converter/IConverter.h \
+ ../src/container/ComposerBasedSK2ApproximatorContainerImpl.h \
+ ../src/container/SK2ApproximatorContainerImpl.h
 
 ../src/command/CommandFactory.h:
 
@@ -209,3 +211,7 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/converter/IConverter.h:
+
+../src/container/ComposerBasedSK2ApproximatorContainerImpl.h:
+
+../src/container/SK2ApproximatorContainerImpl.h:

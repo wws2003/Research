@@ -23,14 +23,16 @@
 
 class SK2ApproximatorContainerImpl: public IApproximatorContainer {
 public:
-	SK2ApproximatorContainerImpl(SKApproximatorConfig2 config, CollectionConfig coreCollectionConfig);
+	SK2ApproximatorContainerImpl(SKApproximatorConfig2 config,
+			CollectionConfig coreCollectionConfig);
+
 	virtual ~SK2ApproximatorContainerImpl();
 
-	GateApproximatorPtr getGateApproximator();
+	virtual GateApproximatorPtr getGateApproximator();
 
-private:
-	void wireDependencies();
-	void releaseDependencies();
+protected:
+	virtual void wireDependencies();
+	virtual void releaseDependencies();
 
 	void initRealCoordinateComparator();
 	void initEpsilonRealCoordinate(RealCoordinate<GatePtr>& epsilonRealCoordinate);
