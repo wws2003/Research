@@ -59,11 +59,13 @@ template<typename T>
 void selfTest(GNATCollectionImpl<T>* pCollection);
 
 template<typename T>
-GNATCollectionImpl<T>::GNATCollectionImpl(LookupResultProcessorPtr<T> pLookupResultProcessor, bool toCloneFilteredResults)
-{
+GNATCollectionImpl<T>::GNATCollectionImpl(DistanceCalculatorPtr<T> pDistanceCalculator,
+		LookupResultProcessorPtr<T> pLookupResultProcessor,
+		bool toCloneFilteredResults) : ICollection<T>(pDistanceCalculator)
+		{
 	m_pLookupResultProcessor = pLookupResultProcessor;
 	m_toCloneFilteredResults = toCloneFilteredResults;
-}
+		}
 
 template<typename T>
 GNATCollectionImpl<T>::~GNATCollectionImpl() {
@@ -150,7 +152,8 @@ CollectionSize_t GNATCollectionImpl<T>::size() const {
 }
 
 template<typename T>
-void GNATCollectionImpl<T>::rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator) {
+void GNATCollectionImpl<T>::rebuildStructure() {
+	DistanceCalculatorPtr<T> pDistanceCalculator = ICollection<T>::getDistanceCalculator();
 
 	if(m_unStructeredBuffer.size() > MIN_SIZE_TO_BUILD_STRUCTURE) {
 		//Re-call entire elements passed to sub collections to build from scratch
@@ -168,7 +171,7 @@ void GNATCollectionImpl<T>::rebuildStructure(DistanceCalculatorPtr<T> pDistanceC
 		//Recursively rebuild structure of each sub collections
 		for(typename GNATCollectionVector<T>::iterator cIter = m_subCollections.begin(); cIter != m_subCollections.end(); cIter++) {
 			CollectionPtr<T> pSubCollection = *cIter;
-			pSubCollection->rebuildStructure(pDistanceCalculator);
+			pSubCollection->rebuildStructure();
 		}
 	}
 
@@ -177,7 +180,6 @@ void GNATCollectionImpl<T>::rebuildStructure(DistanceCalculatorPtr<T> pDistanceC
 
 template<typename T>
 IteratorPtr<LookupResult<T> > GNATCollectionImpl<T>::findNearestNeighbours(T query,
-		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
 		bool toSortResults) const {
 
@@ -185,21 +187,27 @@ IteratorPtr<LookupResult<T> > GNATCollectionImpl<T>::findNearestNeighbours(T que
 	results.reserve(128); //Tekitou-ni
 
 	findAndProcessNearestNeighbours(query,
-			pDistanceCalculator,
+			ICollection<T>::getDistanceCalculator(),
 			epsilon,
 			m_pLookupResultProcessor,
 			results);
 
-	//Final check and collect results
-	m_pLookupResultProcessor->reset();
+	if(m_pLookupResultProcessor != NullPtr) {
+		//Final check and collect results
+		m_pLookupResultProcessor->reset();
+		m_pLookupResultProcessor->addLookupResultsBatch(results);
 
-	m_pLookupResultProcessor->addLookupResultsBatch(results);
+		results.clear();
+		m_pLookupResultProcessor->retrieveProcessedLookupResults(results, toSortResults);
 
-	results.clear();
-	m_pLookupResultProcessor->retrieveProcessedLookupResults(results, toSortResults);
-
-	//Reset again to maintain post condition
-	m_pLookupResultProcessor->reset();
+		//Reset again to maintain post condition
+		m_pLookupResultProcessor->reset();
+	}
+	else {
+		if(toSortResults) {
+			std::sort(results.begin(), results.end(), DistanceComparator<T>());
+		}
+	}
 
 	if(m_toCloneFilteredResults) {
 		for(unsigned int i = 0; i < results.size(); i++) {
@@ -218,24 +226,40 @@ void GNATCollectionImpl<T>::findAndProcessNearestNeighbours(T query,
 
 	std::vector<LookupResult<T> > tmpResults;
 
-	//Get results from unstructured buffer first
-	findClosestElementsInUnStructuredBuffer3(query,
-			m_unStructeredBuffer,
-			pDistanceCalculator,
-			epsilon,
-			pLookupResultProcessor);
+	if(pLookupResultProcessor != NullPtr) {
+		//Get results from unstructured buffer first
+		findClosestElementsInUnStructuredBuffer3(query,
+				m_unStructeredBuffer,
+				pDistanceCalculator,
+				epsilon,
+				pLookupResultProcessor);
 
-	findClosestElementsInSplitPoints3(query,
-			m_splitPoints,
-			pDistanceCalculator,
-			epsilon,
-			pLookupResultProcessor);
+		findClosestElementsInSplitPoints3(query,
+				m_splitPoints,
+				pDistanceCalculator,
+				epsilon,
+				pLookupResultProcessor);
 
-	//Retrieve temporary results
-	pLookupResultProcessor->retrieveProcessedLookupResults(tmpResults, false);
+		//Retrieve temporary results
+		pLookupResultProcessor->retrieveProcessedLookupResults(tmpResults, false);
 
-	//Reset processor
-	pLookupResultProcessor->reset();
+		//Reset processor
+		pLookupResultProcessor->reset();
+	}
+	else {
+		//Get results from unstructured buffer first
+		findClosestElementsInUnStructuredBuffer2(query,
+				m_unStructeredBuffer,
+				pDistanceCalculator,
+				epsilon,
+				finalResults);
+
+		findClosestElementsInSplitPoints2(query,
+				m_splitPoints,
+				pDistanceCalculator,
+				epsilon,
+				finalResults);
+	}
 
 	//Merge temporary results to final results
 	finalResults.insert(finalResults.end(), tmpResults.begin(), tmpResults.end());
@@ -284,7 +308,9 @@ void GNATCollectionImpl<T>::recallElements() {
 
 template<typename T>
 GNATCollectionImplPtr<T> GNATCollectionImpl<T>::generateSubCollection() {
-	return GNATCollectionImplPtr<T>(new GNATCollectionImpl<T>(NullPtr, false));
+	return GNATCollectionImplPtr<T>(new GNATCollectionImpl<T>(ICollection<T>::getDistanceCalculator(),
+			NullPtr,
+			false));
 }
 
 template<typename T>
@@ -471,7 +497,7 @@ void findClosestElementsInUnStructuredBuffer3(T query,
 	for(typename UnstructuredBuffer<T>::const_iterator eIter = dataSet.begin(); eIter != dataSet.end(); eIter++) {
 		T element = *eIter;
 		mreal_t distance = pDistanceCalculator->distance(element, query);
-		if(distance <= epsilon) {
+		if(distance <= epsilon && pLookupResultProcessor != NullPtr) {
 			pLookupResultProcessor->addLookupResult(LookupResult<T>(element, distance));
 		}
 	}
@@ -486,7 +512,7 @@ void findClosestElementsInSplitPoints3(T query,
 	for(typename SplitPointSet<T>::const_iterator eIter = dataSet.begin(); eIter != dataSet.end(); eIter++) {
 		T element = *eIter;
 		mreal_t distance = pDistanceCalculator->distance(element, query);
-		if(distance <= epsilon) {
+		if(distance <= epsilon && pLookupResultProcessor != NullPtr) {
 			pLookupResultProcessor->addLookupResult(LookupResult<T>(element, distance));
 		}
 	}

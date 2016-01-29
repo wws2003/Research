@@ -36,7 +36,7 @@ IteratorPtr<T> SimpleElementComposer<T>::composeApproximations(const BuildingBlo
 		mreal_t epsilon) {
 
 	std::vector<T> partialElementsBuffer;
-	VectorBasedCollectionImpl<T> resultBuffer;
+	VectorBasedCollectionImpl<T> resultBuffer(pDistanceCalculator);
 
 #if OUTPUT_INTERMEDIATE_RESULT
 	m_pElementSetLog->saveElementSets(buildingBlockBuckets);

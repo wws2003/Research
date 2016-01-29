@@ -17,7 +17,7 @@
 template<typename T>
 class VectorBasedCollectionImpl : public ICollection<T> {
 public:
-	VectorBasedCollectionImpl();
+	VectorBasedCollectionImpl(DistanceCalculatorPtr<T> pDistanceCalculator);
 	virtual ~VectorBasedCollectionImpl(){};
 
 	//Add one element to the collection
@@ -40,11 +40,10 @@ public:
 	virtual CollectionSize_t size() const ;
 
 	//(Re)Build the search data structure given distance calculator
-	virtual void rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator);
+	virtual void rebuildStructure();
 
 	//Advanced lookup function, with distance stored in results
 	virtual IteratorPtr<LookupResult<T> > findNearestNeighbours(T query,
-			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
 			bool toSortResults = false) const;
 private:
@@ -52,7 +51,7 @@ private:
 };
 
 template<typename T>
-VectorBasedCollectionImpl<T>::VectorBasedCollectionImpl() {
+VectorBasedCollectionImpl<T>::VectorBasedCollectionImpl(DistanceCalculatorPtr<T> pDistanceCalculator) : ICollection<T>(pDistanceCalculator) {
 }
 
 template<typename T>
@@ -91,13 +90,12 @@ CollectionSize_t VectorBasedCollectionImpl<T>::size() const {
 }
 
 template<typename T>
-void VectorBasedCollectionImpl<T>::rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator) {
+void VectorBasedCollectionImpl<T>::rebuildStructure() {
 	//Do nothing
 }
 
 template<typename T>
 IteratorPtr<LookupResult<T> > VectorBasedCollectionImpl<T>::findNearestNeighbours(T query,
-		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
 		bool toSortResults) const {
 
@@ -106,7 +104,7 @@ IteratorPtr<LookupResult<T> > VectorBasedCollectionImpl<T>::findNearestNeighbour
 
 	for(unsigned int i = 0; i < collectionSize; i++) {
 		T element = m_elements[i];
-		mreal_t distance = pDistanceCalculator->distance(element, query);
+		mreal_t distance = ICollection<T>::getDistanceCalculator()->distance(element, query);
 
 		if(distance <= epsilon) {
 			LookupResult<T> result(element, distance);

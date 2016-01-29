@@ -13,6 +13,7 @@ src/implement/GateSearchSpaceConstructorImpl.d: \
  ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../include/implement/GateSearchSpaceConstructorImpl.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
@@ -45,6 +46,8 @@ src/implement/GateSearchSpaceConstructorImpl.d: \
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 

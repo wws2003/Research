@@ -46,7 +46,6 @@ GateSearchSpaceEvaluatorPtr SampleEvaluatorContainerImpl::getGateSearchSpaceEval
 	GateSearchSpaceEvaluatorPtr pGateSearchSpaceEvaluator = new GateSearchSpaceTimerEvaluatorImpl(m_targetGates,
 			m_evaluatorConfig.m_collectionEpsilon,
 			m_evaluatorConfig.m_approximatorEpsilon,
-			m_pGateDistanceCalculator,
 			m_pGateRealCoordinateCalculator,
 			m_pCoordinateWriter,
 			m_pGateWriterInEvaluator,

@@ -121,13 +121,13 @@ void IOTestSuite::testGateReadWrite() {
 
 void IOTestSuite::testGNATCollectionPersistence() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
-	PersistableGNATGateCollectionImpl* pSampleCollection = new PersistableGNATGateCollectionImpl(m_pGateWriter, m_pGateReader);
+	PersistableGNATGateCollectionImpl* pSampleCollection = new PersistableGNATGateCollectionImpl(NullPtr, m_pGateWriter, m_pGateReader);
 
 	constructSampleGNATCollection(pSampleCollection);
 
 	pSampleCollection->save(GNAT_COLLECTION_FILE);
 
-	PersistableGNATGateCollectionImpl* pReadCollection = new PersistableGNATGateCollectionImpl(m_pGateWriter, m_pGateReader);
+	PersistableGNATGateCollectionImpl* pReadCollection = new PersistableGNATGateCollectionImpl(NullPtr, m_pGateWriter, m_pGateReader);
 	pReadCollection->load(GNAT_COLLECTION_FILE);
 
 	assert(*pSampleCollection == *pReadCollection);

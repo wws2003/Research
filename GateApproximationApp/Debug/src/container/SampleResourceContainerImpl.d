@@ -23,10 +23,10 @@ src/container/SampleResourceContainerImpl.d: \
  ../../ModuleAlgorithm/include/implement/collection/VectorBasedCollectionImpl.hpp \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleAlgorithm/include/implement/iterator/VectorBasedIteratorImpl.hpp \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleEvaluate/include/implement/GateSearchSpaceConstructorImpl.h \
  ../../ModuleEvaluate/include/implement/SearchSpaceConstructorImpl.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
@@ -239,13 +239,13 @@ src/container/SampleResourceContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
 ../../ModuleAlgorithm/include/implement/iterator/VectorBasedIteratorImpl.hpp:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
 ../../ModuleAlgorithm/include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../../ModuleEvaluate/include/implement/GateSearchSpaceConstructorImpl.h:
 

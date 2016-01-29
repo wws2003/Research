@@ -16,6 +16,7 @@
 #include "AlgoInternal.h"
 #include "EvaluateCommon.h"
 #include "IGateCombinabilityChecker.h"
+#include "IDistanceCalculator.h"
 
 class AssemblerUtil {
 public:
@@ -28,7 +29,10 @@ public:
 
 	virtual void getLibraryGates(GateCollectionPtr& pLibraryGates, int nbQubits);
 
-	virtual void getSampleGateSearchSpaceCollection(GateCollectionPtr& pGateCollection, int nbQubits, int maxSequenceLength);
+	virtual void getSampleGateSearchSpaceCollection(GateCollectionPtr& pGateCollection,
+			DistanceCalculatorPtr<GatePtr> pDistanceCalculator,
+			int nbQubits,
+			int maxSequenceLength);
 
 	virtual void getSampleQueryGate(GatePtrVector& queries, int nbQubits);
 

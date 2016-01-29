@@ -12,9 +12,9 @@ src/implement/collection/GNATGateCollectionImpl.d: \
  ../include/interface/abstract/ICollection.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/interface/abstract/IIterator.h \
  ../include/internal-abstract/filter/ILookupResultProcessor.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
@@ -48,11 +48,11 @@ src/implement/collection/GNATGateCollectionImpl.d: \
 
 ../include/interface/abstract/IIterator.h:
 
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
 ../include/interface/abstract/IIterator.h:
 
 ../include/internal-abstract/filter/ILookupResultProcessor.h:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
 

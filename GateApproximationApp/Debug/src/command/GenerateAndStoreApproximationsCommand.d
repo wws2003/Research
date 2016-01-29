@@ -13,9 +13,9 @@ src/command/GenerateAndStoreApproximationsCommand.d: \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
@@ -51,11 +51,11 @@ src/command/GenerateAndStoreApproximationsCommand.d: \
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
 ../../ModuleIO/include/interface/abstract/IWriter.h:
 
 ../../ModuleIO/include/interface/common/IOCommon.h:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 

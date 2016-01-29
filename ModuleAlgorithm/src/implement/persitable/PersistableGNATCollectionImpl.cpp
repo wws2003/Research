@@ -21,20 +21,23 @@ using GNATCollectionMap = std::map<GNATCollectionIdType, PersistableGNATCollecti
 /*---------------------------------------------------*/
 
 template<typename T>
-PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader, LookupResultProcessorPtr<T> pLookupResultProcessor) : GNATCollectionImpl<T>(pLookupResultProcessor, true) {
+PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl(DistanceCalculatorPtr<T> pDistanceCalculator,
+		WriterPtr<T> pWriter,
+		ReaderPtr<T> pReader,
+		LookupResultProcessorPtr<T> pLookupResultProcessor) : GNATCollectionImpl<T>(pDistanceCalculator, pLookupResultProcessor, true) {
 	m_pWriter = pWriter;
 	m_pReader = pReader;
 }
 
 template<typename T>
-PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl() : GNATCollectionImpl<T>(NullPtr, false) {
+PersistableGNATCollectionImpl<T>::PersistableGNATCollectionImpl(DistanceCalculatorPtr<T> pDistanceCalculator) : GNATCollectionImpl<T>(pDistanceCalculator, NullPtr, false) {
 	m_pWriter = NullPtr;
 	m_pReader = NullPtr;
 }
 
 template<typename T>
 GNATCollectionImplPtr<T> PersistableGNATCollectionImpl<T>::generateSubCollection() {
-	return new PersistableGNATCollectionImpl<T>();
+	return new PersistableGNATCollectionImpl<T>(ICollection<T>::getDistanceCalculator());
 }
 
 template<typename T>

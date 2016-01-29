@@ -101,7 +101,7 @@ void NearIdentityElementBinBasedComposer<T>::generateApproximationsFromBins(T pQ
 	mreal_t epsilonForMergeCandidate = m_config.m_maxCandidateEpsilon;
 	int maxResultNumber = m_config.m_maxResultNumber;
 
-	CollectionPtr<T> pApprxTempCollection(new VectorBasedCollectionImpl<T>());
+	CollectionPtr<T> pApprxTempCollection(new VectorBasedCollectionImpl<T>(pDistanceCalculator));
 
 	for(int stepCounter = 0; stepCounter < maxStep && apprxResultBuffer.size() < m_config.m_maxResultNumber; stepCounter++) {
 		pApprxTempCollection->clear();
