@@ -12,9 +12,9 @@ src/implement/persitable/GNATCollectionBlock.d: \
  ../include/interface/abstract/ICollection.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/interface/abstract/IIterator.h \
  ../include/internal-abstract/filter/ILookupResultProcessor.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
  ../../ModuleIO/include/interface/abstract/IReader.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
@@ -45,11 +45,11 @@ src/implement/persitable/GNATCollectionBlock.d: \
 
 ../include/interface/abstract/IIterator.h:
 
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
 ../include/interface/abstract/IIterator.h:
 
 ../include/internal-abstract/filter/ILookupResultProcessor.h:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../../ModuleIO/include/interface/common/IOCommon.h:
 

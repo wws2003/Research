@@ -19,8 +19,11 @@
 template<typename T>
 class PersistableGNATItemCollectionImpl : public IPersistableCollection<T> {
 public:
-	PersistableGNATItemCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader, LookupResultProcessorPtr<T> pProcessor = NullPtr){
-		m_pInternal = new PersistableGNATCollectionImpl<T>(pWriter, pReader, pProcessor);
+	PersistableGNATItemCollectionImpl(DistanceCalculatorPtr<T> pDistanceCalculator,
+			WriterPtr<T> pWriter,
+			ReaderPtr<T> pReader,
+			LookupResultProcessorPtr<T> pProcessor = NullPtr) : IPersistableCollection<T>(pDistanceCalculator) {
+		m_pInternal = new PersistableGNATCollectionImpl<T>(pDistanceCalculator, pWriter, pReader, pProcessor);
 	};
 
 	virtual ~PersistableGNATItemCollectionImpl(){_destroy(m_pInternal);};
@@ -46,14 +49,13 @@ public:
 	CollectionSize_t size() const {return m_pInternal->size();};
 
 	//(Re)Build the search data structure given distance calculator
-	void rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator){m_pInternal->rebuildStructure(pDistanceCalculator);};
+	void rebuildStructure(){m_pInternal->rebuildStructure();};
 
 	//Find the neighbor elements to the query, given distance calculator
 	IteratorPtr<LookupResult<T> > findNearestNeighbours(T query,
-			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
 			bool toSortResults = false) const {
-		return m_pInternal->findNearestNeighbours(query, pDistanceCalculator, epsilon, toSortResults);
+		return m_pInternal->findNearestNeighbours(query, epsilon, toSortResults);
 	}
 
 	//Implementation for IPersistable

@@ -29,7 +29,6 @@ public:
 	virtual PersitableGateCollectionPtr getPersitableGateCollection();
 
 private:
-
 	void initLibrarySetNameMap();
 
 	void initLibrarySetPersistFileNameMap();
@@ -61,6 +60,8 @@ private:
 
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
 	GateDistanceCalculatorPtr m_pGateDistanceCalculator;
+
+	GateDistanceCalculatorPtr m_pGateDistanceCalculatorForCollection;
 
 	GateLookupResultProcessorPtr m_pGateLookupResultProcessor;
 

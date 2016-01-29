@@ -12,6 +12,7 @@ src/implement/approximator/SKGateApproximator.d: \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../include/interface/abstract/ICollection.h \
  ../include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/interface/abstract/IComposer.h \
  ../include/interface/abstract/IDecomposer.h \
  ../../ModuleOperator/include/interface/abstract/IMatrixOperator.h \
@@ -24,8 +25,7 @@ src/implement/approximator/SKGateApproximator.d: \
  ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../include/interface/abstract/IIterator.h \
  ../include/implement/collection/VectorBasedCollectionImpl.hpp \
- ../include/implement/iterator/VectorBasedIteratorImpl.hpp \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h
+ ../include/implement/iterator/VectorBasedIteratorImpl.hpp
 
 ../include/implement/approximator/SKGateApproximator.h:
 
@@ -50,6 +50,8 @@ src/implement/approximator/SKGateApproximator.d: \
 ../include/interface/abstract/ICollection.h:
 
 ../include/interface/abstract/IIterator.h:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../include/interface/abstract/IComposer.h:
 
@@ -76,5 +78,3 @@ src/implement/approximator/SKGateApproximator.d: \
 ../include/implement/collection/VectorBasedCollectionImpl.hpp:
 
 ../include/implement/iterator/VectorBasedIteratorImpl.hpp:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:

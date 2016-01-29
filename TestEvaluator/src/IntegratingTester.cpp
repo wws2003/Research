@@ -33,7 +33,10 @@ void IntegratingTester::freeTestShowGateSearchSpace(int nbQubits, int maxSequenc
 	AssemblerUtilPtr pUtil = new AssemblerUtil();
 
 	CollectionPtr<GatePtr> pSearchSpaceCollection = NullPtr;
-	pUtil->getSampleGateSearchSpaceCollection(pSearchSpaceCollection, nbQubits, maxSequenceLength);
+	pUtil->getSampleGateSearchSpaceCollection(pSearchSpaceCollection,
+			NullPtr,
+			nbQubits,
+			maxSequenceLength);
 
 	GateWriterPtr pGateWriter = new LabelOnlyGateWriterImpl();
 
@@ -54,9 +57,6 @@ void IntegratingTester::freeTestShowGateSearchSpace(int nbQubits, int maxSequenc
 void IntegratingTester::freeTestEvaluateGateSearchSpace(int nbQubits, int maxSeqLength, double epsilon) {
 	AssemblerUtilPtr pUtil = new AssemblerUtil();
 
-	CollectionPtr<GatePtr> pSearchSpaceCollection = NullPtr;
-	pUtil->getSampleGateSearchSpaceCollection(pSearchSpaceCollection, nbQubits, maxSeqLength);
-
 	GatePtrVector queries;
 	pUtil->getSampleQueryGate(queries, nbQubits);
 
@@ -66,13 +66,18 @@ void IntegratingTester::freeTestEvaluateGateSearchSpace(int nbQubits, int maxSeq
 	MatrixDistanceCalculatorPtr pMatrixDistanceCalculator = new MatrixTraceDistanceCalculator(pMatrixOperator);
 	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(pMatrixDistanceCalculator);
 
+	CollectionPtr<GatePtr> pSearchSpaceCollection = NullPtr;
+	pUtil->getSampleGateSearchSpaceCollection(pSearchSpaceCollection,
+			pGateDistanceCalculator,
+			nbQubits,
+			maxSeqLength);
+
 	TimerPtr pTimer = new CpuTimer();
 	GateWriterPtr pGateWriter = new FullGateWriterImpl();
 
 	GateSearchSpaceEvaluatorPtr pGateSeachSpaceEvaluator = new SearchSpaceTimerEvaluatorImpl<GatePtr>(queries,
 			epsilon,
 			epsilon,
-			pGateDistanceCalculator,
 			NullPtr,
 			NullPtr,
 			pGateWriter,

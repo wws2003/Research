@@ -28,7 +28,6 @@ public:
 	//Override
 	virtual IteratorPtr<LookupResult<T> > getApproximateElements(CollectionPtr<T> pCoreCollection,
 			T pQuery,
-			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon);
 
 private:
@@ -39,7 +38,6 @@ private:
 
 	IteratorPtr<LookupResult<T> > getApproximateElementsForPartialQuery(CollectionPtr<T> pCoreCollection,
 			T pPartialQuery,
-			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon);
 
 	void releaseBuildingBlocksBuckets(BuildingBlockBuckets<T>& buildingBlockBuckets);

@@ -15,6 +15,7 @@ src/IntegratingTester.d: ../src/IntegratingTester.cpp \
  ../../ModuleMathConcepts/include/interface/common/Gate.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
  ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleIO/include/implement/FullGateWriterImpl.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
  ../../ModuleIO/include/interface/abstract/IWriter.h \
@@ -175,7 +176,6 @@ src/IntegratingTester.d: ../src/IntegratingTester.cpp \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/./RealQZ.h \
  ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
  ../../ModuleOperator/include/implement/MatrixTraceDistanceCalculator.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h \
  ../../ModuleEvaluate/include/implement/SearchSpaceEvaluatorImpl.h \
  ../../ModuleEvaluate/include/implement/CpuTimer.h \
@@ -214,6 +214,8 @@ src/IntegratingTester.d: ../src/IntegratingTester.cpp \
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
 ../../ModuleMathConcepts/include/interface/abstract/ILabelable.h:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../../ModuleIO/include/implement/FullGateWriterImpl.h:
 
@@ -534,8 +536,6 @@ src/IntegratingTester.d: ../src/IntegratingTester.cpp \
 ../../ModuleOperator/third-parties/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h:
 
 ../../ModuleOperator/include/implement/MatrixTraceDistanceCalculator.h:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:
 

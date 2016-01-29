@@ -225,6 +225,9 @@ src/container/SampleCollectionContainerImpl.d: \
  ../../ModuleAlgorithm/include/implement/filter/VectorBasedGateLookupResultProcessor.h \
  ../../ModuleAlgorithm/include/implement/filter/VectorBasedLookupResultProcessor.h \
  ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h \
+ ../../ModuleOperator/include/implement/LazyGateDistanceCalculatorImpl.h \
+ ../../ModuleOperator/include/implement/SQLiteLazyGateDistanceCalculator.h \
+ ../../ModuleOperator/include/implement/LazyGateDistanceCalculatorImpl.h \
  ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h
 
 ../src/container/SampleCollectionContainerImpl.h:
@@ -676,5 +679,11 @@ src/container/SampleCollectionContainerImpl.d: \
 ../../ModuleAlgorithm/include/implement/filter/VectorBasedLookupResultProcessor.h:
 
 ../../ModuleOperator/include/implement/MatrixFowlerDistanceCalculator.h:
+
+../../ModuleOperator/include/implement/LazyGateDistanceCalculatorImpl.h:
+
+../../ModuleOperator/include/implement/SQLiteLazyGateDistanceCalculator.h:
+
+../../ModuleOperator/include/implement/LazyGateDistanceCalculatorImpl.h:
 
 ../../ModuleOperator/include/implement/GateDistanceCalculatorByMatrixImpl.h:

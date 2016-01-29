@@ -45,8 +45,8 @@ AssemblerUtil::AssemblerUtil() {
 	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
 	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));
 
-	m_pSingleQubitLibraryGates = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>());
-	m_pTwoQubitLibraryGates = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>());
+	m_pSingleQubitLibraryGates = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>(NullPtr));
+	m_pTwoQubitLibraryGates = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>(NullPtr));
 
 	initSingleQubitLibGates(m_pMatrixOperator, m_pSingleQubitLibraryGates);
 	initTwoQubitsLibGates(m_pMatrixOperator, m_pTwoQubitLibraryGates);
@@ -91,8 +91,11 @@ void AssemblerUtil::getLibraryGates(GateCollectionPtr& pLibraryGates, int nbQubi
 	}
 }
 
-void AssemblerUtil::getSampleGateSearchSpaceCollection(GateCollectionPtr& pGateCollection, int nbQubits, int maxSequenceLength) {
-	pGateCollection = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>());
+void AssemblerUtil::getSampleGateSearchSpaceCollection(GateCollectionPtr& pGateCollection,
+		DistanceCalculatorPtr<GatePtr> pDistanceCalculator,
+		int nbQubits,
+		int maxSequenceLength) {
+	pGateCollection = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>(pDistanceCalculator));
 	switch(nbQubits) {
 	case 1:
 		m_pSingleQubitGateSearchSpaceConstructor->constructSearchSpace(pGateCollection, m_pSingleQubitLibraryGates, maxSequenceLength);

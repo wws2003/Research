@@ -36,7 +36,10 @@ using SplitPointSet = std::vector<T>;
 template<typename T>
 class GNATCollectionImpl : public ICollection<T> {
 public:
-	GNATCollectionImpl(LookupResultProcessorPtr<T> pLookupResultProcessor = NullPtr, bool toCloneFilteredResults = false);
+	GNATCollectionImpl(DistanceCalculatorPtr<T> pDistanceCalculator,
+			LookupResultProcessorPtr<T> pLookupResultProcessor = NullPtr,
+			bool toCloneFilteredResults = false);
+
 	virtual ~GNATCollectionImpl();
 
 	//Override
@@ -58,13 +61,13 @@ public:
 	virtual CollectionSize_t size() const ;
 
 	//Override
-	virtual void rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator);
+	virtual void rebuildStructure();
 
 	//Override
 	virtual IteratorPtr<LookupResult<T> > findNearestNeighbours(T query,
-			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
 			bool toSortResults = false) const;
+
 protected:
 	virtual void findAndProcessNearestNeighbours(T query,
 			DistanceCalculatorPtr<T> pDistanceCalculator,

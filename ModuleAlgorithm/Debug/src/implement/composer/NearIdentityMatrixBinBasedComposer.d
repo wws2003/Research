@@ -23,9 +23,9 @@ src/implement/composer/NearIdentityMatrixBinBasedComposer.d: \
  ../include/implement/collection/VectorBasedCollectionImpl.hpp \
  ../include/interface/abstract/ICollection.h \
  ../include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/implement/iterator/VectorBasedIteratorImpl.hpp \
  ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/internal-abstract/collection/IBinCollection.h \
  ../include/interface/abstract/ICombiner.h
 
@@ -75,11 +75,11 @@ src/implement/composer/NearIdentityMatrixBinBasedComposer.d: \
 
 ../include/interface/abstract/IIterator.h:
 
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
 ../include/implement/iterator/VectorBasedIteratorImpl.hpp:
 
 ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../include/internal-abstract/collection/IBinCollection.h:
 
