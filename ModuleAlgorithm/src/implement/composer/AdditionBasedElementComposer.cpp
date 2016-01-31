@@ -21,6 +21,7 @@ AdditionBasedElementComposer<T>::AdditionBasedElementComposer(ComparatorPtr<T> p
 	m_pCombiner = pCombiner;
 	m_epsilonElement = epsilonElement;
 	m_maxResultsNumber = maxResultsNumber;
+	m_combinationCounter = 0;
 }
 
 template<typename T>
@@ -30,7 +31,6 @@ IteratorPtr<T> AdditionBasedElementComposer<T>::composeApproximations(const Buil
 		mreal_t epsilon) {
 
 	SortedVectorArray sortedVectorArray(m_wrapperComparator);
-
 	sortedVectorArray.initByVectors(buildingBlockBuckets);
 
 	std::vector<T> resultBuffer;
@@ -40,19 +40,21 @@ IteratorPtr<T> AdditionBasedElementComposer<T>::composeApproximations(const Buil
 
 	try {
 		findCompositionsInRange(sortedVectorArray,
-					lastVectorIndex,
-					partialTermElements,
-					target,
-					target,
-					pDistanceCalculator,
-					epsilon,
-					resultBuffer
-			);
-
+				lastVectorIndex,
+				partialTermElements,
+				target,
+				target,
+				pDistanceCalculator,
+				epsilon,
+				resultBuffer
+		);
 	}
 	catch (int e) {
 		std::cout << "Enough result\n";
 	}
+
+	std::cout << "Number of combination checked:" << m_combinationCounter << "\n";
+	m_combinationCounter = 0;
 
 	return IteratorPtr<T>(new VectorBasedReadOnlyIteratorImpl<T>(resultBuffer));
 }
@@ -132,6 +134,8 @@ void AdditionBasedElementComposer<T>::evaluateCombination(const std::vector<T>& 
 			throw (1);
 		}
 	}
+
+	m_combinationCounter++;
 }
 
 template<typename T>
@@ -157,10 +161,12 @@ void AdditionBasedElementComposer<T>::SortedVectorArray::initByVectors(const Bui
 	m_minAccumulated.reserve(nbVector);
 
 	//Add elements to vectors
+	//The counter to calculate how many combinations need to check in the worst case
+	combination_counter_t nbMaximumCombination = 1;
 	for(unsigned int i = 0; i < nbVector; i++) {
 		IteratorPtr<T> pBuildingBlockIter = buildingBlockBuckets[i];
-
 		std::vector<T> buildingBlockVector;
+
 		if(pBuildingBlockIter != NullPtr) {
 			while(!pBuildingBlockIter->isDone()) {
 				buildingBlockVector.push_back(pBuildingBlockIter->getObj());
@@ -168,20 +174,23 @@ void AdditionBasedElementComposer<T>::SortedVectorArray::initByVectors(const Bui
 			}
 			pBuildingBlockIter->toBegin();
 		}
-
 		//FIXME: No way to reserve size ?
 		m_vectors.push_back(buildingBlockVector);
+
+		nbMaximumCombination *= buildingBlockVector.size();
+		std::cout << "Size of subset " << i << " " << buildingBlockVector.size() << "\n";
 	}
+
+	std::cout << "Maximum number of combinations " << nbMaximumCombination << "\n";
 
 	//Sort vectors
 	for(unsigned int j = 1; j < nbVector; j++) {
 		std::sort(m_vectors[j].begin(), m_vectors[j].end(), m_wrapperComparator);
 	}
 
+	//Calculate max, min accumulated
 	m_maxAccumulated.push_back(m_vectors[0][m_vectors[0].size() - 1]);
 	m_minAccumulated.push_back(m_vectors[0][0]);
-
-	//Calculate max, min accumulated
 	for(unsigned int j = 1; j < nbVector; j++) {
 		T maxAcc = m_maxAccumulated[j - 1];
 		T minAcc = m_minAccumulated[j - 1];

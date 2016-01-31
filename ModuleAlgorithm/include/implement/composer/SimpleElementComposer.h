@@ -29,7 +29,6 @@ public:
 			mreal_t epsilon);
 
 private:
-
 	void generateApproximations(std::vector<T>& partialElementsBuffer,
 			int bucketIndex,
 			const BuildingBlockBuckets<T>& buildingBlockBuckets,
@@ -54,7 +53,6 @@ private:
 	CombinerPtr<T> m_pCombiner;
 	int m_maxResultsNumber;
 
-	typedef unsigned long long combination_counter_t;
 	combination_counter_t m_combinationCounter;
 
 	int m_logFolderCounter;
