@@ -147,7 +147,7 @@ void HarrowElementDecomposer<T>::printCartFromSphCoord(std::string title, const 
 	real_coordinate_t cartCoord;
 	sph2Cart(sphCoord, cartCoord);
 
-	std::cout << title << ":\n";
+	std::cout << title << ":";
 	for(unsigned int i = 0; i < cartCoord.size(); i++) {
 		std::cout << (cartCoord[i]) << " ";
 	}

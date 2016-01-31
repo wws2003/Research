@@ -122,25 +122,33 @@ void ConfigReader::readComposerBasedApproximatorConfig(std::string configFile, C
 		char prefix[128];
 		std::string line;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_nbPartialQueries));
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		double initialEpsilon;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
 		pApproximatorConfig->m_initialEpsilon = (mreal_t)initialEpsilon;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_nbCandidates));
 
-		std::getline(inputStream, line);
-		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_composerBasedApproximatorType));
+		readLineAndLog(inputStream, line, std::cout);
+		int enumEval;
+		sscanf(line.data(), "%[^:]:%d", prefix, &enumEval);
+		pApproximatorConfig->m_composerBasedApproximatorType = (ComposerType)enumEval;
 
-		std::getline(inputStream, line);
-		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_queryDecomposerType));
+		readLineAndLog(inputStream, line, std::cout);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(enumEval));
+		pApproximatorConfig->m_queryDecomposerType = (DecomposerType)enumEval;
 
-		std::getline(inputStream, line);
+		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_buildingBlockComposerType));
+
+		readLineAndLog(inputStream, line, std::cout);
+		int useFilter = 0;
+		sscanf(line.data(), "%[^:]:%d", prefix, &(useFilter));
+		pApproximatorConfig->m_userFilter = !(useFilter == 0);
 	}
 	else {
 		throw std::logic_error("Can not read config file for approximator!");
@@ -170,7 +178,30 @@ void ConfigReader::readSKApproximatorConfig(std::string configFile, SKApproximat
 	}
 }
 
+void ConfigReader::readCoordinateAddtionalBasedComposerConfig(std::string configFile, CoordinateAdditionalBasedComposerConfig* pApproximatorConfig) {
+	std::cout << "Coordinate addition-based config " << configFile << ":\n";
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		char prefix[128];
+		std::string line;
+
+		readLineAndLog(inputStream, line, std::cout);
+		double coordinateEpsilon;
+		sscanf(line.data(), "%[^:]:%lf", prefix, &coordinateEpsilon);
+		pApproximatorConfig->m_coordinateEpsilon = coordinateEpsilon;
+
+		readLineAndLog(inputStream, line, std::cout);
+		int enumEval;
+		sscanf(line.data(), "%[^:]:%d", prefix, &enumEval);
+		pApproximatorConfig->m_coordinateComparatorType = (CoordinateComparatorTypes)enumEval;
+	}
+	else {
+		throw std::logic_error("Can not read config file for coordinate additional-based composer!");
+	}
+}
+
 void ConfigReader::readSKApproximatorConfig2(std::string configFile, SKApproximatorConfig2* pApproximatorConfig) {
+	//TODO Refactor this config reader to separate coordinate additional-based config from SK approximator config
 	std::cout << "SK2 config " << configFile << ":\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
@@ -191,10 +222,12 @@ void ConfigReader::readSKApproximatorConfig2(std::string configFile, SKApproxima
 		readLineAndLog(inputStream, line, std::cout);
 		double coordinateEpsilon;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &coordinateEpsilon);
-		pApproximatorConfig->m_coordinateEpsilon = coordinateEpsilon;
+		pApproximatorConfig->m_coordinateApproximatorBasedConfig.m_coordinateEpsilon = coordinateEpsilon;
 
 		readLineAndLog(inputStream, line, std::cout);
-		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_coordinateComparatorType));
+		int enumEval;
+		sscanf(line.data(), "%[^:]:%d", prefix, &enumEval);
+		pApproximatorConfig->m_coordinateApproximatorBasedConfig.m_coordinateComparatorType = CoordinateComparatorTypes(enumEval);
 	}
 	else {
 		throw std::logic_error("Can not read config file for approximator!");

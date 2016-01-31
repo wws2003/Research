@@ -10,7 +10,7 @@
 #include <sstream>
 #include <iostream>
 
-#define OUTPUT_INTERMEDIATE_RESULT 1
+#define OUTPUT_INTERMEDIATE_RESULT 0
 
 template<typename T>
 const std::string SimpleElementComposer<T>::LOG_ROOT_FOLDER = "IntermediateLog";
@@ -36,7 +36,7 @@ IteratorPtr<T> SimpleElementComposer<T>::composeApproximations(const BuildingBlo
 		mreal_t epsilon) {
 
 	std::vector<T> partialElementsBuffer;
-	VectorBasedCollectionImpl<T> resultBuffer;
+	VectorBasedCollectionImpl<T> resultBuffer(pDistanceCalculator);
 
 #if OUTPUT_INTERMEDIATE_RESULT
 	m_pElementSetLog->saveElementSets(buildingBlockBuckets);
@@ -57,6 +57,8 @@ IteratorPtr<T> SimpleElementComposer<T>::composeApproximations(const BuildingBlo
 	}
 
 	std::cout << "Number of combination checked:" << m_combinationCounter << "\n";
+	//Rewind counter for next compose
+	m_combinationCounter = 0;
 
 #if OUTPUT_INTERMEDIATE_RESULT
 	std::string logFolderName = getCurrentLogFolderName();

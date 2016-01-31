@@ -11,14 +11,14 @@ src/implement/approximator/SKElementApproximator.d: \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../include/interface/abstract/ICollection.h \
  ../include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/interface/abstract/IComposer.h \
  ../include/interface/abstract/IDecomposer.h \
  ../include/interface/abstract/ICollection.h \
  ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../include/interface/abstract/IIterator.h \
  ../include/implement/collection/VectorBasedCollectionImpl.hpp \
- ../include/implement/iterator/VectorBasedIteratorImpl.hpp \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h
+ ../include/implement/iterator/VectorBasedIteratorImpl.hpp
 
 ../include/implement/approximator/SKElementApproximator.h:
 
@@ -42,6 +42,8 @@ src/implement/approximator/SKElementApproximator.d: \
 
 ../include/interface/abstract/IIterator.h:
 
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
 ../include/interface/abstract/IComposer.h:
 
 ../include/interface/abstract/IDecomposer.h:
@@ -55,5 +57,3 @@ src/implement/approximator/SKElementApproximator.d: \
 ../include/implement/collection/VectorBasedCollectionImpl.hpp:
 
 ../include/implement/iterator/VectorBasedIteratorImpl.hpp:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:

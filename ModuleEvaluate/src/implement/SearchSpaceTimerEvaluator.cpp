@@ -32,7 +32,6 @@ using ElementWithDistances = std::vector<LookupResult<T> >;
 template<typename T>
 void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator, CollectionPtr<T> pCollection,
 		T target,
-		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
 		IteratorPtr<LookupResult<T> >&  prFindIter,
 		TimerPtr pTimer,
@@ -70,7 +69,6 @@ template<typename T>
 SearchSpaceTimerEvaluatorImpl<T>::SearchSpaceTimerEvaluatorImpl(const TargetElements<T>& pTargets,
 		mreal_t collectionEpsilon,
 		mreal_t approximatorEpsilon,
-		DistanceCalculatorPtr<T> pDistanceCalculator,
 		RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
 		RealCoordinateWriterPtr<T> pRealCoordinateWritter,
 		WriterPtr<T> pWriter,
@@ -80,7 +78,6 @@ SearchSpaceTimerEvaluatorImpl<T>::SearchSpaceTimerEvaluatorImpl(const TargetElem
 	m_targets.insert(m_targets.end(), pTargets.begin(), pTargets.end());
 	m_collectionEpsilon = collectionEpsilon;
 	m_approximatorEpsilon = approximatorEpsilon;
-	m_pDistanceCalculator = pDistanceCalculator;
 	m_pRealCoordinateCalculator = pRealCoordinateCalculator;
 	m_pRealCoordinateWritter = pRealCoordinateWritter;
 	m_pTimer = pTimer;
@@ -102,7 +99,6 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateCollection(CollectionPtr<T> pColl
 		findTargetAndMeasureTime<T>(NullPtr,
 				pCollection,
 				target,
-				m_pDistanceCalculator,
 				m_collectionEpsilon,
 				pFindResultIter,
 				m_pTimer,
@@ -111,7 +107,7 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateCollection(CollectionPtr<T> pColl
 		m_ostream << "Collection search time: "  << searchTime << "\n";
 
 		logAllSearchResultsFoundIterator(pFindResultIter,
-				m_pDistanceCalculator,
+				pCollection->getDistanceCalculator(),
 				m_pRealCoordinateCalculator,
 				m_pRealCoordinateWritter,
 				target,
@@ -137,7 +133,6 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateApproximator(ApproximatorPtr<T> p
 		findTargetAndMeasureTime(pApproximator,
 				pCoreCollection,
 				target,
-				m_pDistanceCalculator,
 				m_approximatorEpsilon,
 				pFindResultIter,
 				m_pTimer,
@@ -146,7 +141,7 @@ void SearchSpaceTimerEvaluatorImpl<T>::evaluateApproximator(ApproximatorPtr<T> p
 		m_ostream << "Approximating time: "  << searchTime << "\n";
 
 		logAllSearchResultsFoundIterator(pFindResultIter,
-				m_pDistanceCalculator,
+				pCoreCollection->getDistanceCalculator(),
 				m_pRealCoordinateCalculator,
 				m_pRealCoordinateWritter,
 				target,
@@ -174,7 +169,6 @@ template<typename T>
 void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator,
 		CollectionPtr<T> pCollection,
 		T target,
-		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
 		IteratorPtr<LookupResult<T> >&  prFindIter,
 		TimerPtr pTimer,
@@ -186,11 +180,10 @@ void findTargetAndMeasureTime(ApproximatorPtr<T> pApproximator,
 
 		//Start the lookup routine for the newly generated target
 		if(pApproximator != NullPtr) {
-			prFindIter = pApproximator->getApproximateElements(pCollection, target, pDistanceCalculator, epsilon);
+			prFindIter = pApproximator->getApproximateElements(pCollection, target, epsilon);
 		}
 		else {
 			prFindIter = pCollection->findNearestNeighbours(target,
-					pDistanceCalculator,
 					epsilon,
 					true);
 		}

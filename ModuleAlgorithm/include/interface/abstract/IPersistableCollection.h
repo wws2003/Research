@@ -16,7 +16,8 @@
 
 template<typename T>
 class IPersistableCollection : public ICollection<T>, public IPersistable {
-
+public:
+	IPersistableCollection(DistanceCalculatorPtr<T> pDistanceCalculator) : ICollection<T>(pDistanceCalculator){};
 };
 
 typedef IPersistableCollection<GatePtr> PersistableGateCollection;

@@ -20,7 +20,10 @@
 template<typename T>
 class  PersistableGNATCollectionImpl: public GNATCollectionImpl<T>, public IPersistable {
 public:
-	PersistableGNATCollectionImpl(WriterPtr<T> pWriter, ReaderPtr<T> pReader, LookupResultProcessorPtr<T> pLookupResultProcessor = NullPtr);
+	PersistableGNATCollectionImpl(DistanceCalculatorPtr<T> pDistanceCalculator,
+			WriterPtr<T> pWriter,
+			ReaderPtr<T> pReader,
+			LookupResultProcessorPtr<T> pLookupResultProcessor = NullPtr);
 
 	virtual ~PersistableGNATCollectionImpl(){};
 
@@ -47,7 +50,7 @@ public:
 	bool operator==(const PersistableGNATCollectionImpl<T>& rhs);
 
 private:
-	PersistableGNATCollectionImpl();
+	PersistableGNATCollectionImpl(DistanceCalculatorPtr<T> pDistanceCalculator);
 
 	//Methods for saving
 	void saveGNATCollection(GNATCollectionIdType parentId, GNATCollectionIdType *pCurrentMaxId, std::vector<GNATCollectionWriteBlock<T>* >& rBlocks);

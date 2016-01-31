@@ -13,11 +13,14 @@ SKGateApproximator::SKGateApproximator(DecomposerPtr<GatePtr> pQueryDecomposer,
 				mreal_t initialEpsilon,
 				int nbCandidates,
 				int recursiveLevel,
-				MatrixOperatorPtr pMatrixOperator) : SKElementApproximator<GatePtr>(pQueryDecomposer,
+				MatrixOperatorPtr pMatrixOperator,
+				ApproximatorPtr<GatePtr> pHelperApproximator) : SKElementApproximator<GatePtr>(pQueryDecomposer,
 						pBuildingBlockComposer,
 						initialEpsilon,
 						nbCandidates,
-						recursiveLevel) {
+						recursiveLevel,
+						pHelperApproximator) {
+
 	m_pMatrixOperator = pMatrixOperator;
 }
 

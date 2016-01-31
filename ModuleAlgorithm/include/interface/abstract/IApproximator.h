@@ -25,7 +25,6 @@ public:
 
 	virtual IteratorPtr<LookupResult<T> > getApproximateElements(CollectionPtr<T> pCoreCollection,
 			T pQuery,
-			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon) = 0;
 };
 

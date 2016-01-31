@@ -11,12 +11,12 @@ src/Application.d: ../src/Application.cpp \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
  ../src/command/CommandParser.h ../src/command/ICommand.h \
  ../src/common/ApplicationCommon.h ../src/command/CommandFactory.h \
  ../src/container/IEvaluatorContainer.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../src/container/IApproximatorContainer.h \
  ../src/container/ICollectionContainer.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h \
@@ -49,6 +49,8 @@ src/Application.d: ../src/Application.cpp \
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
 ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h:
 
 ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h:
@@ -62,8 +64,6 @@ src/Application.d: ../src/Application.cpp \
 ../src/command/CommandFactory.h:
 
 ../src/container/IEvaluatorContainer.h:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../src/container/IApproximatorContainer.h:
 

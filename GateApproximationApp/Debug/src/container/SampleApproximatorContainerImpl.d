@@ -31,11 +31,13 @@ src/container/SampleApproximatorContainerImpl.d: \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
  ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
  ../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h \
+ ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedGateApproximator.h \
  ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedElementApproximator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
- ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
@@ -275,6 +277,12 @@ src/container/SampleApproximatorContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h:
 
+../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h:
+
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
 ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedGateApproximator.h:
 
 ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedElementApproximator.h:
@@ -282,8 +290,6 @@ src/container/SampleApproximatorContainerImpl.d: \
 ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
-
-../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 
 ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h:
 

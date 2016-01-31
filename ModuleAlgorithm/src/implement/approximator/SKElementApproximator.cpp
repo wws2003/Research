@@ -16,10 +16,13 @@ SKElementApproximator<T>::SKElementApproximator(DecomposerPtr<T> pQueryDecompose
 		ComposerPtr<T> pBuildingBlockComposer,
 		mreal_t initialEpsilon,
 		int nbCandidates,
-		int recursiveLevel) {
+		int recursiveLevel,
+		ApproximatorPtr<T> pHelperApproximator) {
 
 	m_pBuildingBlockComposer = pBuildingBlockComposer;
 	m_pQueryDecomposer = pQueryDecomposer;
+	m_pHelperApproximator = pHelperApproximator;
+
 	m_nbCandidates = nbCandidates;
 	m_initialEpsilon = initialEpsilon;
 	m_recursiveLevel = recursiveLevel;
@@ -34,14 +37,13 @@ SKElementApproximator<T>::~SKElementApproximator() {
 template<typename T>
 IteratorPtr<LookupResult<T> > SKElementApproximator<T>::getApproximateElements(CollectionPtr<T> pCoreCollection,
 		T pQuery,
-		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon) {
 
 	resetEpsilonForLevels(epsilon);
 
 	IteratorPtr<LookupResult<T> > pFullResultIter = skApproximate(pCoreCollection,
 			pQuery,
-			pDistanceCalculator,
+			pCoreCollection->getDistanceCalculator(),
 			m_recursiveLevel);
 
 	return pFullResultIter;
@@ -56,10 +58,10 @@ IteratorPtr<LookupResult<T> > SKElementApproximator<T>::skApproximate(Collection
 	mreal_t epsilonForCurrentLevel = m_epsilonForLevels[level];
 
 	if(level == 0) {
-		return pCoreCollection->findNearestNeighbours(query,
+		return initialStageApproximate(pCoreCollection,
+				query,
 				pDistanceCalculator,
-				epsilonForCurrentLevel,
-				true);
+				epsilonForCurrentLevel);
 	}
 
 	IteratorPtr<LookupResult<T> > pRawApprxIter = skApproximate(pCoreCollection,
@@ -110,6 +112,23 @@ IteratorPtr<LookupResult<T> > SKElementApproximator<T>::skApproximate(Collection
 }
 
 template<typename T>
+IteratorPtr<LookupResult<T> > SKElementApproximator<T>::initialStageApproximate(CollectionPtr<T> pCoreCollection,
+		T target,
+		DistanceCalculatorPtr<T> pDistanceCalculator,
+		mreal_t epsilon) {
+	if(m_pHelperApproximator != NullPtr) {
+		return m_pHelperApproximator->getApproximateElements(pCoreCollection,
+				target,
+				epsilon);
+	}
+	else {
+		return pCoreCollection->findNearestNeighbours(target,
+				epsilon,
+				true);
+	}
+}
+
+template<typename T>
 IteratorPtr<T> SKElementApproximator<T>::getCandidatesFromRawApprx(T apprx,
 		CollectionPtr<T> pCoreCollection,
 		T query,
@@ -120,7 +139,7 @@ IteratorPtr<T> SKElementApproximator<T>::getCandidatesFromRawApprx(T apprx,
 	BuildingBlockBuckets<T> buildingBlocksBuckets;
 
 	//Add apprx to buiding blocks as the first one
-	VectorBasedCollectionImpl<T> apprxVector;
+	VectorBasedCollectionImpl<T> apprxVector(pDistanceCalculator);
 	apprxVector.addElement(apprx->clone());
 	buildingBlocksBuckets.push_back(apprxVector.getIteratorPtr());
 

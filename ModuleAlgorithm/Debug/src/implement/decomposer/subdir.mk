@@ -9,6 +9,7 @@ CPP_SRCS += \
 ../src/implement/decomposer/DummyMatrixDecomposer.cpp \
 ../src/implement/decomposer/HarrowElementDecomposer.cpp \
 ../src/implement/decomposer/HarrowGateDecomposer.cpp \
+../src/implement/decomposer/MultiNearBalancePartsGateDecomposer.cpp \
 ../src/implement/decomposer/NearHalfBalanceGateDecomposer.cpp 
 
 OBJS += \
@@ -17,6 +18,7 @@ OBJS += \
 ./src/implement/decomposer/DummyMatrixDecomposer.o \
 ./src/implement/decomposer/HarrowElementDecomposer.o \
 ./src/implement/decomposer/HarrowGateDecomposer.o \
+./src/implement/decomposer/MultiNearBalancePartsGateDecomposer.o \
 ./src/implement/decomposer/NearHalfBalanceGateDecomposer.o 
 
 CPP_DEPS += \
@@ -25,6 +27,7 @@ CPP_DEPS += \
 ./src/implement/decomposer/DummyMatrixDecomposer.d \
 ./src/implement/decomposer/HarrowElementDecomposer.d \
 ./src/implement/decomposer/HarrowGateDecomposer.d \
+./src/implement/decomposer/MultiNearBalancePartsGateDecomposer.d \
 ./src/implement/decomposer/NearHalfBalanceGateDecomposer.d 
 
 

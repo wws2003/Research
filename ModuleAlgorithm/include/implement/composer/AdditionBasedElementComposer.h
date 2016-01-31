@@ -106,6 +106,7 @@ private:
 	int m_maxResultsNumber;
 
 	T m_epsilonElement;
+	combination_counter_t m_combinationCounter;
 };
 
 

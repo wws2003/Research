@@ -38,7 +38,8 @@ GateApproximatorPtr SKApproximatorContainerImpl::getGateApproximator() {
 			m_approximatorConfig.m_initialEpsilon,
 			m_approximatorConfig.m_nbCandidates,
 			m_approximatorConfig.m_recursiveLevels,
-			m_pMatrixOperator));
+			m_pMatrixOperator,
+			NullPtr));
 }
 
 void SKApproximatorContainerImpl::wireDependencies() {

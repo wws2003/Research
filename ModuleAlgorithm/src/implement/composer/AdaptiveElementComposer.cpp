@@ -9,7 +9,13 @@
 #include "IIterator.h"
 #include "VectorBasedReadOnlyIteratorImpl.hpp"
 #include "IDistanceCalculator.h"
+#include "Coordinate.hpp"
 #include <iostream>
+
+#define ACE_DEBUGGING
+
+template<typename T2>
+void printTargetDebugInfo(T2 derivedTarget);
 
 template<typename T1, typename T2>
 AdaptiveElementComposer<T1, T2>::AdaptiveElementComposer(DistanceCalculatorPtr<T2> pDerivedDistanceCalculator,
@@ -34,15 +40,14 @@ IteratorPtr<T1> AdaptiveElementComposer<T1, T2>::composeApproximations(const Bui
 
 	T2 derivedTarget;
 	m_pConverter->convert12(target, derivedTarget);
+	printTargetDebugInfo<T2>(derivedTarget);
 
 	IteratorPtr<T2> pDerivedResultIter = m_pDerivedComposer->composeApproximations(derivedBuildingBlockBuckets, derivedTarget, m_pDerivedDistanceCalculator, m_derivedComposerEpsilon);
 
 	IteratorPtr<T1> pResultIter = NullPtr;
-
 	convertToOriginalIter(pDerivedResultIter, pResultIter, target, pDistanceCalculator, epsilon);
 
 	releaseDerivedIter(pDerivedResultIter);
-
 	releaseDerivedBuildingBlockBuckets(derivedBuildingBlockBuckets);
 
 	return pResultIter;
@@ -97,7 +102,7 @@ void AdaptiveElementComposer<T1, T2>::convertToOriginalIter(const IteratorPtr<T2
 				}
 			}
 			else {
-				std::cout << "An abnormal case: Null orginal pointer\n";
+				//std::cout << "An abnormal case: Null orginal pointer\n";
 			}
 
 			pDerivedIter->next();
@@ -126,3 +131,15 @@ void AdaptiveElementComposer<T1, T2>::convertToDerivedIter(const IteratorPtr<T1>
 	pDerivedIter = IteratorPtr<T2>(new VectorBasedReadOnlyIteratorImpl<T2>(derivedElements));
 }
 
+template<typename T2>
+void printTargetDebugInfo(T2 derivedTarget) {
+#ifdef ACE_DEBUGGING
+	const real_coordinate_t& vect = derivedTarget.getCoordinates();
+	std::cout << "--------------\n";
+	std::cout << "Target coordinate\n";
+	for(mreal_t coord : vect) {
+		std::cout << coord << " ";
+	}
+	std::cout << "\n";
+#endif
+}

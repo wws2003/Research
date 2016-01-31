@@ -12,6 +12,7 @@ src/command/EvaluatePersistedCollectionForTargetsCommand.d: \
  ../../ModuleAlgorithm/include/interface/common/AlgoCommon.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h \
@@ -46,6 +47,8 @@ src/command/EvaluatePersistedCollectionForTargetsCommand.d: \
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h:
 

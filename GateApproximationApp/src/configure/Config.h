@@ -35,10 +35,16 @@ RotationConfig;
 
 typedef std::vector<RotationConfig> RotationConfigs;
 
+enum MatrixDistanceCalculatorType {
+	MDCT_FOWLER = 1,
+	MDCT_TRACE = 2
+};
+
 struct CollectionConfig {
 	LibrarySet m_librarySet;
 	int m_maxSequenceLength;
 	int m_nbQubits;
+	MatrixDistanceCalculatorType m_matrixDistanceCalculatorType = MDCT_FOWLER;
 };
 
 struct EvaluatorConfig {
@@ -56,24 +62,45 @@ struct NearIdentityApproximatorConfig {
 	mreal_t m_initialEpsilon;
 };
 
-struct ComposerBasedApproximatorConfig {
-	int m_nbPartialQueries;
-	mreal_t m_initialEpsilon;
-	int m_nbCandidates;
-	int m_composerBasedApproximatorType;
-	int m_queryDecomposerType;
-	int m_buildingBlockComposerType;
-};
-
 struct SKApproximatorConfig {
 	mreal_t m_initialEpsilon;
 	int m_recursiveLevels;
 	int m_nbCandidates;
 };
 
-struct SKApproximatorConfig2 : public SKApproximatorConfig {
-	mreal_t m_coordinateEpsilon;
-	int m_coordinateComparatorType;
+enum ComposerType {
+	CT_SIMPLE = 1,
+	CT_COORDINATE_ADDTIONAL_BASED = 2
 };
+
+enum DecomposerType {
+	DT_NEAR_BALANCE = 1,
+	DT_GC_MULTI_LEVELS = 2
+};
+
+struct ComposerBasedApproximatorConfig {
+	int m_nbPartialQueries;
+	mreal_t m_initialEpsilon;
+	int m_nbCandidates;
+	ComposerType m_composerBasedApproximatorType;
+	DecomposerType m_queryDecomposerType;
+	int m_buildingBlockComposerType;
+	bool m_userFilter;
+};
+
+enum CoordinateComparatorTypes {
+	CMP_DICTIONARY = 1,
+	CMP_SUM = 2
+};
+
+struct CoordinateAdditionalBasedComposerConfig {
+	mreal_t m_coordinateEpsilon = 0.0;
+	CoordinateComparatorTypes m_coordinateComparatorType = CMP_DICTIONARY;
+};
+
+struct SKApproximatorConfig2 : public SKApproximatorConfig {
+	CoordinateAdditionalBasedComposerConfig m_coordinateApproximatorBasedConfig;
+};
+
 
 #endif /* CONFIG_H_ */

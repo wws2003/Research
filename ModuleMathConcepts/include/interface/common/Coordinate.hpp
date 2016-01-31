@@ -77,5 +77,4 @@ private:
 	E m_element;
 };
 
-
 #endif /* COORDINATE_H_ */

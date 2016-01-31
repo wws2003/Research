@@ -15,6 +15,8 @@
 template<typename T>
 using BuildingBlockBuckets = std::vector<IteratorPtr<T> > ;
 
+typedef unsigned long combination_counter_t;
+
 template<typename T>
 class IComposer {
 public:

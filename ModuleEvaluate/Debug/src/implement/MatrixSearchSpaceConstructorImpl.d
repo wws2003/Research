@@ -13,6 +13,7 @@ src/implement/MatrixSearchSpaceConstructorImpl.d: \
  ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../include/implement/MatrixSearchSpaceConstructorImpl.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
@@ -44,6 +45,8 @@ src/implement/MatrixSearchSpaceConstructorImpl.d: \
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
 

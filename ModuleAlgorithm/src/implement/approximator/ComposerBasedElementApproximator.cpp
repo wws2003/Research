@@ -16,19 +16,22 @@ template<typename T>
 ComposerBasedElementApproximator<T>::ComposerBasedElementApproximator(DecomposerPtr<T> pQueryDecomposer,
 		int nbPartialQueries,
 		ComposerPtr<T> pBuildingBlockComposer,
-		mreal_t initialEpsilon) {
+		mreal_t initialEpsilon,
+		LookupResultFilterPtr<T> pLookupResultFilter) {
 
 	m_pQueryDecomposer = pQueryDecomposer;
 	m_nbPartialQueries = nbPartialQueries;
 	m_pBuildingBlockComposer = pBuildingBlockComposer;
 	m_initialEpsilon = initialEpsilon;
+	m_pLookupResultFilter = pLookupResultFilter;
 }
 
 template<typename T>
 IteratorPtr<LookupResult<T> > ComposerBasedElementApproximator<T>::getApproximateElements(CollectionPtr<T> pCoreCollection,
 		T pQuery,
-		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon) {
+
+	DistanceCalculatorPtr<T> pDistanceCalculator = pCoreCollection->getDistanceCalculator();
 
 	BuildingBlockBuckets<T> buildingBlockBuckets;
 	decomposeQueryIntoBuildingBlocksBuckets(pCoreCollection,
@@ -62,7 +65,6 @@ void ComposerBasedElementApproximator<T>::decomposeQueryIntoBuildingBlocksBucket
 		//Get buiding block list for partial query
 		IteratorPtr<LookupResult<T> > pLookupIter = getApproximateElementsForPartialQuery(pCoreCollection,
 				partialQueries[i],
-				pDistanceCalculator,
 				m_initialEpsilon);
 
 		//Add found building blocks to the bucket to compose later
@@ -77,12 +79,10 @@ void ComposerBasedElementApproximator<T>::decomposeQueryIntoBuildingBlocksBucket
 template<typename T>
 IteratorPtr<LookupResult<T> > ComposerBasedElementApproximator<T>::getApproximateElementsForPartialQuery(CollectionPtr<T> pCoreCollection,
 		T pPartialQuery,
-		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon) {
 	//In this base class, just return result from core collection.
 	//Derived class may override this method to implement other logic
 	return pCoreCollection->findNearestNeighbours(pPartialQuery,
-			pDistanceCalculator,
 			epsilon);
 }
 
@@ -118,6 +118,12 @@ IteratorPtr<LookupResult<T> > ComposerBasedElementApproximator<T>::getFullResult
 			pResultIter->next();
 		}
 		pResultIter->toBegin();
+
+		//Filter results before sort
+		if(m_pLookupResultFilter != NullPtr) {
+			m_pLookupResultFilter->filterLookupResults(fullResults, pDistanceCalculator, false);
+		}
+
 		std::sort(fullResults.begin(), fullResults.end(), DistanceComparator<T>());
 	}
 	return IteratorPtr<LookupResult<T> >(new VectorBasedReadOnlyIteratorImpl<LookupResult<T> >(fullResults));

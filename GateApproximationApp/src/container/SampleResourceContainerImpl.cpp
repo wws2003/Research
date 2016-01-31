@@ -38,8 +38,8 @@ SampleResourceContainerImpl::SampleResourceContainerImpl(MatrixOperatorPtr pMatr
 }
 
 void SampleResourceContainerImpl::setup() {
-	m_pSingleQubitLibraryGates = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>());
-	m_pTwoQubitLibraryGates = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>());
+	m_pSingleQubitLibraryGates = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>(NullPtr));
+	m_pTwoQubitLibraryGates = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>(NullPtr));
 
 	m_pMatrixOperator->getTracelessHermitianMatricesBasis(2, m_basis2);
 	m_pMatrixOperator->getTracelessHermitianMatricesBasis(4, m_basis4);

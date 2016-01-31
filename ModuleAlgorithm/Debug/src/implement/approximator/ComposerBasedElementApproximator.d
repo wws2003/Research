@@ -11,11 +11,13 @@ src/implement/approximator/ComposerBasedElementApproximator.d: \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
  ../include/interface/abstract/ICollection.h \
  ../include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/interface/abstract/IComposer.h \
  ../include/interface/abstract/IDecomposer.h \
- ../include/interface/abstract/IIterator.h \
+ ../include/internal-abstract/filter/ILookupResultFilter.h \
+ ../include/internal-abstract/AlgoInternal.h \
  ../include/interface/abstract/ICollection.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
+ ../include/interface/abstract/IIterator.h \
  ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp
 
 ../include/implement/approximator/ComposerBasedElementApproximator.h:
@@ -40,14 +42,18 @@ src/implement/approximator/ComposerBasedElementApproximator.d: \
 
 ../include/interface/abstract/IIterator.h:
 
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
 ../include/interface/abstract/IComposer.h:
 
 ../include/interface/abstract/IDecomposer.h:
 
-../include/interface/abstract/IIterator.h:
+../include/internal-abstract/filter/ILookupResultFilter.h:
+
+../include/internal-abstract/AlgoInternal.h:
 
 ../include/interface/abstract/ICollection.h:
 
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+../include/interface/abstract/IIterator.h:
 
 ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:

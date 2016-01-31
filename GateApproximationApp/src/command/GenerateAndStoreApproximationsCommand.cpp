@@ -50,7 +50,6 @@ void GenerateAndStoreApproximationsCommand::doExecute() {
 GateLookupResultIteratorPtr GenerateAndStoreApproximationsCommand::getApproximatorResultIter(GatePtr pTarget) {
 	return m_pApproximator->getApproximateElements(m_pCoreCollection,
 			pTarget,
-			m_pGateDistanceCalculator,
 			m_approximatorEpsilon);
 }
 
@@ -70,10 +69,11 @@ void GenerateAndStoreApproximationsCommand::storeResultsToPersistableCollection(
 
 void GenerateAndStoreApproximationsCommand::rebuildPersistableCollection() {
 	std::cout << "Begin to rebuild results collection before persist" << std::endl;
-	m_pPersistableGateCollection->rebuildStructure(m_pGateDistanceCalculator);
+	m_pPersistableGateCollection->rebuildStructure();
 }
 
 void GenerateAndStoreApproximationsCommand::persistResultsToStorage() {
 	std::cout << "Begin to persist re-structured results collection" << std::endl;
 	m_pPersistableGateCollection->save(m_storingFileName);
 }
+

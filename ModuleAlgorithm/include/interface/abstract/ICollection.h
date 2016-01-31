@@ -12,6 +12,7 @@
 #include "OperatorCommon.h"
 #include "MathConceptsCommon.h"
 #include "IIterator.h"
+#include "IDistanceCalculator.h"
 
 template<typename T>
 struct LookupResult{
@@ -34,6 +35,8 @@ using DistanceComparator = struct _DistanceComparator<T>;
 template<typename T>
 class ICollection {
 public:
+	ICollection(DistanceCalculatorPtr<T> pDistanceCalculator){m_pDistanceCalculator = pDistanceCalculator;};
+
 	virtual ~ICollection(){};
 
 	//Add one element to the collection
@@ -56,13 +59,24 @@ public:
 	virtual CollectionSize_t size() const = 0;
 
 	//(Re)Build the search data structure given distance calculator
-	virtual void rebuildStructure(DistanceCalculatorPtr<T> pDistanceCalculator) = 0;
+	virtual void rebuildStructure() = 0;
 
 	//Advanced lookup function, with distance stored in results
 	virtual IteratorPtr<LookupResult<T> > findNearestNeighbours(T query,
-			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
 			bool toSortResults = false) const = 0;
+
+	void resetDistanceCalculator(DistanceCalculatorPtr<T> pDistanceCalculator) {
+		m_pDistanceCalculator = pDistanceCalculator;
+		rebuildStructure();
+	}
+
+	inline DistanceCalculatorPtr<T> getDistanceCalculator() const {
+		return m_pDistanceCalculator;
+	}
+
+private:
+	DistanceCalculatorPtr<T> m_pDistanceCalculator;
 };
 
 

@@ -20,7 +20,8 @@ public:
 				mreal_t initialEpsilon,
 				int nbCandidates,
 				int recursiveLevel,
-				MatrixOperatorPtr pMatrixOperator);
+				MatrixOperatorPtr pMatrixOperator,
+				ApproximatorPtr<GatePtr> pHelperApproximator);
 
 protected:
 	//Override

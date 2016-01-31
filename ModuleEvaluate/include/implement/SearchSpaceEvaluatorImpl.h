@@ -26,7 +26,6 @@ public:
 	SearchSpaceTimerEvaluatorImpl(const TargetElements<T>& pTargets,
 			mreal_t epsilon,
 			mreal_t approximatorEpsilon,
-			DistanceCalculatorPtr<T> pDistanceCalculator,
 			RealCoordinateCalculatorPtr<T> pRealCoordinateCalculator,
 			RealCoordinateWriterPtr<T> pRealCoordinateWritter,
 			WriterPtr<T> pWriter,
@@ -54,7 +53,6 @@ private:
 	mreal_t m_collectionEpsilon;
 	mreal_t m_approximatorEpsilon;
 
-	DistanceCalculatorPtr<T> m_pDistanceCalculator;
 	RealCoordinateCalculatorPtr<T> m_pRealCoordinateCalculator;
 	RealCoordinateWriterPtr<T> m_pRealCoordinateWritter;
 	TimerPtr m_pTimer;
