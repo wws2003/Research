@@ -5,6 +5,7 @@
  *      Author: pham
  */
 
+
 #include "GateCoordinateCombinerImpl.h"
 
 GateCoordinateCombinerImpl::GateCoordinateCombinerImpl(CombinerPtr<GatePtr> pGateCombiner) {
@@ -23,6 +24,3 @@ void GateCoordinateCombinerImpl::combine(RealCoordinate<GatePtr> gateCoord1, Rea
 
 	gateCoordResult.setElement(pCombinedGate);
 }
-
-
-

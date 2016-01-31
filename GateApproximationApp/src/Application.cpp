@@ -74,6 +74,9 @@ void initCommands(CommandParser* pCommandParser) {
 
 	//For -e conf1 -cb conf2 -sk2 conf3 -t targetConf
 	pCommandParser->provideArgumentPatternForCommandCode(9, ArgumentPositions{1, 3, 5, 7}, Arguments{"-e", "-cb", "-sk2", "-t"}, EVALUATE_CB_SK2_APPROXIMATOR_TO_TARGET);
+
+	//For -e conf1 -cb conf21 conf22 -t targetConf
+	pCommandParser->provideArgumentPatternForCommandCode(8, ArgumentPositions{1, 3, 6}, Arguments{"-e", "-cb", "-t"}, EVALUATE_CB2_APPROXIMATOR_TO_TARGET);
 }
 
 void printSyntaxMessage() {

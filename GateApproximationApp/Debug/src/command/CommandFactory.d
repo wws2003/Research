@@ -59,13 +59,13 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../../ModuleAlgorithm/include/interface/abstract/ICombiner.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrixFactory.h \
  ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h \
- ../src/container/SKApproximatorContainerImpl.h \
- ../src/container/SK2ApproximatorContainerImpl.h \
  ../../ModuleAlgorithm/include/implement/composer/CoordinateAdditionBasedGateComposer.h \
  ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h \
  ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h \
+ ../src/container/SKApproximatorContainerImpl.h \
+ ../src/container/SK2ApproximatorContainerImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/converter/IConverter.h \
  ../src/container/ComposerBasedSK2ApproximatorContainerImpl.h \
  ../src/container/SK2ApproximatorContainerImpl.h
@@ -196,10 +196,6 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../../ModuleMathConcepts/include/interface/abstract/IMatrix.h:
 
-../src/container/SKApproximatorContainerImpl.h:
-
-../src/container/SK2ApproximatorContainerImpl.h:
-
 ../../ModuleAlgorithm/include/implement/composer/CoordinateAdditionBasedGateComposer.h:
 
 ../../ModuleMathConcepts/include/interface/common/Coordinate.hpp:
@@ -209,6 +205,10 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 ../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h:
+
+../src/container/SKApproximatorContainerImpl.h:
+
+../src/container/SK2ApproximatorContainerImpl.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/converter/IConverter.h:
 

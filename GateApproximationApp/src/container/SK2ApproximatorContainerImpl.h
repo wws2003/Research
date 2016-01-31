@@ -34,6 +34,7 @@ protected:
 	virtual void wireDependencies();
 	virtual void releaseDependencies();
 
+	void initCoordinateAdditionalBasedGateComposer();
 	void initRealCoordinateComparator();
 	void initEpsilonRealCoordinate(RealCoordinate<GatePtr>& epsilonRealCoordinate);
 

@@ -7,6 +7,7 @@
 
 #include "NearHalfBalanceGateDecomposer.h"
 #include "Coordinate.hpp"
+#include <stdexcept>
 
 NearHalfBalanceGateDecomposer::NearHalfBalanceGateDecomposer(RealCoordinateCalculatorPtr<GatePtr> pCoordinateCalculator,
 		MatrixOperatorPtr pMatrixOperator) {
@@ -16,6 +17,9 @@ NearHalfBalanceGateDecomposer::NearHalfBalanceGateDecomposer(RealCoordinateCalcu
 
 //Override
 void NearHalfBalanceGateDecomposer::decomposeElement(GatePtr pGate, std::vector<GatePtr>& subGates, int nbSubElements) {
+	if(nbSubElements != 2) {
+		throw(std::logic_error("This class only can decompose gate into 2 parts"));
+	}
 	RealCoordinatePtr<GatePtr> pGateCoordinate = NullPtr;
 	m_pCoordinateCalculator->calulateElementCoordinate(pGate, pGateCoordinate);
 

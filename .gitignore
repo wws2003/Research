@@ -70,3 +70,9 @@ SharedThirdParties/mpfr
 
 # Backup files
 *.bck
+
+# Experiment output files
+Experiment/out
+Experiment/lib
+Experiment/GateApproximationApp
+
