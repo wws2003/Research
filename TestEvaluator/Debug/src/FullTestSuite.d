@@ -248,7 +248,8 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleAlgorithm/include/implement/comparator/DictionaryOrderCoordinateComparator.hpp \
  ../../ModuleAlgorithm/include/implement/combiner/GateCoordinateCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/filter/SetBasedGateLookupResultProcessor.h \
- ../../ModuleAlgorithm/include/implement/filter/SetBasedLookupResultProcessor.h
+ ../../ModuleAlgorithm/include/implement/filter/SetBasedLookupResultProcessor.h \
+ ../../ModuleAlgorithm/include/implement/comparator/SumCoordinateComparator.hpp
 
 ../src/FullTestSuite.h:
 
@@ -751,3 +752,5 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 ../../ModuleAlgorithm/include/implement/filter/SetBasedGateLookupResultProcessor.h:
 
 ../../ModuleAlgorithm/include/implement/filter/SetBasedLookupResultProcessor.h:
+
+../../ModuleAlgorithm/include/implement/comparator/SumCoordinateComparator.hpp:

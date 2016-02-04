@@ -4,9 +4,12 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/implement/ComposerEvaluatorImpl.cpp \
 ../src/implement/CpuTimer.cpp \
+../src/implement/GateComposerEvaluatorImpl.cpp \
 ../src/implement/GateSearchSpaceConstructorImpl.cpp \
 ../src/implement/GateSearchSpaceTimerEvaluatorImpl.cpp \
+../src/implement/MatrixComposerEvaluatorImpl.cpp \
 ../src/implement/MatrixSearchSpaceConstructorImpl.cpp \
 ../src/implement/MatrixSearchSpaceTimerEvaluatorImpl.cpp \
 ../src/implement/ScopeTimer.cpp \
@@ -14,9 +17,12 @@ CPP_SRCS += \
 ../src/implement/SearchSpaceTimerEvaluator.cpp 
 
 OBJS += \
+./src/implement/ComposerEvaluatorImpl.o \
 ./src/implement/CpuTimer.o \
+./src/implement/GateComposerEvaluatorImpl.o \
 ./src/implement/GateSearchSpaceConstructorImpl.o \
 ./src/implement/GateSearchSpaceTimerEvaluatorImpl.o \
+./src/implement/MatrixComposerEvaluatorImpl.o \
 ./src/implement/MatrixSearchSpaceConstructorImpl.o \
 ./src/implement/MatrixSearchSpaceTimerEvaluatorImpl.o \
 ./src/implement/ScopeTimer.o \
@@ -24,9 +30,12 @@ OBJS += \
 ./src/implement/SearchSpaceTimerEvaluator.o 
 
 CPP_DEPS += \
+./src/implement/ComposerEvaluatorImpl.d \
 ./src/implement/CpuTimer.d \
+./src/implement/GateComposerEvaluatorImpl.d \
 ./src/implement/GateSearchSpaceConstructorImpl.d \
 ./src/implement/GateSearchSpaceTimerEvaluatorImpl.d \
+./src/implement/MatrixComposerEvaluatorImpl.d \
 ./src/implement/MatrixSearchSpaceConstructorImpl.d \
 ./src/implement/MatrixSearchSpaceTimerEvaluatorImpl.d \
 ./src/implement/ScopeTimer.d \

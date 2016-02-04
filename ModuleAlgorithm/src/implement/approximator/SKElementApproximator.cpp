@@ -69,14 +69,14 @@ IteratorPtr<LookupResult<T> > SKElementApproximator<T>::skApproximate(Collection
 			pDistanceCalculator,
 			level - 1);
 
-	IteratorVector<T> apprxCandidatesIters;
+	IteratorVector<LookupResult<T> > apprxCandidatesIters;
 
 	int candidateCounter = 0;
 
 	while((candidateCounter++ < m_nbCandidates) && (pRawApprxIter != NullPtr && !pRawApprxIter->isDone())) {
 		T rawApprx = pRawApprxIter->getObj().m_resultElement;
 
-		IteratorPtr<T> pCandidatesIter = getCandidatesFromRawApprx(rawApprx,
+		IteratorPtr<LookupResult<T> > pCandidatesIter = getCandidatesFromRawApprx(rawApprx,
 				pCoreCollection,
 				query,
 				pDistanceCalculator,
@@ -95,11 +95,10 @@ IteratorPtr<LookupResult<T> > SKElementApproximator<T>::skApproximate(Collection
 
 	IteratorPtr<LookupResult<T> > pApprxIter = filterCandidates(apprxCandidatesIters,
 			query,
-			pDistanceCalculator,
 			epsilonForCurrentLevel);
 
 	//Release apprximation candidates
-	releaseIterators(apprxCandidatesIters);
+	releaseResultIterators(apprxCandidatesIters);
 
 	//Release raw approximations
 	if(pRawApprxIter) {
@@ -129,7 +128,7 @@ IteratorPtr<LookupResult<T> > SKElementApproximator<T>::initialStageApproximate(
 }
 
 template<typename T>
-IteratorPtr<T> SKElementApproximator<T>::getCandidatesFromRawApprx(T apprx,
+IteratorPtr<LookupResult<T> > SKElementApproximator<T>::getCandidatesFromRawApprx(T apprx,
 		CollectionPtr<T> pCoreCollection,
 		T query,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
@@ -154,41 +153,38 @@ IteratorPtr<T> SKElementApproximator<T>::getCandidatesFromRawApprx(T apprx,
 			level);
 
 	//Compose building blocks to generare approximations for query
-	IteratorPtr<T> pResultIter = m_pBuildingBlockComposer->composeApproximations(buildingBlocksBuckets,
+	IteratorPtr<LookupResult<T> > pResultIter = m_pBuildingBlockComposer->composeApproximations(buildingBlocksBuckets,
 			query,
 			pDistanceCalculator,
 			epsilon);
 
 	_destroy(residual);
 
-	//Release building blocks, also release elements inside them (suppose composer generate clone for result elements)
+	//Release building blocks, also release elements inside them
+	//(suppose composer generate clone for result elements)
 	releaseIterators(buildingBlocksBuckets);
 
 	return pResultIter;
 }
 
 template<typename T>
-IteratorPtr<LookupResult<T> > SKElementApproximator<T>::filterCandidates(const IteratorVector<T>& buildingBlockBuckets,
+IteratorPtr<LookupResult<T> > SKElementApproximator<T>::filterCandidates(const IteratorVector<LookupResult<T> >& buildingBlockBuckets,
 		T query,
-		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon) {
 
 	std::vector<LookupResult<T> > results;
 	for(unsigned int i = 0; i < buildingBlockBuckets.size(); i++) {
-		IteratorPtr<T> pCandidateIterator = buildingBlockBuckets[i];
+		IteratorPtr<LookupResult<T> > pCandidateIterator = buildingBlockBuckets[i];
 
 		while(pCandidateIterator != NullPtr && !pCandidateIterator->isDone()) {
-			T candidate = pCandidateIterator->getObj();
-			mreal_t distance = pDistanceCalculator->distance(candidate, query);
-
+			LookupResult<T>  candidate = pCandidateIterator->getObj();
+			mreal_t distance = candidate.m_distanceToTarget;
 			if(distance <= epsilon) {
-				results.push_back(LookupResult<T>(candidate->clone(), distance));
+				results.push_back(LookupResult<T>(candidate.m_resultElement->clone(), distance));
 			}
-
 			pCandidateIterator->next();
 		}
 	}
-
 	std::sort(results.begin(), results.end(), DistanceComparator<T>());
 
 	if(results.size() > m_nbCandidates) {
@@ -272,9 +268,19 @@ IteratorPtr<T> SKElementApproximator<T>::getExtractedElementIterator(IteratorPtr
 
 template<typename T>
 void SKElementApproximator<T>::releaseIterators(std::vector<IteratorPtr<T> >& buildingBlockBuckets) {
-	for(typename BuildingBlockBuckets<T>::iterator bIter = buildingBlockBuckets.begin(); bIter != buildingBlockBuckets.end();) {
+	for(typename std::vector<IteratorPtr<T> >::iterator bIter = buildingBlockBuckets.begin(); bIter != buildingBlockBuckets.end();) {
 		IteratorPtr<T> pIter = *bIter;
 		releaseElementsInIterator(pIter);
+		bIter = buildingBlockBuckets.erase(bIter);
+		_destroy(pIter);
+	}
+}
+
+template<typename T>
+void SKElementApproximator<T>::releaseResultIterators(std::vector<IteratorPtr<LookupResult<T> > >& buildingBlockBuckets) {
+	for(typename std::vector<IteratorPtr<LookupResult<T> > >::iterator bIter = buildingBlockBuckets.begin(); bIter != buildingBlockBuckets.end();) {
+		IteratorPtr<LookupResult<T> > pIter = *bIter;
+		releaseElementsInResultsIterator(pIter);
 		bIter = buildingBlockBuckets.erase(bIter);
 		_destroy(pIter);
 	}

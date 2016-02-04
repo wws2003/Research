@@ -10,6 +10,7 @@
 
 #include "MathConceptsCommon.h"
 #include <vector>
+#include <algorithm>
 
 template<typename E, typename Field>
 class Coordinate {
@@ -70,6 +71,15 @@ public:
 		}
 		//NOTE: This operator doesn't automatically update the element field if this instance
 		return *this;
+	}
+
+	mreal_t getNorm() const {
+		mreal_t sqrNorm = 0.0;
+		std::for_each(m_coordinates.begin(), m_coordinates.end(), [&sqrNorm](Field coord){sqrNorm += coord*coord;});
+		if(sqrNorm > 0.0) {
+			return mreal::sqrt(sqrNorm);
+		}
+		return 0.0;
 	}
 
 private:

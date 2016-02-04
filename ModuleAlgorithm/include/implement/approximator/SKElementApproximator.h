@@ -52,16 +52,15 @@ private:
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon);
 
-	IteratorPtr<T> getCandidatesFromRawApprx(T apprx,
+	IteratorPtr<LookupResult<T> > getCandidatesFromRawApprx(T apprx,
 			CollectionPtr<T> pCoreCollection,
 			T pPartialQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
 			int level);
 
-	IteratorPtr<LookupResult<T> >  filterCandidates(const IteratorVector<T>& buildingBlockBuckets,
+	IteratorPtr<LookupResult<T> >  filterCandidates(const IteratorVector<LookupResult<T> >& buildingBlockBuckets,
 			T query,
-			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon);
 
 	void addBuildingBlocksBucketsForResidual(T residual,
@@ -73,6 +72,8 @@ private:
 	IteratorPtr<T> getExtractedElementIterator(IteratorPtr<LookupResult<T> > pLookupResultIter);
 
 	void releaseIterators(std::vector<IteratorPtr<T> >& buildingBlockBuckets);
+
+	void releaseResultIterators(std::vector<IteratorPtr<LookupResult<T> > >& buildingBlockBuckets);
 
 	void releaseElementsInIterator(IteratorPtr<T> pIter);
 

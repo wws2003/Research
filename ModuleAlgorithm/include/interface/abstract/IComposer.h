@@ -10,6 +10,7 @@
 
 #include "AlgoCommon.h"
 #include "OperatorCommon.h"
+#include "ICollection.h"
 #include <vector>
 
 template<typename T>
@@ -26,10 +27,11 @@ public:
 	 * Compose building blocks in buckets to generate list of approximation
 	 * candidates for the target
 	 */
-	virtual IteratorPtr<T> composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
+	virtual IteratorPtr<LookupResult<T> > composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
 			T pQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
-			mreal_t epsilon) = 0;
+			mreal_t epsilon,
+			bool toSortResults = true) = 0;
 };
 
 

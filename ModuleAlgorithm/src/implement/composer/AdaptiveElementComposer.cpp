@@ -30,10 +30,11 @@ AdaptiveElementComposer<T1, T2>::AdaptiveElementComposer(DistanceCalculatorPtr<T
 }
 
 template<typename T1, typename T2>
-IteratorPtr<T1> AdaptiveElementComposer<T1, T2>::composeApproximations(const BuildingBlockBuckets<T1>& buildingBlockBuckets,
+IteratorPtr<LookupResult<T1> > AdaptiveElementComposer<T1, T2>::composeApproximations(const BuildingBlockBuckets<T1>& buildingBlockBuckets,
 		T1 target,
 		DistanceCalculatorPtr<T1> pDistanceCalculator,
-		mreal_t epsilon) {
+		mreal_t epsilon,
+		bool toSortResults) {
 
 	BuildingBlockBuckets<T2> derivedBuildingBlockBuckets;
 	convertToDerivedBuildingBlockBuckets(buildingBlockBuckets, derivedBuildingBlockBuckets);
@@ -42,12 +43,20 @@ IteratorPtr<T1> AdaptiveElementComposer<T1, T2>::composeApproximations(const Bui
 	m_pConverter->convert12(target, derivedTarget);
 	printTargetDebugInfo<T2>(derivedTarget);
 
-	IteratorPtr<T2> pDerivedResultIter = m_pDerivedComposer->composeApproximations(derivedBuildingBlockBuckets, derivedTarget, m_pDerivedDistanceCalculator, m_derivedComposerEpsilon);
+	IteratorPtr<LookupResult<T2> > pDerivedResultIter = m_pDerivedComposer->composeApproximations(derivedBuildingBlockBuckets,
+			derivedTarget,
+			m_pDerivedDistanceCalculator,
+			m_derivedComposerEpsilon);
 
-	IteratorPtr<T1> pResultIter = NullPtr;
-	convertToOriginalIter(pDerivedResultIter, pResultIter, target, pDistanceCalculator, epsilon);
+	IteratorPtr<LookupResult<T1> > pResultIter = NullPtr;
+	convertToOriginalResultIter(pDerivedResultIter,
+			pResultIter,
+			target,
+			pDistanceCalculator,
+			epsilon,
+			toSortResults);
 
-	releaseDerivedIter(pDerivedResultIter);
+	releaseDerivedResultIter(pDerivedResultIter);
 	releaseDerivedBuildingBlockBuckets(derivedBuildingBlockBuckets);
 
 	return pResultIter;
@@ -63,53 +72,6 @@ void AdaptiveElementComposer<T1, T2>::convertToDerivedBuildingBlockBuckets(const
 		convertToDerivedIter(buildingBlockBuckets[i], pDerivedIter);
 		derivedBuildingBlockBuckets.push_back(pDerivedIter);
 	}
-}
-
-template<typename T1, typename T2>
-void AdaptiveElementComposer<T1, T2>::releaseDerivedBuildingBlockBuckets(BuildingBlockBuckets<T2>& derivedBuildingBlockBuckets) {
-	for(typename BuildingBlockBuckets<T2>::iterator bIter = derivedBuildingBlockBuckets.begin(); bIter != derivedBuildingBlockBuckets.end();) {
-		IteratorPtr<T2> pDerivedIter = *bIter;
-		releaseDerivedIter(pDerivedIter);
-		bIter = derivedBuildingBlockBuckets.erase(bIter);
-	}
-}
-
-template<typename T1, typename T2>
-void AdaptiveElementComposer<T1, T2>::releaseDerivedIter(IteratorPtr<T2>& pDerivedIter) {
-	_destroy(pDerivedIter);
-}
-
-template<typename T1, typename T2>
-void AdaptiveElementComposer<T1, T2>::convertToOriginalIter(const IteratorPtr<T2>& pDerivedIter,
-		IteratorPtr<T1>& pOriginalIter,
-		T1 target,
-		DistanceCalculatorPtr<T1> pDistanceCalculator,
-		mreal_t epsilon) {
-	std::vector<T1> results;
-
-	if(pDerivedIter != NullPtr) {
-		while(!pDerivedIter->isDone()) {
-			T1 t1;
-			m_pConverter->convert21(pDerivedIter->getObj(), t1);
-
-			if(t1 != NullPtr) {
-				//Re-check distance to original target to make sure
-				if(pDistanceCalculator->distance(t1, target) <= epsilon) {
-					results.push_back(t1);
-				}
-				else {
-					_destroy(t1);
-				}
-			}
-			else {
-				//std::cout << "An abnormal case: Null orginal pointer\n";
-			}
-
-			pDerivedIter->next();
-		}
-		pDerivedIter->toBegin();
-	}
-	pOriginalIter = IteratorPtr<T1>(new VectorBasedReadOnlyIteratorImpl<T1>(results));
 }
 
 template<typename T1, typename T2>
@@ -129,6 +91,83 @@ void AdaptiveElementComposer<T1, T2>::convertToDerivedIter(const IteratorPtr<T1>
 	}
 
 	pDerivedIter = IteratorPtr<T2>(new VectorBasedReadOnlyIteratorImpl<T2>(derivedElements));
+}
+
+template<typename T1, typename T2>
+void AdaptiveElementComposer<T1, T2>::convertToOriginalResultIter(const IteratorPtr<LookupResult<T2> >& pDerivedIter,
+		IteratorPtr<LookupResult<T1> >& pOriginalIter,
+		T1 target,
+		DistanceCalculatorPtr<T1> pDistanceCalculator,
+		mreal_t epsilon,
+		bool toSortResults) {
+
+	std::vector<LookupResult<T1> > results;
+
+	if(pDerivedIter != NullPtr) {
+		while(!pDerivedIter->isDone()) {
+			T1 t1;
+			m_pConverter->convert21(pDerivedIter->getObj().m_resultElement, t1);
+
+			if(t1 != NullPtr) {
+				//Re-check distance to original target to make sure
+				mreal_t distanceToTarget = pDistanceCalculator->distance(t1, target);
+				if(distanceToTarget <= epsilon) {
+					results.push_back(LookupResult<T1>(t1, distanceToTarget));
+				}
+				else {
+					_destroy(t1);
+				}
+			}
+			else {
+				//std::cout << "An abnormal case: Null orginal pointer\n";
+			}
+			pDerivedIter->next();
+		}
+		pDerivedIter->toBegin();
+	}
+	//TODO Filter before/after sort
+	if(toSortResults) {
+		std::sort(results.begin(), results.end(), DistanceComparator<T1>());
+	}
+	pOriginalIter = IteratorPtr<LookupResult<T1> >(new VectorBasedReadOnlyIteratorImpl<LookupResult<T1> >(results));
+}
+
+template<typename T1, typename T2>
+void AdaptiveElementComposer<T1, T2>::releaseDerivedBuildingBlockBuckets(BuildingBlockBuckets<T2>& derivedBuildingBlockBuckets) {
+	for(typename BuildingBlockBuckets<T2>::iterator bIter = derivedBuildingBlockBuckets.begin(); bIter != derivedBuildingBlockBuckets.end();) {
+		IteratorPtr<T2> pDerivedIter = *bIter;
+		releaseDerivedIter(pDerivedIter);
+		_destroy(pDerivedIter);
+		bIter = derivedBuildingBlockBuckets.erase(bIter);
+	}
+}
+
+template<typename T1, typename T2>
+void AdaptiveElementComposer<T1, T2>::releaseDerivedResultIter(IteratorPtr<LookupResult<T2> >& pDerivedIter) {
+	std::vector<T2> derivedElements;
+	if(pDerivedIter != NullPtr) {
+		while(!pDerivedIter->isDone()) {
+			T2 pDerivedElement = pDerivedIter->getObj().m_resultElement;
+			derivedElements.push_back(pDerivedElement);
+			pDerivedIter->next();
+		}
+	}
+	_destroy(pDerivedIter);
+	releaseDerivedElements(derivedElements);
+}
+
+template<typename T1, typename T2>
+void AdaptiveElementComposer<T1, T2>::releaseDerivedIter(IteratorPtr<T2>& pDerivedIter) {
+	std::vector<T2> derivedElements;
+	if(pDerivedIter != NullPtr) {
+		while(!pDerivedIter->isDone()) {
+			T2 pDerivedElement = pDerivedIter->getObj();
+			derivedElements.push_back(pDerivedElement);
+			pDerivedIter->next();
+		}
+	}
+	_destroy(pDerivedIter);
+	releaseDerivedElements(derivedElements);
 }
 
 template<typename T2>

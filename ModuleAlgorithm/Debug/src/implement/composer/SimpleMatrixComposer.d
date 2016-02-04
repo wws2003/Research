@@ -12,10 +12,11 @@ src/implement/composer/SimpleMatrixComposer.d: \
  ../include/interface/abstract/IComposer.h \
  ../include/interface/common/AlgoCommon.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
- ../include/interface/abstract/ICombiner.h \
  ../include/interface/abstract/ICollection.h \
  ../include/interface/abstract/IIterator.h \
  ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
+ ../include/interface/abstract/ICombiner.h \
+ ../include/interface/abstract/ICollection.h \
  ../include/internal-abstract/persistable/IElementSetLog.h \
  ../include/internal-abstract/AlgoInternal.h \
  ../include/interface/abstract/IIterator.h \
@@ -49,13 +50,15 @@ src/implement/composer/SimpleMatrixComposer.d: \
 
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
-../include/interface/abstract/ICombiner.h:
-
 ../include/interface/abstract/ICollection.h:
 
 ../include/interface/abstract/IIterator.h:
 
 ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
+../include/interface/abstract/ICombiner.h:
+
+../include/interface/abstract/ICollection.h:
 
 ../include/internal-abstract/persistable/IElementSetLog.h:
 
