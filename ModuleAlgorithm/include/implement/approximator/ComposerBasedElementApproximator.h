@@ -19,6 +19,7 @@ class ComposerBasedElementApproximator : public IApproximator<T> {
 public:
 	ComposerBasedElementApproximator(DecomposerPtr<T> pQueryDecomposer,
 			int nbPartialQueries,
+			int buildingBlocksBucketMaxSize,
 			ComposerPtr<T> pBuildingBlockComposer,
 			mreal_t initialEpsilon,
 			LookupResultFilterPtr<T> pLookupResultFilter);
@@ -42,13 +43,14 @@ private:
 
 	void releaseBuildingBlocksBuckets(BuildingBlockBuckets<T>& buildingBlockBuckets);
 
-	IteratorPtr<T> getExtractedElementIterator(IteratorPtr<LookupResult<T> > pLookupResultIter);
+	IteratorPtr<T> getExtractedElementIterator(IteratorPtr<LookupResult<T> > pLookupResultIter,
+			combination_counter_t* pCombinationCounter = NULL);
 
-	IteratorPtr<LookupResult<T> > getFullResultIterator(IteratorPtr<T> pResultIter, T pQuery,
-			DistanceCalculatorPtr<T> pDistanceCalculator);
+	IteratorPtr<LookupResult<T> > getFullResultIterator(IteratorPtr<LookupResult<T> > pResultIter, DistanceCalculatorPtr<T> pDistanceCalculator);
 
 	DecomposerPtr<T> m_pQueryDecomposer;
 	int m_nbPartialQueries;
+	int m_buildingBlocksBucketMaxSize;
 	ComposerPtr<T> m_pBuildingBlockComposer;
 	mreal_t m_initialEpsilon;
 	LookupResultFilterPtr<T> m_pLookupResultFilter;

@@ -13,6 +13,12 @@
 #include <exception>
 #include <iostream>
 
+#define ABCE_DEBUG
+
+#ifdef ABCE_DEBUG
+#include "Coordinate.hpp"
+#endif
+
 template<typename T>
 AdditionBasedElementComposer<T>::AdditionBasedElementComposer(ComparatorPtr<T> pElementComparator,
 		CombinerPtr<T> pCombiner,
@@ -25,19 +31,19 @@ AdditionBasedElementComposer<T>::AdditionBasedElementComposer(ComparatorPtr<T> p
 }
 
 template<typename T>
-IteratorPtr<T> AdditionBasedElementComposer<T>::composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
+IteratorPtr<LookupResult<T> > AdditionBasedElementComposer<T>::composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
 		T target,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
-		mreal_t epsilon) {
+		mreal_t epsilon,
+		bool toSortResults) {
 
 	SortedVectorArray sortedVectorArray(m_wrapperComparator);
 	sortedVectorArray.initByVectors(buildingBlockBuckets);
 
-	std::vector<T> resultBuffer;
+	std::vector<LookupResult<T> > resultBuffer;
 	std::vector<T> partialTermElements;
 
 	int lastVectorIndex = sortedVectorArray.getNbVectors() - 1;
-
 	try {
 		findCompositionsInRange(sortedVectorArray,
 				lastVectorIndex,
@@ -46,8 +52,7 @@ IteratorPtr<T> AdditionBasedElementComposer<T>::composeApproximations(const Buil
 				target,
 				pDistanceCalculator,
 				epsilon,
-				resultBuffer
-		);
+				resultBuffer);
 	}
 	catch (int e) {
 		std::cout << "Enough result\n";
@@ -56,7 +61,12 @@ IteratorPtr<T> AdditionBasedElementComposer<T>::composeApproximations(const Buil
 	std::cout << "Number of combination checked:" << m_combinationCounter << "\n";
 	m_combinationCounter = 0;
 
-	return IteratorPtr<T>(new VectorBasedReadOnlyIteratorImpl<T>(resultBuffer));
+	//TODO Filter before/after sort results
+	if(toSortResults) {
+		std::sort(resultBuffer.begin(), resultBuffer.end(), DistanceComparator<T>());
+	}
+
+	return IteratorPtr<LookupResult<T> >(new VectorBasedReadOnlyIteratorImpl<LookupResult<T> >(resultBuffer));
 }
 
 template<typename T>
@@ -67,7 +77,7 @@ void AdditionBasedElementComposer<T>::findCompositionsInRange(const SortedVector
 		const T& finalTarget,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		std::vector<T>& resultBuffer) {
+		std::vector<LookupResult<T> >& resultBuffer) {
 
 	if(vectorIndex < 0) {
 		evaluateCombination(partialTermElements,
@@ -79,21 +89,19 @@ void AdditionBasedElementComposer<T>::findCompositionsInRange(const SortedVector
 	}
 
 	//Detect bounds [lowerBound, upperBound]
-	const std::vector<T>& rightMostVector = sortedVectorArray.getVector(vectorIndex);
-
-	int lowerBound = 0;
-	int upperBound = 0;
-
-	//Add a certain epsilon to extends range
 	T min = partialTarget - m_epsilonElement;
 	T max = partialTarget + m_epsilonElement;
-
 	if(vectorIndex > 0) {
 		min -= sortedVectorArray.getMaxAccumulated(vectorIndex - 1);
 		max -= sortedVectorArray.getMinAccumulated(vectorIndex - 1);
 	}
 
+	int lowerBound = 0;
+	int upperBound = 0;
 	sortedVectorArray.getRangeInVector(vectorIndex, min, max, lowerBound, upperBound);
+
+	const std::vector<T>& rightMostVector = sortedVectorArray.getVector(vectorIndex);
+	//std::cout << "For vector " <<  vectorIndex << ", bound to investigate:" << lowerBound << " " << upperBound << " oversize " << rightMostVector.size() << "\n";
 
 	for(int elementIndex = lowerBound; elementIndex < upperBound && elementIndex < rightMostVector.size(); elementIndex++) {
 		T lastTerm = rightMostVector[elementIndex];
@@ -123,13 +131,15 @@ void AdditionBasedElementComposer<T>::evaluateCombination(const std::vector<T>& 
 		T target,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		std::vector<T>& resultBuffer) {
+		std::vector<LookupResult<T> >& resultBuffer) {
 
 	T candidate;
 	composeCandidate(partialElements, candidate);
 
 	if(pDistanceCalculator == NullPtr || pDistanceCalculator->distance(candidate, target) <= epsilon) {
-		resultBuffer.push_back(candidate);
+		T delta = candidate - target;
+		//FIXME This is implementation-dependent !
+		resultBuffer.push_back(LookupResult<T>(candidate, delta.getNorm()));
 		if(m_maxResultsNumber > 0 && resultBuffer.size() >= m_maxResultsNumber) {
 			throw (1);
 		}
@@ -174,14 +184,10 @@ void AdditionBasedElementComposer<T>::SortedVectorArray::initByVectors(const Bui
 			}
 			pBuildingBlockIter->toBegin();
 		}
-		//FIXME: No way to reserve size ?
-		m_vectors.push_back(buildingBlockVector);
+		m_vectors.push_back(buildingBlockVector);//FIXME: No way to reserve size ?
 
 		nbMaximumCombination *= buildingBlockVector.size();
-		std::cout << "Size of subset " << i << " " << buildingBlockVector.size() << "\n";
 	}
-
-	std::cout << "Maximum number of combinations " << nbMaximumCombination << "\n";
 
 	//Sort vectors
 	for(unsigned int j = 1; j < nbVector; j++) {
@@ -189,9 +195,19 @@ void AdditionBasedElementComposer<T>::SortedVectorArray::initByVectors(const Bui
 	}
 
 	//Calculate max, min accumulated
+	initMaxMinAccumulatedValues();
+
+	//For debug purpose, print out accumlated max, min
+	printDebugInfo();
+}
+
+template<typename T>
+void AdditionBasedElementComposer<T>::SortedVectorArray::initMaxMinAccumulatedValues() {
 	m_maxAccumulated.push_back(m_vectors[0][m_vectors[0].size() - 1]);
 	m_minAccumulated.push_back(m_vectors[0][0]);
-	for(unsigned int j = 1; j < nbVector; j++) {
+
+	size_t nbVectorSet = m_vectors.size();
+	for(unsigned int j = 1; j < nbVectorSet; j++) {
 		T maxAcc = m_maxAccumulated[j - 1];
 		T minAcc = m_minAccumulated[j - 1];
 		if(!m_vectors[j].empty()) {
@@ -250,3 +266,34 @@ int AdditionBasedElementComposer<T>::SortedVectorArray::getNbVectors() const{
 	return m_vectors.size();
 }
 
+template<typename T>
+void AdditionBasedElementComposer<T>::SortedVectorArray::printDebugInfo() const {
+#ifdef ABCE_DEBUG
+	size_t nbVectorSet = m_vectors.size();
+
+	auto printCoordFunc = [](real_coordinate_t coords) {
+		std::cout << "-Coordinate:\n  ";
+		for(mreal_t coord : coords) {
+			std::cout << coord << " ";
+		}
+		std::cout << "\n";
+	};
+	//Print all vectors in every set
+	for(unsigned int i = 0; i < nbVectorSet; i++) {
+		std::cout << "Vector set " << i << "\n";
+		std::for_each(m_vectors[i].begin(), m_vectors[i].end(), [&printCoordFunc](T coordElement) {
+			printCoordFunc(coordElement.getCoordinates());
+		}
+		);
+		std::cout << "--------------------\n";
+	}
+	for(unsigned int i = 0; i < nbVectorSet; i++) {
+		std::cout << "Accumulated value upto vector set " << i << "\n";
+		std::cout << "Accumulated max:\n";
+		printCoordFunc(m_maxAccumulated[i].getCoordinates());
+		std::cout << "Accumulated min:\n";
+		printCoordFunc(m_minAccumulated[i].getCoordinates());
+		std::cout << "--------------------\n";
+	}
+#endif
+}

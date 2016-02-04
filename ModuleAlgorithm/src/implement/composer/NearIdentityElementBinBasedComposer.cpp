@@ -24,7 +24,7 @@ void evaluateAproximationCandidate(T element,
 		mreal_t epsilon,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		CollectionPtr<T> pResultCollection,
-		ApprxResultBuffer<T>& apprxResultBuffer,
+		ApprxResultBuffer<LookupResult<T> >& apprxResultBuffer,
 		int maxResultsNumber);
 
 template<typename T>
@@ -46,10 +46,11 @@ NearIdentityElementBinBasedComposer<T>::NearIdentityElementBinBasedComposer(Comb
 }
 
 template<typename T>
-IteratorPtr<T> NearIdentityElementBinBasedComposer<T>::composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
+IteratorPtr<LookupResult<T> > NearIdentityElementBinBasedComposer<T>::composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
-		mreal_t epsilon) {
+		mreal_t epsilon,
+		bool toSortResults) {
 
 	//Add query to bin collection as a target
 	m_pBinCollection->addTarget(pQuery);
@@ -64,7 +65,7 @@ IteratorPtr<T> NearIdentityElementBinBasedComposer<T>::composeApproximations(con
 		return NullPtr;
 	}
 
-	ApprxResultBuffer<T> apprxResultBuffer;
+	ApprxResultBuffer<LookupResult<T> > apprxResultBuffer;
 	generateApproximationsFromBins(pQuery,
 			pDistanceCalculator,
 			epsilon,
@@ -72,7 +73,7 @@ IteratorPtr<T> NearIdentityElementBinBasedComposer<T>::composeApproximations(con
 
 	m_pBinCollection->clear();
 
-	return IteratorPtr<T>(new VectorBasedReadOnlyIteratorImpl<T>(apprxResultBuffer)) ;
+	return IteratorPtr<LookupResult<T> >(new VectorBasedReadOnlyIteratorImpl<LookupResult<T> >(apprxResultBuffer)) ;
 }
 
 
@@ -95,7 +96,7 @@ template<typename T>
 void NearIdentityElementBinBasedComposer<T>::generateApproximationsFromBins(T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		ApprxResultBuffer<T>& apprxResultBuffer) {
+		ApprxResultBuffer<LookupResult<T> >& apprxResultBuffer) {
 
 	int maxStep = m_config.m_iterationMaxSteps;
 	mreal_t epsilonForMergeCandidate = m_config.m_maxCandidateEpsilon;
@@ -149,7 +150,7 @@ void NearIdentityElementBinBasedComposer<T>::generateApproximationsFromCombinabl
 		mreal_t epsilonForMergeCandidate,
 		mreal_t approximationEpsilon,
 		CollectionPtr<T> pApprxTempCollection,
-		ApprxResultBuffer<T>& apprxResultBuffer,
+		ApprxResultBuffer<LookupResult<T> >& apprxResultBuffer,
 		int maxResultsNumber) {
 
 	try {
@@ -178,7 +179,7 @@ void NearIdentityElementBinBasedComposer<T>::getApproximationsFromCombinableBins
 		mreal_t epsilonForMergeCandidate,
 		mreal_t approximationEpsilon,
 		CollectionPtr<T> pApprxTempCollection,
-		ApprxResultBuffer<T>& apprxResultBuffer,
+		ApprxResultBuffer<LookupResult<T> >& apprxResultBuffer,
 		int maxResultsNumber) {
 
 	if(binCounter == combinableBins.size()) {
@@ -244,7 +245,7 @@ void evaluateAproximationCandidate(T element,
 		mreal_t epsilon,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		CollectionPtr<T> pResultCollection,
-		ApprxResultBuffer<T>& apprxResultBuffer,
+		ApprxResultBuffer<LookupResult<T> >& apprxResultBuffer,
 		int maxResultsNumber) {
 
 	mreal_t distance = pDistanceCalculator->distance(element, pQuery);
@@ -254,7 +255,7 @@ void evaluateAproximationCandidate(T element,
 			pResultCollection->addElement(element);
 		}
 		if(distance <= epsilon) {
-			apprxResultBuffer.push_back(element);
+			apprxResultBuffer.push_back(LookupResult<T>(element, distance));
 		}
 		if(apprxResultBuffer.size() >= maxResultsNumber) {
 			throw (1);

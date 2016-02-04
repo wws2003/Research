@@ -12,6 +12,16 @@
 #include "AdaptiveElementComposer.h"
 #include "Coordinate.hpp"
 
-typedef class AdaptiveElementComposer<GatePtr, RealCoordinate<GatePtr> > AdaptiveGateCoordinateComposer;
+class AdaptiveGateCoordinateComposer : public AdaptiveElementComposer<GatePtr, RealCoordinate<GatePtr> >  {
+public:
+	AdaptiveGateCoordinateComposer(DistanceCalculatorPtr<RealCoordinate<GatePtr>> pDerivedDistanceCalculator,
+			ComposerPtr<RealCoordinate<GatePtr> > pDerivedComposer,
+			mreal_t derivedComposerEpsilon,
+			ConverterPtr<GatePtr, RealCoordinate<GatePtr> > pConverter);
+
+protected:
+	//Override
+	void releaseDerivedElements(std::vector<RealCoordinate<GatePtr> >& derivedElements);
+};
 
 #endif /* ADAPTIVEGATECOORDINATECOMPOSER_H_ */

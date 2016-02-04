@@ -23,10 +23,11 @@ public:
 	virtual ~SimpleElementComposer(){};
 
 	//Override
-	virtual IteratorPtr<T> composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
+	virtual IteratorPtr<LookupResult<T> > composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
 			T pQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
-			mreal_t epsilon);
+			mreal_t epsilon,
+			bool toSortResults);
 
 private:
 	void generateApproximations(std::vector<T>& partialElementsBuffer,
@@ -35,7 +36,7 @@ private:
 			T pQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
-			CollectionPtr<T> pResultsBuffer);
+			std::vector<LookupResult<T> >& resultBuffer);
 
 	std::string getCurrentLogFolderName();
 
@@ -43,7 +44,7 @@ private:
 			T pQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
-			CollectionPtr<T> pResultsBuffer);
+			std::vector<LookupResult<T> >& resultBuffer);
 
 	void composeCandidate(const std::vector<T>& partialElements, T& result);
 

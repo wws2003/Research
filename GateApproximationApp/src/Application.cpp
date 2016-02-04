@@ -29,6 +29,7 @@ typedef std::vector<std::string> Arguments;
 
 int main(int argc, char* argv[]) {
 	mreal::initPrecision();
+	mreal::initRand();
 
 	CommandParser commandParser;
 	initCommands(&commandParser);
