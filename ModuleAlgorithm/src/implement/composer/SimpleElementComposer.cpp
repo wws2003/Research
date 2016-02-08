@@ -7,6 +7,7 @@
 
 #include "SimpleElementComposer.h"
 #include "VectorBasedCollectionImpl.hpp"
+#include "VectorBasedReadOnlyIteratorImpl.hpp"
 #include <sstream>
 #include <iostream>
 
@@ -30,13 +31,14 @@ SimpleElementComposer<T>::SimpleElementComposer(CombinerPtr<T> pCombiner,
 }
 
 template<typename T>
-IteratorPtr<T> SimpleElementComposer<T>::composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
+IteratorPtr<LookupResult<T> > SimpleElementComposer<T>::composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
-		mreal_t epsilon) {
+		mreal_t epsilon,
+		bool toSortResults) {
 
 	std::vector<T> partialElementsBuffer;
-	VectorBasedCollectionImpl<T> resultBuffer(pDistanceCalculator);
+	std::vector<LookupResult<T> > resultBuffer;
 
 #if OUTPUT_INTERMEDIATE_RESULT
 	m_pElementSetLog->saveElementSets(buildingBlockBuckets);
@@ -50,14 +52,13 @@ IteratorPtr<T> SimpleElementComposer<T>::composeApproximations(const BuildingBlo
 				pQuery,
 				pDistanceCalculator,
 				epsilon,
-				&resultBuffer);
+				resultBuffer);
 	}
 	catch (int enough) {
 		std::cout << "Find enough results\n";
 	}
 
 	std::cout << "Number of combination checked:" << m_combinationCounter << "\n";
-	//Rewind counter for next compose
 	m_combinationCounter = 0;
 
 #if OUTPUT_INTERMEDIATE_RESULT
@@ -65,7 +66,11 @@ IteratorPtr<T> SimpleElementComposer<T>::composeApproximations(const BuildingBlo
 	m_pElementSetLog->flush(logFolderName);
 #endif
 
-	return resultBuffer.getReadonlyIteratorPtr();
+	//TODO Filter before/after sort results
+	if(toSortResults) {
+		std::sort(resultBuffer.begin(), resultBuffer.end(), DistanceComparator<T>());
+	}
+	return IteratorPtr<LookupResult<T> >(new VectorBasedReadOnlyIteratorImpl<LookupResult<T> >(resultBuffer));
 }
 
 template<typename T>
@@ -75,11 +80,15 @@ void SimpleElementComposer<T>::generateApproximations(std::vector<T>& partialEle
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		CollectionPtr<T> pResultsBuffer) {
+		std::vector<LookupResult<T> >& resultBuffer) {
 
 	if(bucketIndex >= buildingBlockBuckets.size()) {
 		m_combinationCounter++;
-		evaluateCombination(partialElementsBuffer, pQuery, pDistanceCalculator, epsilon, pResultsBuffer);
+		evaluateCombination(partialElementsBuffer,
+				pQuery,
+				pDistanceCalculator,
+				epsilon,
+				resultBuffer);
 		return;
 	}
 
@@ -96,7 +105,7 @@ void SimpleElementComposer<T>::generateApproximations(std::vector<T>& partialEle
 				pQuery,
 				pDistanceCalculator,
 				epsilon,
-				pResultsBuffer);
+				resultBuffer);
 
 		partialElementsBuffer.pop_back();
 
@@ -121,15 +130,18 @@ void SimpleElementComposer<T>::evaluateCombination(const std::vector<T>& partial
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		CollectionPtr<T> pResultsBuffer) {
+		std::vector<LookupResult<T> >& resultBuffer) {
 
 	T candidate;
 	composeCandidate(partialElements, candidate);
 
-	if(candidate != NullPtr && pDistanceCalculator->distance(candidate, pQuery) <= epsilon) {
-		pResultsBuffer->addElement(candidate);
-		if(m_maxResultsNumber > 0 && pResultsBuffer->size() >= m_maxResultsNumber) {
-			throw (1);
+	if(candidate != NullPtr) {
+		mreal_t distanceToTarget = pDistanceCalculator->distance(candidate, pQuery);
+		if(distanceToTarget < epsilon) {
+			resultBuffer.push_back(LookupResult<T>(candidate, distanceToTarget));
+			if(m_maxResultsNumber > 0 && resultBuffer.size() >= m_maxResultsNumber) {
+				throw (1);
+			}
 		}
 	}
 	else {

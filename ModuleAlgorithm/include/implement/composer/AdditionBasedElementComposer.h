@@ -25,10 +25,11 @@ public:
 	virtual ~AdditionBasedElementComposer(){};
 
 	//Override
-	IteratorPtr<T> composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
+	IteratorPtr<LookupResult<T> > composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
 			T target,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
-			mreal_t epsilon);
+			mreal_t epsilon,
+			bool toSortResults = true);
 
 private:
 
@@ -49,6 +50,9 @@ private:
 
 		//Init vectors fields
 		void initByVectors(const BuildingBlockBuckets<T>& buildingBlockBuckets);
+
+		//Init accumulated values
+		void initMaxMinAccumulatedValues();
 
 		/**
 		 * Return maximum element can be retrieved by accumulating elements
@@ -75,6 +79,8 @@ private:
 		int getNbVectors() const;
 
 	private:
+		void printDebugInfo() const;
+
 		WrapperComparator& m_wrapperComparator;
 
 		std::vector<std::vector<T> > m_vectors;
@@ -90,13 +96,13 @@ private:
 			const T& target,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
-			std::vector<T>& resultBuffer);
+			std::vector<LookupResult<T> >& resultBuffer);
 
 	void evaluateCombination(const std::vector<T>& partialElements,
 			T target,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
-			std::vector<T>& resultBuffer);
+			std::vector<LookupResult<T> >& resultBuffer);
 
 	void composeCandidate(const std::vector<T>& partialElements, T& result);
 

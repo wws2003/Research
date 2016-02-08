@@ -6,6 +6,7 @@
  */
 #include "MultiNearBalancePartsGateDecomposer.h"
 #include "Coordinate.hpp"
+#include <iostream>
 
 MultiNearBalancePartsGateDecomposer::MultiNearBalancePartsGateDecomposer(RealCoordinateCalculatorPtr<GatePtr> pCoordinateCalculator,
 		MatrixOperatorPtr pMatrixOperator) {
@@ -21,7 +22,7 @@ void MultiNearBalancePartsGateDecomposer::decomposeElement(GatePtr pGate,
 	m_pCoordinateCalculator->calulateElementCoordinate(pGate, pGateCoordinate);
 
 	subGates.clear();
-	getNearOnePartGates(pGateCoordinate, subGates, nbSubElements - 1);
+	getNearOnePartGates(pGateCoordinate, subGates, nbSubElements);
 
 	GatePtr pComplementaryGate = NullPtr;
 	getComplementaryGate(pGate, subGates, pComplementaryGate);
@@ -39,9 +40,23 @@ void MultiNearBalancePartsGateDecomposer::getNearOnePartGates(RealCoordinatePtr<
 		nearOnePartCoordinate.push_back(pGateCoordinate->getCoordinates()[i] / mreal_t(nbSubElements));
 	}
 
-	for(int i = 0; i < nbSubElements; i++) {
+	for(int i = 0; i < nbSubElements - 1; i++) {
 		real_coordinate_t onePartCoord = nearOnePartCoordinate;
+
+		/*std::cout << "-Partial coordinate before modified :\n  ";
+		for(mreal_t coord : onePartCoord) {
+			std::cout << coord << " ";
+		}
+		std::cout << "\n";*/
+
 		modifyCoordinate(onePartCoord);
+
+		/*std::cout << "-Partial coordinate after modified :\n  ";
+		for(mreal_t coord : onePartCoord) {
+			std::cout << coord << " ";
+		}
+		std::cout << "\n";*/
+
 		RealCoordinate<GatePtr> onePartGateCoordinate(NullPtr, onePartCoord);
 		m_pCoordinateCalculator->calculateElementFromCoordinate(&onePartGateCoordinate);
 		subGates.push_back(onePartGateCoordinate.getElement());
@@ -69,9 +84,15 @@ void MultiNearBalancePartsGateDecomposer::getComplementaryGate(GatePtr pGate, co
 	}
 
 	//mk = (m1*m2*..*m[k-1])' * m
+	MatrixPtr pComposedConjugateTranspose = NullPtr;
+	m_pMatrixOperator->conjugateTranpose(pComposedMatrix, pComposedConjugateTranspose);
+
 	MatrixPtr pMatrix = pGate->getMatrix();
 	MatrixPtr pComplementaryMatrix = NullPtr;
-	m_pMatrixOperator->multiplyConjugateTranspose(pComposedMatrix, pMatrix, pComplementaryMatrix);
+	m_pMatrixOperator->multiply(pComposedConjugateTranspose, pMatrix, pComplementaryMatrix);
+
+	//Destroy pComposedConjugateTranspose
+	_destroy(pComposedConjugateTranspose);
 
 	//Destroy pComposedMatrix
 	if(subGates.size() > 1) {

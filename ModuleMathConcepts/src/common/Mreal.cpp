@@ -49,9 +49,8 @@ mreal_t rand() {
 	/* initialize random seed: */
 
 #if MPFR_REAL
-	return mpfr::random(time(NULL));
+	return mpfr::random();
 #else
-	srand(time(NULL));
 	int randNumber = std::rand();
 	return (double)randNumber / RAND_MAX;
 #endif

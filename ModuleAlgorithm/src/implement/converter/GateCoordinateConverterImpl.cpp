@@ -36,14 +36,16 @@ GateCoordinateConverterImpl::GateCoordinateConverterImpl(GateRealCoordinateCalcu
 }
 
 //Override
-void GateCoordinateConverterImpl::convert12(const GatePtr& pGate, RealCoordinate<GatePtr>& gateCoord) {
+void GateCoordinateConverterImpl::convert12(const GatePtr& pGate,
+		RealCoordinate<GatePtr>& gateCoord) {
 	std::vector<RealCoordinatePtr<GatePtr> > equivalentCoordinates;
 	getEquivalentCoordinates(pGate, equivalentCoordinates);
 
 	//Consider the smallest coordinate of equivalent ones to be the coordinate to be calculated;
 	std::sort(equivalentCoordinates.begin(), equivalentCoordinates.end(), CoordinateNormComparator<GatePtr>());
 
-	gateCoord = *equivalentCoordinates[0];
+	gateCoord = RealCoordinate<GatePtr>(equivalentCoordinates[0]->getElement()->clone(),
+			equivalentCoordinates[0]->getCoordinates());
 
 	//Release equivalent coordinate pointers
 	releaseEquivalentCoordinates(equivalentCoordinates);

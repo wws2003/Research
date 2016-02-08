@@ -10,6 +10,9 @@ src/implement/composer/NearIdentityMatrixBinBasedComposer.d: \
  ../include/implement/composer/NearIdentityElementBinBasedComposer.h \
  ../include/interface/abstract/IComposer.h \
  ../../ModuleOperator/include/interface/common/OperatorCommon.h \
+ ../include/interface/abstract/ICollection.h \
+ ../include/interface/abstract/IIterator.h \
+ ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/implement/bin/Bin.hpp \
  ../include/internal-abstract/AlgoInternal.h \
  ../include/interface/abstract/IIterator.h \
@@ -22,8 +25,6 @@ src/implement/composer/NearIdentityMatrixBinBasedComposer.d: \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../include/implement/collection/VectorBasedCollectionImpl.hpp \
  ../include/interface/abstract/ICollection.h \
- ../include/interface/abstract/IIterator.h \
- ../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h \
  ../include/implement/iterator/VectorBasedIteratorImpl.hpp \
  ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
  ../include/internal-abstract/collection/IBinCollection.h \
@@ -49,6 +50,12 @@ src/implement/composer/NearIdentityMatrixBinBasedComposer.d: \
 
 ../../ModuleOperator/include/interface/common/OperatorCommon.h:
 
+../include/interface/abstract/ICollection.h:
+
+../include/interface/abstract/IIterator.h:
+
+../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
+
 ../include/implement/bin/Bin.hpp:
 
 ../include/internal-abstract/AlgoInternal.h:
@@ -72,10 +79,6 @@ src/implement/composer/NearIdentityMatrixBinBasedComposer.d: \
 ../include/implement/collection/VectorBasedCollectionImpl.hpp:
 
 ../include/interface/abstract/ICollection.h:
-
-../include/interface/abstract/IIterator.h:
-
-../../ModuleOperator/include/interface/abstract/IDistanceCalculator.h:
 
 ../include/implement/iterator/VectorBasedIteratorImpl.hpp:
 

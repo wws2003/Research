@@ -33,6 +33,14 @@ inline void initPrecision(int defaultPrecision = 256) {
 #endif
 }
 
+inline void initRand() {
+#if MPFR_REAL
+	mpfr::random(time(NULL));
+#else
+	srand(time(NULL));
+#endif
+}
+
 inline mreal_t abs(const mreal_t& v) {
 #if MPFR_REAL
 	return mpfr::abs(v);

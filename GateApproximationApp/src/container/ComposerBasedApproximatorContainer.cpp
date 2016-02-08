@@ -47,6 +47,7 @@ ComposerBasedApproximatorContainer::~ComposerBasedApproximatorContainer() {
 GateApproximatorPtr ComposerBasedApproximatorContainer::getGateApproximator() {
 	return GateApproximatorPtr(new ComposerBasedGateApproximator(m_pGateDecomposer,
 			m_approximatorConfig.m_nbPartialQueries,
+			m_approximatorConfig.m_nbCandidates,
 			m_pGateComposer,
 			m_approximatorConfig.m_initialEpsilon,
 			m_pGateLookupResultFilter));
@@ -151,7 +152,9 @@ GateComposerPtr ComposerBasedApproximatorContainer::generateComposerFromConfig(C
 	GateComposerPtr pGateComposerPtr = NullPtr;
 	switch (m_approximatorConfig.m_buildingBlockComposerType) {
 	case CT_SIMPLE:
-		pGateComposerPtr = GateComposerPtr(new SimpleGateComposer(m_pGateCombiner, approximatorConfig.m_nbCandidates, m_pGateSetLog));
+		pGateComposerPtr = GateComposerPtr(new SimpleGateComposer(m_pGateCombiner,
+				approximatorConfig.m_nbCandidates,
+				m_pGateSetLog));
 		break;
 	case CT_COORDINATE_ADDTIONAL_BASED:
 		pGateComposerPtr = GateComposerPtr(new AdaptiveGateCoordinateComposer(m_pGateCoordinateDistanceCalculator,

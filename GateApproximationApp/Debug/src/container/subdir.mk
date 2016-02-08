@@ -12,6 +12,8 @@ CPP_SRCS += \
 ../src/container/SKApproximatorContainerImpl.cpp \
 ../src/container/SampleApproximatorContainerImpl.cpp \
 ../src/container/SampleCollectionContainerImpl.cpp \
+../src/container/SampleComposerContainerImpl.cpp \
+../src/container/SampleComposerEvaluatorContainerImpl.cpp \
 ../src/container/SampleEvaluatorContainerImpl.cpp \
 ../src/container/SampleResourceContainerImpl.cpp 
 
@@ -24,6 +26,8 @@ OBJS += \
 ./src/container/SKApproximatorContainerImpl.o \
 ./src/container/SampleApproximatorContainerImpl.o \
 ./src/container/SampleCollectionContainerImpl.o \
+./src/container/SampleComposerContainerImpl.o \
+./src/container/SampleComposerEvaluatorContainerImpl.o \
 ./src/container/SampleEvaluatorContainerImpl.o \
 ./src/container/SampleResourceContainerImpl.o 
 
@@ -36,6 +40,8 @@ CPP_DEPS += \
 ./src/container/SKApproximatorContainerImpl.d \
 ./src/container/SampleApproximatorContainerImpl.d \
 ./src/container/SampleCollectionContainerImpl.d \
+./src/container/SampleComposerContainerImpl.d \
+./src/container/SampleComposerEvaluatorContainerImpl.d \
 ./src/container/SampleEvaluatorContainerImpl.d \
 ./src/container/SampleResourceContainerImpl.d 
 

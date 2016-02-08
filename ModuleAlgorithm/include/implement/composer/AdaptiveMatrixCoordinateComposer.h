@@ -12,6 +12,10 @@
 #include "AdaptiveElementComposer.h"
 #include "Coordinate.hpp"
 
-typedef class AdaptiveElementComposer<MatrixPtr, RealCoordinate<MatrixPtr> > AdaptiveMatrixCoordinateComposer;
+class AdaptiveMatrixCoordinateComposer: public AdaptiveElementComposer<MatrixPtr, RealCoordinate<MatrixPtr> >  {
+protected:
+	//Override
+	void releaseDerivedItem(RealCoordinate<MatrixPtr>& matrixCoord);
+};
 
 #endif /* ADAPTIVEMATRIXCOORDINATECOMPOSER_H_ */
