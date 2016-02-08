@@ -54,6 +54,7 @@
 #include "VectorBasedIteratorImpl.hpp"
 #include "GateCoordinateCombinerImpl.h"
 #include "SetBasedGateLookupResultProcessor.h"
+#include "SumCoordinateComparator.hpp"
 #include <iostream>
 #include <cmath>
 #include <cstdio>
@@ -103,6 +104,8 @@ void evalFilteredFindNeighbours(GateCollectionPtr pCollection,
 
 void getNumberOfNeighborsFromIterator(GateCollectionPtr pCollection, const TargetElements<GatePtr>& targets, GateDistanceCalculatorPtr pDistanceCalculator, double epsilon, std::vector<int>& resultNumbers);
 
+mreal_t getNorm(const real_coordinate_t& coordinate);
+
 FullTestSuite::FullTestSuite() {
 	m_pMatrixWriter = new SampleMatrixWriterImpl();
 	m_pMatrixFactory = new SimpleDenseMatrixFactoryImpl();
@@ -145,7 +148,7 @@ FullTestSuite::~FullTestSuite() {
 }
 void FullTestSuite::test(){
 	//testSimpleWriter();
-	testSimpleCollection();
+	/*testSimpleCollection();
 	testSimpleSearchSpaceConstructor();
 	testSimpleEvaluator();
 	testInverseCancelingSearchSpaceConstructor();
@@ -154,7 +157,7 @@ void FullTestSuite::test(){
 	//testGNATCollectionBuild();
 	testGNATCollectionPersistence();
 	testGNATSearch();
-	testFilteredGNATSearch();
+	testFilteredGNATSearch();*/
 	testAddtionBasedCoordinateComposer();
 	//freeTestGateCollectionEvaluator();
 }
@@ -855,71 +858,111 @@ void FullTestSuite::testAddtionBasedCoordinateComposer() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 
 	BuildingBlockBuckets<GateRealCoordinate> buckets;
+	std::vector<GateRealCoordinate> buildingBlocks[4];
+	IteratorPtr<GateRealCoordinate> gateCoordIters[4];
 
-	//Bucket1
-	//(0,0), (0,1), (0,2), (0,3), (0,4),
-	std::vector<GateRealCoordinate> buildingBlocks1;
-	for(int i = 0; i <= 4; i++) {
-		GateRealCoordinate c(NullPtr, {0.0, i + 0.0});
-		buildingBlocks1.push_back(c);
+	int nbBuildingBlocks = 4;
+	int buildingBlockSize = 5;
+
+	for(int i = 0; i < nbBuildingBlocks; i++) {
+		for(int j = 0; j < buildingBlockSize; j++) {
+			GateRealCoordinate c(NullPtr, {i + 0.0, j + 0.0});
+			buildingBlocks[i].push_back(c);
+		}
+		gateCoordIters[i] = new VectorBasedIteratorImpl<GateRealCoordinate>(&buildingBlocks[i]);
+		buckets.push_back(gateCoordIters[i]);
 	}
-	IteratorPtr<GateRealCoordinate> pGateCoordIter1 = new VectorBasedIteratorImpl<GateRealCoordinate>(&buildingBlocks1);
-	buckets.push_back(pGateCoordIter1);
 
-	//Bucket2
-	//(1,0), (1,1), (1,2), (1,3), (1,4),
-	std::vector<GateRealCoordinate> buildingBlocks2;
-	for(int i = 0; i <= 4; i++) {
-		GateRealCoordinate c(NullPtr, {1.0, i + 0.0});
-		buildingBlocks2.push_back(c);
-	}
-	IteratorPtr<GateRealCoordinate> pGateCoordIter2 = new VectorBasedIteratorImpl<GateRealCoordinate>(&buildingBlocks2);
-	buckets.push_back(pGateCoordIter2);
+	//Epsilon zero
+	real_coordinate_t zeroCoordinate = {0.0,0.0};
+	GateRealCoordinate zeroEpsilon(NullPtr, zeroCoordinate);
+	//Target (1,5)
+	GateRealCoordinate target(NullPtr, {6.0, 5.0});
 
-	GateRealCoordinate zeroEpsilon(NullPtr, {0.0,0.0});
-
-	GateRealCoordinate target(NullPtr, {1.0, 5.0});
-
-	ComparatorPtr<GateRealCoordinate> pCoordinateComparator = new DictionaryOrderCoordinateComparator<GatePtr>();
+	//Coordinate addition based composer
+	ComparatorPtr<GateRealCoordinate> pCoordinateComparator = new SumCoordinateComparator<GatePtr>();
 	CombinerPtr<GateRealCoordinate> pCoordinateCombiner = new GateCoordinateCombinerImpl(NullPtr);
-
-	int maxResultsNumber = 5;
-
 	CoordinateAdditionBasedGateComposer additionBasedComposer(pCoordinateComparator,
 			pCoordinateCombiner,
 			zeroEpsilon,
-			maxResultsNumber);
-
-	IteratorPtr<GateRealCoordinate> pComposeIter = additionBasedComposer.composeApproximations(buckets, target, NullPtr, 0.1);
+			0);
+	IteratorPtr<LookupResult<GateRealCoordinate> > pComposeIter = additionBasedComposer.composeApproximations(buckets,
+			target,
+			NullPtr,
+			0.1);
 
 	assert(pComposeIter != NullPtr && !pComposeIter->isDone());
 
 	int nbResults = 0;
-	int expectedNbResults = 4;
-
 	while(!pComposeIter->isDone()) {
-		/*Print result to review*/
-		GateRealCoordinate gateCoord = pComposeIter->getObj();
+		GateRealCoordinate gateCoord = pComposeIter->getObj().m_resultElement;
+
+		//Assert true result
+		GateRealCoordinate deltaCoord = gateCoord - target;
+		assert(getNorm(deltaCoord.getCoordinates()) < 1e-4);
+		assert(pComposeIter->getObj().m_distanceToTarget < 1e-4);
+
+		//Print result to review
 		printf("Result [%d] 's coordinate \n---[", nbResults + 1);
 		for(unsigned int i = 0; i < gateCoord.getCoordinates().size(); i++) {
 			printf("%f,", mreal::toDouble(gateCoord.getCoordinates()[i]));
 		}
-		printf("]\n");
+		printf("] Distance to target = %f\n",  mreal::toDouble(pComposeIter->getObj().m_distanceToTarget));
 		nbResults++;
 		pComposeIter->next();
 	}
 
-	assert(nbResults == expectedNbResults);
+	//Calculate expected results number
+	auto isLastIndexReached = [&nbBuildingBlocks, &buildingBlockSize](int* indices){
+		for(int j = 0; j < nbBuildingBlocks; j++) {
+			if(indices[j] > 0) {
+				return false;
+			}
+		}
+		return true;
+	};
+	auto incrementIndices = [&nbBuildingBlocks, &buildingBlockSize](int* indices){
+		int lastIncrementIndex = nbBuildingBlocks - 1;
+		while(lastIncrementIndex >= 0) {
+			if(indices[lastIncrementIndex] < buildingBlockSize - 1) {
+				indices[lastIncrementIndex]++;
+				lastIncrementIndex = -1;
+			}
+			else {
+				indices[lastIncrementIndex] = 0;
+				lastIncrementIndex--;
+			}
+		}
+	};
 
+	int indices[] = {0, 0, 0, 0};
+	int nbExpectedResults = 0;
+	do {
+		GateRealCoordinate sumCoord(NullPtr, zeroCoordinate);
+		for(int index = 0; index < nbBuildingBlocks; index++) {
+			sumCoord += buildingBlocks[index][indices[index]];
+		}
+		GateRealCoordinate deltaCoord = sumCoord - target;
+		if(getNorm(deltaCoord.getCoordinates()) < 1e-4) {
+			nbExpectedResults++;
+		}
+		incrementIndices(indices);
+	}
+	while(!isLastIndexReached(indices));
+
+	assert(nbExpectedResults == nbResults);
+
+	//Release
 	delete pComposeIter;
 
 	delete pCoordinateCombiner;
 	delete pCoordinateComparator;
 
-	delete pGateCoordIter2;
-	delete pGateCoordIter1;
+	for(int i = 0; i < nbBuildingBlocks; i++) {
+		delete gateCoordIters[i];
+	}
 
-	std::cout << __func__ << " passed"  <<  std::endl ;
+	std::cout << __func__ << " passed"  <<  std::endl;
 }
 
 
@@ -1335,5 +1378,12 @@ void getNumberOfNeighborsFromIterator(GateCollectionPtr pCollection, const Targe
 		_destroy(pGateIter);
 	}
 }
+
+mreal_t getNorm(const real_coordinate_t& coordinate) {
+	mreal_t norm = 0.0;
+	std::for_each(coordinate.begin(), coordinate.end(), [&norm](mreal_t coord){norm += coord*coord;});
+	return norm;
+}
+
 
 

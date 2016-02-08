@@ -102,5 +102,14 @@ struct SKApproximatorConfig2 : public SKApproximatorConfig {
 	CoordinateAdditionalBasedComposerConfig m_coordinateApproximatorBasedConfig;
 };
 
+struct ComposerEvaluatorConfig {
+	int m_nbPartialQueries;
+	mreal_t m_initialEpsilon;
+	int m_nbCandidates;
+	DecomposerType m_queryDecomposerType;
+	double m_composeEpsilon;
+	RotationConfigs m_rotationTargets;
+};
+
 
 #endif /* CONFIG_H_ */

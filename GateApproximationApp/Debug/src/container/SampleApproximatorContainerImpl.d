@@ -21,6 +21,8 @@ src/container/SampleApproximatorContainerImpl.d: \
  ../../ModuleOperator/include/interface/abstract/ICoordinateCalculator.h \
  ../../ModuleAlgorithm/include/implement/composer/NearIdentityElementBinBasedComposer.h \
  ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
+ ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/implement/bin/Bin.hpp \
  ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h \
  ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
@@ -33,11 +35,9 @@ src/container/SampleApproximatorContainerImpl.d: \
  ../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h \
  ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
- ../../ModuleAlgorithm/include/interface/abstract/IIterator.h \
  ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedGateApproximator.h \
  ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedElementApproximator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h \
- ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/implement/collection/MapBasedBinCollectionImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/collection/IBinCollection.h \
@@ -255,6 +255,10 @@ src/container/SampleApproximatorContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/interface/abstract/IComposer.h:
 
+../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
+
 ../../ModuleAlgorithm/include/implement/bin/Bin.hpp:
 
 ../../ModuleAlgorithm/include/internal-abstract/AlgoInternal.h:
@@ -281,15 +285,11 @@ src/container/SampleApproximatorContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
-../../ModuleAlgorithm/include/interface/abstract/IIterator.h:
-
 ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedGateApproximator.h:
 
 ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedElementApproximator.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/IApproximator.h:
-
-../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
 
 ../../ModuleAlgorithm/include/implement/collection/MapBasedGateBinCollectionImpl.h:
 

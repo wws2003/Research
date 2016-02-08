@@ -14,21 +14,29 @@
 #include "EvaluateApproximatorCommand.h"
 #include "GenerateAndStoreApproximationsCommand.h"
 #include "EvaluatePersistedCollectionForTargetsCommand.h"
+#include "EvaluateComposerCommand.h"
 #include "ComposerBasedApproximatorContainer.h"
+#include "IComposer.h"
 #include "SKApproximatorContainerImpl.h"
 #include "SK2ApproximatorContainerImpl.h"
 #include "ComposerBasedSK2ApproximatorContainerImpl.h"
+#include "SampleComposerContainerImpl.h"
+#include "SampleComposerEvaluatorContainerImpl.h"
 #include "ConfigReader.h"
 
 CommandFactory::CommandFactory() : m_pCollectionContainer(NullPtr),
 m_pApproximatorContainer(NullPtr),
-m_pEvaluatorContainer(NullPtr){
+m_pEvaluatorContainer(NullPtr),
+m_pComposerContainer(NullPtr),
+m_pComposerEvaluatorContainer(NullPtr){
 }
 
 CommandFactory::~CommandFactory() {
 	_destroy(m_pCollectionContainer);
 	_destroy(m_pEvaluatorContainer);
 	_destroy(m_pApproximatorContainer);
+	_destroy(m_pComposerContainer);
+	_destroy(m_pComposerEvaluatorContainer);
 }
 
 CommandPtr CommandFactory::getCommand(int commandCode, const CommandParams& commandParams) {
@@ -63,6 +71,9 @@ CommandPtr CommandFactory::getCommand(int commandCode, const CommandParams& comm
 	}
 	case EVALUATE_CB2_APPROXIMATOR_TO_TARGET: {
 		return getComposerBasedApproximator2EvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3]);
+	}
+	case EVALUATE_COMPOSER_TO_TARGET: {
+		return getComposerEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3]);
 	}
 	default:
 		return CommandPtr(new NotAvailableCommand());
@@ -307,6 +318,36 @@ AbstractCommandPtr CommandFactory::getComposerBasedApproximator2EvaluationComman
 	return pApproximatorEvaluationCommand;
 }
 
+AbstractCommandPtr CommandFactory::getComposerEvaluationCommandForTargets(std::string collectionConfigFile,
+		std::string composerEvalConfigFile,
+		std::string adbComposerConfigFile,
+		std::string targetConfigFile) {
+	ConfigReader configReader;
+
+	CollectionConfig collectionConfig;
+	CoordinateAdditionalBasedComposerConfig cadbConfig;
+	ComposerEvaluatorConfig composerEvalConfig;
+
+	readComposerEvaluationConfig(configReader,
+			collectionConfigFile,
+			&collectionConfig,
+			composerEvalConfigFile,
+			targetConfigFile,
+			&composerEvalConfig,
+			adbComposerConfigFile,
+			&cadbConfig);
+
+	GateComposerEvaluatorPtr pGateComposerEvaluator = m_pComposerEvaluatorContainer->getGateComposerEvaluator();
+	GateComposerPtr pEvaluatedComposer = m_pComposerContainer->getEvaluatedGateComposer();
+	GateComposerPtr pStandardComposer = m_pComposerContainer->getStandardGateComposer();
+
+	AbstractCommandPtr pEvaluateCommand = AbstractCommandPtr(new EvaluateComposerCommand(pEvaluatedComposer,
+			pStandardComposer,
+			pGateComposerEvaluator));
+
+	return pEvaluateCommand;
+}
+
 void CommandFactory::readCollectionConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig) {
 	configReader.readCollectionConfig(configFile, pCollectionConfig);
 	resetCollectionContainer(*pCollectionConfig);
@@ -359,6 +400,22 @@ void CommandFactory::readComposerBasedApproximatorConfig(ConfigReader configRead
 	resetComposerBasedApproximatorContainer(*pApproximatorConfig, *pCadbConfig, *pCollectionConfig);
 	resetEvaluationContainer(*pEvaluatorConfig, *pCollectionConfig);
 }
+
+void CommandFactory::readComposerEvaluationConfig(ConfigReader configReader,
+					std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
+					std::string composerEvalConfigFile,
+					std::string targetConfigFile, ComposerEvaluatorConfig* pComposerEvalConfig,
+					std::string cadbConfigFile, CoordinateAdditionalBasedComposerConfig* pCadbConfig) {
+
+	configReader.readCollectionConfig(collectionConfigFile, pCollectionConfig);
+	configReader.readCoordinateAddtionalBasedComposerConfig(cadbConfigFile, pCadbConfig);
+	configReader.readComposerEvaluatorConfig(composerEvalConfigFile, pComposerEvalConfig);
+	configReader.readComposerEvaluatorConfigFromTargets(targetConfigFile, pComposerEvalConfig);
+
+	resetComposerContainer(*pCadbConfig, *pCollectionConfig);
+	resetComposerEvaluatorContainer(*pComposerEvalConfig, *pCollectionConfig);
+}
+
 
 void CommandFactory::readSKConfig(ConfigReader configReader,
 		std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
@@ -428,6 +485,17 @@ void CommandFactory::resetComposerBasedApproximatorContainer(const ComposerBased
 	_destroy(m_pApproximatorContainer);
 	m_pApproximatorContainer = ApproximatorContainerPtr(new ComposerBasedApproximatorContainer(approximatorConfig, cadbConfig, collectionConfig));
 }
+
+void CommandFactory::resetComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig, const CollectionConfig& collectionConfig) {
+	_destroy(m_pComposerContainer);
+	m_pComposerContainer = ComposerContainerPtr(new SampleComposerContainerImpl(cabConfig, collectionConfig));
+}
+
+void CommandFactory::resetComposerEvaluatorContainer(const ComposerEvaluatorConfig& composerEvalConfig, const CollectionConfig& collectionCofig) {
+	_destroy(m_pComposerEvaluatorContainer);
+	m_pComposerEvaluatorContainer = ComposerEvaluatorContainerPtr(new SampleComposerEvaluatorContainerImpl(composerEvalConfig, collectionCofig));
+}
+
 
 void CommandFactory::resetSKApproximatorContainer(const SKApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig) {
 	_destroy(m_pApproximatorContainer);

@@ -305,6 +305,63 @@ void ConfigReader::readEvaluatorConfigFromTargets(std::string configFile, Evalua
 	}
 }
 
+void ConfigReader::readComposerEvaluatorConfig(std::string configFile, ComposerEvaluatorConfig* pComposerEvaluatorConfig) {
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		char prefix[128];
+		std::string line;
+
+		readLineAndLog(inputStream, line, std::cout);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pComposerEvaluatorConfig->m_nbPartialQueries));
+
+		readLineAndLog(inputStream, line, std::cout);
+		double initialEpsilon;
+		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
+		pComposerEvaluatorConfig->m_initialEpsilon = (mreal_t)initialEpsilon;
+
+		readLineAndLog(inputStream, line, std::cout);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pComposerEvaluatorConfig->m_nbCandidates));
+
+		readLineAndLog(inputStream, line, std::cout);
+		int enumEval;
+		sscanf(line.data(), "%[^:]:%d", prefix, &(enumEval));
+		pComposerEvaluatorConfig->m_queryDecomposerType = (DecomposerType)enumEval;
+	}
+	else {
+		throw std::logic_error("Can not read config file for approximator!");
+	}
+}
+
+void ConfigReader::readComposerEvaluatorConfigFromTargets(std::string configFile, ComposerEvaluatorConfig* pComposerEvaluatorConfig) {
+	std::cout << "Evaluator config" << configFile << ":\n";
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		char prefix[128];
+		std::string line;
+
+		int nbQubits;
+		readLineAndLog(inputStream, line, std::cout);
+		sscanf(line.data(), "%[^:]:%d", prefix, &nbQubits);
+
+		int nbTargets;
+		readLineAndLog(inputStream, line, std::cout);
+		sscanf(line.data(), "%[^:]:%d", prefix, &nbTargets);
+
+		for(int i = 0; i < nbTargets; i++) {
+			RotationConfig rotationConfig;
+			readLineAndLog(inputStream, line, std::cout);
+			readRotationConfigLine(line, rotationConfig);
+			pComposerEvaluatorConfig->m_rotationTargets.push_back(rotationConfig);
+		}
+
+		readLineAndLog(inputStream, line, std::cout);
+		sscanf(line.data(), "%[^:]:%lf", prefix, &(pComposerEvaluatorConfig->m_composeEpsilon));
+	}
+	else {
+		throw std::logic_error("Can not read config file for targets!");
+	}
+}
+
 void ConfigReader::initLibrarySetNameMap() {
 	m_librarySetNameMap["H-T"] = L_HT;
 	m_librarySetNameMap["H-CV"] = L_HCV;

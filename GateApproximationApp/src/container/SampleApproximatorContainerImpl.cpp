@@ -33,6 +33,7 @@ SampleApproximatorContainerImpl::~SampleApproximatorContainerImpl() {
 GateApproximatorPtr SampleApproximatorContainerImpl::getGateApproximator() {
 	GateApproximatorPtr pGateApproximator = GateApproximatorPtr(new ComposerBasedGateApproximator(m_pGateDecomposer,
 			1,
+			m_approximatorConfig.m_maxResultNumber,
 			m_pGateComposer,
 			m_approximatorConfig.m_initialEpsilon,
 			m_pGateLookupResultFilter));

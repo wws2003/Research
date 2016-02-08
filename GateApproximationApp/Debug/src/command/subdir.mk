@@ -9,6 +9,7 @@ CPP_SRCS += \
 ../src/command/CommandParser.cpp \
 ../src/command/EvaluateApproximatorCommand.cpp \
 ../src/command/EvaluateCollectionCommand.cpp \
+../src/command/EvaluateComposerCommand.cpp \
 ../src/command/EvaluatePersistedCollectionForTargetsCommand.cpp \
 ../src/command/GenerateAndStoreApproximationsCommand.cpp \
 ../src/command/NotAvailableCommand.cpp 
@@ -19,6 +20,7 @@ OBJS += \
 ./src/command/CommandParser.o \
 ./src/command/EvaluateApproximatorCommand.o \
 ./src/command/EvaluateCollectionCommand.o \
+./src/command/EvaluateComposerCommand.o \
 ./src/command/EvaluatePersistedCollectionForTargetsCommand.o \
 ./src/command/GenerateAndStoreApproximationsCommand.o \
 ./src/command/NotAvailableCommand.o 
@@ -29,6 +31,7 @@ CPP_DEPS += \
 ./src/command/CommandParser.d \
 ./src/command/EvaluateApproximatorCommand.d \
 ./src/command/EvaluateCollectionCommand.d \
+./src/command/EvaluateComposerCommand.d \
 ./src/command/EvaluatePersistedCollectionForTargetsCommand.d \
 ./src/command/GenerateAndStoreApproximationsCommand.d \
 ./src/command/NotAvailableCommand.d 

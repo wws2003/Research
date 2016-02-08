@@ -25,26 +25,32 @@ public:
 	virtual ~AdaptiveElementComposer(){};
 
 	//Override
-	IteratorPtr<T1> composeApproximations(const BuildingBlockBuckets<T1>& buildingBlockBuckets,
+	IteratorPtr<LookupResult<T1> > composeApproximations(const BuildingBlockBuckets<T1>& buildingBlockBuckets,
 			T1 target,
 			DistanceCalculatorPtr<T1> pDistanceCalculator,
-			mreal_t epsilon);
+			mreal_t epsilon,
+			bool toSortResults = true);
 
-private:
+protected:
 	void convertToDerivedBuildingBlockBuckets(const BuildingBlockBuckets<T1>& buildingBlockBuckets, BuildingBlockBuckets<T2>& derivedBuildingBlockBuckets);
-
-	void releaseDerivedBuildingBlockBuckets(BuildingBlockBuckets<T2>& derivedBuildingBlockBuckets);
-
-	void releaseDerivedIter(IteratorPtr<T2>& pDerivedIter);
-
-	void convertToOriginalIter(const IteratorPtr<T2>& pDerivedIter,
-			IteratorPtr<T1>& pResultIter,
-			T1 target,
-			DistanceCalculatorPtr<T1> pDistanceCalculator,
-			mreal_t epsilon);
 
 	void convertToDerivedIter(const IteratorPtr<T1>& pOriginalIter,
 				IteratorPtr<T2>& pDerivedIter);
+
+	void convertToOriginalResultIter(const IteratorPtr<LookupResult<T2> >& pDerivedIter,
+			IteratorPtr<LookupResult<T1> >& pResultIter,
+			T1 target,
+			DistanceCalculatorPtr<T1> pDistanceCalculator,
+			mreal_t epsilon,
+			bool toSortResults);
+
+	void releaseDerivedBuildingBlockBuckets(BuildingBlockBuckets<T2>& derivedBuildingBlockBuckets);
+
+	void releaseDerivedResultIter(IteratorPtr<LookupResult<T2> >& pDerivedIter);
+
+	void releaseDerivedIter(IteratorPtr<T2>& pDerivedIter);
+
+	virtual void releaseDerivedItem(T2& t2) = 0;
 
 	DistanceCalculatorPtr<T2> m_pDerivedDistanceCalculator;
 	ComposerPtr<T2> m_pDerivedComposer;

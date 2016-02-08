@@ -10,5 +10,7 @@
 
 template class AdaptiveElementComposer<MatrixPtr, RealCoordinate<MatrixPtr> >;
 
-
-
+void AdaptiveMatrixCoordinateComposer::releaseDerivedItem(RealCoordinate<MatrixPtr>& matrixCoord) {
+	_destroy(matrixCoord.getElement());
+	matrixCoord.setElement(NullPtr);
+}

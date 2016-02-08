@@ -33,10 +33,11 @@ public:
 	virtual ~NearIdentityElementBinBasedComposer(){};
 
 	//Override
-	virtual IteratorPtr<T> composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
+	virtual IteratorPtr<LookupResult<T> > composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
 			T pQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
-			mreal_t epsilon);
+			mreal_t epsilon,
+			bool toSortResults = true);
 
 private:
 	void initBinCollection(IteratorPtr<T> pBuildingBlockIter,
@@ -46,7 +47,7 @@ private:
 	void generateApproximationsFromBins(T pQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
-			ApprxResultBuffer<T>& apprxResultBuffer);
+			ApprxResultBuffer<LookupResult<T> >& apprxResultBuffer);
 
 	void generateApproximationsFromCombinableBins(const BinPtrVector<T>&  combinableBins,
 			T pQuery,
@@ -54,7 +55,7 @@ private:
 			mreal_t epsilonForMergeCandidate,
 			mreal_t approximationEpsilon,
 			CollectionPtr<T> pApprxTempCollection,
-			ApprxResultBuffer<T>& apprxResultBuffer,
+			ApprxResultBuffer<LookupResult<T> >& apprxResultBuffer,
 			int maxResultsNumber);
 
 	void getApproximationsFromCombinableBins(T element,
@@ -65,7 +66,7 @@ private:
 			mreal_t epsilonForMergeCandidate,
 			mreal_t approximationEpsilon,
 			CollectionPtr<T> pApprxTempCollection,
-			ApprxResultBuffer<T>& apprxResultBuffer,
+			ApprxResultBuffer<LookupResult<T> >& apprxResultBuffer,
 			int maxResultsNumber);
 
 	void distributeResultsToBins(IteratorPtr<T> pApprxIter,
