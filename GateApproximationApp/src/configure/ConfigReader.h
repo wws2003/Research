@@ -35,6 +35,10 @@ public:
 
 	virtual void readEvaluatorConfigFromTargets(std::string configFile, EvaluatorConfig* pEvaluatorConfig);
 
+	virtual void readComposerEvaluatorConfig(std::string configFile, ComposerEvaluatorConfig* pComposerEvaluatorConfig);
+
+	virtual void readComposerEvaluatorConfigFromTargets(std::string configFile, ComposerEvaluatorConfig* pComposerEvaluatorConfig);
+
 private:
 	void initLibrarySetNameMap();
 	void initRotationSetNameMap();

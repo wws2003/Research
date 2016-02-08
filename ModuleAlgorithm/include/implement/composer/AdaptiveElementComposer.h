@@ -50,7 +50,7 @@ protected:
 
 	void releaseDerivedIter(IteratorPtr<T2>& pDerivedIter);
 
-	virtual void releaseDerivedElements(std::vector<T2>& derivedElements) = 0;
+	virtual void releaseDerivedItem(T2& t2) = 0;
 
 	DistanceCalculatorPtr<T2> m_pDerivedDistanceCalculator;
 	ComposerPtr<T2> m_pDerivedComposer;

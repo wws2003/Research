@@ -21,7 +21,9 @@
 
 class SampleEvaluatorContainerImpl: public IEvaluatorContainer {
 public:
-	SampleEvaluatorContainerImpl(const EvaluatorConfig& config, const CollectionConfig& collectionConfig);
+	SampleEvaluatorContainerImpl(const EvaluatorConfig& config,
+			const CollectionConfig& collectionConfig);
+
 	virtual ~SampleEvaluatorContainerImpl();
 
 	//Override

@@ -12,7 +12,7 @@
 #include "Coordinate.hpp"
 #include <iostream>
 
-#define ACE_DEBUGGING
+//#define ACE_DEBUGGING
 
 template<typename T2>
 void printTargetDebugInfo(T2 derivedTarget);
@@ -112,11 +112,12 @@ void AdaptiveElementComposer<T1, T2>::convertToOriginalResultIter(const Iterator
 				//Re-check distance to original target to make sure
 				mreal_t distanceToTarget = pDistanceCalculator->distance(t1, target);
 				if(distanceToTarget <= epsilon) {
-					results.push_back(LookupResult<T1>(t1, distanceToTarget));
+					results.push_back(LookupResult<T1>(t1->clone(), distanceToTarget));
 				}
-				else {
+				//Release later
+				/*else {
 					_destroy(t1);
-				}
+				}*/
 			}
 			else {
 				//std::cout << "An abnormal case: Null orginal pointer\n";
@@ -144,30 +145,25 @@ void AdaptiveElementComposer<T1, T2>::releaseDerivedBuildingBlockBuckets(Buildin
 
 template<typename T1, typename T2>
 void AdaptiveElementComposer<T1, T2>::releaseDerivedResultIter(IteratorPtr<LookupResult<T2> >& pDerivedIter) {
-	std::vector<T2> derivedElements;
 	if(pDerivedIter != NullPtr) {
 		while(!pDerivedIter->isDone()) {
-			T2 pDerivedElement = pDerivedIter->getObj().m_resultElement;
-			derivedElements.push_back(pDerivedElement);
+			T2 derivedElement = pDerivedIter->getObj().m_resultElement;
+			releaseDerivedItem(derivedElement);
 			pDerivedIter->next();
 		}
 	}
 	_destroy(pDerivedIter);
-	releaseDerivedElements(derivedElements);
 }
 
 template<typename T1, typename T2>
 void AdaptiveElementComposer<T1, T2>::releaseDerivedIter(IteratorPtr<T2>& pDerivedIter) {
-	std::vector<T2> derivedElements;
 	if(pDerivedIter != NullPtr) {
 		while(!pDerivedIter->isDone()) {
-			T2 pDerivedElement = pDerivedIter->getObj();
-			derivedElements.push_back(pDerivedElement);
+			T2 derivedElement = pDerivedIter->getObj();
+			releaseDerivedItem(derivedElement);
 			pDerivedIter->next();
 		}
 	}
-	_destroy(pDerivedIter);
-	releaseDerivedElements(derivedElements);
 }
 
 template<typename T2>

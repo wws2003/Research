@@ -22,8 +22,12 @@ src/Application.d: ../src/Application.cpp \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistableCollection.h \
  ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
- ../src/configure/Config.h ../src/configure/ConfigReader.h \
- ../src/configure/Config.h ../src/command/ICommand.h
+ ../../ModuleEvaluate/include/interface/abstract/IComposerEvaluator.h \
+ ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
+ ../src/container/IComposerEvaluatorContainer.h \
+ ../src/container/IComposerContainer.h ../src/configure/Config.h \
+ ../src/configure/ConfigReader.h ../src/configure/Config.h \
+ ../src/command/ICommand.h
 
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
 
@@ -74,6 +78,14 @@ src/Application.d: ../src/Application.cpp \
 ../../ModuleAlgorithm/include/interface/abstract/IPersistable.h:
 
 ../../ModuleAlgorithm/include/interface/abstract/ICollection.h:
+
+../../ModuleEvaluate/include/interface/abstract/IComposerEvaluator.h:
+
+../../ModuleAlgorithm/include/interface/abstract/IComposer.h:
+
+../src/container/IComposerEvaluatorContainer.h:
+
+../src/container/IComposerContainer.h:
 
 ../src/configure/Config.h:
 

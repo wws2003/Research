@@ -12,11 +12,12 @@
 #include "IComposer.h"
 #include "EvaluateCommon.h"
 
-class IComposeEvaluatorContainer {
+class IComposerEvaluatorContainer {
 public:
-	virtual ~IComposeEvaluatorContainer(){};
+	virtual ~IComposerEvaluatorContainer(){};
 
 	virtual GateComposerEvaluatorPtr getGateComposerEvaluator() = 0;
+
 };
 
 

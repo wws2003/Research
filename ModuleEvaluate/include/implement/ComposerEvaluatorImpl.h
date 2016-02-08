@@ -45,7 +45,7 @@ public:
 
 private:
 	struct ComposerEvaluateFactors {
-		int m_nbResults;
+		combination_counter_t m_nbResults = 0;
 		mreal_t m_bestDistance;
 		double m_composeTime;
 

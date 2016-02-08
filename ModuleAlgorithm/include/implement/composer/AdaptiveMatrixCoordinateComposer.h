@@ -15,7 +15,7 @@
 class AdaptiveMatrixCoordinateComposer: public AdaptiveElementComposer<MatrixPtr, RealCoordinate<MatrixPtr> >  {
 protected:
 	//Override
-	void releaseDerivedElements(std::vector<RealCoordinate<MatrixPtr> >& derivedElements);
+	void releaseDerivedItem(RealCoordinate<MatrixPtr>& matrixCoord);
 };
 
 #endif /* ADAPTIVEMATRIXCOORDINATECOMPOSER_H_ */

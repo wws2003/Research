@@ -12,6 +12,9 @@
 #include "IEvaluatorContainer.h"
 #include "IApproximatorContainer.h"
 #include "ICollectionContainer.h"
+#include "IComposerEvaluator.h"
+#include "IComposerEvaluatorContainer.h"
+#include "IComposerContainer.h"
 #include "Config.h"
 #include "ApplicationCommon.h"
 #include "ConfigReader.h"
@@ -36,6 +39,8 @@ private:
 
 	AbstractCommandPtr getComposerBasedApproximator2EvaluationCommandForTargets(std::string collectionConfigFile, std::string cbApprxConfigFile, std::string adbComposerConfigFile, std::string targetConfigFile);
 
+	AbstractCommandPtr getComposerEvaluationCommandForTargets(std::string collectionConfigFile, std::string cbApprxConfigFile, std::string adbComposerConfigFile, std::string targetConfigFile);
+
 	//Apply config paramters to change containers for concrete instances of collection, approximator, evaluator...
 	void readCollectionConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig);
 
@@ -55,6 +60,12 @@ private:
 				std::string cbApprxConfigFile, ComposerBasedApproximatorConfig* pApproximatorConfig,
 				std::string targetConfigFile, EvaluatorConfig* pEvaluatorConfig,
 				std::string cadbConfigFile, CoordinateAdditionalBasedComposerConfig* pCadbConfig);
+
+	void readComposerEvaluationConfig(ConfigReader configReader,
+					std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
+					std::string composerEvalConfigFile,
+					std::string targetConfigFile, ComposerEvaluatorConfig* pComposerEvalConfig,
+					std::string cadbConfigFile, CoordinateAdditionalBasedComposerConfig* pCadbConfig);
 
 	void readSKConfig(ConfigReader configReader,
 			std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
@@ -83,6 +94,10 @@ private:
 
 	void resetComposerBasedApproximatorContainer(const ComposerBasedApproximatorConfig& approximatorConfig, const CoordinateAdditionalBasedComposerConfig& cadbConfig, const CollectionConfig& collectionConfig);
 
+	void resetComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig, const CollectionConfig& collectionConfig);
+
+	void resetComposerEvaluatorContainer(const ComposerEvaluatorConfig& composerEvalConfig, const CollectionConfig& collectionCofig);
+
 	void resetSKApproximatorContainer(const SKApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig);
 
 	void resetSK2ApproximatorContainer(const SKApproximatorConfig2& approximatorConfig, const CollectionConfig& collectionConfig);
@@ -92,7 +107,8 @@ private:
 	CollectionContainerPtr m_pCollectionContainer;
 	ApproximatorContainerPtr m_pApproximatorContainer;
 	EvaluatorContainerPtr m_pEvaluatorContainer;
-
+	ComposerContainerPtr m_pComposerContainer;
+	ComposerEvaluatorContainerPtr m_pComposerEvaluatorContainer;
 };
 
 #endif /* COMMANDFACTORY_H_ */

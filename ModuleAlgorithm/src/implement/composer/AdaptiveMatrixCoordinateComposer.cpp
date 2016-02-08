@@ -10,11 +10,7 @@
 
 template class AdaptiveElementComposer<MatrixPtr, RealCoordinate<MatrixPtr> >;
 
-void AdaptiveMatrixCoordinateComposer::releaseDerivedElements(std::vector<RealCoordinate<MatrixPtr> >& derivedElements) {
-	for(std::vector<RealCoordinate<MatrixPtr> >::iterator cIter = derivedElements.begin(); cIter != derivedElements.end();) {
-		MatrixPtr pMatrix = cIter->getElement();
-		cIter = derivedElements.erase(cIter);
-		_destroy(pMatrix);
-	}
+void AdaptiveMatrixCoordinateComposer::releaseDerivedItem(RealCoordinate<MatrixPtr>& matrixCoord) {
+	_destroy(matrixCoord.getElement());
+	matrixCoord.setElement(NullPtr);
 }
-

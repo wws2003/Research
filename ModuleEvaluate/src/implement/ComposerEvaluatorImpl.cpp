@@ -58,9 +58,9 @@ void ComposerEvaluatorImpl<T>::ComposerEvaluateFactors::printInfo(std::ostream& 
 	ostream << composerName
 			<< " took "
 			<< m_composeTime
-			<< " to retrieve "
+			<< " ms to retrieve "
 			<< m_nbResults
-			<< " results with best distance"
+			<< " results with best distance "
 			<< m_bestDistance
 			<<  "\n";
 }
@@ -68,7 +68,7 @@ void ComposerEvaluatorImpl<T>::ComposerEvaluateFactors::printInfo(std::ostream& 
 template<typename T>
 void ComposerEvaluatorImpl<T>::ComposerEvaluateFactors::printCompareToInfo(std::ostream& ostream, const ComposerEvaluateFactors& evalFactors2) {
 	if(evalFactors2.m_nbResults != 0) {
-		ostream << "Recall = " << m_nbResults / evalFactors2.m_nbResults << "\n";
+		ostream << "Recall = " << (float)m_nbResults / evalFactors2.m_nbResults << "\n";
 		if(m_bestDistance > evalFactors2.m_bestDistance) {
 			ostream << "Couldn not reached best result\n";
 		}
@@ -92,12 +92,14 @@ void ComposerEvaluatorImpl<T>::logTarget(T target) {
 				pCoordinate);
 	}
 
+	m_ostream <<  "--Target coord:"<< ENDLINE;
 	if(target != NullPtr) {
 		m_pWriter->write(target, m_ostream);
 		if(pCoordinate != NullPtr) {
 			m_pRealCoordinateWriter->writeCoordinate(*pCoordinate, m_ostream);
 		}
 	}
+	m_ostream << ENDLINE;
 
 	//Release pointer to coordinate
 	_destroy(pCoordinate);
@@ -111,6 +113,7 @@ void ComposerEvaluatorImpl<T>::evaluateComposerForTarget(ComposerPtr<T> pEvaluat
 	BuildingBlockBuckets<T> buildingBlockBuckets;
 	decomposeQueryIntoBuildingBlocksBuckets(target, buildingBlockBuckets);
 
+	m_ostream << "Starting on evaluated composer\n";
 	ComposerEvaluateFactors evalFactors1;
 	evaluateComposer(buildingBlockBuckets,
 			pEvaluateComposer,
@@ -118,6 +121,7 @@ void ComposerEvaluatorImpl<T>::evaluateComposerForTarget(ComposerPtr<T> pEvaluat
 			&evalFactors1);
 	evalFactors1.printInfo(m_ostream, "Evaluated composer");
 
+	m_ostream << "Starting on brute-force composer\n";
 	ComposerEvaluateFactors evalFactors2;
 	evaluateComposer(buildingBlockBuckets,
 			pStandardComposer,
@@ -198,6 +202,11 @@ void ComposerEvaluatorImpl<T>::evaluateComposer(BuildingBlockBuckets<T>& buildin
 	catch (std::exception & e) {
 	}
 
+	//Reset building blocks for future use
+	for(IteratorPtr<T> pBuildingBlockIter : buildingBlockBuckets) {
+		pBuildingBlockIter->toBegin();
+	}
+
 	processFoundResults(pFindIter, pComposerEvaluateFactors);
 
 	releaseResultIter(pFindIter);
@@ -218,8 +227,12 @@ void ComposerEvaluatorImpl<T>::processFoundResults(IteratorPtr<LookupResult<T> >
 
 	//Print results if necessary
 	double searchTime = pComposerEvaluateFactor->m_composeTime;
-	while(pFindIter->isDone()) {
-		logSearchResult(pFindIter->getObj(), searchTime);
+	pComposerEvaluateFactor->m_nbResults = 0;
+	while(!pFindIter->isDone()) {
+		//Only log first result
+		if(pComposerEvaluateFactor->m_nbResults == 0) {
+			logSearchResult(pFindIter->getObj(), searchTime);
+		}
 		pFindIter->next();
 		pComposerEvaluateFactor->m_nbResults++;
 	}

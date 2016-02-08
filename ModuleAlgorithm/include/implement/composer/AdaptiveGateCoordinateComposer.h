@@ -21,7 +21,7 @@ public:
 
 protected:
 	//Override
-	void releaseDerivedElements(std::vector<RealCoordinate<GatePtr> >& derivedElements);
+	void releaseDerivedItem(RealCoordinate<GatePtr>& gateCoord);
 };
 
 #endif /* ADAPTIVEGATECOORDINATECOMPOSER_H_ */

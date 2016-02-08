@@ -13,7 +13,7 @@
 #include <exception>
 #include <iostream>
 
-#define ABCE_DEBUG
+//#define ABCE_DEBUG
 
 #ifdef ABCE_DEBUG
 #include "Coordinate.hpp"
