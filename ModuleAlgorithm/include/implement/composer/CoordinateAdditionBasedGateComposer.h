@@ -13,7 +13,16 @@
 #include "AlgoInternal.h"
 #include "AdditionBasedElementComposer.h"
 
-typedef class AdditionBasedElementComposer<RealCoordinate<GatePtr> > CoordinateAdditionBasedGateComposer;
+class CoordinateAdditionBasedGateComposer: public AdditionBasedElementComposer<RealCoordinate<GatePtr> > {
+public:
+	CoordinateAdditionBasedGateComposer(ComparatorPtr<RealCoordinate<GatePtr> > pElementComparator,
+			CombinerPtr<RealCoordinate<GatePtr> > pCombiner,
+			RealCoordinate<GatePtr>  epsilonElement,
+			int maxResultsNumber);
+
+	//Release
+	void releaseIntermediateResult(RealCoordinate<GatePtr>  coord);
+};
 
 
 

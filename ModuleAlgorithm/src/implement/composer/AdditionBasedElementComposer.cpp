@@ -157,6 +157,9 @@ void AdditionBasedElementComposer<T>::composeCandidate(const std::vector<T>& par
 	for(int i = firstElementIndex - 1; i >= 0; i--) {
 		T tmp;
 		m_pCombiner->combine(combined, partialElements[i], tmp);
+		if(i < firstElementIndex - 1) {
+			releaseIntermediateResult(combined);
+		}
 		combined = tmp;
 	}
 	result = combined;

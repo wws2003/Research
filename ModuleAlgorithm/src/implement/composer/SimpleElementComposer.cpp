@@ -137,15 +137,15 @@ void SimpleElementComposer<T>::evaluateCombination(const std::vector<T>& partial
 
 	if(candidate != NullPtr) {
 		mreal_t distanceToTarget = pDistanceCalculator->distance(candidate, pQuery);
-		if(distanceToTarget < epsilon) {
+		if(distanceToTarget <= epsilon) {
 			resultBuffer.push_back(LookupResult<T>(candidate, distanceToTarget));
 			if(m_maxResultsNumber > 0 && resultBuffer.size() >= m_maxResultsNumber) {
 				throw (1);
 			}
 		}
-	}
-	else {
-		_destroy(candidate);
+		else {
+			_destroy(candidate);
+		}
 	}
 }
 

@@ -106,6 +106,8 @@ private:
 
 	void composeCandidate(const std::vector<T>& partialElements, T& result);
 
+	virtual void releaseIntermediateResult(T result) = 0;
+
 	WrapperComparator m_wrapperComparator;
 
 	CombinerPtr<T> m_pCombiner;
