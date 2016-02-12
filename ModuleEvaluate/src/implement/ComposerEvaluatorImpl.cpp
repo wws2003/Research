@@ -146,8 +146,10 @@ void ComposerEvaluatorImpl<T>::decomposeQueryIntoBuildingBlocksBuckets(T target,
 
 	combination_counter_t maximumNbCombinations = 1;
 	for(unsigned int i = 0; i < partialQueries.size(); i++) {
+		T partialTarget = partialQueries[i];
+
 		//Get buiding block list for partial query
-		IteratorPtr<LookupResult<T> > pLookupIter = m_pCollection->findNearestNeighbours(partialQueries[i],
+		IteratorPtr<LookupResult<T> > pLookupIter = m_pCollection->findNearestNeighbours(partialTarget,
 				m_initialEpsilon);
 
 		//Add found building blocks to the bucket to compose later
@@ -155,6 +157,9 @@ void ComposerEvaluatorImpl<T>::decomposeQueryIntoBuildingBlocksBuckets(T target,
 				&maximumNbCombinations));
 
 		_destroy(pLookupIter);
+
+		partialQueries[i] = NullPtr;
+		_destroy(partialTarget);
 	}
 	m_ostream << "Maximum number of combinations " << maximumNbCombinations << "\n";
 }
@@ -166,9 +171,17 @@ IteratorPtr<T> ComposerEvaluatorImpl<T>::getExtractedElementIterator(IteratorPtr
 	m_pHelperCollection->clear();
 	int count = 0;
 	while(!pLookupResultIter->isDone() && (m_buildingBlocksBucketMaxSize == 0 || count < m_buildingBlocksBucketMaxSize)) {
-		pLookupResultIter->next();
 		m_pHelperCollection->addElement(pLookupResultIter->getObj().m_resultElement);
 		count++;
+		pLookupResultIter->next();
+	}
+
+	//Destroy un-used found results
+	while(!pLookupResultIter->isDone()) {
+		LookupResult<T> result = pLookupResultIter->getObj();
+		_destroy(result.m_resultElement);
+		result.m_resultElement = NullPtr;
+		pLookupResultIter->next();
 	}
 
 	//Side-effect: Count maximum possible number of combinations
@@ -287,6 +300,7 @@ void ComposerEvaluatorImpl<T>::releaseBuildingBlocksBuckets(BuildingBlockBuckets
 	for(typename BuildingBlockBuckets<T>::iterator bIter = buildingBlockBuckets.begin(); bIter != buildingBlockBuckets.end();) {
 		IteratorPtr<T> pIter = *bIter;
 		bIter = buildingBlockBuckets.erase(bIter);
+		releaseIter(pIter);
 		_destroy(pIter);
 	}
 }
@@ -300,5 +314,14 @@ void ComposerEvaluatorImpl<T>::releaseResultIter(IteratorPtr<LookupResult<T> >& 
 	}
 	_destroy(pFindResultIter);
 	pFindResultIter = NullPtr;
+}
+
+template<typename T>
+void ComposerEvaluatorImpl<T>::releaseIter(IteratorPtr<T>& pFindIter) {
+	while(pFindIter != NullPtr && !pFindIter->isDone()) {
+		T element = pFindIter->getObj();
+		pFindIter->next();
+		_destroy(element);
+	}
 }
 

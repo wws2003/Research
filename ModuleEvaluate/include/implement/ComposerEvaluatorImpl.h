@@ -80,6 +80,8 @@ private:
 	void releaseBuildingBlocksBuckets(BuildingBlockBuckets<T>& buildingBlockBuckets);
 	void releaseResultIter(IteratorPtr<LookupResult<T> >& pFindResultIter);
 
+	void releaseIter(IteratorPtr<T>& pFindIter);
+
 	std::vector<T> m_targets;
 	int m_nbPartialElements;
 	int m_buildingBlocksBucketMaxSize;
