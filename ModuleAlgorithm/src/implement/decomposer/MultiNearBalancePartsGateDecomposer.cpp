@@ -43,19 +43,19 @@ void MultiNearBalancePartsGateDecomposer::getNearOnePartGates(RealCoordinatePtr<
 	for(int i = 0; i < nbSubElements - 1; i++) {
 		real_coordinate_t onePartCoord = nearOnePartCoordinate;
 
-		/*std::cout << "-Partial coordinate before modified :\n  ";
+		std::cout << "-Partial coordinate before modified :\n  ";
 		for(mreal_t coord : onePartCoord) {
 			std::cout << coord << " ";
 		}
-		std::cout << "\n";*/
+		std::cout << "\n";
 
 		modifyCoordinate(onePartCoord);
 
-		/*std::cout << "-Partial coordinate after modified :\n  ";
+		std::cout << "-Partial coordinate after modified :\n  ";
 		for(mreal_t coord : onePartCoord) {
 			std::cout << coord << " ";
 		}
-		std::cout << "\n";*/
+		std::cout << "\n";
 
 		RealCoordinate<GatePtr> onePartGateCoordinate(NullPtr, onePartCoord);
 		m_pCoordinateCalculator->calculateElementFromCoordinate(&onePartGateCoordinate);
