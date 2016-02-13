@@ -40,12 +40,18 @@ IteratorPtr<LookupResult<T> > AdditionBasedElementComposer<T>::composeApproximat
 	SortedVectorArray sortedVectorArray(m_wrapperComparator);
 	sortedVectorArray.initByVectors(buildingBlockBuckets);
 
+	SortedVectorArrayList secondarySortedVectorArrays;
+	initSecondarySortedVectorArrays(secondarySortedVectorArrays, buildingBlockBuckets);
+
+	std::cout << "Finished pre-process\n";
+
 	std::vector<LookupResult<T> > resultBuffer;
 	std::vector<T> partialTermElements;
 
 	int lastVectorIndex = sortedVectorArray.getNbVectors() - 1;
 	try {
 		findCompositionsInRange(sortedVectorArray,
+				secondarySortedVectorArrays,
 				lastVectorIndex,
 				partialTermElements,
 				target,
@@ -57,6 +63,8 @@ IteratorPtr<LookupResult<T> > AdditionBasedElementComposer<T>::composeApproximat
 	catch (int e) {
 		std::cout << "Enough result\n";
 	}
+
+	releaseSecondarySortedVectorArrays(secondarySortedVectorArrays);
 
 	std::cout << "Number of combination checked:" << m_combinationCounter << "\n";
 	m_combinationCounter = 0;
@@ -70,7 +78,19 @@ IteratorPtr<LookupResult<T> > AdditionBasedElementComposer<T>::composeApproximat
 }
 
 template<typename T>
+void AdditionBasedElementComposer<T>::initSecondarySortedVectorArrays(SortedVectorArrayList& secondarySortedVectorArrays,
+		const BuildingBlockBuckets<T>& buildingBlockBuckets) {
+	//Implement in sub-class if neccessary
+}
+
+template<typename T>
+void AdditionBasedElementComposer<T>::releaseSecondarySortedVectorArrays(SortedVectorArrayList& sortedVectorArrays) {
+	//Implement in sub-class if neccessary
+}
+
+template<typename T>
 void AdditionBasedElementComposer<T>::findCompositionsInRange(const SortedVectorArray& sortedVectorArray,
+		const SortedVectorArrayList& secondarySortedVectorArrays,
 		int vectorIndex,
 		std::vector<T>& partialTermElements,
 		const T& partialTarget,
@@ -101,11 +121,13 @@ void AdditionBasedElementComposer<T>::findCompositionsInRange(const SortedVector
 	sortedVectorArray.getRangeInVector(vectorIndex, min, max, lowerBound, upperBound);
 
 	const std::vector<T>& rightMostVector = sortedVectorArray.getVector(vectorIndex);
-	//std::cout << "For vector " <<  vectorIndex << ", bound to investigate:" << lowerBound << " " << upperBound << " oversize " << rightMostVector.size() << "\n";
-
 	for(int elementIndex = lowerBound; elementIndex < upperBound && elementIndex < rightMostVector.size(); elementIndex++) {
 		T lastTerm = rightMostVector[elementIndex];
 
+		//Quick-test to eliminate unpromising combinations, apart from the main filter
+		if(!quickEvaluate(secondarySortedVectorArrays, vectorIndex, lastTerm, partialTarget)) {
+			continue;
+		}
 		//Store last term into current partial term elements
 		partialTermElements.push_back(lastTerm);
 
@@ -113,6 +135,7 @@ void AdditionBasedElementComposer<T>::findCompositionsInRange(const SortedVector
 		T subPartialTarget = partialTarget - lastTerm;
 
 		findCompositionsInRange(sortedVectorArray,
+				secondarySortedVectorArrays,
 				vectorIndex - 1,
 				partialTermElements,
 				subPartialTarget,
@@ -124,6 +147,15 @@ void AdditionBasedElementComposer<T>::findCompositionsInRange(const SortedVector
 		//Restore partial terms elements
 		partialTermElements.pop_back();
 	}
+}
+
+template<typename T>
+bool AdditionBasedElementComposer<T>::quickEvaluate(const SortedVectorArrayList& secondarySortedVectorArrays,
+			int vectorIndex,
+			const T& rightMostElement,
+			const T& partialTarget) const {
+	//Implementation-details should be changed in sub-class
+	return true;
 }
 
 template<typename T>
@@ -193,7 +225,7 @@ void AdditionBasedElementComposer<T>::SortedVectorArray::initByVectors(const Bui
 	}
 
 	//Sort vectors
-	for(unsigned int j = 1; j < nbVector; j++) {
+	for(unsigned int j = 0; j < nbVector; j++) {
 		std::sort(m_vectors[j].begin(), m_vectors[j].end(), m_wrapperComparator);
 	}
 

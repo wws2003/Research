@@ -117,7 +117,7 @@ void SK2ApproximatorContainerImpl::initCoordinateAdditionalBasedGateComposer() {
 }
 
 void SK2ApproximatorContainerImpl::initRealCoordinateComparator() {
-	switch (m_approximatorConfig.m_coordinateApproximatorBasedConfig.m_coordinateComparatorType) {
+	switch (m_approximatorConfig.m_coordinateApproximatorBasedConfig.m_primaryCoordinateComparatorConfig.m_coordinateComparatorType) {
 	case CMP_DICTIONARY:
 		m_pRealCoordinateComparator = ComparatorPtr<RealCoordinate<GatePtr> >(new DictionaryOrderCoordinateComparator<GatePtr>());
 		break;
@@ -129,6 +129,6 @@ void SK2ApproximatorContainerImpl::initRealCoordinateComparator() {
 
 void SK2ApproximatorContainerImpl::initEpsilonRealCoordinate(RealCoordinate<GatePtr>& epsilonRealCoordinate) {
 	int nbCoord = (m_coreCollectionConfig.m_nbQubits == 1) ? 3 : 15;
-	std::vector<mreal_t> coords(nbCoord, m_approximatorConfig.m_coordinateApproximatorBasedConfig.m_coordinateEpsilon);
+	std::vector<mreal_t> coords(nbCoord, m_approximatorConfig.m_coordinateApproximatorBasedConfig.m_primaryCoordinateComparatorConfig.m_coordinateEpsilon);
 	epsilonRealCoordinate = RealCoordinate<GatePtr>(NullPtr, coords);
 }

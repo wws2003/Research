@@ -11,6 +11,7 @@
 #include "Config.h"
 #include "ApplicationCommon.h"
 #include <string>
+#include <istream>
 
 class ConfigReader {
 public:
@@ -27,7 +28,9 @@ public:
 
 	virtual void readSKApproximatorConfig(std::string configFile, SKApproximatorConfig* pApproximatorConfig);
 
-	virtual void readCoordinateAddtionalBasedComposerConfig(std::string configFile, CoordinateAdditionalBasedComposerConfig* pApproximatorConfig);
+	virtual void readCoordinateAddtionalBasedComposerConfig(std::string configFile, CoordinateAdditionalBasedComposerConfig* pComposerConfig);
+
+	virtual void readMultiComparatorCoordinateAddtionalBasedComposerConfig(std::string configFile, CoordinateAdditionalBasedComposerConfig* pComposerConfig);
 
 	virtual void readSKApproximatorConfig2(std::string configFile, SKApproximatorConfig2* pApproximatorConfig);
 
@@ -44,6 +47,8 @@ private:
 	void initRotationSetNameMap();
 
 	void readRotationConfigLine(std::string line, RotationConfig& rotationConfig);
+
+	void readCoordinateComparatorConfig(std::istream& inputStream, CoordinateComparatorConfig* pConfig);
 
 	LibrarySetNameMap m_librarySetNameMap;
 	RotationTypeNameMap m_rotationSetNameMap;

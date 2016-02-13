@@ -25,6 +25,8 @@
 #include "DuplicateGateLookupResultFilterImpl.h"
 #include "DictionaryOrderCoordinateComparator.hpp"
 #include "SumCoordinateComparator.hpp"
+#include "OneElementCoordinateComparator.hpp"
+#include "MultipleComparatorCoordinateAdditionBasedGateComposer.h"
 #include "MultiNearBalancePartsGateDecomposer.h"
 
 SampleComposerContainerImpl::SampleComposerContainerImpl(const CoordinateAdditionalBasedComposerConfig& cabConfig,
@@ -57,33 +59,12 @@ void SampleComposerContainerImpl::wireDependencies() {
 
 	ResourceContainerFactory resourceContainerFactory;
 	m_pResourceContainer = resourceContainerFactory.getResourceContainer(m_collectionConfig.m_librarySet,
-				m_pMatrixFactory,
-				m_pMatrixOperator);
+			m_pMatrixFactory,
+			m_pMatrixOperator);
 
 	initCoordinateAdditionalBasedGateComposerElements();
-}
 
-void SampleComposerContainerImpl::releaseDependencies() {
-	_destroy(m_pGateComposer);
-	_destroy(m_pGateCoordinateComposer);
-	_destroy(m_pGateCoordinateConveter);
-	_destroy(m_pGateCoordinateCombiner);
-	_destroy(m_pRealCoordinateComparator);
-
-	_destroy(m_pGateRealCoordinateCalculator);
-	_destroy(m_pMatrixRealCoordinateCalculator);
-	_destroy(m_pHermitiaRealCoordinateCalculator);
-	_destroy(m_pMatrixRealInnerProductCalculator);
-
-	_destroy(m_pGateSetLog);
-	_destroy(m_pGateCombiner);
-
-	_destroy(m_pResourceContainer);
-	_destroy(m_pMatrixOperator);
-	_destroy(m_pMatrixFactory);
-}
-
-void SampleComposerContainerImpl::initCoordinateAdditionalBasedGateComposerElements() {
+	//Coordinate calculator
 	MatrixPtrVector pBasis;
 	m_pResourceContainer->getMatrixOrthonormalBasis(pBasis, m_collectionConfig.m_nbQubits);
 	m_pMatrixRealInnerProductCalculator = MatrixRealInnerProductCalculatorPtr(new MatrixRealInnerProductByTraceImpl(m_pMatrixOperator));
@@ -91,20 +72,7 @@ void SampleComposerContainerImpl::initCoordinateAdditionalBasedGateComposerEleme
 	m_pMatrixRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, m_pHermitiaRealCoordinateCalculator));
 	m_pGateRealCoordinateCalculator = GateRealCoordinateCalculatorPtr(new GateCoordinateCalculatorImpl(m_pMatrixRealCoordinateCalculator));
 
-	initRealCoordinateComparator();
-
-	RealCoordinate<GatePtr> epsilonRealCoordinate;
-	initEpsilonRealCoordinate(epsilonRealCoordinate);
-
-	GateCombinabilityCheckers checkers;
-	m_pGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(checkers, m_pMatrixOperator));
-
-	m_pGateCoordinateCombiner = CombinerPtr<RealCoordinate<GatePtr> >(new GateCoordinateCombinerImpl(m_pGateCombiner));
-	m_pGateCoordinateComposer = ComposerPtr<RealCoordinate<GatePtr> >(new CoordinateAdditionBasedGateComposer(m_pRealCoordinateComparator,
-			m_pGateCoordinateCombiner,
-			epsilonRealCoordinate,
-			-1));
-
+	//Converter and misc
 	bool phaseIgnored = m_collectionConfig.m_matrixDistanceCalculatorType == MDCT_FOWLER;
 	m_pGateCoordinateConveter = ConverterPtr<GatePtr, RealCoordinate<GatePtr> >(new GateCoordinateConverterImpl(m_pGateRealCoordinateCalculator,
 			m_pMatrixOperator,
@@ -113,19 +81,105 @@ void SampleComposerContainerImpl::initCoordinateAdditionalBasedGateComposerEleme
 	m_pGateSetLog = ElementSetLogPtr<GatePtr>(new GateSetLogImpl());
 }
 
-void SampleComposerContainerImpl::initRealCoordinateComparator() {
-	switch (m_coordinateAdditionalBasedComposerConfig.m_coordinateComparatorType) {
-	case CMP_DICTIONARY:
-		m_pRealCoordinateComparator = ComparatorPtr<RealCoordinate<GatePtr> >(new DictionaryOrderCoordinateComparator<GatePtr>());
-		break;
-	default:
-		m_pRealCoordinateComparator = ComparatorPtr<RealCoordinate<GatePtr> >(new SumCoordinateComparator<GatePtr>());
-		break;
+void SampleComposerContainerImpl::releaseDependencies() {
+	_destroy(m_pGateComposer);
+
+	_destroy(m_pGateSetLog);
+	_destroy(m_pGateCoordinateConveter);
+
+	_destroy(m_pGateRealCoordinateCalculator);
+	_destroy(m_pMatrixRealCoordinateCalculator);
+	_destroy(m_pHermitiaRealCoordinateCalculator);
+	_destroy(m_pMatrixRealInnerProductCalculator);
+
+	_destroy(m_pGateCoordinateComposer);
+	releaseSecondaryCoordinateComparators();
+	_destroy(m_pPrimaryRealCoordinateComparator);
+	_destroy(m_pGateCoordinateCombiner);
+
+	_destroy(m_pGateCombiner);
+
+	_destroy(m_pResourceContainer);
+	_destroy(m_pMatrixOperator);
+	_destroy(m_pMatrixFactory);
+}
+
+void SampleComposerContainerImpl::initCoordinateAdditionalBasedGateComposerElements() {
+	//Combiner
+	GateCombinabilityCheckers checkers;
+	m_pGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(checkers, m_pMatrixOperator));
+	m_pGateCoordinateCombiner = CombinerPtr<RealCoordinate<GatePtr> >(new GateCoordinateCombinerImpl(m_pGateCombiner));
+
+	//Coordinate comparators
+	m_pPrimaryRealCoordinateComparator = getRealCoordinateComparator(m_coordinateAdditionalBasedComposerConfig.m_primaryCoordinateComparatorConfig);
+
+	for(unsigned int i = 0; i < m_coordinateAdditionalBasedComposerConfig.m_secondaryCoordinateComparatorConfigs.size(); i++) {
+		CoordinateComparatorConfig secondaryCoordinateComparatorConfig = m_coordinateAdditionalBasedComposerConfig.m_secondaryCoordinateComparatorConfigs[i];
+		GateRealCoordinateComparatorPtr pSecondaryCoordinateComparator = getRealCoordinateComparator(secondaryCoordinateComparatorConfig);
+		m_secondaryRealCoordinateComparators.push_back(pSecondaryCoordinateComparator);
+	}
+
+	//Gate coordinate composer
+	initCoordinateAdditionalBasedGateComposer();
+}
+
+void SampleComposerContainerImpl::initCoordinateAdditionalBasedGateComposer() {
+	RealCoordinate<GatePtr> epsilonRealCoordinate;
+	initEpsilonRealCoordinate(epsilonRealCoordinate, m_coordinateAdditionalBasedComposerConfig.m_primaryCoordinateComparatorConfig.m_coordinateEpsilon);
+
+	if(m_secondaryRealCoordinateComparators.empty()) {
+		m_pGateCoordinateComposer = ComposerPtr<RealCoordinate<GatePtr> >(new CoordinateAdditionBasedGateComposer(m_pPrimaryRealCoordinateComparator,
+				m_pGateCoordinateCombiner,
+				epsilonRealCoordinate,
+				-1));
+	}
+	else {
+		std::vector<RealCoordinate<GatePtr> > epsilonRealCoordinates;
+		for(unsigned int i = 0; i < m_coordinateAdditionalBasedComposerConfig.m_secondaryCoordinateComparatorConfigs.size(); i++) {
+			RealCoordinate<GatePtr> secondaryEpsilonRealCoordinate;
+			initEpsilonRealCoordinate(secondaryEpsilonRealCoordinate, m_coordinateAdditionalBasedComposerConfig.m_secondaryCoordinateComparatorConfigs[i].m_coordinateEpsilon);
+			epsilonRealCoordinates.push_back(secondaryEpsilonRealCoordinate);
+		}
+		m_pGateCoordinateComposer = ComposerPtr<RealCoordinate<GatePtr> >(new MultipleComparatorCoordinateAdditionBasedGateComposer(m_pPrimaryRealCoordinateComparator,
+				m_pGateCoordinateCombiner,
+				epsilonRealCoordinate,
+				-1,
+				m_secondaryRealCoordinateComparators,
+				epsilonRealCoordinates));
 	}
 }
 
-void SampleComposerContainerImpl::initEpsilonRealCoordinate(RealCoordinate<GatePtr>& epsilonRealCoordinate) {
+SampleComposerContainerImpl::GateRealCoordinateComparatorPtr SampleComposerContainerImpl::getRealCoordinateComparator(CoordinateComparatorConfig coordinateComparatorConfig) {
+	GateRealCoordinateComparatorPtr pCoordinateComparator = NullPtr;
+	switch (coordinateComparatorConfig.m_coordinateComparatorType) {
+	case CMP_DICTIONARY:
+		pCoordinateComparator = ComparatorPtr<RealCoordinate<GatePtr> >(new DictionaryOrderCoordinateComparator<GatePtr>());
+		break;
+	case CMP_SUM:
+		pCoordinateComparator = ComparatorPtr<RealCoordinate<GatePtr> >(new SumCoordinateComparator<GatePtr>());
+		break;
+	case CMP_ONE_ELEMENT:
+	{
+		int comparedElementIndex = coordinateComparatorConfig.m_appliedCoordinateIndices[0];
+		pCoordinateComparator = ComparatorPtr<RealCoordinate<GatePtr> >(new OneElementCoordinateComparator<GatePtr>(comparedElementIndex));
+		break;
+	}
+	default:
+		break;
+	}
+	return pCoordinateComparator;
+}
+
+void SampleComposerContainerImpl::initEpsilonRealCoordinate(RealCoordinate<GatePtr>& epsilonRealCoordinate, mreal_t coordinateEpsilon) {
 	int nbCoord = (m_collectionConfig.m_nbQubits == 1) ? 3 : 15;
-	std::vector<mreal_t> coords(nbCoord, m_coordinateAdditionalBasedComposerConfig.m_coordinateEpsilon);
+	std::vector<mreal_t> coords(nbCoord, coordinateEpsilon);
 	epsilonRealCoordinate = RealCoordinate<GatePtr>(NullPtr, coords);
+}
+
+void SampleComposerContainerImpl::releaseSecondaryCoordinateComparators() {
+	for(GateRealCoordinateComparatorList::iterator cIter = m_secondaryRealCoordinateComparators.begin(); cIter!= m_secondaryRealCoordinateComparators.end();) {
+		GateRealCoordinateComparatorPtr pCoordinateComparator = *cIter;
+		cIter = m_secondaryRealCoordinateComparators.erase(cIter);
+		_destroy(pCoordinateComparator);
+	}
 }

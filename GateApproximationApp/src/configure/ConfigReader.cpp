@@ -178,22 +178,41 @@ void ConfigReader::readSKApproximatorConfig(std::string configFile, SKApproximat
 	}
 }
 
-void ConfigReader::readCoordinateAddtionalBasedComposerConfig(std::string configFile, CoordinateAdditionalBasedComposerConfig* pApproximatorConfig) {
+void ConfigReader::readCoordinateAddtionalBasedComposerConfig(std::string configFile, CoordinateAdditionalBasedComposerConfig* pComposerConfig) {
 	std::cout << "Coordinate addition-based config " << configFile << ":\n";
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		CoordinateComparatorConfig primaryCoordinateComparatorConfig;
+		readCoordinateComparatorConfig(inputStream, &primaryCoordinateComparatorConfig);
+		pComposerConfig->m_primaryCoordinateComparatorConfig = primaryCoordinateComparatorConfig;
+	}
+	else {
+		throw std::logic_error("Can not read config file for coordinate additional-based composer!");
+	}
+}
+
+void ConfigReader::readMultiComparatorCoordinateAddtionalBasedComposerConfig(std::string configFile, CoordinateAdditionalBasedComposerConfig* pComposerConfig) {
+	std::cout << "Multiple comparator coordinate addition-based config " << configFile << ":\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
 		std::string line;
 
 		readLineAndLog(inputStream, line, std::cout);
-		double coordinateEpsilon;
-		sscanf(line.data(), "%[^:]:%lf", prefix, &coordinateEpsilon);
-		pApproximatorConfig->m_coordinateEpsilon = coordinateEpsilon;
+		int nbComparators;
+		sscanf(line.data(), "%[^:]:%d", prefix, &nbComparators);
 
-		readLineAndLog(inputStream, line, std::cout);
-		int enumEval;
-		sscanf(line.data(), "%[^:]:%d", prefix, &enumEval);
-		pApproximatorConfig->m_coordinateComparatorType = (CoordinateComparatorTypes)enumEval;
+		//Read primary comparator
+		CoordinateComparatorConfig primaryCoordinateComparatorConfig;
+		readCoordinateComparatorConfig(inputStream, &primaryCoordinateComparatorConfig);
+		pComposerConfig->m_primaryCoordinateComparatorConfig = primaryCoordinateComparatorConfig;
+
+		//Read secondary comparators
+		for(int i = 0; i < nbComparators - 1; i++) {
+			CoordinateComparatorConfig secondaryCoordinateComparatorConfig;
+			readCoordinateComparatorConfig(inputStream, &secondaryCoordinateComparatorConfig);
+			pComposerConfig->m_secondaryCoordinateComparatorConfigs.push_back(secondaryCoordinateComparatorConfig);
+		}
 	}
 	else {
 		throw std::logic_error("Can not read config file for coordinate additional-based composer!");
@@ -222,12 +241,12 @@ void ConfigReader::readSKApproximatorConfig2(std::string configFile, SKApproxima
 		readLineAndLog(inputStream, line, std::cout);
 		double coordinateEpsilon;
 		sscanf(line.data(), "%[^:]:%lf", prefix, &coordinateEpsilon);
-		pApproximatorConfig->m_coordinateApproximatorBasedConfig.m_coordinateEpsilon = coordinateEpsilon;
+		pApproximatorConfig->m_coordinateApproximatorBasedConfig.m_primaryCoordinateComparatorConfig.m_coordinateEpsilon = coordinateEpsilon;
 
 		readLineAndLog(inputStream, line, std::cout);
 		int enumEval;
 		sscanf(line.data(), "%[^:]:%d", prefix, &enumEval);
-		pApproximatorConfig->m_coordinateApproximatorBasedConfig.m_coordinateComparatorType = CoordinateComparatorTypes(enumEval);
+		pApproximatorConfig->m_coordinateApproximatorBasedConfig.m_primaryCoordinateComparatorConfig.m_coordinateComparatorType = CoordinateComparatorTypes(enumEval);
 	}
 	else {
 		throw std::logic_error("Can not read config file for approximator!");
@@ -273,7 +292,7 @@ void ConfigReader::readTargetsConfig(std::string configFile, CollectionConfig* p
 }
 
 void ConfigReader::readEvaluatorConfigFromTargets(std::string configFile, EvaluatorConfig* pEvaluatorConfig) {
-	std::cout << "Evaluator config" << configFile << ":\n";
+	std::cout << "Evaluator config " << configFile << ":\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
@@ -386,6 +405,29 @@ void ConfigReader::readRotationConfigLine(std::string line, RotationConfig& rota
 	rotationConfig.m_rotationType = (RotationType)m_rotationSetNameMap[axis];
 	rotationConfig.m_rotationAngle = (mreal_t)(M_PI / piDenominator);
 }
+
+void ConfigReader::readCoordinateComparatorConfig(std::istream& inputStream, CoordinateComparatorConfig* pConfig) {
+	char prefix[128];
+	std::string line;
+
+	readLineAndLog(inputStream, line, std::cout);
+	int enumEval;
+	sscanf(line.data(), "%[^:]:%d", prefix, &enumEval);
+	pConfig->m_coordinateComparatorType = (CoordinateComparatorTypes)enumEval;
+
+	readLineAndLog(inputStream, line, std::cout);
+	double coordinateEpsilon;
+	sscanf(line.data(), "%[^:]:%lf", prefix, &coordinateEpsilon);
+	pConfig->m_coordinateEpsilon = coordinateEpsilon;
+
+	if(pConfig->m_coordinateComparatorType == CMP_ONE_ELEMENT) {
+		readLineAndLog(inputStream, line, std::cout);
+		int comparedElementIndex;
+		sscanf(line.data(), "%[^:]:%d", prefix, &comparedElementIndex);
+		pConfig->m_appliedCoordinateIndices.push_back(comparedElementIndex);
+	}
+}
+
 
 void readLineAndLog(std::istream& inputStream, std::string& line, std::ostream& outstream) {
 	std::getline(inputStream, line);

@@ -39,7 +39,11 @@ private:
 
 	AbstractCommandPtr getComposerBasedApproximator2EvaluationCommandForTargets(std::string collectionConfigFile, std::string cbApprxConfigFile, std::string adbComposerConfigFile, std::string targetConfigFile);
 
-	AbstractCommandPtr getComposerEvaluationCommandForTargets(std::string collectionConfigFile, std::string cbApprxConfigFile, std::string adbComposerConfigFile, std::string targetConfigFile);
+	AbstractCommandPtr getComposerEvaluationCommandForTargets(std::string collectionConfigFile,
+			std::string cbApprxConfigFile,
+			std::string adbComposerConfigFile,
+			std::string targetConfigFile,
+			bool multiComparatorMode);
 
 	//Apply config paramters to change containers for concrete instances of collection, approximator, evaluator...
 	void readCollectionConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig);
@@ -65,7 +69,7 @@ private:
 					std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
 					std::string composerEvalConfigFile,
 					std::string targetConfigFile, ComposerEvaluatorConfig* pComposerEvalConfig,
-					std::string cadbConfigFile, CoordinateAdditionalBasedComposerConfig* pCadbConfig);
+					std::string cadbConfigFile, CoordinateAdditionalBasedComposerConfig* pCadbConfig, bool multiComparatorMode);
 
 	void readSKConfig(ConfigReader configReader,
 			std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
