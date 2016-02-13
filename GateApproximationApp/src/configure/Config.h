@@ -90,12 +90,23 @@ struct ComposerBasedApproximatorConfig {
 
 enum CoordinateComparatorTypes {
 	CMP_DICTIONARY = 1,
-	CMP_SUM = 2
+	CMP_SUM = 2,
+	CMP_ONE_ELEMENT = 3
 };
 
-struct CoordinateAdditionalBasedComposerConfig {
-	mreal_t m_coordinateEpsilon = 0.0;
+typedef std::vector<int> AppliedCoordinateIndices;
+
+struct CoordinateComparatorConfig {
 	CoordinateComparatorTypes m_coordinateComparatorType = CMP_DICTIONARY;
+	mreal_t m_coordinateEpsilon = 0.0;
+	AppliedCoordinateIndices m_appliedCoordinateIndices; //Just a work-around for CMP_ONE_ELEMENT
+};
+
+typedef std::vector<CoordinateComparatorConfig> CoordinateComparatorConfigList;
+
+struct CoordinateAdditionalBasedComposerConfig {
+	CoordinateComparatorConfig m_primaryCoordinateComparatorConfig;
+	CoordinateComparatorConfigList m_secondaryCoordinateComparatorConfigs;
 };
 
 struct SKApproximatorConfig2 : public SKApproximatorConfig {
@@ -110,6 +121,5 @@ struct ComposerEvaluatorConfig {
 	double m_composeEpsilon;
 	RotationConfigs m_rotationTargets;
 };
-
 
 #endif /* CONFIG_H_ */

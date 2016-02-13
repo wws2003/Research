@@ -10,6 +10,9 @@ CPP_SRCS += \
 ../src/implement/composer/AdditionBasedElementComposer.cpp \
 ../src/implement/composer/CoordinateAdditionBasedGateComposer.cpp \
 ../src/implement/composer/CoordinateAdditionBasedMatrixComposer.cpp \
+../src/implement/composer/MultipleComparatorAdditionBasedElementComposer.cpp \
+../src/implement/composer/MultipleComparatorCoordinateAdditionBasedGateComposer.cpp \
+../src/implement/composer/MultipleComparatorCoordinateAdditionBasedMatrixComposer.cpp \
 ../src/implement/composer/NearIdentityElementBinBasedComposer.cpp \
 ../src/implement/composer/NearIdentityGateBinBasedComposer.cpp \
 ../src/implement/composer/NearIdentityMatrixBinBasedComposer.cpp \
@@ -24,6 +27,9 @@ OBJS += \
 ./src/implement/composer/AdditionBasedElementComposer.o \
 ./src/implement/composer/CoordinateAdditionBasedGateComposer.o \
 ./src/implement/composer/CoordinateAdditionBasedMatrixComposer.o \
+./src/implement/composer/MultipleComparatorAdditionBasedElementComposer.o \
+./src/implement/composer/MultipleComparatorCoordinateAdditionBasedGateComposer.o \
+./src/implement/composer/MultipleComparatorCoordinateAdditionBasedMatrixComposer.o \
 ./src/implement/composer/NearIdentityElementBinBasedComposer.o \
 ./src/implement/composer/NearIdentityGateBinBasedComposer.o \
 ./src/implement/composer/NearIdentityMatrixBinBasedComposer.o \
@@ -38,6 +44,9 @@ CPP_DEPS += \
 ./src/implement/composer/AdditionBasedElementComposer.d \
 ./src/implement/composer/CoordinateAdditionBasedGateComposer.d \
 ./src/implement/composer/CoordinateAdditionBasedMatrixComposer.d \
+./src/implement/composer/MultipleComparatorAdditionBasedElementComposer.d \
+./src/implement/composer/MultipleComparatorCoordinateAdditionBasedGateComposer.d \
+./src/implement/composer/MultipleComparatorCoordinateAdditionBasedMatrixComposer.d \
 ./src/implement/composer/NearIdentityElementBinBasedComposer.d \
 ./src/implement/composer/NearIdentityGateBinBasedComposer.d \
 ./src/implement/composer/NearIdentityMatrixBinBasedComposer.d \

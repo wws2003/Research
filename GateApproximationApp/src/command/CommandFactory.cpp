@@ -73,7 +73,10 @@ CommandPtr CommandFactory::getCommand(int commandCode, const CommandParams& comm
 		return getComposerBasedApproximator2EvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3]);
 	}
 	case EVALUATE_COMPOSER_TO_TARGET: {
-		return getComposerEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3]);
+		return getComposerEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3], false);
+	}
+	case EVALUATE_COMPOSER2_TO_TARGET: {
+		return getComposerEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3], true);
 	}
 	default:
 		return CommandPtr(new NotAvailableCommand());
@@ -321,7 +324,8 @@ AbstractCommandPtr CommandFactory::getComposerBasedApproximator2EvaluationComman
 AbstractCommandPtr CommandFactory::getComposerEvaluationCommandForTargets(std::string collectionConfigFile,
 		std::string composerEvalConfigFile,
 		std::string adbComposerConfigFile,
-		std::string targetConfigFile) {
+		std::string targetConfigFile,
+		bool multiComparatorMode) {
 	ConfigReader configReader;
 
 	CollectionConfig collectionConfig;
@@ -335,7 +339,8 @@ AbstractCommandPtr CommandFactory::getComposerEvaluationCommandForTargets(std::s
 			targetConfigFile,
 			&composerEvalConfig,
 			adbComposerConfigFile,
-			&cadbConfig);
+			&cadbConfig,
+			multiComparatorMode);
 
 	GateComposerEvaluatorPtr pGateComposerEvaluator = m_pComposerEvaluatorContainer->getGateComposerEvaluator();
 	GateComposerPtr pEvaluatedComposer = m_pComposerContainer->getEvaluatedGateComposer();
@@ -405,10 +410,15 @@ void CommandFactory::readComposerEvaluationConfig(ConfigReader configReader,
 					std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
 					std::string composerEvalConfigFile,
 					std::string targetConfigFile, ComposerEvaluatorConfig* pComposerEvalConfig,
-					std::string cadbConfigFile, CoordinateAdditionalBasedComposerConfig* pCadbConfig) {
+					std::string cadbConfigFile, CoordinateAdditionalBasedComposerConfig* pCadbConfig, bool multiComparatorMode) {
 
 	configReader.readCollectionConfig(collectionConfigFile, pCollectionConfig);
-	configReader.readCoordinateAddtionalBasedComposerConfig(cadbConfigFile, pCadbConfig);
+	if(multiComparatorMode) {
+		configReader.readMultiComparatorCoordinateAddtionalBasedComposerConfig(cadbConfigFile, pCadbConfig);
+	}
+	else {
+		configReader.readCoordinateAddtionalBasedComposerConfig(cadbConfigFile, pCadbConfig);
+	}
 	configReader.readComposerEvaluatorConfig(composerEvalConfigFile, pComposerEvalConfig);
 	configReader.readComposerEvaluatorConfigFromTargets(targetConfigFile, pComposerEvalConfig);
 

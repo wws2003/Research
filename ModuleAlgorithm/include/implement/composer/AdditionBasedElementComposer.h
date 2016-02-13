@@ -31,7 +31,7 @@ public:
 			mreal_t epsilon,
 			bool toSortResults = true);
 
-private:
+protected:
 
 	struct WrapperComparator {
 		WrapperComparator(ComparatorPtr<T> pElementComparator) {
@@ -88,8 +88,14 @@ private:
 		std::vector<T> m_maxAccumulated;
 
 	};
+	typedef SortedVectorArray* SortedVectorArrayPtr;
+	typedef std::vector<SortedVectorArrayPtr> SortedVectorArrayList;
+
+	virtual void initSecondarySortedVectorArrays(SortedVectorArrayList& secondarySortedVectorArrays,
+			const BuildingBlockBuckets<T>& buildingBlockBuckets);
 
 	void findCompositionsInRange(const SortedVectorArray& sortedVectorArray,
+			const SortedVectorArrayList& secondarySortedVectorArrays,
 			int vectorIndex,
 			std::vector<T>& partialTermElements,
 			const T& partialTarget,
@@ -97,6 +103,13 @@ private:
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
 			std::vector<LookupResult<T> >& resultBuffer);
+
+	virtual void releaseSecondarySortedVectorArrays(SortedVectorArrayList& sortedVectorArrays);
+
+	virtual bool quickEvaluate(const SortedVectorArrayList& secondarySortedVectorArrays,
+			int vectorIndex,
+			const T& rightMostElement,
+			const T& partialTarget) const;
 
 	void evaluateCombination(const std::vector<T>& partialElements,
 			T target,

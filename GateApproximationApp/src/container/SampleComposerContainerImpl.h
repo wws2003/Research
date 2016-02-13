@@ -37,15 +37,23 @@ public:
 	GateComposerPtr getStandardGateComposer();
 
 	//Override
-	GateComposerPtr getEvaluatedGateComposer();
+	virtual GateComposerPtr getEvaluatedGateComposer();
 
-private:
+protected:
 	void wireDependencies();
 	void releaseDependencies();
 
 	void initCoordinateAdditionalBasedGateComposerElements();
-	void initRealCoordinateComparator();
-	void initEpsilonRealCoordinate(RealCoordinate<GatePtr>& epsilonRealCoordinate);
+
+	void initCoordinateAdditionalBasedGateComposer();
+
+	typedef ComparatorPtr<RealCoordinate<GatePtr> > GateRealCoordinateComparatorPtr;
+	typedef std::vector<GateRealCoordinateComparatorPtr> GateRealCoordinateComparatorList;
+
+	GateRealCoordinateComparatorPtr getRealCoordinateComparator(CoordinateComparatorConfig coordinateComparatorConfig);
+	void initEpsilonRealCoordinate(RealCoordinate<GatePtr>& epsilonRealCoordinate, mreal_t coordinateEpsilon);
+
+	void releaseSecondaryCoordinateComparators();
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
@@ -56,7 +64,9 @@ private:
 
 	GateComposerPtr m_pGateComposer;
 	ComposerPtr<RealCoordinate<GatePtr> > m_pGateCoordinateComposer;
-	ComparatorPtr<RealCoordinate<GatePtr> > m_pRealCoordinateComparator;
+	GateRealCoordinateComparatorPtr m_pPrimaryRealCoordinateComparator;
+	GateRealCoordinateComparatorList m_secondaryRealCoordinateComparators;
+
 	CombinerPtr<RealCoordinate<GatePtr> > m_pGateCoordinateCombiner;
 	ConverterPtr<GatePtr, RealCoordinate<GatePtr> > m_pGateCoordinateConveter;
 	DistanceCalculatorPtr<RealCoordinate<GatePtr> > m_pGateCoordinateDistanceCalculator;
