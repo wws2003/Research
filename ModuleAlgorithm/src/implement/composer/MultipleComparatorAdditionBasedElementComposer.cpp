@@ -48,20 +48,22 @@ bool MultipleComparatorAdditionBasedElementComposer<T>::quickEvaluate(const type
 		int vectorIndex,
 		const T& rightMostElement,
 		const T& partialTarget) const {
-	if(vectorIndex == 0) {
-		return true;
-	}
+
 	typedef typename AdditionBasedElementComposer<T>::SortedVectorArrayPtr SecondarySortedVectorArrayPtr;
 
 	for(unsigned int i = 0; i < secondarySortedVectorArrays.size(); i++) {
 		SecondarySortedVectorArrayPtr pSecondarySortedVectorArray = secondarySortedVectorArrays[i];
 		ComparatorPtr<T> pSecondaryComparator = m_secondaryComparators[i];
 
-		T secondaryPrefixMax = pSecondarySortedVectorArray->getMaxAccumulated(vectorIndex - 1);
-		T secondaryPrefixMin = pSecondarySortedVectorArray->getMinAccumulated(vectorIndex - 1);
+		T secondaryAccumulatedMax = rightMostElement + m_secondaryEpsilonElements[i];
+		T secondaryAccumulatedMin = rightMostElement - m_secondaryEpsilonElements[i];
 
-		T secondaryAccumulatedMax = secondaryPrefixMax + rightMostElement + m_secondaryEpsilonElements[i];
-		T secondaryAccumulatedMin = secondaryPrefixMin + rightMostElement - m_secondaryEpsilonElements[i];
+		if(vectorIndex > 0) {
+			T secondaryPrefixMax = pSecondarySortedVectorArray->getMaxAccumulated(vectorIndex - 1);
+			T secondaryPrefixMin = pSecondarySortedVectorArray->getMinAccumulated(vectorIndex - 1);
+			secondaryAccumulatedMax += secondaryPrefixMax;
+			secondaryAccumulatedMin += secondaryPrefixMin;
+		}
 
 #ifdef DEBUG_SECONDARY
 		std::cout << "-Compare upper for secondary comparator " << i << "-----\n";
