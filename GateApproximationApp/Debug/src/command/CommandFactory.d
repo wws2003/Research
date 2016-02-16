@@ -70,10 +70,10 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../src/container/SKApproximatorContainerImpl.h \
  ../src/container/SK2ApproximatorContainerImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/converter/IConverter.h \
+ ../src/container/IComposerContainer.h \
  ../src/container/ComposerBasedSK2ApproximatorContainerImpl.h \
  ../src/container/SK2ApproximatorContainerImpl.h \
  ../src/container/SampleComposerContainerImpl.h \
- ../src/container/IComposerContainer.h \
  ../src/container/SampleComposerEvaluatorContainerImpl.h \
  ../src/container/IComposerEvaluatorContainer.h \
  ../../ModuleEvaluate/include/interface/abstract/ITimer.h \
@@ -229,13 +229,13 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../../ModuleAlgorithm/include/internal-abstract/converter/IConverter.h:
 
+../src/container/IComposerContainer.h:
+
 ../src/container/ComposerBasedSK2ApproximatorContainerImpl.h:
 
 ../src/container/SK2ApproximatorContainerImpl.h:
 
 ../src/container/SampleComposerContainerImpl.h:
-
-../src/container/IComposerContainer.h:
 
 ../src/container/SampleComposerEvaluatorContainerImpl.h:
 

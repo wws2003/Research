@@ -19,12 +19,14 @@
 #include "IResourceContainer.h"
 #include "IComposer.h"
 #include "IConverter.h"
+#include "IComposerContainer.h"
 #include "IElementComparator.h"
 
 class SK2ApproximatorContainerImpl: public IApproximatorContainer {
 public:
-	SK2ApproximatorContainerImpl(SKApproximatorConfig2 config,
-			CollectionConfig coreCollectionConfig);
+	SK2ApproximatorContainerImpl(SKApproximatorConfig config,
+			CollectionConfig coreCollectionConfig,
+			CoordinateAdditionalBasedComposerConfig cadbConfig);
 
 	virtual ~SK2ApproximatorContainerImpl();
 
@@ -34,15 +36,11 @@ protected:
 	virtual void wireDependencies();
 	virtual void releaseDependencies();
 
-	void initCoordinateAdditionalBasedGateComposer();
-	void initRealCoordinateComparator();
-	void initEpsilonRealCoordinate(RealCoordinate<GatePtr>& epsilonRealCoordinate);
+	void initGateComposerContainer(const CoordinateAdditionalBasedComposerConfig& cadbConfig);
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
 	ResourceContainerPtr m_pResourceContainer;
-
-	CombinerPtr<GatePtr> m_pGateCombiner;
 
 	MatrixRealInnerProductCalculatorPtr m_pMatrixRealInnerProductCalculator;
 	MatrixRealCoordinateCalculatorPtr m_pHermitiaRealCoordinateCalculator;
@@ -52,13 +50,9 @@ protected:
 	GateDecomposerPtr m_pHarrowGateDecomposer;
 
 	GateComposerPtr m_pGateComposer;
-	ComposerPtr<RealCoordinate<GatePtr> > m_pGateCoordinateComposer;
-	ComparatorPtr<RealCoordinate<GatePtr> > m_pRealCoordinateComparator;
-	CombinerPtr<RealCoordinate<GatePtr> > m_pGateCoordinateCombiner;
-	ConverterPtr<GatePtr, RealCoordinate<GatePtr> > m_pGateCoordinateConveter;
-	DistanceCalculatorPtr<RealCoordinate<GatePtr> > m_pGateCoordinateDistanceCalculator;
+	ComposerContainerPtr m_pGateComposerContainer;
 
-	SKApproximatorConfig2 m_approximatorConfig;
+	SKApproximatorConfig m_approximatorConfig;
 	CollectionConfig m_coreCollectionConfig;
 };
 

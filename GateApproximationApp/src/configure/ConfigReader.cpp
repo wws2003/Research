@@ -219,41 +219,6 @@ void ConfigReader::readMultiComparatorCoordinateAddtionalBasedComposerConfig(std
 	}
 }
 
-void ConfigReader::readSKApproximatorConfig2(std::string configFile, SKApproximatorConfig2* pApproximatorConfig) {
-	//TODO Refactor this config reader to separate coordinate additional-based config from SK approximator config
-	std::cout << "SK2 config " << configFile << ":\n";
-	std::ifstream inputStream(configFile, std::ifstream::in);
-	if(inputStream.is_open()) {
-		char prefix[128];
-		std::string line;
-
-		readLineAndLog(inputStream, line, std::cout);
-		double initialEpsilon;
-		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
-		pApproximatorConfig->m_initialEpsilon = (mreal_t)initialEpsilon;
-
-		readLineAndLog(inputStream, line, std::cout);
-		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_recursiveLevels));
-
-		readLineAndLog(inputStream, line, std::cout);
-		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_nbCandidates));
-
-		readLineAndLog(inputStream, line, std::cout);
-		double coordinateEpsilon;
-		sscanf(line.data(), "%[^:]:%lf", prefix, &coordinateEpsilon);
-		pApproximatorConfig->m_coordinateApproximatorBasedConfig.m_primaryCoordinateComparatorConfig.m_coordinateEpsilon = coordinateEpsilon;
-
-		readLineAndLog(inputStream, line, std::cout);
-		int enumEval;
-		sscanf(line.data(), "%[^:]:%d", prefix, &enumEval);
-		pApproximatorConfig->m_coordinateApproximatorBasedConfig.m_primaryCoordinateComparatorConfig.m_coordinateComparatorType = CoordinateComparatorTypes(enumEval);
-	}
-	else {
-		throw std::logic_error("Can not read config file for approximator!");
-	}
-}
-
-
 void ConfigReader::readTargetsConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig) {
 	std::cout << "Target config" << configFile << ":\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);

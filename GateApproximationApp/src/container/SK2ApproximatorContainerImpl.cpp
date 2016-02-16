@@ -17,20 +17,16 @@
 #include "SampleLibraryMatrixStore.h"
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
 #include "ContainerResourceFactory.h"
-#include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
+#include "SampleComposerContainerImpl.h"
 #include "HarrowGateDecomposer.h"
-#include "AdaptiveGateCoordinateComposer.h"
-#include "CoordinateAdditionBasedGateComposer.h"
-#include "GateCoordinateConverterImpl.h"
-#include "GateCoordinateCombinerImpl.h"
+#include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "SKGateApproximator.h"
-#include "DictionaryOrderCoordinateComparator.hpp"
-#include "SumCoordinateComparator.hpp"
 #include "SK2ApproximatorContainerImpl.h"
 
-SK2ApproximatorContainerImpl::SK2ApproximatorContainerImpl(SKApproximatorConfig2 config,
-		CollectionConfig coreCollectionConfig) : m_approximatorConfig(config), m_coreCollectionConfig(coreCollectionConfig) {
-	m_pGateCoordinateDistanceCalculator = NullPtr;
+SK2ApproximatorContainerImpl::SK2ApproximatorContainerImpl(SKApproximatorConfig config,
+		CollectionConfig coreCollectionConfig,
+		CoordinateAdditionalBasedComposerConfig cadbConfig) : m_approximatorConfig(config), m_coreCollectionConfig(coreCollectionConfig) {
+	initGateComposerContainer(cadbConfig);
 	wireDependencies();
 }
 
@@ -57,9 +53,6 @@ void SK2ApproximatorContainerImpl::wireDependencies() {
 			m_pMatrixFactory,
 			m_pMatrixOperator);
 
-	GateCombinabilityCheckers checkers;
-	m_pGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(checkers, m_pMatrixOperator));
-
 	MatrixPtrVector pBasis;
 	m_pResourceContainer->getMatrixOrthonormalBasis(pBasis, m_coreCollectionConfig.m_nbQubits);
 	m_pMatrixRealInnerProductCalculator = MatrixRealInnerProductCalculatorPtr(new MatrixRealInnerProductByTraceImpl(NullPtr));
@@ -69,15 +62,12 @@ void SK2ApproximatorContainerImpl::wireDependencies() {
 
 	m_pHarrowGateDecomposer = GateDecomposerPtr(new HarrowGateDecomposer(m_pGateRealCoordinateCalculator, m_pMatrixOperator));
 
-	initCoordinateAdditionalBasedGateComposer();
+	m_pGateComposer = m_pGateComposerContainer->getEvaluatedGateComposer();
 }
 
 void SK2ApproximatorContainerImpl::releaseDependencies() {
 	_destroy(m_pGateComposer);
-	_destroy(m_pGateCoordinateComposer);
-	_destroy(m_pGateCoordinateConveter);
-	_destroy(m_pGateCoordinateCombiner);
-	_destroy(m_pRealCoordinateComparator);
+	_destroy(m_pGateComposerContainer);
 
 	_destroy(m_pHarrowGateDecomposer);
 
@@ -86,49 +76,11 @@ void SK2ApproximatorContainerImpl::releaseDependencies() {
 	_destroy(m_pHermitiaRealCoordinateCalculator);
 	_destroy(m_pMatrixRealInnerProductCalculator);
 
-	_destroy(m_pGateCombiner);
-
 	_destroy(m_pResourceContainer);
 	_destroy(m_pMatrixOperator);
 	_destroy(m_pMatrixFactory);
 }
 
-void SK2ApproximatorContainerImpl::initCoordinateAdditionalBasedGateComposer() {
-	initRealCoordinateComparator();
-
-	RealCoordinate<GatePtr> epsilonRealCoordinate;
-	initEpsilonRealCoordinate(epsilonRealCoordinate);
-
-	m_pGateCoordinateCombiner = CombinerPtr<RealCoordinate<GatePtr> >(new GateCoordinateCombinerImpl(m_pGateCombiner));
-	m_pGateCoordinateComposer = ComposerPtr<RealCoordinate<GatePtr> >(new CoordinateAdditionBasedGateComposer(m_pRealCoordinateComparator,
-			m_pGateCoordinateCombiner,
-			epsilonRealCoordinate,
-			-1));
-
-	bool phaseIgnored = m_coreCollectionConfig.m_matrixDistanceCalculatorType == MDCT_FOWLER;
-	m_pGateCoordinateConveter = ConverterPtr<GatePtr, RealCoordinate<GatePtr> >(new GateCoordinateConverterImpl(m_pGateRealCoordinateCalculator,
-			m_pMatrixOperator,
-			phaseIgnored));
-
-	m_pGateComposer = GateComposerPtr(new AdaptiveGateCoordinateComposer(m_pGateCoordinateDistanceCalculator,
-			m_pGateCoordinateComposer,
-			0.0,
-			m_pGateCoordinateConveter));
-}
-
-void SK2ApproximatorContainerImpl::initRealCoordinateComparator() {
-	switch (m_approximatorConfig.m_coordinateApproximatorBasedConfig.m_primaryCoordinateComparatorConfig.m_coordinateComparatorType) {
-	case CMP_DICTIONARY:
-		m_pRealCoordinateComparator = ComparatorPtr<RealCoordinate<GatePtr> >(new DictionaryOrderCoordinateComparator<GatePtr>());
-		break;
-	default:
-		m_pRealCoordinateComparator = ComparatorPtr<RealCoordinate<GatePtr> >(new SumCoordinateComparator<GatePtr>());
-		break;
-	}
-}
-
-void SK2ApproximatorContainerImpl::initEpsilonRealCoordinate(RealCoordinate<GatePtr>& epsilonRealCoordinate) {
-	int nbCoord = (m_coreCollectionConfig.m_nbQubits == 1) ? 3 : 15;
-	std::vector<mreal_t> coords(nbCoord, m_approximatorConfig.m_coordinateApproximatorBasedConfig.m_primaryCoordinateComparatorConfig.m_coordinateEpsilon);
-	epsilonRealCoordinate = RealCoordinate<GatePtr>(NullPtr, coords);
+void SK2ApproximatorContainerImpl::initGateComposerContainer(const CoordinateAdditionalBasedComposerConfig& cadbConfig) {
+	m_pGateComposerContainer = ComposerContainerPtr(new SampleComposerContainerImpl(cadbConfig, m_coreCollectionConfig));
 }

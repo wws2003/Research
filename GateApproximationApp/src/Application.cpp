@@ -70,11 +70,11 @@ void initCommands(CommandParser* pCommandParser) {
 	//For -e conf1 -sk conf2 -t targetConf
 	pCommandParser->provideArgumentPatternForCommandCode(7, ArgumentPositions{1, 3, 5}, Arguments{"-e", "-sk", "-t"}, EVALUATE_SK_APPROXIMATOR_TO_TARGET);
 
-	//For -e conf1 -sk2 conf2 -t targetConf
-	pCommandParser->provideArgumentPatternForCommandCode(7, ArgumentPositions{1, 3, 5}, Arguments{"-e", "-sk2", "-t"}, EVALUATE_SK2_APPROXIMATOR_TO_TARGET);
+	//For -e conf1 -sk conf2 -m conf3 -t targetConf
+	pCommandParser->provideArgumentPatternForCommandCode(9, ArgumentPositions{1, 3, 5, 7}, Arguments{"-e", "-sk", "-m", "-t"}, EVALUATE_SK2_APPROXIMATOR_TO_TARGET);
 
-	//For -e conf1 -cb conf2 -sk2 conf3 -t targetConf
-	pCommandParser->provideArgumentPatternForCommandCode(9, ArgumentPositions{1, 3, 5, 7}, Arguments{"-e", "-cb", "-sk2", "-t"}, EVALUATE_CB_SK2_APPROXIMATOR_TO_TARGET);
+	//For -e conf1 -cb conf2 -sk conf3 -m conf4 -t targetConf
+	pCommandParser->provideArgumentPatternForCommandCode(11, ArgumentPositions{1, 3, 5, 7, 9}, Arguments{"-e", "-cb", "-sk", "-m", "-t"}, EVALUATE_CB_SK2_APPROXIMATOR_TO_TARGET);
 
 	//For -e conf1 -cb conf21 conf22 -t targetConf
 	pCommandParser->provideArgumentPatternForCommandCode(8, ArgumentPositions{1, 3, 6}, Arguments{"-e", "-cb", "-t"}, EVALUATE_CB2_APPROXIMATOR_TO_TARGET);
@@ -98,8 +98,8 @@ void printSyntaxMessage() {
 	std::cout << "-e -i db -t targetConf -> Evaluate collection for target given candidates in database file." << std::endl;
 	std::cout << "-e conf1 -cb conf2 -t targetConf -> Evaluate composer-based approximator" << std::endl;
 	std::cout << "-e conf1 -sk conf2 -t targetConf -> Evaluate SK approximator based on the configured collection." << std::endl;
-	std::cout << "-e conf1 -sk2 conf2 -t targetConf -> Evaluate SK approximator based on the configured collection, with a smart filter for intermediate results. " << std::endl;
-	std::cout << "-e conf1 -cb conf2 -sk2 conf3 -t targetConf -> Evaluate SK approximator based on the configured collection, with a smart filter for intermediate results. Initial stage is based on composer-based approximator instead of collection." << std::endl;
+	std::cout << "-e conf1 -sk conf2 -m conf3 -t targetConf -> Evaluate SK approximator based on the configured collection, with a smart filter for intermediate results. " << std::endl;
+	std::cout << "-e conf1 -cb conf2 -sk2 conf3 -m conf4 -t targetConf -> Evaluate SK approximator based on the configured collection, with a smart filter for intermediate results. Initial stage is based on composer-based approximator instead of collection." << std::endl;
 	std::cout << "-e conf1 -ce conf2 -s conf3 -t targetConf -> Evaluate single comparator coordinate addition-based gate composer vs full-combination gate composer " << std::endl;
 	std::cout << "-e conf1 -ce conf2 -m conf3 -t targetConf -> Evaluate multiple comparators coordinate addition-based gate composer vs full-combination gate composer " << std::endl;
 

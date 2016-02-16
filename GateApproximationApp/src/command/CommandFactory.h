@@ -34,8 +34,8 @@ private:
 
 	AbstractCommandPtr getComposerBasedApproximatorEvaluationCommandForTargets(std::string collectionConfigFile, std::string cbApprxConfigFile, std::string targetConfigFile);
 	AbstractCommandPtr getSKApproximatorEvaluationCommandForTargets(std::string collectionConfigFile, std::string skApprxConfigFile, std::string targetConfigFile);
-	AbstractCommandPtr getSK2ApproximatorEvaluationCommandForTargets(std::string collectionConfigFile, std::string skApprxConfigFile, std::string targetConfigFile);
-	AbstractCommandPtr getComposerBasedSK2ApproximatorEvaluationCommandForTargets(std::string collectionConfigFile, std::string cbApprxConfigFile, std::string skApprxConfigFile, std::string targetConfigFile);
+	AbstractCommandPtr getSK2ApproximatorEvaluationCommandForTargets(std::string collectionConfigFile, std::string skApprxConfigFile, std::string cadbComposerConfigFile, std::string targetConfigFile);
+	AbstractCommandPtr getComposerBasedSK2ApproximatorEvaluationCommandForTargets(std::string collectionConfigFile, std::string cbApprxConfigFile, std::string skApprxConfigFile, std::string cadbConfigFile, std::string targetConfigFile);
 
 	AbstractCommandPtr getComposerBasedApproximator2EvaluationCommandForTargets(std::string collectionConfigFile, std::string cbApprxConfigFile, std::string adbComposerConfigFile, std::string targetConfigFile);
 
@@ -48,65 +48,88 @@ private:
 	//Apply config paramters to change containers for concrete instances of collection, approximator, evaluator...
 	void readCollectionConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig);
 
-	void readCollectionAndEvaluatorConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
+	void readCollectionAndEvaluatorConfig(ConfigReader configReader,
+			std::string configFile,
+			CollectionConfig* pCollectionConfig,
+			EvaluatorConfig* pEvaluatorConfig);
 
-	void readApproximatorConfig(ConfigReader configReader, std::string configFile, const CollectionConfig&  collectionConfig, NearIdentityApproximatorConfig* pApproximatorConfig);
+	void readApproximatorConfig(ConfigReader configReader,
+			std::string configFile,
+			const CollectionConfig&  collectionConfig,
+			NearIdentityApproximatorConfig* pApproximatorConfig);
 
-	void readTargetConfig(ConfigReader configReader, std::string targetConfigFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
+	void readTargetConfig(ConfigReader configReader,
+			std::string targetConfigFile);
 
 	void readComposerBasedApproximatorConfig(ConfigReader configReader,
-			std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
-			std::string cbApprxConfigFile, ComposerBasedApproximatorConfig* pApproximatorConfig,
-			std::string targetConfigFile, EvaluatorConfig* pEvaluatorConfig);
+			std::string collectionConfigFile,
+			std::string cbApprxConfigFile,
+			std::string targetConfigFile);
 
 	void readComposerBasedApproximatorConfig(ConfigReader configReader,
-				std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
-				std::string cbApprxConfigFile, ComposerBasedApproximatorConfig* pApproximatorConfig,
-				std::string targetConfigFile, EvaluatorConfig* pEvaluatorConfig,
-				std::string cadbConfigFile, CoordinateAdditionalBasedComposerConfig* pCadbConfig);
+			std::string collectionConfigFile,
+			std::string cbApprxConfigFile,
+			std::string targetConfigFile,
+			std::string cadbConfigFile);
 
 	void readComposerEvaluationConfig(ConfigReader configReader,
-					std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
-					std::string composerEvalConfigFile,
-					std::string targetConfigFile, ComposerEvaluatorConfig* pComposerEvalConfig,
-					std::string cadbConfigFile, CoordinateAdditionalBasedComposerConfig* pCadbConfig, bool multiComparatorMode);
+			std::string collectionConfigFile,
+			std::string composerEvalConfigFile,
+			std::string targetConfigFile,
+			std::string cadbConfigFile,
+			bool multiComparatorMode);
 
 	void readSKConfig(ConfigReader configReader,
-			std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
-			std::string skApprxConfigFile, SKApproximatorConfig* pApproximatorConfig,
-			std::string targetConfigFile, EvaluatorConfig* pEvaluatorConfig);
+			std::string collectionConfigFile,
+			std::string skApprxConfigFile,
+			std::string targetConfigFile);
 
 	void readSK2Config(ConfigReader configReader,
-				std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
-				std::string skApprxConfigFile, SKApproximatorConfig2* pApproximatorConfig,
-				std::string targetConfigFile, EvaluatorConfig* pEvaluatorConfig);
+			std::string collectionConfigFile,
+			std::string cadbComposerConfigFile,
+			std::string skApprxConfigFile,
+			std::string targetConfigFile);
 
 	void readComposerBasedSK2Config(ConfigReader configReader,
-					std::string collectionConfigFile, CollectionConfig* pCollectionConfig,
-					std::string skApprxConfigFile, SKApproximatorConfig2* pSkApproximatorConfig,
-					std::string cbApprxConfigFile, ComposerBasedApproximatorConfig* pCbApproximatorConfig,
-					std::string targetConfigFile, EvaluatorConfig* pEvaluatorConfig);
+			std::string collectionConfigFile,
+			std::string cadbComposerConfigFile,
+			std::string skApprxConfigFile,
+			std::string cbApprxConfigFile,
+			std::string targetConfigFile);
 
 	//Reset container for concrete instances of collection, approximator, evaluator...
 	void resetCollectionContainer(const CollectionConfig& collectionConfig);
 
-	void resetEvaluationContainer(const EvaluatorConfig& evaluatorConfig, const CollectionConfig& collectionConfig);
+	void resetEvaluationContainer(const EvaluatorConfig& evaluatorConfig,
+			const CollectionConfig& collectionConfig);
 
-	void resetApproximatorContainer(const NearIdentityApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig);
+	void resetApproximatorContainer(const NearIdentityApproximatorConfig& approximatorConfig,
+			const CollectionConfig& collectionConfig);
 
-	void resetComposerBasedApproximatorContainer(const ComposerBasedApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig);
+	void resetComposerBasedApproximatorContainer(const ComposerBasedApproximatorConfig& approximatorConfig,
+			const CollectionConfig& collectionConfig);
 
-	void resetComposerBasedApproximatorContainer(const ComposerBasedApproximatorConfig& approximatorConfig, const CoordinateAdditionalBasedComposerConfig& cadbConfig, const CollectionConfig& collectionConfig);
+	void resetComposerBasedApproximatorContainer(const ComposerBasedApproximatorConfig& approximatorConfig,
+			const CoordinateAdditionalBasedComposerConfig& cadbConfig,
+			const CollectionConfig& collectionConfig);
 
-	void resetComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig, const CollectionConfig& collectionConfig);
+	void resetComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig,
+			const CollectionConfig& collectionConfig);
 
-	void resetComposerEvaluatorContainer(const ComposerEvaluatorConfig& composerEvalConfig, const CollectionConfig& collectionCofig);
+	void resetComposerEvaluatorContainer(const ComposerEvaluatorConfig& composerEvalConfig,
+			const CollectionConfig& collectionCofig);
 
-	void resetSKApproximatorContainer(const SKApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig);
+	void resetSKApproximatorContainer(const SKApproximatorConfig& approximatorConfig,
+			const CollectionConfig& collectionConfig);
 
-	void resetSK2ApproximatorContainer(const SKApproximatorConfig2& approximatorConfig, const CollectionConfig& collectionConfig);
+	void resetSK2ApproximatorContainer(const SKApproximatorConfig& approximatorConfig,
+			const CollectionConfig& collectionConfig,
+			const CoordinateAdditionalBasedComposerConfig& cadbConfig);
 
-	void resetComposerBasedSK2ApproximatorContainer(const SKApproximatorConfig2& skApproximatorConfig, const ComposerBasedApproximatorConfig& cbApproximatorConfig, const CollectionConfig& collectionConfig);
+	void resetComposerBasedSK2ApproximatorContainer(const SKApproximatorConfig& skApproximatorConfig,
+			const ComposerBasedApproximatorConfig& cbApproximatorConfig,
+			const CollectionConfig& collectionConfig,
+			const CoordinateAdditionalBasedComposerConfig& cadbConfig);
 
 	CollectionContainerPtr m_pCollectionContainer;
 	ApproximatorContainerPtr m_pApproximatorContainer;

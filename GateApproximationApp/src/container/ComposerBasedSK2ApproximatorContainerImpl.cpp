@@ -9,9 +9,10 @@
 #include "ComposerBasedApproximatorContainer.h"
 #include "SKGateApproximator.h"
 
-ComposerBasedSK2ApproximatorContainerImpl::ComposerBasedSK2ApproximatorContainerImpl(SKApproximatorConfig2 config,
+ComposerBasedSK2ApproximatorContainerImpl::ComposerBasedSK2ApproximatorContainerImpl(SKApproximatorConfig config,
 		CollectionConfig coreCollectionConfig,
-		ComposerBasedApproximatorConfig composerBasedHelperApproximatorConfig) : SK2ApproximatorContainerImpl(config, coreCollectionConfig) {
+		CoordinateAdditionalBasedComposerConfig cadbConfig,
+		ComposerBasedApproximatorConfig composerBasedHelperApproximatorConfig) : SK2ApproximatorContainerImpl(config, coreCollectionConfig, cadbConfig) {
 	initHelperApproximatorContainer(composerBasedHelperApproximatorConfig);
 }
 
