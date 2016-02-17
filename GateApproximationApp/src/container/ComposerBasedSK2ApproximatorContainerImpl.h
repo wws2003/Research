@@ -12,8 +12,9 @@
 
 class ComposerBasedSK2ApproximatorContainerImpl : public SK2ApproximatorContainerImpl {
 public:
-	ComposerBasedSK2ApproximatorContainerImpl(SKApproximatorConfig2 config,
+	ComposerBasedSK2ApproximatorContainerImpl(SKApproximatorConfig config,
 			CollectionConfig coreCollectionConfig,
+			CoordinateAdditionalBasedComposerConfig cadbConfig,
 			ComposerBasedApproximatorConfig composerBasedHelperApproximatorConfig);
 
 	//Override

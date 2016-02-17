@@ -32,8 +32,6 @@ public:
 
 	virtual void readMultiComparatorCoordinateAddtionalBasedComposerConfig(std::string configFile, CoordinateAdditionalBasedComposerConfig* pComposerConfig);
 
-	virtual void readSKApproximatorConfig2(std::string configFile, SKApproximatorConfig2* pApproximatorConfig);
-
 	virtual void readTargetsConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
 
 	virtual void readEvaluatorConfigFromTargets(std::string configFile, EvaluatorConfig* pEvaluatorConfig);

@@ -109,10 +109,6 @@ struct CoordinateAdditionalBasedComposerConfig {
 	CoordinateComparatorConfigList m_secondaryCoordinateComparatorConfigs;
 };
 
-struct SKApproximatorConfig2 : public SKApproximatorConfig {
-	CoordinateAdditionalBasedComposerConfig m_coordinateApproximatorBasedConfig;
-};
-
 struct ComposerEvaluatorConfig {
 	int m_nbPartialQueries;
 	mreal_t m_initialEpsilon;
