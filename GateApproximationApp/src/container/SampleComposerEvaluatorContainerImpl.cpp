@@ -36,6 +36,7 @@
 #include "SampleCollectionContainerImpl.h"
 #include "VectorBasedMatrixCollectionImpl.h"
 #include "MultiNearBalancePartsGateDecomposer.h"
+#include "HarrowGateDecomposer.h"
 #include <stdexcept>
 #include <iostream>
 
@@ -169,6 +170,10 @@ GateDecomposerPtr SampleComposerEvaluatorContainerImpl::generateDecomposerFromCo
 	switch (evalConfig.m_queryDecomposerType) {
 	case DT_NEAR_BALANCE:
 		pGateDecomposer = GateDecomposerPtr(new MultiNearBalancePartsGateDecomposer(m_pGateRealCoordinateCalculator,
+				m_pMatrixOperator));
+		break;
+	case DT_GC_SIMPLE:
+		pGateDecomposer = GateDecomposerPtr(new HarrowGateDecomposer(m_pGateRealCoordinateCalculator,
 				m_pMatrixOperator));
 		break;
 	case DT_GC_MULTI_LEVELS:
