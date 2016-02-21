@@ -75,7 +75,8 @@ enum ComposerType {
 
 enum DecomposerType {
 	DT_NEAR_BALANCE = 1,
-	DT_GC_MULTI_LEVELS = 2
+	DT_GC_SIMPLE = 2,
+	DT_GC_MULTI_LEVELS = 3
 };
 
 struct ComposerBasedApproximatorConfig {
