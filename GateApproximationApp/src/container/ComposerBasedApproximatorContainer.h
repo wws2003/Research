@@ -23,6 +23,7 @@
 #include "MatrixRealInnerProductByTraceImpl.h"
 #include "GateCoordinateCalculatorImpl.h"
 #include "CoordinateAdditionBasedGateComposer.h"
+#include "IComposerContainer.h"
 
 class ComposerBasedApproximatorContainer: public IApproximatorContainer {
 public:
@@ -41,10 +42,6 @@ private:
 	void wireDependencies();
 	void releaseDependencies();
 
-	void initCoordinateAdditionalBasedGateComposerElements();
-	void initRealCoordinateComparator();
-	void initEpsilonRealCoordinate(RealCoordinate<GatePtr>& epsilonRealCoordinate);
-
 	GateComposerPtr generateComposerFromConfig(ComposerBasedApproximatorConfig approximatorConfig);
 
 	GateDecomposerPtr generateDecomposerFromConfig(ComposerBasedApproximatorConfig approximatorConfig);
@@ -53,10 +50,9 @@ private:
 	MatrixOperatorPtr m_pMatrixOperator;
 	ResourceContainerPtr m_pResourceContainer;
 
-	CombinerPtr<GatePtr> m_pGateCombiner;
-	ElementSetLogPtr<GatePtr> m_pGateSetLog;
-
 	GateComposerPtr m_pGateComposer;
+	ComposerContainerPtr m_pComposerContainer;
+
 	ComposerPtr<RealCoordinate<GatePtr> > m_pGateCoordinateComposer;
 	ComparatorPtr<RealCoordinate<GatePtr> > m_pRealCoordinateComparator;
 	CombinerPtr<RealCoordinate<GatePtr> > m_pGateCoordinateCombiner;

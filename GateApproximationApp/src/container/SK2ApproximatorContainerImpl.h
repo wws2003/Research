@@ -19,7 +19,7 @@
 #include "IResourceContainer.h"
 #include "IComposer.h"
 #include "IConverter.h"
-#include "IComposerContainer.h"
+#include "IEvaluatingComposerContainer.h"
 #include "IElementComparator.h"
 
 class SK2ApproximatorContainerImpl: public IApproximatorContainer {

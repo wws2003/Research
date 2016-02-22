@@ -23,9 +23,10 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../../ModuleEvaluate/include/interface/abstract/IComposerEvaluator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
  ../src/container/IComposerEvaluatorContainer.h \
- ../src/container/IComposerContainer.h ../src/configure/Config.h \
- ../src/common/ApplicationCommon.h ../src/configure/ConfigReader.h \
- ../src/configure/Config.h ../src/command/NotAvailableCommand.h \
+ ../src/container/IEvaluatingComposerContainer.h \
+ ../src/configure/Config.h ../src/common/ApplicationCommon.h \
+ ../src/configure/ConfigReader.h ../src/configure/Config.h \
+ ../src/command/NotAvailableCommand.h \
  ../src/container/SampleCollectionContainerImpl.h \
  ../../ModuleIO/include/interface/common/IOCommon.h \
  ../src/container/IResourceContainer.h \
@@ -67,13 +68,24 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h \
  ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h \
+ ../src/container/IComposerContainer.h \
  ../src/container/SKApproximatorContainerImpl.h \
  ../src/container/SK2ApproximatorContainerImpl.h \
  ../../ModuleAlgorithm/include/internal-abstract/converter/IConverter.h \
- ../src/container/IComposerContainer.h \
+ ../src/container/IEvaluatingComposerContainer.h \
  ../src/container/ComposerBasedSK2ApproximatorContainerImpl.h \
  ../src/container/SK2ApproximatorContainerImpl.h \
  ../src/container/SampleComposerContainerImpl.h \
+ ../src/container/SimpleComposerContainerImpl.h \
+ ../../ModuleParallelism/include/interface/abstract/ITaskExecutor.h \
+ ../../ModuleParallelism/include/interface/abstract/ITask.h \
+ ../../ModuleParallelism/include/interface/common/TaskCommon.h \
+ ../../ModuleParallelism/include/internal-abstract/ITaskQueue.h \
+ ../../ModuleParallelism/include/interface/abstract/ITask.h \
+ ../../ModuleParallelism/include/internal-abstract/TaskInternal.h \
+ ../../ModuleParallelism/include/implement/QueueBasedTaskExecutorImpl.h \
+ ../../ModuleParallelism/include/interface/common/TaskConstants.h \
+ ../src/container/GateCoordinateAdditionBasedComposerContainerImpl.h \
  ../src/container/SampleComposerEvaluatorContainerImpl.h \
  ../src/container/IComposerEvaluatorContainer.h \
  ../../ModuleEvaluate/include/interface/abstract/ITimer.h \
@@ -129,7 +141,7 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../src/container/IComposerEvaluatorContainer.h:
 
-../src/container/IComposerContainer.h:
+../src/container/IEvaluatingComposerContainer.h:
 
 ../src/configure/Config.h:
 
@@ -223,19 +235,41 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h:
 
+../src/container/IComposerContainer.h:
+
 ../src/container/SKApproximatorContainerImpl.h:
 
 ../src/container/SK2ApproximatorContainerImpl.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/converter/IConverter.h:
 
-../src/container/IComposerContainer.h:
+../src/container/IEvaluatingComposerContainer.h:
 
 ../src/container/ComposerBasedSK2ApproximatorContainerImpl.h:
 
 ../src/container/SK2ApproximatorContainerImpl.h:
 
 ../src/container/SampleComposerContainerImpl.h:
+
+../src/container/SimpleComposerContainerImpl.h:
+
+../../ModuleParallelism/include/interface/abstract/ITaskExecutor.h:
+
+../../ModuleParallelism/include/interface/abstract/ITask.h:
+
+../../ModuleParallelism/include/interface/common/TaskCommon.h:
+
+../../ModuleParallelism/include/internal-abstract/ITaskQueue.h:
+
+../../ModuleParallelism/include/interface/abstract/ITask.h:
+
+../../ModuleParallelism/include/internal-abstract/TaskInternal.h:
+
+../../ModuleParallelism/include/implement/QueueBasedTaskExecutorImpl.h:
+
+../../ModuleParallelism/include/interface/common/TaskConstants.h:
+
+../src/container/GateCoordinateAdditionBasedComposerContainerImpl.h:
 
 ../src/container/SampleComposerEvaluatorContainerImpl.h:
 

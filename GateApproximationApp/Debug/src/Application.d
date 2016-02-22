@@ -25,9 +25,9 @@ src/Application.d: ../src/Application.cpp \
  ../../ModuleEvaluate/include/interface/abstract/IComposerEvaluator.h \
  ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
  ../src/container/IComposerEvaluatorContainer.h \
- ../src/container/IComposerContainer.h ../src/configure/Config.h \
- ../src/configure/ConfigReader.h ../src/configure/Config.h \
- ../src/command/ICommand.h
+ ../src/container/IEvaluatingComposerContainer.h \
+ ../src/configure/Config.h ../src/configure/ConfigReader.h \
+ ../src/configure/Config.h ../src/command/ICommand.h
 
 ../../ModuleMathConcepts/include/interface/common/Gate.h:
 
@@ -85,7 +85,7 @@ src/Application.d: ../src/Application.cpp \
 
 ../src/container/IComposerEvaluatorContainer.h:
 
-../src/container/IComposerContainer.h:
+../src/container/IEvaluatingComposerContainer.h:
 
 ../src/configure/Config.h:
 

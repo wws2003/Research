@@ -18,7 +18,7 @@
 #include "ApplicationCommon.h"
 #include "IResourceContainer.h"
 #include "IComposer.h"
-#include "IElementSetLog.h"
+#include "IComposerContainer.h"
 
 class SKApproximatorContainerImpl: public IApproximatorContainer {
 public:
@@ -43,8 +43,8 @@ private:
 	GateRealCoordinateCalculatorPtr m_pGateRealCoordinateCalculator;
 
 	GateComposerPtr m_pGateLoggingComposer;
+	ComposerContainerPtr m_pComposerContainer;
 	GateDecomposerPtr m_pHarrowGateDecomposer;
-	ElementSetLogPtr<GatePtr> m_pGateSetLog;
 
 	SKApproximatorConfig m_approximatorConfig;
 	CollectionConfig m_coreCollectionConfig;

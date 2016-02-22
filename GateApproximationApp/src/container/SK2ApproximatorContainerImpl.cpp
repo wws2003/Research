@@ -20,6 +20,7 @@
 #include "SampleComposerContainerImpl.h"
 #include "HarrowGateDecomposer.h"
 #include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
+#include "GateCoordinateAdditionBasedComposerContainerImpl.h"
 #include "SKGateApproximator.h"
 #include "SK2ApproximatorContainerImpl.h"
 
@@ -62,7 +63,7 @@ void SK2ApproximatorContainerImpl::wireDependencies() {
 
 	m_pHarrowGateDecomposer = GateDecomposerPtr(new HarrowGateDecomposer(m_pGateRealCoordinateCalculator, m_pMatrixOperator));
 
-	m_pGateComposer = m_pGateComposerContainer->getEvaluatedGateComposer();
+	m_pGateComposer = m_pGateComposerContainer->getGateComposer();
 }
 
 void SK2ApproximatorContainerImpl::releaseDependencies() {
@@ -82,5 +83,5 @@ void SK2ApproximatorContainerImpl::releaseDependencies() {
 }
 
 void SK2ApproximatorContainerImpl::initGateComposerContainer(const CoordinateAdditionalBasedComposerConfig& cadbConfig) {
-	m_pGateComposerContainer = ComposerContainerPtr(new SampleComposerContainerImpl(cadbConfig, m_coreCollectionConfig));
+	m_pGateComposerContainer = ComposerContainerPtr(new GateCoordinateAdditionBasedComposerContainerImpl(cadbConfig, m_coreCollectionConfig));
 }

@@ -14,7 +14,7 @@
 #include "ICollectionContainer.h"
 #include "IComposerEvaluator.h"
 #include "IComposerEvaluatorContainer.h"
-#include "IComposerContainer.h"
+#include "IEvaluatingComposerContainer.h"
 #include "Config.h"
 #include "ApplicationCommon.h"
 #include "ConfigReader.h"
@@ -106,6 +106,11 @@ private:
 	void resetApproximatorContainer(const NearIdentityApproximatorConfig& approximatorConfig,
 			const CollectionConfig& collectionConfig);
 
+	void resetComposerContainer();
+
+	void resetComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig,
+				const CollectionConfig& collectionConfig);
+
 	void resetComposerBasedApproximatorContainer(const ComposerBasedApproximatorConfig& approximatorConfig,
 			const CollectionConfig& collectionConfig);
 
@@ -113,7 +118,7 @@ private:
 			const CoordinateAdditionalBasedComposerConfig& cadbConfig,
 			const CollectionConfig& collectionConfig);
 
-	void resetComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig,
+	void resetEvaluatingComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig,
 			const CollectionConfig& collectionConfig);
 
 	void resetComposerEvaluatorContainer(const ComposerEvaluatorConfig& composerEvalConfig,
@@ -135,6 +140,7 @@ private:
 	ApproximatorContainerPtr m_pApproximatorContainer;
 	EvaluatorContainerPtr m_pEvaluatorContainer;
 	ComposerContainerPtr m_pComposerContainer;
+	EvaluatingComposerContainerPtr m_pEvaluatingComposerContainer;
 	ComposerEvaluatorContainerPtr m_pComposerEvaluatorContainer;
 };
 

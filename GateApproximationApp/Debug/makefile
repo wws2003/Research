@@ -11,6 +11,7 @@ RM := rm -rf
 -include src/factory/subdir.mk
 -include src/container/subdir.mk
 -include src/configure/subdir.mk
+-include src/concrete-from-templates/subdir.mk
 -include src/command/subdir.mk
 -include src/subdir.mk
 -include subdir.mk

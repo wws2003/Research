@@ -20,7 +20,7 @@
 #include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "HarrowGateDecomposer.h"
 #include "SimpleGateComposer.h"
-#include "GateSetLogImpl.h"
+#include "SimpleComposerContainerImpl.h"
 #include "SKGateApproximator.h"
 
 SKApproximatorContainerImpl::SKApproximatorContainerImpl(SKApproximatorConfig config,
@@ -62,13 +62,13 @@ void SKApproximatorContainerImpl::wireDependencies() {
 	m_pGateRealCoordinateCalculator = GateRealCoordinateCalculatorPtr(new GateCoordinateCalculatorImpl(m_pMatrixRealCoordinateCalculator));
 
 	m_pHarrowGateDecomposer = GateDecomposerPtr(new HarrowGateDecomposer(m_pGateRealCoordinateCalculator, m_pMatrixOperator));
-	m_pGateSetLog = ElementSetLogPtr<GatePtr>(new GateSetLogImpl());
-	m_pGateLoggingComposer = GateComposerPtr(new SimpleGateComposer(m_pGateCombiner, 10, m_pGateSetLog));
+	m_pComposerContainer = ComposerContainerPtr(new SimpleComposerContainerImpl(10));
+	m_pGateLoggingComposer = m_pComposerContainer->getGateComposer();
 }
 
 void SKApproximatorContainerImpl::releaseDependencies() {
 	_destroy(m_pGateLoggingComposer);
-	_destroy(m_pGateSetLog);
+	_destroy(m_pComposerContainer);
 
 	_destroy(m_pHarrowGateDecomposer);
 

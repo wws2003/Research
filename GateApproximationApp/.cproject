@@ -29,6 +29,7 @@
 									<listOptionValue builtIn="false" value="../src/common"/>
 									<listOptionValue builtIn="false" value="../src/container"/>
 									<listOptionValue builtIn="false" value="../src/factory"/>
+									<listOptionValue builtIn="false" value="../src/concrete-from-templates"/>
 									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/include/implement"/>
@@ -69,8 +70,13 @@
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/implement"/>
+									<listOptionValue builtIn="false" value="../../ModuleParallelism/include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../../ModuleParallelism/include/interface/common"/>
+									<listOptionValue builtIn="false" value="../../ModuleParallelism/include/implement"/>
+									<listOptionValue builtIn="false" value="../../ModuleParallelism/include/internal-abstract"/>
+									<listOptionValue builtIn="false" value="../../ModuleParallelism/src/implement"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.299868399" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC -pg" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.299868399" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0  -pthread -std=c++11 -fPIC -pg -Wl,--no-as-needed " valueType="string"/>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1044727360" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1308549997" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -90,6 +96,7 @@
 									<listOptionValue builtIn="false" value="gmp"/>
 									<listOptionValue builtIn="false" value="mpfr"/>
 									<listOptionValue builtIn="false" value="sqlite3"/>
+									<listOptionValue builtIn="false" value="pthread"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1547203305" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/artifact"/>

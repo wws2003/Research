@@ -16,10 +16,18 @@
 
 template<typename T>
 struct LookupResult{
+
+	static const mreal_t DISTANCE_UNKNOWN_VALUE;
+
+	LookupResult(){m_distanceToTarget = DISTANCE_UNKNOWN_VALUE; m_resultElement = NullPtr;};
+
 	LookupResult(T resultElement, mreal_t distanceToTarget){m_resultElement = resultElement; m_distanceToTarget = distanceToTarget;};
 	T m_resultElement;
 	mreal_t m_distanceToTarget;
 };
+
+template<typename T>
+const mreal_t LookupResult<T>::DISTANCE_UNKNOWN_VALUE = -1.0;
 
 template<typename T>
 struct _DistanceComparator {

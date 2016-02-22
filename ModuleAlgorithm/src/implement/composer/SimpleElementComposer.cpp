@@ -8,6 +8,7 @@
 #include "SimpleElementComposer.h"
 #include "VectorBasedCollectionImpl.hpp"
 #include "VectorBasedReadOnlyIteratorImpl.hpp"
+#include "ElementsCombinationVerifyTask.h"
 #include <sstream>
 #include <iostream>
 
@@ -16,16 +17,20 @@
 template<typename T>
 const std::string SimpleElementComposer<T>::LOG_ROOT_FOLDER = "IntermediateLog";
 
+#define TASK_FUTURE_BUFFER_SIZE (400)
+
 template<typename T>
 SimpleElementComposer<T>::SimpleElementComposer(CombinerPtr<T> pCombiner,
 		int maxResultsNumber,
-		ElementSetLogPtr<T> pElementSetLog) {
+		ElementSetLogPtr<T> pElementSetLog,
+		TaskExecutorPtr<LookupResult<T> > pTaskExecutor) {
 
 	m_pCombiner = pCombiner;
 	m_maxResultsNumber = maxResultsNumber;
 	m_pElementSetLog = pElementSetLog;
 	m_logFolderCounter = 0;
 	m_combinationCounter = 0;
+	m_pTaskExecutor = pTaskExecutor;
 
 	pElementSetLog->prepareLogRootFolder(LOG_ROOT_FOLDER);
 }
@@ -38,13 +43,13 @@ IteratorPtr<LookupResult<T> > SimpleElementComposer<T>::composeApproximations(co
 		bool toSortResults) {
 
 	std::vector<T> partialElementsBuffer;
-	std::vector<LookupResult<T> > resultBuffer;
+	TaskFutureBuffer taskFutureBuffer(TASK_FUTURE_BUFFER_SIZE, m_maxResultsNumber);
 
 #if OUTPUT_INTERMEDIATE_RESULT
 	m_pElementSetLog->saveElementSets(buildingBlockBuckets);
 	m_pElementSetLog->saveQuery(pQuery);
 #endif
-
+	m_pTaskExecutor->start();
 	try {
 		generateApproximations(partialElementsBuffer,
 				0,
@@ -52,7 +57,7 @@ IteratorPtr<LookupResult<T> > SimpleElementComposer<T>::composeApproximations(co
 				pQuery,
 				pDistanceCalculator,
 				epsilon,
-				resultBuffer);
+				taskFutureBuffer);
 	}
 	catch (int enough) {
 		std::cout << "Find enough results\n";
@@ -67,12 +72,18 @@ IteratorPtr<LookupResult<T> > SimpleElementComposer<T>::composeApproximations(co
 #endif
 
 	//TODO Filter before/after sort results
+	std::vector<LookupResult<T> > resultBuffer;
+	taskFutureBuffer.collectResults(resultBuffer);
 	if(toSortResults) {
 		std::sort(resultBuffer.begin(), resultBuffer.end(), DistanceComparator<T>());
 	}
+
+	m_pTaskExecutor->shutDown();
+
 	return IteratorPtr<LookupResult<T> >(new VectorBasedReadOnlyIteratorImpl<LookupResult<T> >(resultBuffer));
 }
 
+//-------------------Private methods-------------------//
 template<typename T>
 void SimpleElementComposer<T>::generateApproximations(std::vector<T>& partialElementsBuffer,
 		int bucketIndex,
@@ -80,7 +91,7 @@ void SimpleElementComposer<T>::generateApproximations(std::vector<T>& partialEle
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		std::vector<LookupResult<T> >& resultBuffer) {
+		TaskFutureBuffer& taskResultBuffer) {
 
 	if(bucketIndex >= buildingBlockBuckets.size()) {
 		m_combinationCounter++;
@@ -88,7 +99,7 @@ void SimpleElementComposer<T>::generateApproximations(std::vector<T>& partialEle
 				pQuery,
 				pDistanceCalculator,
 				epsilon,
-				resultBuffer);
+				taskResultBuffer);
 		return;
 	}
 
@@ -105,7 +116,7 @@ void SimpleElementComposer<T>::generateApproximations(std::vector<T>& partialEle
 				pQuery,
 				pDistanceCalculator,
 				epsilon,
-				resultBuffer);
+				taskResultBuffer);
 
 		partialElementsBuffer.pop_back();
 
@@ -130,37 +141,68 @@ void SimpleElementComposer<T>::evaluateCombination(const std::vector<T>& partial
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		std::vector<LookupResult<T> >& resultBuffer) {
+		TaskFutureBuffer& taskResultBuffer) {
 
-	T candidate;
-	composeCandidate(partialElements, candidate);
+	TaskPtr<LookupResult<T> > pTask = TaskPtr<LookupResult<T> >(new ElementsCombinationVerifyTask<T>(partialElements,
+			m_pCombiner,
+			pDistanceCalculator,
+			pQuery,
+			epsilon));
 
-	if(candidate != NullPtr) {
-		mreal_t distanceToTarget = pDistanceCalculator->distance(candidate, pQuery);
-		if(distanceToTarget <= epsilon) {
-			resultBuffer.push_back(LookupResult<T>(candidate, distanceToTarget));
-			if(m_maxResultsNumber > 0 && resultBuffer.size() >= m_maxResultsNumber) {
-				throw (1);
-			}
-		}
-		else {
-			_destroy(candidate);
-		}
+	TaskFuturePtr<LookupResult<T> > pTaskFuture = m_pTaskExecutor->submitTask(pTask);
+	taskResultBuffer.addTaskFuturePair(pTaskFuture, pTask);
+}
+
+//-------------------Inner class, private methods-------------------//
+template<typename T>
+SimpleElementComposer<T>::TaskFutureBuffer::TaskFutureBuffer(size_t maxBufferSize, int maxResultsNumber) {
+	m_maxBufferSize = maxBufferSize;
+	m_maxResultsNumber = maxResultsNumber;
+}
+
+template<typename T>
+void SimpleElementComposer<T>::TaskFutureBuffer::addTaskFuturePair(TaskFuturePtr<LookupResult<T> > pTaskFuture,
+		TaskPtr<LookupResult<T> > pTask) {
+	m_taskFuturesBuffer.push_back(pTaskFuture);
+	m_tasks.push_back(pTask);
+
+	if(m_taskFuturesBuffer.size() > m_maxBufferSize) {
+		moveResultsFromFutureBuffers();
+	}
+
+	if(m_maxResultsNumber > 0 && m_results.size() > m_maxResultsNumber) {
+		throw (1);
 	}
 }
 
 template<typename T>
-void SimpleElementComposer<T>::composeCandidate(const std::vector<T>& partialElements, T& result) {
-	T combined = partialElements.empty() ? NullPtr : partialElements[0]->clone();
-	for(unsigned int i = 1; i < partialElements.size() && combined != NullPtr; i++) {
-		if(partialElements[i] != NullPtr) {
-			T tmp = NullPtr;
-			m_pCombiner->combine(combined, partialElements[i], tmp);
-			_destroy(combined);
-			combined = tmp;
-		}
-	}
-	result = combined;
+void SimpleElementComposer<T>::TaskFutureBuffer::collectResults(std::vector<LookupResult<T> >& resultBuffer) {
+	//Retrieve results from remaining futures
+	moveResultsFromFutureBuffers();
+	resultBuffer.reserve(resultBuffer.size() + m_results.size());
+	resultBuffer.insert(resultBuffer.end(), m_results.begin(), m_results.end());
+	m_results.clear();
 }
 
+template<typename T>
+void SimpleElementComposer<T>::TaskFutureBuffer::moveResultsFromFutureBuffers() {
+	for(unsigned int i = 0; i < m_taskFuturesBuffer.size(); i++) {
+		TaskFuturePtr<LookupResult<T> > pTaskFuture = m_taskFuturesBuffer[i];
+		TaskPtr<LookupResult<T> > pTask = m_tasks[i];
 
+		//Store verified result
+		pTaskFuture->wait();
+		TaskResult<LookupResult<T> > verifyTaskResult = pTaskFuture->getResult();
+		if(verifyTaskResult.m_resultCode == ElementsCombinationVerifyTask<T>::TRC_POSITIVE) {
+			m_results.push_back(verifyTaskResult.m_executeResult);
+		}
+
+		//Release memory for future and task
+		m_taskFuturesBuffer[i] = NullPtr;
+		m_tasks[i] = NullPtr;
+		_destroy(pTaskFuture);
+		_destroy(pTask);
+	}
+	m_taskFuturesBuffer.clear();
+	m_tasks.clear();
+}

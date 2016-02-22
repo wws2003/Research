@@ -26,6 +26,7 @@ SUBDIRS := \
 src/factory \
 src/container \
 src/configure \
+src/concrete-from-templates \
 src/command \
 src \
 

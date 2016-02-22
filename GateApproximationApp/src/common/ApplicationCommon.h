@@ -19,8 +19,9 @@ class ICollectionContainer;
 class IApproximatorContainer;
 class IEvaluatorContainer;
 class IWriterContainer;
-class IComposerContainer;
+class IEvaluatingComposerContainer;
 class IComposerEvaluatorContainer;
+class IComposerContainer;
 
 typedef ICommand* CommandPtr;
 typedef AbstractChainCommand* AbstractCommandPtr;
@@ -29,8 +30,9 @@ typedef ICollectionContainer* CollectionContainerPtr;
 typedef IApproximatorContainer* ApproximatorContainerPtr;
 typedef IEvaluatorContainer* EvaluatorContainerPtr;
 typedef IWriterContainer* WriterContainerPtr;
-typedef IComposerContainer* ComposerContainerPtr;
+typedef IEvaluatingComposerContainer* EvaluatingComposerContainerPtr;
 typedef IComposerEvaluatorContainer* ComposerEvaluatorContainerPtr;
+typedef IComposerContainer* ComposerContainerPtr;
 
 typedef std::map<std::string, int> LibrarySetNameMap;
 typedef std::map<int, std::string> LibrarySetFileNameMap;

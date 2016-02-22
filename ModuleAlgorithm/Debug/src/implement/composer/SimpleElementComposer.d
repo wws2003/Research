@@ -17,9 +17,14 @@ src/implement/composer/SimpleElementComposer.d: \
  ../include/internal-abstract/persistable/IElementSetLog.h \
  ../include/internal-abstract/AlgoInternal.h \
  ../include/interface/abstract/IIterator.h \
+ ../../ModuleParallelism/include/interface/abstract/ITaskExecutor.h \
+ ../../ModuleParallelism/include/interface/abstract/ITask.h \
+ ../../ModuleParallelism/include/interface/common/TaskCommon.h \
  ../include/implement/collection/VectorBasedCollectionImpl.hpp \
  ../include/implement/iterator/VectorBasedIteratorImpl.hpp \
- ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp
+ ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp \
+ ../include/implement/task/ElementsCombinationVerifyTask.h \
+ ../../ModuleParallelism/include/interface/abstract/ITask.h
 
 ../include/implement/composer/SimpleElementComposer.h:
 
@@ -55,8 +60,18 @@ src/implement/composer/SimpleElementComposer.d: \
 
 ../include/interface/abstract/IIterator.h:
 
+../../ModuleParallelism/include/interface/abstract/ITaskExecutor.h:
+
+../../ModuleParallelism/include/interface/abstract/ITask.h:
+
+../../ModuleParallelism/include/interface/common/TaskCommon.h:
+
 ../include/implement/collection/VectorBasedCollectionImpl.hpp:
 
 ../include/implement/iterator/VectorBasedIteratorImpl.hpp:
 
 ../include/implement/iterator/VectorBasedReadOnlyIteratorImpl.hpp:
+
+../include/implement/task/ElementsCombinationVerifyTask.h:
+
+../../ModuleParallelism/include/interface/abstract/ITask.h:
