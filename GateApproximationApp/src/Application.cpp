@@ -84,10 +84,13 @@ void initCommands(CommandParser* pCommandParser) {
 
 	//For -e1 conf1 -ce conf21 -m conf22 -t targetConf
 	pCommandParser->provideArgumentPatternForCommandCode(9, ArgumentPositions{1, 3, 5, 7}, Arguments{"-e", "-ce", "-m", "-t"}, EVALUATE_COMPOSER2_TO_TARGET);
+
+	//For -e conf1 -cep conf2 -nt number_of_thread -t targetConf
+	pCommandParser->provideArgumentPatternForCommandCode(9, ArgumentPositions{1, 3, 5, 7}, Arguments{"-e", "-cep", "-nt", "-t"}, EVALUATE_PARALLEL_COMPOSER_TO_TARGET);
 }
 
 void printSyntaxMessage() {
-	std::cout << "As of 2016/02/10, acceptable command arguments are:" << std::endl;
+	std::cout << "As of 2016/02/23, acceptable command arguments are:" << std::endl;
 
 	std::cout << "========For Near-Identity stuffs========" << std::endl;
 	std::cout << "-g conf1 conf2 -o outputFile -> Generate near identity sequences (then persist to storage)." << std::endl;
@@ -105,6 +108,8 @@ void printSyntaxMessage() {
 
 	std::cout << "-e conf1 -ce conf2 -s conf3 -t targetConf -> Evaluate single comparator coordinate addition-based gate composer vs full-combination gate composer " << std::endl;
 	std::cout << "-e conf1 -ce conf2 -m conf3 -t targetConf -> Evaluate multiple comparators coordinate addition-based gate composer vs full-combination gate composer " << std::endl;
+
+	std::cout << "-e conf1 -cep conf2 -nt number_of_thread -t targetConf -> Evaluate multi-threaded full-combination gate composer vs full-combination gate composer " << std::endl;
 
 	std::cout << "\n========For future purposes========" << std::endl;
 	std::cout << "-e conf1 -t targetConf -> Evaluate collection for target" << std::endl;

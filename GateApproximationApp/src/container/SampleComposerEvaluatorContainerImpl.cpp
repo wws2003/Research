@@ -27,6 +27,7 @@
 #include "GateCombinerImpl.h"
 #include "LabelOnlyGateWriterImpl.h"
 #include "CpuTimer.h"
+#include "SystemTimer.h"
 #include "GateSearchSpaceTimerEvaluatorImpl.h"
 #include "MapBasedGateBinCollectionImpl.h"
 #include "DuplicateGateCancelationCombinerImpl.h"
@@ -102,7 +103,7 @@ void SampleComposerEvaluatorContainerImpl::wireDependencies() {
 	//For evaluator itself
 	m_pGateWriterInEvaluator = GateWriterPtr(new LabelOnlyGateWriterImpl(","));
 	m_pCoordinateWriter = RealCoordinateWriterPtr<GatePtr>(new SampleRealCoordinateWriterImpl<GatePtr>(20, ","));
-	m_pTimer = TimerPtr(new CpuTimer());
+	m_pTimer = TimerPtr(new SystemTimer());
 }
 
 void SampleComposerEvaluatorContainerImpl::releaseDependencies() {

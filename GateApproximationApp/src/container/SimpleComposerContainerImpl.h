@@ -15,14 +15,10 @@
 #include "IMatrixOperator.h"
 #include "IMatrixFactory.h"
 #include "IElementSetLog.h"
-#include "ITaskExecutor.h"
-#include "ITaskQueue.h"
-#include "TaskCommon.h"
 #include "ICollection.h"
 #include "ILookupResultFilter.h"
 #include "ApplicationCommon.h"
 #include "IComposerContainer.h"
-#include "QueueBasedTaskExecutorImpl.h"
 
 class SimpleComposerContainerImpl: public IComposerContainer {
 public:
@@ -43,9 +39,6 @@ private:
 
 	CombinerPtr<GatePtr> m_pGateCombiner;
 	ElementSetLogPtr<GatePtr> m_pGateSetLog;
-
-	TaskExecutorPtr<LookupResult<GatePtr> > m_pTaskExecutor;
-	TaskQueuePtr<QueuedTask<LookupResult<GatePtr> > > m_pTaskQueue;
 };
 
 #endif /* SIMPLECOMPOSERCONTAINERIMPL_H_ */

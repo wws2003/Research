@@ -77,19 +77,12 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../src/container/SK2ApproximatorContainerImpl.h \
  ../src/container/SampleComposerContainerImpl.h \
  ../src/container/SimpleComposerContainerImpl.h \
- ../../ModuleParallelism/include/interface/abstract/ITaskExecutor.h \
- ../../ModuleParallelism/include/interface/abstract/ITask.h \
- ../../ModuleParallelism/include/interface/common/TaskCommon.h \
- ../../ModuleParallelism/include/internal-abstract/ITaskQueue.h \
- ../../ModuleParallelism/include/interface/abstract/ITask.h \
- ../../ModuleParallelism/include/internal-abstract/TaskInternal.h \
- ../../ModuleParallelism/include/implement/QueueBasedTaskExecutorImpl.h \
- ../../ModuleParallelism/include/interface/common/TaskConstants.h \
  ../src/container/GateCoordinateAdditionBasedComposerContainerImpl.h \
  ../src/container/SampleComposerEvaluatorContainerImpl.h \
  ../src/container/IComposerEvaluatorContainer.h \
  ../../ModuleEvaluate/include/interface/abstract/ITimer.h \
- ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h
+ ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h \
+ ../src/container/EvaluatingParallelComposerContainerImpl.h
 
 ../src/command/CommandFactory.h:
 
@@ -253,22 +246,6 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../src/container/SimpleComposerContainerImpl.h:
 
-../../ModuleParallelism/include/interface/abstract/ITaskExecutor.h:
-
-../../ModuleParallelism/include/interface/abstract/ITask.h:
-
-../../ModuleParallelism/include/interface/common/TaskCommon.h:
-
-../../ModuleParallelism/include/internal-abstract/ITaskQueue.h:
-
-../../ModuleParallelism/include/interface/abstract/ITask.h:
-
-../../ModuleParallelism/include/internal-abstract/TaskInternal.h:
-
-../../ModuleParallelism/include/implement/QueueBasedTaskExecutorImpl.h:
-
-../../ModuleParallelism/include/interface/common/TaskConstants.h:
-
 ../src/container/GateCoordinateAdditionBasedComposerContainerImpl.h:
 
 ../src/container/SampleComposerEvaluatorContainerImpl.h:
@@ -278,3 +255,5 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 ../../ModuleEvaluate/include/interface/abstract/ITimer.h:
 
 ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h:
+
+../src/container/EvaluatingParallelComposerContainerImpl.h:

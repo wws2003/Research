@@ -43,7 +43,7 @@ protected:
 private:
 	void composeCandidate(const std::vector<T>& elements, T& result);
 
-	const std::vector<T>& m_elements;
+	const std::vector<T> m_elements;
 	CombinerPtr<T> m_pCombiner;
 	DistanceCalculatorPtr<T> m_pDistanceCalculator;
 	T m_target;

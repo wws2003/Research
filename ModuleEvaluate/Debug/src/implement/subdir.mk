@@ -14,7 +14,8 @@ CPP_SRCS += \
 ../src/implement/MatrixSearchSpaceTimerEvaluatorImpl.cpp \
 ../src/implement/ScopeTimer.cpp \
 ../src/implement/SearchSpaceConstructorImpl.cpp \
-../src/implement/SearchSpaceTimerEvaluator.cpp 
+../src/implement/SearchSpaceTimerEvaluator.cpp \
+../src/implement/SystemTimer.cpp 
 
 OBJS += \
 ./src/implement/ComposerEvaluatorImpl.o \
@@ -27,7 +28,8 @@ OBJS += \
 ./src/implement/MatrixSearchSpaceTimerEvaluatorImpl.o \
 ./src/implement/ScopeTimer.o \
 ./src/implement/SearchSpaceConstructorImpl.o \
-./src/implement/SearchSpaceTimerEvaluator.o 
+./src/implement/SearchSpaceTimerEvaluator.o \
+./src/implement/SystemTimer.o 
 
 CPP_DEPS += \
 ./src/implement/ComposerEvaluatorImpl.d \
@@ -40,7 +42,8 @@ CPP_DEPS += \
 ./src/implement/MatrixSearchSpaceTimerEvaluatorImpl.d \
 ./src/implement/ScopeTimer.d \
 ./src/implement/SearchSpaceConstructorImpl.d \
-./src/implement/SearchSpaceTimerEvaluator.d 
+./src/implement/SearchSpaceTimerEvaluator.d \
+./src/implement/SystemTimer.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

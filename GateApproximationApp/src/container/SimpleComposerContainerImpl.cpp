@@ -11,8 +11,7 @@
 #include "SimpleDenseMatrixFactoryImpl.h"
 #include "SampleMatrixOperator.h"
 #include "GateCombinerImpl.h"
-#include "GateLookupResultQueueBasedTaskExecutorImpl.h"
-#include "GateLookupResultNoLockTaskQueueImpl.h"
+#include "SimpleGateComposer.h"
 #include "GateSetLogImpl.h"
 
 SimpleComposerContainerImpl::SimpleComposerContainerImpl(int nbCandidates) {
@@ -27,8 +26,7 @@ SimpleComposerContainerImpl::~SimpleComposerContainerImpl() {
 GateComposerPtr SimpleComposerContainerImpl::getGateComposer() {
 	return GateComposerPtr(new SimpleGateComposer(m_pGateCombiner,
 			m_nbCandidates,
-			m_pGateSetLog,
-			m_pTaskExecutor));
+			m_pGateSetLog));
 }
 
 void SimpleComposerContainerImpl::wireDependencies() {
@@ -37,15 +35,9 @@ void SimpleComposerContainerImpl::wireDependencies() {
 	m_pGateSetLog = ElementSetLogPtr<GatePtr>(new GateSetLogImpl());
 	GateCombinabilityCheckers checkers;
 	m_pGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(checkers, m_pMatrixOperator));
-
-	m_pTaskQueue = TaskQueuePtr<QueuedTask<LookupResult<GatePtr> > >(new GateLookupResultNoLockTaskQueueImpl());
-	m_pTaskExecutor = TaskExecutorPtr<LookupResult<GatePtr> >(new GateLookupResultQueueBasedTaskExecutorImpl(2, m_pTaskQueue));
 }
 
 void SimpleComposerContainerImpl::releaseDependencies() {
-	_destroy(m_pTaskExecutor);
-	_destroy(m_pTaskQueue);
-
 	_destroy(m_pGateCombiner);
 	_destroy(m_pGateSetLog);
 

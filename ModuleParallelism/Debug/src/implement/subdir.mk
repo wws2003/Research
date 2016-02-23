@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/implement/BufferedQueueBasedTaskExecutorImpl.cpp \
 ../src/implement/NoLockTaskQueueImpl.cpp \
 ../src/implement/QueueBasedTaskExecutorImpl.cpp \
 ../src/implement/RWSemaphore.cpp \
@@ -12,6 +13,7 @@ CPP_SRCS += \
 ../src/implement/ThreadSpawnTaskExecutorImpl.cpp 
 
 OBJS += \
+./src/implement/BufferedQueueBasedTaskExecutorImpl.o \
 ./src/implement/NoLockTaskQueueImpl.o \
 ./src/implement/QueueBasedTaskExecutorImpl.o \
 ./src/implement/RWSemaphore.o \
@@ -20,6 +22,7 @@ OBJS += \
 ./src/implement/ThreadSpawnTaskExecutorImpl.o 
 
 CPP_DEPS += \
+./src/implement/BufferedQueueBasedTaskExecutorImpl.d \
 ./src/implement/NoLockTaskQueueImpl.d \
 ./src/implement/QueueBasedTaskExecutorImpl.d \
 ./src/implement/RWSemaphore.d \

@@ -212,15 +212,7 @@ src/container/SKApproximatorContainerImpl.d: \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleAlgorithm/include/implement/composer/SimpleGateComposer.h \
  ../../ModuleAlgorithm/include/implement/composer/SimpleElementComposer.h \
- ../../ModuleParallelism/include/interface/abstract/ITaskExecutor.h \
- ../../ModuleParallelism/include/interface/abstract/ITask.h \
- ../../ModuleParallelism/include/interface/common/TaskCommon.h \
  ../src/container/SimpleComposerContainerImpl.h \
- ../../ModuleParallelism/include/internal-abstract/ITaskQueue.h \
- ../../ModuleParallelism/include/interface/abstract/ITask.h \
- ../../ModuleParallelism/include/internal-abstract/TaskInternal.h \
- ../../ModuleParallelism/include/implement/QueueBasedTaskExecutorImpl.h \
- ../../ModuleParallelism/include/interface/common/TaskConstants.h \
  ../../ModuleAlgorithm/include/implement/approximator/SKGateApproximator.h \
  ../../ModuleAlgorithm/include/implement/approximator/SKElementApproximator.h
 
@@ -650,23 +642,7 @@ src/container/SKApproximatorContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/implement/composer/SimpleElementComposer.h:
 
-../../ModuleParallelism/include/interface/abstract/ITaskExecutor.h:
-
-../../ModuleParallelism/include/interface/abstract/ITask.h:
-
-../../ModuleParallelism/include/interface/common/TaskCommon.h:
-
 ../src/container/SimpleComposerContainerImpl.h:
-
-../../ModuleParallelism/include/internal-abstract/ITaskQueue.h:
-
-../../ModuleParallelism/include/interface/abstract/ITask.h:
-
-../../ModuleParallelism/include/internal-abstract/TaskInternal.h:
-
-../../ModuleParallelism/include/implement/QueueBasedTaskExecutorImpl.h:
-
-../../ModuleParallelism/include/interface/common/TaskConstants.h:
 
 ../../ModuleAlgorithm/include/implement/approximator/SKGateApproximator.h:
 

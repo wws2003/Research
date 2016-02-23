@@ -18,7 +18,10 @@ CPP_SRCS += \
 ../src/implement/composer/NearIdentityMatrixBinBasedComposer.cpp \
 ../src/implement/composer/SimpleElementComposer.cpp \
 ../src/implement/composer/SimpleGateComposer.cpp \
-../src/implement/composer/SimpleMatrixComposer.cpp 
+../src/implement/composer/SimpleMatrixComposer.cpp \
+../src/implement/composer/SimpleParallelElementComposer.cpp \
+../src/implement/composer/SimpleParallelGateComposer.cpp \
+../src/implement/composer/SimpleParallelMatrixComposer.cpp 
 
 OBJS += \
 ./src/implement/composer/AdaptiveElementComposer.o \
@@ -35,7 +38,10 @@ OBJS += \
 ./src/implement/composer/NearIdentityMatrixBinBasedComposer.o \
 ./src/implement/composer/SimpleElementComposer.o \
 ./src/implement/composer/SimpleGateComposer.o \
-./src/implement/composer/SimpleMatrixComposer.o 
+./src/implement/composer/SimpleMatrixComposer.o \
+./src/implement/composer/SimpleParallelElementComposer.o \
+./src/implement/composer/SimpleParallelGateComposer.o \
+./src/implement/composer/SimpleParallelMatrixComposer.o 
 
 CPP_DEPS += \
 ./src/implement/composer/AdaptiveElementComposer.d \
@@ -52,7 +58,10 @@ CPP_DEPS += \
 ./src/implement/composer/NearIdentityMatrixBinBasedComposer.d \
 ./src/implement/composer/SimpleElementComposer.d \
 ./src/implement/composer/SimpleGateComposer.d \
-./src/implement/composer/SimpleMatrixComposer.d 
+./src/implement/composer/SimpleMatrixComposer.d \
+./src/implement/composer/SimpleParallelElementComposer.d \
+./src/implement/composer/SimpleParallelGateComposer.d \
+./src/implement/composer/SimpleParallelMatrixComposer.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

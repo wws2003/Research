@@ -44,11 +44,11 @@ public:
 	int shutDown();
 
 	//Override
-	TaskFuturePtr<T> submitTask(TaskPtr<T> pTask);
+	virtual TaskFuturePtr<T> submitTask(TaskPtr<T> pTask);
 
-	void workerJob();
+	virtual void workerJob();
 
-private:
+protected:
 	typedef std::mutex QueueMutex;
 	typedef std::mutex TaskExecuteMutex;
 	typedef std::condition_variable QueueConditionalVariable;

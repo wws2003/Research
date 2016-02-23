@@ -6,6 +6,7 @@
 CPP_SRCS += \
 ../src/container/ComposerBasedApproximatorContainer.cpp \
 ../src/container/ComposerBasedSK2ApproximatorContainerImpl.cpp \
+../src/container/EvaluatingParallelComposerContainerImpl.cpp \
 ../src/container/GateCoordinateAdditionBasedComposerContainerImpl.cpp \
 ../src/container/HTVBasedResourceContainerImpl.cpp \
 ../src/container/HVBasedResourceContainerImpl.cpp \
@@ -17,11 +18,13 @@ CPP_SRCS += \
 ../src/container/SampleComposerEvaluatorContainerImpl.cpp \
 ../src/container/SampleEvaluatorContainerImpl.cpp \
 ../src/container/SampleResourceContainerImpl.cpp \
-../src/container/SimpleComposerContainerImpl.cpp 
+../src/container/SimpleComposerContainerImpl.cpp \
+../src/container/SimpleParallelComposerContainerImpl.cpp 
 
 OBJS += \
 ./src/container/ComposerBasedApproximatorContainer.o \
 ./src/container/ComposerBasedSK2ApproximatorContainerImpl.o \
+./src/container/EvaluatingParallelComposerContainerImpl.o \
 ./src/container/GateCoordinateAdditionBasedComposerContainerImpl.o \
 ./src/container/HTVBasedResourceContainerImpl.o \
 ./src/container/HVBasedResourceContainerImpl.o \
@@ -33,11 +36,13 @@ OBJS += \
 ./src/container/SampleComposerEvaluatorContainerImpl.o \
 ./src/container/SampleEvaluatorContainerImpl.o \
 ./src/container/SampleResourceContainerImpl.o \
-./src/container/SimpleComposerContainerImpl.o 
+./src/container/SimpleComposerContainerImpl.o \
+./src/container/SimpleParallelComposerContainerImpl.o 
 
 CPP_DEPS += \
 ./src/container/ComposerBasedApproximatorContainer.d \
 ./src/container/ComposerBasedSK2ApproximatorContainerImpl.d \
+./src/container/EvaluatingParallelComposerContainerImpl.d \
 ./src/container/GateCoordinateAdditionBasedComposerContainerImpl.d \
 ./src/container/HTVBasedResourceContainerImpl.d \
 ./src/container/HVBasedResourceContainerImpl.d \
@@ -49,7 +54,8 @@ CPP_DEPS += \
 ./src/container/SampleComposerEvaluatorContainerImpl.d \
 ./src/container/SampleEvaluatorContainerImpl.d \
 ./src/container/SampleResourceContainerImpl.d \
-./src/container/SimpleComposerContainerImpl.d 
+./src/container/SimpleComposerContainerImpl.d \
+./src/container/SimpleParallelComposerContainerImpl.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
