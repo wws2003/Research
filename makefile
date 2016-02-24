@@ -5,6 +5,7 @@ MATH_CONCEPT_DIR := $(MAKE_DIR)/ModuleMathConcepts/Debug
 MATRIX_OPERATOR_DIR := $(MAKE_DIR)/ModuleOperator/Debug
 IO_DIR := $(MAKE_DIR)/ModuleIO/Debug
 ALGORITHM_DIR := $(MAKE_DIR)/ModuleAlgorithm/Debug
+PARALLELISM_DIR := $(MAKE_DIR)/ModuleParallelism/Debug
 EVALUATE_DIR := $(MAKE_DIR)/ModuleEvaluate/Debug
 TEST_MATRIX_OPERATOR_DIR := $(MAKE_DIR)/TestMatrixOperator/Debug
 TEST_EVALUATE_DIR := $(MAKE_DIR)/TestEvaluator/Debug
@@ -23,7 +24,7 @@ mathConcept: sharedThirdParties
 matrixOperator: sharedThirdParties
 	@$(MAKE) -C $(MATRIX_OPERATOR_DIR) -f $(MAKE_FILE_PATH) all	
 
-testEvaluate: io algorithm evaluate
+testEvaluate: io algorithm parallelism evaluate
 	@$(MAKE) -C $(TEST_EVALUATE_DIR) -f $(MAKE_FILE_PATH) all	
 
 io: sharedThirdParties
@@ -34,6 +35,9 @@ evaluate: sharedThirdParties
 
 algorithm: sharedThirdParties
 	@$(MAKE) -C $(ALGORITHM_DIR) -f $(MAKE_FILE_PATH) all	
+
+parallelism: 
+	@$(MAKE) -C $(PARALLELISM_DIR) -f $(MAKE_FILE_PATH) all	
 
 app:
 	@$(MAKE) -C $(APPLICATION_DIR) -f $(MAKE_FILE_PATH) all	
@@ -50,6 +54,7 @@ clean:
 	@$(MAKE) -C $(MATRIX_OPERATOR_DIR) -f $(MAKE_FILE_PATH) clean	
 	@$(MAKE) -C $(MATH_CONCEPT_DIR) -f $(MAKE_FILE_PATH) clean	
 	@$(MAKE) -C $(ALGORITHM_DIR) -f $(MAKE_FILE_PATH) clean	
+	@$(MAKE) -C $(PARALLELISM_DIR) -f $(MAKE_FILE_PATH) clean	
 	@$(MAKE) -C $(IO_DIR) -f $(MAKE_FILE_PATH) clean	
 	@$(MAKE) -C $(EVALUATE_DIR) -f $(MAKE_FILE_PATH) clean	
 

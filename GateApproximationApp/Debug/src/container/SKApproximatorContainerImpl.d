@@ -32,8 +32,9 @@ src/container/SKApproximatorContainerImpl.d: \
  ../../ModuleEvaluate/include/interface/abstract/ISearchSpaceEvaluator.h \
  ../../ModuleEvaluate/include/interface/common/EvaluateCommon.h \
  ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h \
- ../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h \
+ ../src/container/IComposerContainer.h \
  ../src/container/SampleApproximatorContainerImpl.h \
+ ../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h \
  ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h \
  ../../ModuleAlgorithm/include/interface/abstract/ICollection.h \
  ../../ModuleAlgorithm/include/implement/approximator/ComposerBasedGateApproximator.h \
@@ -211,7 +212,7 @@ src/container/SKApproximatorContainerImpl.d: \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleAlgorithm/include/implement/composer/SimpleGateComposer.h \
  ../../ModuleAlgorithm/include/implement/composer/SimpleElementComposer.h \
- ../../ModuleAlgorithm/include/implement/persistable/GateSetLogImpl.h \
+ ../src/container/SimpleComposerContainerImpl.h \
  ../../ModuleAlgorithm/include/implement/approximator/SKGateApproximator.h \
  ../../ModuleAlgorithm/include/implement/approximator/SKElementApproximator.h
 
@@ -281,9 +282,11 @@ src/container/SKApproximatorContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/internal-abstract/combiner/IGateCombinabilityChecker.h:
 
-../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h:
+../src/container/IComposerContainer.h:
 
 ../src/container/SampleApproximatorContainerImpl.h:
+
+../../ModuleAlgorithm/include/internal-abstract/persistable/IElementSetLog.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/filter/ILookupResultFilter.h:
 
@@ -639,7 +642,7 @@ src/container/SKApproximatorContainerImpl.d: \
 
 ../../ModuleAlgorithm/include/implement/composer/SimpleElementComposer.h:
 
-../../ModuleAlgorithm/include/implement/persistable/GateSetLogImpl.h:
+../src/container/SimpleComposerContainerImpl.h:
 
 ../../ModuleAlgorithm/include/implement/approximator/SKGateApproximator.h:
 

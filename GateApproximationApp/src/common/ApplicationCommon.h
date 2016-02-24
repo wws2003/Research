@@ -19,8 +19,9 @@ class ICollectionContainer;
 class IApproximatorContainer;
 class IEvaluatorContainer;
 class IWriterContainer;
-class IComposerContainer;
+class IEvaluatingComposerContainer;
 class IComposerEvaluatorContainer;
+class IComposerContainer;
 
 typedef ICommand* CommandPtr;
 typedef AbstractChainCommand* AbstractCommandPtr;
@@ -29,8 +30,9 @@ typedef ICollectionContainer* CollectionContainerPtr;
 typedef IApproximatorContainer* ApproximatorContainerPtr;
 typedef IEvaluatorContainer* EvaluatorContainerPtr;
 typedef IWriterContainer* WriterContainerPtr;
-typedef IComposerContainer* ComposerContainerPtr;
+typedef IEvaluatingComposerContainer* EvaluatingComposerContainerPtr;
 typedef IComposerEvaluatorContainer* ComposerEvaluatorContainerPtr;
+typedef IComposerContainer* ComposerContainerPtr;
 
 typedef std::map<std::string, int> LibrarySetNameMap;
 typedef std::map<int, std::string> LibrarySetFileNameMap;
@@ -49,6 +51,7 @@ enum CommandCode {
 	EVALUATE_CB2_APPROXIMATOR_TO_TARGET,
 	EVALUATE_COMPOSER_TO_TARGET,
 	EVALUATE_COMPOSER2_TO_TARGET,
+	EVALUATE_PARALLEL_COMPOSER_TO_TARGET,
 	//TODO Add more command code
 };
 

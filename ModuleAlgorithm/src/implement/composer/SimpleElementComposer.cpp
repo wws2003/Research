@@ -162,5 +162,3 @@ void SimpleElementComposer<T>::composeCandidate(const std::vector<T>& partialEle
 	}
 	result = combined;
 }
-
-

@@ -21,21 +21,27 @@
 #include "SK2ApproximatorContainerImpl.h"
 #include "ComposerBasedSK2ApproximatorContainerImpl.h"
 #include "SampleComposerContainerImpl.h"
+#include "SimpleComposerContainerImpl.h"
+#include "GateCoordinateAdditionBasedComposerContainerImpl.h"
 #include "SampleComposerEvaluatorContainerImpl.h"
+#include "EvaluatingParallelComposerContainerImpl.h"
 #include "ConfigReader.h"
+#include <cstdio>
 
 CommandFactory::CommandFactory() : m_pCollectionContainer(NullPtr),
 m_pApproximatorContainer(NullPtr),
 m_pEvaluatorContainer(NullPtr),
 m_pComposerContainer(NullPtr),
+m_pEvaluatingComposerContainer(NullPtr),
 m_pComposerEvaluatorContainer(NullPtr){
 }
 
 CommandFactory::~CommandFactory() {
 	_destroy(m_pCollectionContainer);
 	_destroy(m_pEvaluatorContainer);
-	_destroy(m_pApproximatorContainer);
 	_destroy(m_pComposerContainer);
+	_destroy(m_pApproximatorContainer);
+	_destroy(m_pEvaluatingComposerContainer);
 	_destroy(m_pComposerEvaluatorContainer);
 }
 
@@ -60,23 +66,26 @@ CommandPtr CommandFactory::getCommand(int commandCode, const CommandParams& comm
 	case EVALUATE_CB_APPROXIMATOR_TO_TARGET: {
 		return getComposerBasedApproximatorEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2]);
 	}
+	case EVALUATE_CB2_APPROXIMATOR_TO_TARGET: {
+		return getComposerBasedApproximator2EvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3]);
+	}
+	case EVALUATE_CB_SK2_APPROXIMATOR_TO_TARGET: {
+		return getComposerBasedSK2ApproximatorEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3], commandParams[4]);
+	}
 	case EVALUATE_SK_APPROXIMATOR_TO_TARGET: {
 		return getSKApproximatorEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2]);
 	}
 	case EVALUATE_SK2_APPROXIMATOR_TO_TARGET: {
 		return getSK2ApproximatorEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3]);
 	}
-	case EVALUATE_CB_SK2_APPROXIMATOR_TO_TARGET: {
-		return getComposerBasedSK2ApproximatorEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3], commandParams[4]);
-	}
-	case EVALUATE_CB2_APPROXIMATOR_TO_TARGET: {
-		return getComposerBasedApproximator2EvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3]);
-	}
 	case EVALUATE_COMPOSER_TO_TARGET: {
 		return getComposerEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3], false);
 	}
 	case EVALUATE_COMPOSER2_TO_TARGET: {
 		return getComposerEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3], true);
+	}
+	case EVALUATE_PARALLEL_COMPOSER_TO_TARGET: {
+		return getParallelComposerEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3]);
 	}
 	default:
 		return CommandPtr(new NotAvailableCommand());
@@ -303,8 +312,31 @@ AbstractCommandPtr CommandFactory::getComposerEvaluationCommandForTargets(std::s
 			multiComparatorMode);
 
 	GateComposerEvaluatorPtr pGateComposerEvaluator = m_pComposerEvaluatorContainer->getGateComposerEvaluator();
-	GateComposerPtr pEvaluatedComposer = m_pComposerContainer->getEvaluatedGateComposer();
-	GateComposerPtr pStandardComposer = m_pComposerContainer->getStandardGateComposer();
+	GateComposerPtr pEvaluatedComposer = m_pEvaluatingComposerContainer->getEvaluatedGateComposer();
+	GateComposerPtr pStandardComposer = m_pEvaluatingComposerContainer->getStandardGateComposer();
+
+	AbstractCommandPtr pEvaluateCommand = AbstractCommandPtr(new EvaluateComposerCommand(pEvaluatedComposer,
+			pStandardComposer,
+			pGateComposerEvaluator));
+
+	return pEvaluateCommand;
+}
+
+AbstractCommandPtr CommandFactory::getParallelComposerEvaluationCommandForTargets(std::string collectionConfigFile,
+		std::string cbApprxConfigFile,
+		std::string nbThreadStr,
+		std::string targetConfigFile) {
+	ConfigReader configReader;
+
+	readParallelComposerEvaluationConfig(configReader,
+			collectionConfigFile,
+			cbApprxConfigFile,
+			nbThreadStr,
+			targetConfigFile);
+
+	GateComposerEvaluatorPtr pGateComposerEvaluator = m_pComposerEvaluatorContainer->getGateComposerEvaluator();
+	GateComposerPtr pEvaluatedComposer = m_pEvaluatingComposerContainer->getEvaluatedGateComposer();
+	GateComposerPtr pStandardComposer = m_pEvaluatingComposerContainer->getStandardGateComposer();
 
 	AbstractCommandPtr pEvaluateCommand = AbstractCommandPtr(new EvaluateComposerCommand(pEvaluatedComposer,
 			pStandardComposer,
@@ -401,10 +433,29 @@ void CommandFactory::readComposerEvaluationConfig(ConfigReader configReader,
 	configReader.readComposerEvaluatorConfig(composerEvalConfigFile, &composerEvalConfig);
 	configReader.readComposerEvaluatorConfigFromTargets(targetConfigFile, &composerEvalConfig);
 
-	resetComposerContainer(cadbConfig, collectionConfig);
+	resetEvaluatingComposerContainer(cadbConfig, collectionConfig);
 	resetComposerEvaluatorContainer(composerEvalConfig, collectionConfig);
 }
 
+void CommandFactory::readParallelComposerEvaluationConfig(ConfigReader configReader,
+		std::string collectionConfigFile,
+		std::string composerEvalConfigFile,
+		std::string nbThreadStr,
+		std::string targetConfigFile) {
+
+	CollectionConfig collectionConfig;
+	ComposerEvaluatorConfig composerEvalConfig;
+
+	configReader.readCollectionConfig(collectionConfigFile, &collectionConfig);
+
+	configReader.readComposerEvaluatorConfig(composerEvalConfigFile, &composerEvalConfig);
+	configReader.readComposerEvaluatorConfigFromTargets(targetConfigFile, &composerEvalConfig);
+
+	int nbThreads = 2;
+	sscanf(nbThreadStr.data(), "%d", &nbThreads);
+	resetEvaluatingComposerContainer(nbThreads);
+	resetComposerEvaluatorContainer(composerEvalConfig, collectionConfig);
+}
 
 void CommandFactory::readSKConfig(ConfigReader configReader,
 		std::string collectionConfigFile,
@@ -484,6 +535,17 @@ void CommandFactory::resetApproximatorContainer(const NearIdentityApproximatorCo
 	m_pApproximatorContainer = ApproximatorContainerPtr(new SampleApproximatorContainerImpl(approximatorConfig, collectionConfig));
 }
 
+void CommandFactory::resetComposerContainer() {
+	_destroy(m_pComposerContainer);
+	m_pComposerContainer = ComposerContainerPtr(new SimpleComposerContainerImpl());
+}
+
+void CommandFactory::resetComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig,
+		const CollectionConfig& collectionConfig) {
+	_destroy(m_pComposerContainer);
+	m_pComposerContainer = ComposerContainerPtr(new GateCoordinateAdditionBasedComposerContainerImpl(cabConfig, collectionConfig));
+}
+
 void CommandFactory::resetComposerBasedApproximatorContainer(const ComposerBasedApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig) {
 	_destroy(m_pApproximatorContainer);
 	m_pApproximatorContainer = ApproximatorContainerPtr(new ComposerBasedApproximatorContainer(approximatorConfig, collectionConfig));
@@ -494,9 +556,14 @@ void CommandFactory::resetComposerBasedApproximatorContainer(const ComposerBased
 	m_pApproximatorContainer = ApproximatorContainerPtr(new ComposerBasedApproximatorContainer(approximatorConfig, cadbConfig, collectionConfig));
 }
 
-void CommandFactory::resetComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig, const CollectionConfig& collectionConfig) {
-	_destroy(m_pComposerContainer);
-	m_pComposerContainer = ComposerContainerPtr(new SampleComposerContainerImpl(cabConfig, collectionConfig));
+void CommandFactory::resetEvaluatingComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig, const CollectionConfig& collectionConfig) {
+	_destroy(m_pEvaluatingComposerContainer);
+	m_pEvaluatingComposerContainer = EvaluatingComposerContainerPtr(new SampleComposerContainerImpl(cabConfig, collectionConfig));
+}
+
+void CommandFactory::resetEvaluatingComposerContainer(int nbThreads) {
+	_destroy(m_pEvaluatingComposerContainer);
+	m_pEvaluatingComposerContainer = EvaluatingComposerContainerPtr(new EvaluatingParallelComposerContainerImpl(nbThreads));
 }
 
 void CommandFactory::resetComposerEvaluatorContainer(const ComposerEvaluatorConfig& composerEvalConfig, const CollectionConfig& collectionCofig) {

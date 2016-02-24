@@ -27,6 +27,8 @@
 #include "DictionaryOrderCoordinateComparator.hpp"
 #include "SumCoordinateComparator.hpp"
 #include "MultiNearBalancePartsGateDecomposer.h"
+#include "SimpleComposerContainerImpl.h"
+#include "GateCoordinateAdditionBasedComposerContainerImpl.h"
 
 ComposerBasedApproximatorContainer::ComposerBasedApproximatorContainer(ComposerBasedApproximatorConfig approximatorConfig,
 		CollectionConfig coreCollectionConfig) : m_approximatorConfig(approximatorConfig),
@@ -36,7 +38,9 @@ ComposerBasedApproximatorContainer::ComposerBasedApproximatorContainer(ComposerB
 
 ComposerBasedApproximatorContainer::ComposerBasedApproximatorContainer(ComposerBasedApproximatorConfig approximatorConfig,
 		CoordinateAdditionalBasedComposerConfig coordinateAdditionalBasedComposerConfig,
-		CollectionConfig coreCollectionConfig) : m_approximatorConfig(approximatorConfig), m_coordinateAdditionalBasedComposerConfig(coordinateAdditionalBasedComposerConfig) , m_coreCollectionConfig(coreCollectionConfig) {
+		CollectionConfig coreCollectionConfig) : m_approximatorConfig(approximatorConfig),
+				m_coordinateAdditionalBasedComposerConfig(coordinateAdditionalBasedComposerConfig),
+				m_coreCollectionConfig(coreCollectionConfig) {
 	wireDependencies();
 }
 
@@ -72,10 +76,6 @@ void ComposerBasedApproximatorContainer::wireDependencies() {
 
 	m_pGateDecomposer = generateDecomposerFromConfig(m_approximatorConfig);
 
-	//Instantiate composer
-	initCoordinateAdditionalBasedGateComposerElements();
-	m_pGateSetLog = ElementSetLogPtr<GatePtr>(new GateSetLogImpl());
-
 	m_pGateComposer = generateComposerFromConfig(m_approximatorConfig);
 
 	if(m_approximatorConfig.m_userFilter) {
@@ -90,6 +90,8 @@ void ComposerBasedApproximatorContainer::releaseDependencies() {
 	_destroy(m_pGateLookupResultFilter);
 
 	_destroy(m_pGateComposer);
+	_destroy(m_pComposerContainer);
+
 	_destroy(m_pGateCoordinateComposer);
 	_destroy(m_pGateCoordinateConveter);
 	_destroy(m_pGateCoordinateCombiner);
@@ -102,69 +104,24 @@ void ComposerBasedApproximatorContainer::releaseDependencies() {
 	_destroy(m_pHermitiaRealCoordinateCalculator);
 	_destroy(m_pMatrixRealInnerProductCalculator);
 
-	_destroy(m_pGateSetLog);
-	_destroy(m_pGateCombiner);
-
 	_destroy(m_pResourceContainer);
 	_destroy(m_pMatrixOperator);
 	_destroy(m_pMatrixFactory);
-}
-
-void ComposerBasedApproximatorContainer::initCoordinateAdditionalBasedGateComposerElements() {
-	initRealCoordinateComparator();
-
-	RealCoordinate<GatePtr> epsilonRealCoordinate;
-	initEpsilonRealCoordinate(epsilonRealCoordinate);
-
-	GateCombinabilityCheckers checkers;
-	m_pGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(checkers, m_pMatrixOperator));
-
-	m_pGateCoordinateCombiner = CombinerPtr<RealCoordinate<GatePtr> >(new GateCoordinateCombinerImpl(m_pGateCombiner));
-	m_pGateCoordinateComposer = ComposerPtr<RealCoordinate<GatePtr> >(new CoordinateAdditionBasedGateComposer(m_pRealCoordinateComparator,
-			m_pGateCoordinateCombiner,
-			epsilonRealCoordinate,
-			-1));
-
-	bool phaseIgnored = m_coreCollectionConfig.m_matrixDistanceCalculatorType == MDCT_FOWLER;
-	m_pGateCoordinateConveter = ConverterPtr<GatePtr, RealCoordinate<GatePtr> >(new GateCoordinateConverterImpl(m_pGateRealCoordinateCalculator,
-			m_pMatrixOperator,
-			phaseIgnored));
-}
-
-void ComposerBasedApproximatorContainer::initRealCoordinateComparator() {
-	switch (m_coordinateAdditionalBasedComposerConfig.m_primaryCoordinateComparatorConfig.m_coordinateComparatorType) {
-	case CMP_DICTIONARY:
-		m_pRealCoordinateComparator = ComparatorPtr<RealCoordinate<GatePtr> >(new DictionaryOrderCoordinateComparator<GatePtr>());
-		break;
-	default:
-		m_pRealCoordinateComparator = ComparatorPtr<RealCoordinate<GatePtr> >(new SumCoordinateComparator<GatePtr>());
-		break;
-	}
-}
-
-void ComposerBasedApproximatorContainer::initEpsilonRealCoordinate(RealCoordinate<GatePtr>& epsilonRealCoordinate) {
-	int nbCoord = (m_coreCollectionConfig.m_nbQubits == 1) ? 3 : 15;
-	std::vector<mreal_t> coords(nbCoord, m_coordinateAdditionalBasedComposerConfig.m_primaryCoordinateComparatorConfig.m_coordinateEpsilon);
-	epsilonRealCoordinate = RealCoordinate<GatePtr>(NullPtr, coords);
 }
 
 GateComposerPtr ComposerBasedApproximatorContainer::generateComposerFromConfig(ComposerBasedApproximatorConfig approximatorConfig) {
 	GateComposerPtr pGateComposerPtr = NullPtr;
 	switch (m_approximatorConfig.m_buildingBlockComposerType) {
 	case CT_SIMPLE:
-		pGateComposerPtr = GateComposerPtr(new SimpleGateComposer(m_pGateCombiner,
-				approximatorConfig.m_nbCandidates,
-				m_pGateSetLog));
+		m_pComposerContainer = ComposerContainerPtr(new SimpleComposerContainerImpl());
 		break;
 	case CT_COORDINATE_ADDTIONAL_BASED:
-		pGateComposerPtr = GateComposerPtr(new AdaptiveGateCoordinateComposer(m_pGateCoordinateDistanceCalculator,
-				m_pGateCoordinateComposer,
-				0.0,
-				m_pGateCoordinateConveter));
+		m_pComposerContainer = ComposerContainerPtr(new GateCoordinateAdditionBasedComposerContainerImpl(m_coordinateAdditionalBasedComposerConfig, m_coreCollectionConfig));
 		break;
 	default:
 		break;
 	}
+	pGateComposerPtr = m_pComposerContainer->getGateComposer();
 	return pGateComposerPtr;
 }
 
