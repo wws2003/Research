@@ -18,7 +18,7 @@
 template<typename T>
 const std::string SimpleParallelElementComposer<T>::LOG_ROOT_FOLDER = "IntermediateLog";
 
-#define TASK_FUTURE_BUFFER_SIZE (60000)
+#define TASK_FUTURE_BUFFER_SIZE (100000)
 
 template<typename T>
 SimpleParallelElementComposer<T>::SimpleParallelElementComposer(CombinerPtr<T> pCombiner,
@@ -44,7 +44,7 @@ IteratorPtr<LookupResult<T> > SimpleParallelElementComposer<T>::composeApproxima
 		bool toSortResults) {
 
 	std::vector<T> partialElementsBuffer;
-	TaskFutureBuffer taskFutureBuffer(TASK_FUTURE_BUFFER_SIZE, m_maxResultsNumber);
+	TaskFutureBuffer taskFutureBuffer(m_pTaskExecutor, TASK_FUTURE_BUFFER_SIZE, m_maxResultsNumber);
 
 #if OUTPUT_INTERMEDIATE_RESULT
 	m_pElementSetLog->saveElementSets(buildingBlockBuckets);
@@ -156,7 +156,10 @@ void SimpleParallelElementComposer<T>::evaluateCombination(const std::vector<T>&
 
 //-------------------Inner class-------------------//
 template<typename T>
-SimpleParallelElementComposer<T>::TaskFutureBuffer::TaskFutureBuffer(size_t maxBufferSize, int maxResultsNumber) {
+SimpleParallelElementComposer<T>::TaskFutureBuffer::TaskFutureBuffer(TaskExecutorPtr<LookupResult<T> > pSharedTaskExecutor,
+		size_t maxBufferSize,
+		int maxResultsNumber) {
+	m_pSharedTaskExecutor = pSharedTaskExecutor;
 	m_maxBufferSize = maxBufferSize;
 	m_maxResultsNumber = maxResultsNumber;
 }
@@ -187,6 +190,7 @@ void SimpleParallelElementComposer<T>::TaskFutureBuffer::collectResults(std::vec
 
 template<typename T>
 void SimpleParallelElementComposer<T>::TaskFutureBuffer::moveResultsFromFutureBuffers() {
+	m_pSharedTaskExecutor->executeAllRemaining();
 	for(unsigned int i = 0; i < m_taskFuturesBuffer.size(); i++) {
 		TaskFuturePtr<LookupResult<T> > pTaskFuture = m_taskFuturesBuffer[i];
 		TaskPtr<LookupResult<T> > pTask = m_tasks[i];

@@ -34,7 +34,7 @@ struct QueuedTask {
 template<typename T>
 class QueueBasedTaskExecutorImpl: public ITaskExecutor<T> {
 public:
-	QueueBasedTaskExecutorImpl(int nbThreads, TaskQueuePtr<QueuedTask<T> > pTaskQueue);
+	QueueBasedTaskExecutorImpl(int nbThreads, TaskQueuePtr<QueuedTask<T> > pTaskQueue, bool allowExecuteTaskInMainThread = false);
 	virtual ~QueueBasedTaskExecutorImpl(){};
 
 	//Override
@@ -45,6 +45,9 @@ public:
 
 	//Override
 	virtual TaskFuturePtr<T> submitTask(TaskPtr<T> pTask);
+
+	//Override
+	virtual void executeAllRemaining();
 
 	virtual void workerJob();
 
@@ -80,6 +83,7 @@ protected:
 	QueueConditionalVariable m_taskQueueCondvar;
 	QueueMutex m_queueMutex;
 
+	bool m_allowExecuteTaskInMainThread;
 	std::vector<std::thread> m_workerThreads;
 	int m_nbThreads;
 };

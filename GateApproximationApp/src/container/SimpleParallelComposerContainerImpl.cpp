@@ -43,7 +43,7 @@ void SimpleParallelComposerContainerImpl::wireDependencies() {
 	m_pTaskQueue = TaskQueuePtr<QueuedTask<LookupResult<GatePtr> > >(new GateLookupResultNoLockTaskQueueImpl());
 	m_pTaskExecutor = TaskExecutorPtr<LookupResult<GatePtr> >(new GateLookupResultBufferedQueueBasedTaskExecutorImpl(m_nbThreads,
 			m_pTaskQueue,
-			2000));
+			3300));
 }
 
 void SimpleParallelComposerContainerImpl::releaseDependencies() {

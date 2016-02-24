@@ -10,11 +10,14 @@
 #include <chrono>
 #include <algorithm>
 #include <iostream>
+#include <list>
 
 template<typename T>
 QueueBasedTaskExecutorImpl<T>::QueueBasedTaskExecutorImpl(int nbThreads,
-		TaskQueuePtr<QueuedTask<T> > pTaskQueue) : m_nbThreads(nbThreads){
+		TaskQueuePtr<QueuedTask<T> > pTaskQueue,
+		bool allowExecuteTaskInMainThread) : m_nbThreads(nbThreads){
 	m_pTaskQueue = pTaskQueue;
+	m_allowExecuteTaskInMainThread = allowExecuteTaskInMainThread;
 }
 
 //Override
@@ -68,6 +71,34 @@ TaskFuturePtr<T> QueueBasedTaskExecutorImpl<T>::submitTask(TaskPtr<T> pTask) {
 	m_taskQueueCondvar.notify_one();
 
 	return pTaskFuture;
+}
+
+//Override
+template<typename T>
+void QueueBasedTaskExecutorImpl<T>::executeAllRemaining() {
+	if(m_allowExecuteTaskInMainThread) {
+		//Get all remaing tasks in queue and execute in current thread
+		std::list<QueuedTask<T> > queuingTasks;
+		{
+			std::lock_guard<QueueMutex> queueLock(m_queueMutex);
+			while(m_pTaskQueue->getState() != ITaskQueue<QueuedTask<T> >::TQS_EMPTY) {
+				QueuedTask<T> queuingTask = m_pTaskQueue->popFrontTask();
+				queuingTasks.push_back(queuingTask);
+			}
+		}
+		while(!queuingTasks.empty()) {
+			QueuedTask<T> queuingTask = queuingTasks.front();
+
+			//Execute task
+			TaskResult<T> taskResult = queuingTask.m_pTask->execute();
+			//Notify future instance
+			queuingTask.m_pTaskPromise->set_value(taskResult);
+			//Destroy promise pointer
+			delete queuingTask.m_pTaskPromise;
+
+			queuingTasks.pop_front();
+		}
+	}
 }
 
 template<typename T>

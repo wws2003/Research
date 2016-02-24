@@ -13,11 +13,18 @@
 template<typename T>
 class BufferedQueueBasedTaskExecutorImpl: public QueueBasedTaskExecutorImpl<T> {
 public:
-	BufferedQueueBasedTaskExecutorImpl(int nbThreads, TaskQueuePtr<QueuedTask<T> > pTaskQueue, int taskBufferSize);
+	BufferedQueueBasedTaskExecutorImpl(int nbThreads,
+			TaskQueuePtr<QueuedTask<T> > pTaskQueue,
+			int taskBufferSize,
+			bool allowExecuteTaskInMainThread = false);
+
 	virtual ~BufferedQueueBasedTaskExecutorImpl(){};
 
 	//Override
 	TaskFuturePtr<T> submitTask(TaskPtr<T> pTask);
+
+	//Override
+	void executeAllRemaining();
 
 	//Override
 	void workerJob();

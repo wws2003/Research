@@ -38,6 +38,11 @@ TaskFuturePtr<T> ThreadSpawnTaskExecutorImpl<T>::submitTask(TaskPtr<T> pTask) {
 }
 
 template<typename T>
+void ThreadSpawnTaskExecutorImpl<T>::executeAllRemaining() {
+	//Do nothing since any task has it own executing thread
+}
+
+template<typename T>
 TaskResult<T> ThreadSpawnTaskExecutorImpl<T>::executeTask(TaskPtr<T> pTask) {
 	return pTask->execute();
 }

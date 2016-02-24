@@ -28,6 +28,12 @@ TaskFuturePtr<T> SingleThreadTaskExecutorImpl<T>::submitTask(TaskPtr<T> pTask) {
 }
 
 template<typename T>
+void SingleThreadTaskExecutorImpl<T>::executeAllRemaining() {
+	//Do nothing since every tasks are executed right after beiing submitted
+}
+
+//---------------Inner class-------------------//
+template<typename T>
 SingleThreadTaskExecutorImpl<T>::SimpleTaskFuture::SimpleTaskFuture(TaskResult<T> result) {
 	m_result = result;
 }

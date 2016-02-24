@@ -35,7 +35,7 @@ public:
 private:
 	class TaskFutureBuffer {
 	public:
-		TaskFutureBuffer(size_t maxBufferSize, int maxResultsNumber);
+		TaskFutureBuffer(TaskExecutorPtr<LookupResult<T> > pSharedTaskExecutor, size_t maxBufferSize, int maxResultsNumber);
 		virtual ~TaskFutureBuffer(){};
 
 		void addTaskFuturePair(TaskFuturePtr<LookupResult<T> > pTaskFuture, TaskPtr<LookupResult<T> > pTask);
@@ -43,6 +43,8 @@ private:
 
 	private:
 		void moveResultsFromFutureBuffers();
+
+		TaskExecutorPtr<LookupResult<T> > m_pSharedTaskExecutor;
 
 		size_t m_maxBufferSize;
 		int m_maxResultsNumber;

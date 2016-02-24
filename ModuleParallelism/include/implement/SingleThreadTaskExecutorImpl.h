@@ -26,6 +26,9 @@ public:
 	//Override
 	TaskFuturePtr<T> submitTask(TaskPtr<T> pTask);
 
+	//Override
+	void executeAllRemaining();
+
 private:
 	class SimpleTaskFuture: public ITaskFuture<T> {
 	public:

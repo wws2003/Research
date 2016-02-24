@@ -30,6 +30,9 @@ public:
 	//Override
 	TaskFuturePtr<T> submitTask(TaskPtr<T> pTask);
 
+	//Override
+	void executeAllRemaining();
+
 private:
 	TaskResult<T> executeTask(TaskPtr<T> pTask);
 

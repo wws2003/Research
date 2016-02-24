@@ -9,7 +9,10 @@
 #include <mutex>
 
 template<typename T>
-BufferedQueueBasedTaskExecutorImpl<T>::BufferedQueueBasedTaskExecutorImpl(int nbThreads, TaskQueuePtr<QueuedTask<T> > pTaskQueue, int taskBufferSize) : QueueBasedTaskExecutorImpl<T>(nbThreads, pTaskQueue) {
+BufferedQueueBasedTaskExecutorImpl<T>::BufferedQueueBasedTaskExecutorImpl(int nbThreads,
+		TaskQueuePtr<QueuedTask<T> > pTaskQueue,
+		int taskBufferSize,
+		bool allowExecuteTaskInMainThread) : QueueBasedTaskExecutorImpl<T>(nbThreads, pTaskQueue, allowExecuteTaskInMainThread) {
 	m_taskBufferSize = taskBufferSize;
 	m_queuedTaskBuffer.reserve(taskBufferSize);
 }
@@ -21,6 +24,12 @@ TaskFuturePtr<T> BufferedQueueBasedTaskExecutorImpl<T>::submitTask(TaskPtr<T> pT
 		flushTaskBufferToQueue();
 	}
 	return pTaskFuture;
+}
+
+template<typename T>
+void BufferedQueueBasedTaskExecutorImpl<T>::executeAllRemaining() {
+	flushTaskBufferToQueue();
+	QueueBasedTaskExecutorImpl<T>::executeAllRemaining();
 }
 
 template<typename T>

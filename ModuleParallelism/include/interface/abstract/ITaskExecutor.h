@@ -33,6 +33,8 @@ public:
 	virtual int shutDown() = 0;
 
 	virtual TaskFuturePtr<T> submitTask(TaskPtr<T> pTask) = 0;
+
+	virtual void executeAllRemaining() = 0;
 };
 
 
