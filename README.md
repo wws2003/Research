@@ -26,10 +26,10 @@ Each module, except for the third party libraries, is built into shared library,
 ## Third-party dependencies
 1. ***SharedThirdParties***  
 Third-party libraries, those shared between modules. Direct third-party dependency should be strongly restricted, so currently only MPFR (Multiple-Precision Floating-point Reliably) libraries are allowed to be here.
-2. ***Eigen v3.2.4***
+2. ***Eigen v3.2.4***  
 Library for matrix operations [http://eigen.tuxfamily.org](http://eigen.tuxfamily.org). Used only in module MatrixOperator. Located at ModuleOperator/third-parties/eigen3/
 
-## Installation.
+## Installation
 1. Extract zip files for third party libraries  
 - $cd SharedThirdParties
 - $./reset.sh (lzip and unzip softwares are required) 
