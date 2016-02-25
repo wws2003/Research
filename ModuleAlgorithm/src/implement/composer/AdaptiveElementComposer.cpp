@@ -46,7 +46,8 @@ IteratorPtr<LookupResult<T1> > AdaptiveElementComposer<T1, T2>::composeApproxima
 	IteratorPtr<LookupResult<T2> > pDerivedResultIter = m_pDerivedComposer->composeApproximations(derivedBuildingBlockBuckets,
 			derivedTarget,
 			m_pDerivedDistanceCalculator,
-			m_derivedComposerEpsilon);
+			m_derivedComposerEpsilon,
+			false);
 
 	IteratorPtr<LookupResult<T1> > pResultIter = NullPtr;
 	convertToOriginalResultIter(pDerivedResultIter,

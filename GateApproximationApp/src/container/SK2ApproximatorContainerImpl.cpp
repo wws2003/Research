@@ -17,7 +17,7 @@
 #include "SampleLibraryMatrixStore.h"
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
 #include "ContainerResourceFactory.h"
-#include "SampleComposerContainerImpl.h"
+#include "SampleEvaluatingComposerContainerImpl.h"
 #include "HarrowGateDecomposer.h"
 #include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "GateCoordinateAdditionBasedComposerContainerImpl.h"

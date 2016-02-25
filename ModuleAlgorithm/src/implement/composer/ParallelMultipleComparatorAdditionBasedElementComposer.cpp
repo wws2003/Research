@@ -1,33 +1,31 @@
 /*
- * MultipleComparatorAdditionBasedElementComposer.cpp
+ * ParalleParallelMultipleComparatorAdditionBasedElementComposer.cpp
  *
- *  Created on: Feb 12, 2016
+ *  Created on: Feb 24, 2016
  *      Author: pham
  */
 
-#include "MultipleComparatorAdditionBasedElementComposer.h"
-#include <iostream>
-#include <cassert>
-
-//#define DEBUG_SECONDARY
+#include "ParallelMultipleComparatorAdditionBasedElementComposer.h"
 
 template<typename T>
-MultipleComparatorAdditionBasedElementComposer<T>::MultipleComparatorAdditionBasedElementComposer(ComparatorPtr<T> pElementComparator,
+ParallelMultipleComparatorAdditionBasedElementComposer<T>::ParallelMultipleComparatorAdditionBasedElementComposer(ComparatorPtr<T> pElementComparator,
 		CombinerPtr<T> pCombiner,
 		T epsilonElement,
 		int maxResultsNumber,
 		const std::vector<ComparatorPtr<T> >& secondaryComparators,
-		const std::vector<T> secondaryEpsilonElements) :AdditionBasedElementComposer<T>(pElementComparator ,
+		const std::vector<T> secondaryEpsilonElements,
+		TaskExecutorPtr<LookupResult<T> > pTaskExecutor) : ParallelAdditionBasedElementComposer<T>(pElementComparator ,
 				pCombiner,
 				epsilonElement,
-				maxResultsNumber
+				maxResultsNumber,
+				pTaskExecutor
 		) {
 	m_secondaryComparators = secondaryComparators;
 	m_secondaryEpsilonElements = secondaryEpsilonElements;
 }
 
 template<typename T>
-void MultipleComparatorAdditionBasedElementComposer<T>::initSecondarySortedVectorArrays(SortedVectorArrayList<T>& secondarySortedVectorArrays,
+void ParallelMultipleComparatorAdditionBasedElementComposer<T>::initSecondarySortedVectorArrays(SortedVectorArrayList<T>& secondarySortedVectorArrays,
 		const BuildingBlockBuckets<T>& buildingBlockBuckets) {
 
 	for(unsigned int i = 0; i < m_secondaryComparators.size(); i++) {
@@ -40,7 +38,7 @@ void MultipleComparatorAdditionBasedElementComposer<T>::initSecondarySortedVecto
 }
 
 template<typename T>
-bool MultipleComparatorAdditionBasedElementComposer<T>::quickEvaluate(const SortedVectorArrayList<T>& secondarySortedVectorArrays,
+bool ParallelMultipleComparatorAdditionBasedElementComposer<T>::quickEvaluate(const SortedVectorArrayList<T>& secondarySortedVectorArrays,
 		int vectorIndex,
 		const T& rightMostElement,
 		const T& partialTarget) const {
@@ -80,7 +78,7 @@ bool MultipleComparatorAdditionBasedElementComposer<T>::quickEvaluate(const Sort
 }
 
 template<typename T>
-void MultipleComparatorAdditionBasedElementComposer<T>::releaseSecondarySortedVectorArrays(SortedVectorArrayList<T>& sortedVectorArrays) {
+void ParallelMultipleComparatorAdditionBasedElementComposer<T>::releaseSecondarySortedVectorArrays(SortedVectorArrayList<T>& sortedVectorArrays) {
 
 	for(unsigned int i = 0; i < sortedVectorArrays.size(); i++) {
 		SortedVectorArrayPtr<T> pSortedVectorArray = sortedVectorArrays[i];

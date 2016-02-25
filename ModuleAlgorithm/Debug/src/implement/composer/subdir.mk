@@ -16,6 +16,10 @@ CPP_SRCS += \
 ../src/implement/composer/NearIdentityElementBinBasedComposer.cpp \
 ../src/implement/composer/NearIdentityGateBinBasedComposer.cpp \
 ../src/implement/composer/NearIdentityMatrixBinBasedComposer.cpp \
+../src/implement/composer/ParallelAdditionBasedElementComposer.cpp \
+../src/implement/composer/ParallelCoordinateAdditionBasedGateComposer.cpp \
+../src/implement/composer/ParallelMultipleComparatorAdditionBasedElementComposer.cpp \
+../src/implement/composer/ParallelMultipleComparatorCoordinateAdditionBasedGateComposer.cpp \
 ../src/implement/composer/SimpleElementComposer.cpp \
 ../src/implement/composer/SimpleGateComposer.cpp \
 ../src/implement/composer/SimpleMatrixComposer.cpp \
@@ -36,6 +40,10 @@ OBJS += \
 ./src/implement/composer/NearIdentityElementBinBasedComposer.o \
 ./src/implement/composer/NearIdentityGateBinBasedComposer.o \
 ./src/implement/composer/NearIdentityMatrixBinBasedComposer.o \
+./src/implement/composer/ParallelAdditionBasedElementComposer.o \
+./src/implement/composer/ParallelCoordinateAdditionBasedGateComposer.o \
+./src/implement/composer/ParallelMultipleComparatorAdditionBasedElementComposer.o \
+./src/implement/composer/ParallelMultipleComparatorCoordinateAdditionBasedGateComposer.o \
 ./src/implement/composer/SimpleElementComposer.o \
 ./src/implement/composer/SimpleGateComposer.o \
 ./src/implement/composer/SimpleMatrixComposer.o \
@@ -56,6 +64,10 @@ CPP_DEPS += \
 ./src/implement/composer/NearIdentityElementBinBasedComposer.d \
 ./src/implement/composer/NearIdentityGateBinBasedComposer.d \
 ./src/implement/composer/NearIdentityMatrixBinBasedComposer.d \
+./src/implement/composer/ParallelAdditionBasedElementComposer.d \
+./src/implement/composer/ParallelCoordinateAdditionBasedGateComposer.d \
+./src/implement/composer/ParallelMultipleComparatorAdditionBasedElementComposer.d \
+./src/implement/composer/ParallelMultipleComparatorCoordinateAdditionBasedGateComposer.d \
 ./src/implement/composer/SimpleElementComposer.d \
 ./src/implement/composer/SimpleGateComposer.d \
 ./src/implement/composer/SimpleMatrixComposer.d \

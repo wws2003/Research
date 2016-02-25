@@ -14,12 +14,12 @@
 #include "ApplicationCommon.h"
 #include "IApproximatorContainer.h"
 
-class SampleComposerContainerImpl: public IEvaluatingComposerContainer {
+class SampleEvaluatingComposerContainerImpl: public IEvaluatingComposerContainer {
 public:
-	SampleComposerContainerImpl(const CoordinateAdditionalBasedComposerConfig& cabConfig,
+	SampleEvaluatingComposerContainerImpl(const CoordinateAdditionalBasedComposerConfig& cabConfig,
 			const CollectionConfig& collectionConfig);
 
-	virtual ~SampleComposerContainerImpl();
+	virtual ~SampleEvaluatingComposerContainerImpl();
 
 	//Override
 	GateComposerPtr getStandardGateComposer();

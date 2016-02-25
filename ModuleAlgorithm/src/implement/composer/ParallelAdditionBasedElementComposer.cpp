@@ -1,11 +1,11 @@
 /*
- * AdditionBasedElementComposer.cpp
+ * ParallelParallelAdditionBasedElementComposer.cpp
  *
- *  Created on: Dec 6, 2015
+ *  Created on: Feb 24, 2016
  *      Author: pham
  */
 
-#include "AdditionBasedElementComposer.h"
+#include "ParallelAdditionBasedElementComposer.h"
 #include "VectorBasedReadOnlyIteratorImpl.hpp"
 #include "IIterator.h"
 #include "IDistanceCalculator.h"
@@ -13,25 +13,21 @@
 #include <exception>
 #include <iostream>
 
-//#define ABCE_DEBUG
-
-#ifdef ABCE_DEBUG
-#include "Coordinate.hpp"
-#endif
-
 template<typename T>
-AdditionBasedElementComposer<T>::AdditionBasedElementComposer(ComparatorPtr<T> pElementComparator,
+ParallelAdditionBasedElementComposer<T>::ParallelAdditionBasedElementComposer(ComparatorPtr<T> pElementComparator,
 		CombinerPtr<T> pCombiner,
 		T epsilonElement,
-		int maxResultsNumber) : m_wrapperComparator(pElementComparator) {
+		int maxResultsNumber,
+		TaskExecutorPtr<LookupResult<T> > pTaskExecutor) : m_wrapperComparator(pElementComparator) {
 	m_pCombiner = pCombiner;
+	m_pTaskExecutor = pTaskExecutor;
 	m_epsilonElement = epsilonElement;
 	m_maxResultsNumber = maxResultsNumber;
 	m_combinationCounter = 0;
 }
 
 template<typename T>
-IteratorPtr<LookupResult<T> > AdditionBasedElementComposer<T>::composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
+IteratorPtr<LookupResult<T> > ParallelAdditionBasedElementComposer<T>::composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
 		T target,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
@@ -45,51 +41,54 @@ IteratorPtr<LookupResult<T> > AdditionBasedElementComposer<T>::composeApproximat
 
 	std::cout << "Finished pre-process\n";
 
-	std::vector<LookupResult<T> > resultBuffer;
 	std::vector<T> partialTermElements;
 
 	int lastVectorIndex = sortedVectorArray.getNbVectors() - 1;
-	try {
-		findCompositionsInRange(sortedVectorArray,
-				secondarySortedVectorArrays,
-				lastVectorIndex,
-				partialTermElements,
-				target,
-				target,
-				pDistanceCalculator,
-				epsilon,
-				resultBuffer);
-	}
-	catch (int e) {
-		std::cout << "Enough result\n";
-	}
+	TaskFutureBuffer taskFutureBuffer;
+	m_pTaskExecutor->start();
 
-	releaseSecondarySortedVectorArrays(secondarySortedVectorArrays);
+	findCompositionsInRange(sortedVectorArray,
+			secondarySortedVectorArrays,
+			lastVectorIndex,
+			partialTermElements,
+			target,
+			target,
+			pDistanceCalculator,
+			epsilon,
+			taskFutureBuffer);
 
-	std::cout << "Number of combination checked:" << m_combinationCounter << "\n";
+	std::cout << "Number of combination submitted:" << m_combinationCounter << "\n";
 	m_combinationCounter = 0;
+
+	std::vector<LookupResult<T> > resultBuffer;
+	m_pTaskExecutor->executeAllRemaining();
+	taskFutureBuffer.collectResults(resultBuffer);
+
+	m_pTaskExecutor->shutDown();
 
 	//TODO Filter before/after sort results
 	if(toSortResults) {
 		std::sort(resultBuffer.begin(), resultBuffer.end(), DistanceComparator<T>());
 	}
 
+	releaseSecondarySortedVectorArrays(secondarySortedVectorArrays);
+
 	return IteratorPtr<LookupResult<T> >(new VectorBasedReadOnlyIteratorImpl<LookupResult<T> >(resultBuffer));
 }
 
 template<typename T>
-void AdditionBasedElementComposer<T>::initSecondarySortedVectorArrays(SortedVectorArrayList<T>& secondarySortedVectorArrays,
+void ParallelAdditionBasedElementComposer<T>::initSecondarySortedVectorArrays(SortedVectorArrayList<T>& secondarySortedVectorArrays,
 		const BuildingBlockBuckets<T>& buildingBlockBuckets) {
 	//Implement in sub-class if neccessary
 }
 
 template<typename T>
-void AdditionBasedElementComposer<T>::releaseSecondarySortedVectorArrays(SortedVectorArrayList<T>& sortedVectorArrays) {
+void ParallelAdditionBasedElementComposer<T>::releaseSecondarySortedVectorArrays(SortedVectorArrayList<T>& sortedVectorArrays) {
 	//Implement in sub-class if neccessary
 }
 
 template<typename T>
-void AdditionBasedElementComposer<T>::findCompositionsInRange(const SortedVectorArray<T>& sortedVectorArray,
+void ParallelAdditionBasedElementComposer<T>::findCompositionsInRange(const SortedVectorArray<T>& sortedVectorArray,
 		const SortedVectorArrayList<T>& secondarySortedVectorArrays,
 		int vectorIndex,
 		std::vector<T>& partialTermElements,
@@ -97,14 +96,14 @@ void AdditionBasedElementComposer<T>::findCompositionsInRange(const SortedVector
 		const T& finalTarget,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		std::vector<LookupResult<T> >& resultBuffer) {
+		TaskFutureBuffer& taskFutureBuffer) {
 
 	if(vectorIndex < 0) {
 		evaluateCombination(partialTermElements,
 				finalTarget,
 				pDistanceCalculator,
 				epsilon,
-				resultBuffer);
+				taskFutureBuffer);
 		return;
 	}
 
@@ -142,7 +141,7 @@ void AdditionBasedElementComposer<T>::findCompositionsInRange(const SortedVector
 				finalTarget,
 				pDistanceCalculator,
 				epsilon,
-				resultBuffer);
+				taskFutureBuffer);
 
 		//Restore partial terms elements
 		partialTermElements.pop_back();
@@ -150,49 +149,54 @@ void AdditionBasedElementComposer<T>::findCompositionsInRange(const SortedVector
 }
 
 template<typename T>
-bool AdditionBasedElementComposer<T>::quickEvaluate(const SortedVectorArrayList<T>& secondarySortedVectorArrays,
-			int vectorIndex,
-			const T& rightMostElement,
-			const T& partialTarget) const {
+bool ParallelAdditionBasedElementComposer<T>::quickEvaluate(const SortedVectorArrayList<T>& secondarySortedVectorArrays,
+		int vectorIndex,
+		const T& rightMostElement,
+		const T& partialTarget) const {
 	//Implementation-details should be changed in sub-class
 	return true;
 }
 
 template<typename T>
-void AdditionBasedElementComposer<T>::evaluateCombination(const std::vector<T>& partialElements,
+void ParallelAdditionBasedElementComposer<T>::evaluateCombination(const std::vector<T>& partialElements,
 		T target,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		std::vector<LookupResult<T> >& resultBuffer) {
+		TaskFutureBuffer& taskFutureBuffer) {
 
-	T candidate;
-	composeCandidate(partialElements, candidate);
-
-	if(pDistanceCalculator == NullPtr || pDistanceCalculator->distance(candidate, target) <= epsilon) {
-		T delta = candidate - target;
-		//FIXME This is implementation-dependent !
-		resultBuffer.push_back(LookupResult<T>(candidate, delta.getNorm()));
-		if(m_maxResultsNumber > 0 && resultBuffer.size() >= m_maxResultsNumber) {
-			throw (1);
-		}
-	}
-
+	TaskPtr<LookupResult<T> > pCombiningTask = generateCombiningTask(partialElements);
+	TaskFuturePtr<LookupResult<T> > pTaskFuture = m_pTaskExecutor->submitTask(pCombiningTask);
+	taskFutureBuffer.addTaskFuturePair(pTaskFuture, pCombiningTask);
 	m_combinationCounter++;
 }
 
+//-------------------Inner class-------------------//
 template<typename T>
-void AdditionBasedElementComposer<T>::composeCandidate(const std::vector<T>& partialElements, T& result) {
-	//Note that the vector is in reverse order
-	int firstElementIndex = partialElements.size() - 1;
-	T combined = partialElements[firstElementIndex];
-
-	for(int i = firstElementIndex - 1; i >= 0; i--) {
-		T tmp;
-		m_pCombiner->combine(combined, partialElements[i], tmp);
-		if(i < firstElementIndex - 1) {
-			releaseIntermediateResult(combined);
-		}
-		combined = tmp;
-	}
-	result = combined;
+void ParallelAdditionBasedElementComposer<T>::TaskFutureBuffer::addTaskFuturePair(TaskFuturePtr<LookupResult<T> > pTaskFuture,
+		TaskPtr<LookupResult<T> > pTask) {
+	m_taskFuturesBuffer.push_back(pTaskFuture);
+	m_tasks.push_back(pTask);
 }
+
+template<typename T>
+void ParallelAdditionBasedElementComposer<T>::TaskFutureBuffer::collectResults(std::vector<LookupResult<T> >& resultBuffer) {
+	for(unsigned int i = 0; i < m_taskFuturesBuffer.size(); i++) {
+		TaskFuturePtr<LookupResult<T> > pTaskFuture = m_taskFuturesBuffer[i];
+		TaskPtr<LookupResult<T> > pTask = m_tasks[i];
+
+		//Store verified result
+		pTaskFuture->wait();
+		TaskResult<LookupResult<T> > taskResult = pTaskFuture->getResult();
+		resultBuffer.push_back(taskResult.m_executeResult);
+
+		//Release memory for future and task
+		m_taskFuturesBuffer[i] = NullPtr;
+		m_tasks[i] = NullPtr;
+		_destroy(pTaskFuture);
+		_destroy(pTask);
+	}
+	m_taskFuturesBuffer.clear();
+	m_tasks.clear();
+}
+
+
