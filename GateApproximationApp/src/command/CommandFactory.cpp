@@ -20,10 +20,11 @@
 #include "SKApproximatorContainerImpl.h"
 #include "SK2ApproximatorContainerImpl.h"
 #include "ComposerBasedSK2ApproximatorContainerImpl.h"
-#include "SampleComposerContainerImpl.h"
+#include "SampleEvaluatingComposerContainerImpl.h"
 #include "SimpleComposerContainerImpl.h"
 #include "GateCoordinateAdditionBasedComposerContainerImpl.h"
 #include "SampleComposerEvaluatorContainerImpl.h"
+#include "EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl.h"
 #include "EvaluatingParallelComposerContainerImpl.h"
 #include "ConfigReader.h"
 #include <cstdio>
@@ -86,6 +87,9 @@ CommandPtr CommandFactory::getCommand(int commandCode, const CommandParams& comm
 	}
 	case EVALUATE_PARALLEL_COMPOSER_TO_TARGET: {
 		return getParallelComposerEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3]);
+	}
+	case EVALUATE_PARALLEL_COMPOSER2_TO_TARGET: {
+		return getParallelComposerEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3], commandParams[4]);
 	}
 	default:
 		return CommandPtr(new NotAvailableCommand());
@@ -345,6 +349,32 @@ AbstractCommandPtr CommandFactory::getParallelComposerEvaluationCommandForTarget
 	return pEvaluateCommand;
 }
 
+AbstractCommandPtr CommandFactory::getParallelComposerEvaluationCommandForTargets(std::string collectionConfigFile,
+		std::string cbApprxConfigFile,
+		std::string adbComposerConfigFile,
+		std::string nbThreadStr,
+		std::string targetConfigFile) {
+
+	ConfigReader configReader;
+
+	readParallelComposerEvaluationConfig(configReader,
+			collectionConfigFile,
+			cbApprxConfigFile,
+			adbComposerConfigFile,
+			nbThreadStr,
+			targetConfigFile);
+
+	GateComposerEvaluatorPtr pGateComposerEvaluator = m_pComposerEvaluatorContainer->getGateComposerEvaluator();
+	GateComposerPtr pEvaluatedComposer = m_pEvaluatingComposerContainer->getEvaluatedGateComposer();
+	GateComposerPtr pStandardComposer = m_pEvaluatingComposerContainer->getStandardGateComposer();
+
+	AbstractCommandPtr pEvaluateCommand = AbstractCommandPtr(new EvaluateComposerCommand(pEvaluatedComposer,
+			pStandardComposer,
+			pGateComposerEvaluator));
+
+	return pEvaluateCommand;
+}
+
 //Below are methods to read config files then instantiate proper containers for dependencies
 
 void CommandFactory::readCollectionConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig) {
@@ -457,6 +487,29 @@ void CommandFactory::readParallelComposerEvaluationConfig(ConfigReader configRea
 	resetComposerEvaluatorContainer(composerEvalConfig, collectionConfig);
 }
 
+void CommandFactory::readParallelComposerEvaluationConfig(ConfigReader configReader,
+		std::string collectionConfigFile,
+		std::string composerEvalConfigFile,
+		std::string cadbConfigFile,
+		std::string nbThreadStr,
+		std::string targetConfigFile) {
+
+	CollectionConfig collectionConfig;
+	ComposerEvaluatorConfig composerEvalConfig;
+	CoordinateAdditionalBasedComposerConfig cadbConfig;
+
+	configReader.readMultiComparatorCoordinateAddtionalBasedComposerConfig(cadbConfigFile, &cadbConfig);
+	configReader.readCollectionConfig(collectionConfigFile, &collectionConfig);
+
+	configReader.readComposerEvaluatorConfig(composerEvalConfigFile, &composerEvalConfig);
+	configReader.readComposerEvaluatorConfigFromTargets(targetConfigFile, &composerEvalConfig);
+
+	int nbThreads = 2;
+	sscanf(nbThreadStr.data(), "%d", &nbThreads);
+	resetEvaluatingComposerContainer(cadbConfig, collectionConfig, nbThreads);
+	resetComposerEvaluatorContainer(composerEvalConfig, collectionConfig);
+}
+
 void CommandFactory::readSKConfig(ConfigReader configReader,
 		std::string collectionConfigFile,
 		std::string skApprxConfigFile,
@@ -558,7 +611,7 @@ void CommandFactory::resetComposerBasedApproximatorContainer(const ComposerBased
 
 void CommandFactory::resetEvaluatingComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig, const CollectionConfig& collectionConfig) {
 	_destroy(m_pEvaluatingComposerContainer);
-	m_pEvaluatingComposerContainer = EvaluatingComposerContainerPtr(new SampleComposerContainerImpl(cabConfig, collectionConfig));
+	m_pEvaluatingComposerContainer = EvaluatingComposerContainerPtr(new SampleEvaluatingComposerContainerImpl(cabConfig, collectionConfig));
 }
 
 void CommandFactory::resetEvaluatingComposerContainer(int nbThreads) {
@@ -566,11 +619,17 @@ void CommandFactory::resetEvaluatingComposerContainer(int nbThreads) {
 	m_pEvaluatingComposerContainer = EvaluatingComposerContainerPtr(new EvaluatingParallelComposerContainerImpl(nbThreads));
 }
 
+void CommandFactory::resetEvaluatingComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig,
+		const CollectionConfig& collectionConfig,
+		int nbThreads) {
+	_destroy(m_pEvaluatingComposerContainer);
+	m_pEvaluatingComposerContainer = EvaluatingComposerContainerPtr(new EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl(cabConfig, collectionConfig, nbThreads));
+}
+
 void CommandFactory::resetComposerEvaluatorContainer(const ComposerEvaluatorConfig& composerEvalConfig, const CollectionConfig& collectionCofig) {
 	_destroy(m_pComposerEvaluatorContainer);
 	m_pComposerEvaluatorContainer = ComposerEvaluatorContainerPtr(new SampleComposerEvaluatorContainerImpl(composerEvalConfig, collectionCofig));
 }
-
 
 void CommandFactory::resetSKApproximatorContainer(const SKApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig) {
 	_destroy(m_pApproximatorContainer);

@@ -19,7 +19,7 @@ struct LookupResult{
 
 	static const mreal_t DISTANCE_UNKNOWN_VALUE;
 
-	LookupResult(){m_distanceToTarget = DISTANCE_UNKNOWN_VALUE; m_resultElement = NullPtr;};
+	LookupResult(){m_distanceToTarget = DISTANCE_UNKNOWN_VALUE;};
 
 	LookupResult(T resultElement, mreal_t distanceToTarget){m_resultElement = resultElement; m_distanceToTarget = distanceToTarget;};
 	T m_resultElement;

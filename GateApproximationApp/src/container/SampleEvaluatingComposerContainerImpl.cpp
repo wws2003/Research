@@ -5,35 +5,35 @@
  *      Author: pham
  */
 
-#include "SampleComposerContainerImpl.h"
+#include "SampleEvaluatingComposerContainerImpl.h"
 #include "SimpleComposerContainerImpl.h"
 #include "GateCoordinateAdditionBasedComposerContainerImpl.h"
 
-SampleComposerContainerImpl::SampleComposerContainerImpl(const CoordinateAdditionalBasedComposerConfig& cabConfig,
+SampleEvaluatingComposerContainerImpl::SampleEvaluatingComposerContainerImpl(const CoordinateAdditionalBasedComposerConfig& cabConfig,
 		const CollectionConfig& collectionConfig) {
 	wireDependencies(cabConfig, collectionConfig);
 }
 
-SampleComposerContainerImpl::~SampleComposerContainerImpl() {
+SampleEvaluatingComposerContainerImpl::~SampleEvaluatingComposerContainerImpl() {
 	releaseDependencies();
 }
 
-GateComposerPtr SampleComposerContainerImpl::getStandardGateComposer() {
+GateComposerPtr SampleEvaluatingComposerContainerImpl::getStandardGateComposer() {
 	return m_pStandardComposerContainer->getGateComposer();
 }
 
 //Override
-GateComposerPtr SampleComposerContainerImpl::getEvaluatedGateComposer() {
+GateComposerPtr SampleEvaluatingComposerContainerImpl::getEvaluatedGateComposer() {
 	return m_pEvaluatedComposerContainer->getGateComposer();
 }
 
-void SampleComposerContainerImpl::wireDependencies(const CoordinateAdditionalBasedComposerConfig& cabConfig,
+void SampleEvaluatingComposerContainerImpl::wireDependencies(const CoordinateAdditionalBasedComposerConfig& cabConfig,
 		const CollectionConfig& collectionConfig) {
 	m_pStandardComposerContainer = ComposerContainerPtr(new SimpleComposerContainerImpl());
 	m_pEvaluatedComposerContainer = ComposerContainerPtr(new GateCoordinateAdditionBasedComposerContainerImpl(cabConfig, collectionConfig));
 }
 
-void SampleComposerContainerImpl::releaseDependencies() {
+void SampleEvaluatingComposerContainerImpl::releaseDependencies() {
 	_destroy(m_pEvaluatedComposerContainer);
 	_destroy(m_pStandardComposerContainer);
 }

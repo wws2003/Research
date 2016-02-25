@@ -68,6 +68,7 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../../ModuleMathConcepts/include/interface/common/MathConceptsCommon.h \
  ../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h \
  ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h \
+ ../../ModuleAlgorithm/include/implement/composer/SortedVectorArray.hpp \
  ../src/container/IComposerContainer.h \
  ../src/container/SKApproximatorContainerImpl.h \
  ../src/container/SK2ApproximatorContainerImpl.h \
@@ -75,13 +76,14 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
  ../src/container/IEvaluatingComposerContainer.h \
  ../src/container/ComposerBasedSK2ApproximatorContainerImpl.h \
  ../src/container/SK2ApproximatorContainerImpl.h \
- ../src/container/SampleComposerContainerImpl.h \
+ ../src/container/SampleEvaluatingComposerContainerImpl.h \
  ../src/container/SimpleComposerContainerImpl.h \
  ../src/container/GateCoordinateAdditionBasedComposerContainerImpl.h \
  ../src/container/SampleComposerEvaluatorContainerImpl.h \
  ../src/container/IComposerEvaluatorContainer.h \
  ../../ModuleEvaluate/include/interface/abstract/ITimer.h \
  ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h \
+ ../src/container/EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl.h \
  ../src/container/EvaluatingParallelComposerContainerImpl.h
 
 ../src/command/CommandFactory.h:
@@ -228,6 +230,8 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h:
 
+../../ModuleAlgorithm/include/implement/composer/SortedVectorArray.hpp:
+
 ../src/container/IComposerContainer.h:
 
 ../src/container/SKApproximatorContainerImpl.h:
@@ -242,7 +246,7 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 
 ../src/container/SK2ApproximatorContainerImpl.h:
 
-../src/container/SampleComposerContainerImpl.h:
+../src/container/SampleEvaluatingComposerContainerImpl.h:
 
 ../src/container/SimpleComposerContainerImpl.h:
 
@@ -255,5 +259,7 @@ src/command/CommandFactory.d: ../src/command/CommandFactory.cpp \
 ../../ModuleEvaluate/include/interface/abstract/ITimer.h:
 
 ../../ModuleIO/include/interface/abstract/ICoordinateWriter.h:
+
+../src/container/EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl.h:
 
 ../src/container/EvaluatingParallelComposerContainerImpl.h:

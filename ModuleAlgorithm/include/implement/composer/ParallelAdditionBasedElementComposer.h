@@ -1,29 +1,33 @@
 /*
- * AdditionBasedElementComposer.h
+ * ParallelAdditionBasedElementComposer.h
  *
- *  Created on: Dec 6, 2015
+ *  Created on: Feb 24, 2016
  *      Author: pham
  */
 
-#ifndef ADDITIONBASEDELEMENTCOMPOSER_H_
-#define ADDITIONBASEDELEMENTCOMPOSER_H_
+#ifndef PARALLELADDITIONBASEDELEMENTCOMPOSER_H_
+#define PARALLELADDITIONBASEDELEMENTCOMPOSER_H_
 
 #include "IComposer.h"
 #include "AlgoInternal.h"
 #include "AlgoCommon.h"
 #include "ICombiner.h"
 #include "IElementComparator.h"
+#include "ITaskExecutor.h"
+#include "ICombiner.h"
+#include "IElementComparator.h"
 #include "SortedVectorArray.hpp"
 
 template<typename T>
-class AdditionBasedElementComposer: public IComposer<T> {
+class ParallelAdditionBasedElementComposer: public IComposer<T>  {
 public:
-	AdditionBasedElementComposer(ComparatorPtr<T> pElementComparator,
+	ParallelAdditionBasedElementComposer(ComparatorPtr<T> pElementComparator,
 			CombinerPtr<T> pCombiner,
 			T epsilonElement,
-			int maxResultsNumber);
+			int maxResultsNumber,
+			TaskExecutorPtr<LookupResult<T> > pTaskExecutor);
 
-	virtual ~AdditionBasedElementComposer(){};
+	virtual ~ParallelAdditionBasedElementComposer(){};
 
 	//Override
 	IteratorPtr<LookupResult<T> > composeApproximations(const BuildingBlockBuckets<T>& buildingBlockBuckets,
@@ -36,6 +40,16 @@ protected:
 	virtual void initSecondarySortedVectorArrays(SortedVectorArrayList<T>& secondarySortedVectorArrays,
 			const BuildingBlockBuckets<T>& buildingBlockBuckets);
 
+	class TaskFutureBuffer {
+	public:
+		void addTaskFuturePair(TaskFuturePtr<LookupResult<T> > pTaskFuture, TaskPtr<LookupResult<T> > pTask);
+		void collectResults(std::vector<LookupResult<T> >& resultBuffer);
+
+	private:
+		std::vector<TaskFuturePtr<LookupResult<T> > > m_taskFuturesBuffer;
+		std::vector<TaskPtr<LookupResult<T> > > m_tasks;
+	};
+
 	void findCompositionsInRange(const SortedVectorArray<T>& sortedVectorArray,
 			const SortedVectorArrayList<T>& secondarySortedVectorArrays,
 			int vectorIndex,
@@ -44,7 +58,7 @@ protected:
 			const T& target,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
-			std::vector<LookupResult<T> >& resultBuffer);
+			TaskFutureBuffer& taskFutureBuffer);
 
 	virtual void releaseSecondarySortedVectorArrays(SortedVectorArrayList<T>& sortedVectorArrays);
 
@@ -57,19 +71,18 @@ protected:
 			T target,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
-			std::vector<LookupResult<T> >& resultBuffer);
+			TaskFutureBuffer& taskFutureBuffer);
 
-	void composeCandidate(const std::vector<T>& partialElements, T& result);
+	virtual TaskPtr<LookupResult<T> > generateCombiningTask(const std::vector<T>& partialElements) = 0;
 
-	virtual void releaseIntermediateResult(T result) = 0;
+	TaskExecutorPtr<LookupResult<T> > m_pTaskExecutor;
+	CombinerPtr<T> m_pCombiner;
 
 	WrapperComparator<T> m_wrapperComparator;
-
-	CombinerPtr<T> m_pCombiner;
 	int m_maxResultsNumber;
 
 	T m_epsilonElement;
 	combination_counter_t m_combinationCounter;
 };
 
-#endif /* ADDITIONBASEDELEMENTCOMPOSER_H_ */
+#endif /* PARALLELADDITIONBASEDELEMENTCOMPOSER_H_ */

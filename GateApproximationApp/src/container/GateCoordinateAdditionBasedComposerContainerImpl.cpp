@@ -5,7 +5,7 @@
  *      Author: pham
  */
 
-#include "SampleComposerContainerImpl.h"
+#include "SampleEvaluatingComposerContainerImpl.h"
 #include "SimpleGateComposer.h"
 #include "GateSetLogImpl.h"
 #include "SimpleDenseMatrixFactoryImpl.h"

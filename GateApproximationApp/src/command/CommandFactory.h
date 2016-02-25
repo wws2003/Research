@@ -68,6 +68,12 @@ private:
 			std::string nbThreadStr,
 			std::string targetConfigFile);
 
+	AbstractCommandPtr getParallelComposerEvaluationCommandForTargets(std::string collectionConfigFile,
+				std::string cbApprxConfigFile,
+				std::string adbComposerConfigFile,
+				std::string nbThreadStr,
+				std::string targetConfigFile);
+
 	//----------------------------------//
 	//Apply config paramters to change containers for concrete instances of collection, approximator, evaluator...
 	//----------------------------------//
@@ -110,6 +116,13 @@ private:
 			std::string composerEvalConfigFile,
 			std::string nbThreadStr,
 			std::string targetConfigFile);
+
+	void readParallelComposerEvaluationConfig(ConfigReader configReader,
+				std::string collectionConfigFile,
+				std::string composerEvalConfigFile,
+				std::string cadbConfigFile,
+				std::string nbThreadStr,
+				std::string targetConfigFile);
 
 	void readSKConfig(ConfigReader configReader,
 			std::string collectionConfigFile,
@@ -157,6 +170,10 @@ private:
 			const CollectionConfig& collectionConfig);
 
 	void resetEvaluatingComposerContainer(int nbThreads);
+
+	void resetEvaluatingComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig,
+				const CollectionConfig& collectionConfig,
+				int nbThreads);
 
 	void resetComposerEvaluatorContainer(const ComposerEvaluatorConfig& composerEvalConfig,
 			const CollectionConfig& collectionCofig);

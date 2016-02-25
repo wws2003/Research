@@ -17,7 +17,7 @@ class MultipleComparatorCoordinateAdditionBasedGateComposer: public MultipleComp
 public:
 	MultipleComparatorCoordinateAdditionBasedGateComposer(ComparatorPtr<RealCoordinate<GatePtr> > pElementComparator,
 			CombinerPtr<RealCoordinate<GatePtr> > pCombiner,
-			RealCoordinate<GatePtr>  epsilonElement,
+			RealCoordinate<GatePtr> epsilonElement,
 			int maxResultsNumber,
 			const std::vector<ComparatorPtr<RealCoordinate<GatePtr> > >& secondaryComparators,
 			const std::vector<RealCoordinate<GatePtr> > secondaryEpsilonElements);

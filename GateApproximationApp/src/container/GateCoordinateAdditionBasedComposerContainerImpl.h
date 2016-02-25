@@ -36,13 +36,13 @@ public:
 	//Override
 	GateComposerPtr getGateComposer();
 
-private:
+protected:
 	void wireDependencies();
 	void releaseDependencies();
 
-	void initCoordinateAdditionalBasedGateComposerElements();
+	virtual void initCoordinateAdditionalBasedGateComposer();
 
-	void initCoordinateAdditionalBasedGateComposer();
+	void initCoordinateAdditionalBasedGateComposerElements();
 
 	typedef ComparatorPtr<RealCoordinate<GatePtr> > GateRealCoordinateComparatorPtr;
 	typedef std::vector<GateRealCoordinateComparatorPtr> GateRealCoordinateComparatorList;
