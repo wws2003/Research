@@ -51,6 +51,7 @@
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/task"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/bin"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/internal-abstract"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/task"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/comparator"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/collection"/>
@@ -66,7 +67,7 @@
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.1969211016" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.other.pic.1738298609" name="Position Independent Code (-fPIC)" superClass="gnu.cpp.compiler.option.other.pic" value="false" valueType="boolean"/>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.1696343826" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols"/>
+								<option id="gnu.cpp.compiler.option.preprocessor.def.1696343826" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1454673739" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.994950294" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug">
