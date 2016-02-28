@@ -35,7 +35,7 @@
 									<listOptionValue builtIn="false" value="../include/implement"/>
 									<listOptionValue builtIn="false" value="../include/internal-abstract"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.2070043110" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -pthread -std=c++11  -lpthread" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.2070043110" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0  -fPIC  -pthread -std=c++11  -lpthread" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.156608156" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__GXX_EXPERIMENTAL_CXX0X__"/>
 									<listOptionValue builtIn="false" value="__cplusplus=201103L"/>

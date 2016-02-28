@@ -67,9 +67,11 @@ void ComposerEvaluatorImpl<T>::ComposerEvaluateFactors::printInfo(std::ostream& 
 
 template<typename T>
 void ComposerEvaluatorImpl<T>::ComposerEvaluateFactors::printCompareToInfo(std::ostream& ostream, const ComposerEvaluateFactors& evalFactors2) {
+	ostream << "Run time = " << m_composeTime / evalFactors2.m_composeTime << "\n";
 	if(evalFactors2.m_nbResults != 0) {
 		ostream << "Recall = " << (float)m_nbResults / evalFactors2.m_nbResults << "\n";
-		if(m_bestDistance > evalFactors2.m_bestDistance) {
+		mreal_t noiseThresold = 1e-9;
+		if(m_bestDistance > evalFactors2.m_bestDistance + noiseThresold) {
 			ostream << "Couldn not reached best result\n";
 		}
 		else {
@@ -129,7 +131,7 @@ void ComposerEvaluatorImpl<T>::evaluateComposerForTarget(ComposerPtr<T> pEvaluat
 			&evalFactors2);
 	evalFactors2.printInfo(m_ostream, "Standard composer");
 
-	//evalFactors1.printCompareToInfo(m_ostream, evalFactors2);
+	evalFactors1.printCompareToInfo(m_ostream, evalFactors2);
 
 	releaseBuildingBlocksBuckets(buildingBlockBuckets);
 }

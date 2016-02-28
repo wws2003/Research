@@ -35,7 +35,7 @@ CPP_DEPS += \
 src/implement/%.o: ../src/implement/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -D__GXX_EXPERIMENTAL_CXX0X__ -D__cplusplus=201103L -I../include/interface/abstract -I../include/interface/common -I../include/implement -I../include/internal-abstract -O0 -g3 -Wall -c -fmessage-length=0 -pthread -std=c++11  -lpthread -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	g++ -D__GXX_EXPERIMENTAL_CXX0X__ -D__cplusplus=201103L -I../include/interface/abstract -I../include/interface/common -I../include/implement -I../include/internal-abstract -O0 -g3 -Wall -c -fmessage-length=0  -fPIC  -pthread -std=c++11  -lpthread -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
