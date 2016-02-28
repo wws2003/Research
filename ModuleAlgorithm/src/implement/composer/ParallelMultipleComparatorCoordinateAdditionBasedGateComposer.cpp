@@ -7,6 +7,7 @@
 
 #include "ParallelMultipleComparatorCoordinateAdditionBasedGateComposer.h"
 #include "GateCoordinateCombiningTask.h"
+#include "GatesCoordinateCombinationVerifyTask.h"
 #include "ParallelMultipleComparatorAdditionBasedElementComposer.cpp"
 
 template class ParallelMultipleComparatorAdditionBasedElementComposer<GateRealCoordinate>;
@@ -14,19 +15,30 @@ template class ParallelMultipleComparatorAdditionBasedElementComposer<GateRealCo
 ParallelMultipleComparatorCoordinateAdditionBasedGateComposer::ParallelMultipleComparatorCoordinateAdditionBasedGateComposer(ComparatorPtr<GateRealCoordinate> pElementComparator,
 		CombinerPtr<GateRealCoordinate> pCombiner,
 		GateRealCoordinate epsilonElement,
-		int maxResultsNumber,
+		int taskFutureBufferSize,
 		const std::vector<ComparatorPtr<GateRealCoordinate> >& secondaryComparators,
 		const std::vector<GateRealCoordinate> secondaryEpsilonElements,
 		TaskExecutorPtr<LookupResult<GateRealCoordinate> > pTaskExecutor) : ParallelMultipleComparatorAdditionBasedElementComposer<GateRealCoordinate> (pElementComparator,
 				pCombiner,
 				epsilonElement,
-				maxResultsNumber,
+				taskFutureBufferSize,
 				secondaryComparators,
 				secondaryEpsilonElements,
 				pTaskExecutor) {
 
 }
 
-TaskPtr<LookupResult<GateRealCoordinate> > ParallelMultipleComparatorCoordinateAdditionBasedGateComposer::generateCombiningTask(const std::vector<GateRealCoordinate>& partialElements) {
-	return TaskPtr<LookupResult<GateRealCoordinate> >(new GateCoordinateCombiningTask(partialElements, m_pCombiner, false));
+TaskPtr<LookupResult<GateRealCoordinate> > ParallelMultipleComparatorCoordinateAdditionBasedGateComposer::generateCombiningTask(const std::vector<GateRealCoordinate>& partialElements,
+		GateRealCoordinate target,
+		DistanceCalculatorPtr<GateRealCoordinate> pDistanceCalculator,
+		mreal_t epsilon) {
+
+	return TaskPtr<LookupResult<GateRealCoordinate> >(new GatesCoordinateCombinationVerifyTask(partialElements,
+			m_pCombiner,
+			pDistanceCalculator,
+			target,
+			epsilon,
+			false));
+
+	//return TaskPtr<LookupResult<GateRealCoordinate> >(new GateCoordinateCombiningTask(partialElements, m_pCombiner, false));
 }

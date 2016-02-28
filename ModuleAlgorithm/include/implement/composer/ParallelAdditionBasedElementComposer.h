@@ -17,6 +17,7 @@
 #include "ICombiner.h"
 #include "IElementComparator.h"
 #include "SortedVectorArray.hpp"
+#include "TaskFutureBuffer.hpp"
 
 template<typename T>
 class ParallelAdditionBasedElementComposer: public IComposer<T>  {
@@ -24,7 +25,7 @@ public:
 	ParallelAdditionBasedElementComposer(ComparatorPtr<T> pElementComparator,
 			CombinerPtr<T> pCombiner,
 			T epsilonElement,
-			int maxResultsNumber,
+			int taskFutureBufferSize,
 			TaskExecutorPtr<LookupResult<T> > pTaskExecutor);
 
 	virtual ~ParallelAdditionBasedElementComposer(){};
@@ -40,16 +41,6 @@ protected:
 	virtual void initSecondarySortedVectorArrays(SortedVectorArrayList<T>& secondarySortedVectorArrays,
 			const BuildingBlockBuckets<T>& buildingBlockBuckets);
 
-	class TaskFutureBuffer {
-	public:
-		void addTaskFuturePair(TaskFuturePtr<LookupResult<T> > pTaskFuture, TaskPtr<LookupResult<T> > pTask);
-		void collectResults(std::vector<LookupResult<T> >& resultBuffer);
-
-	private:
-		std::vector<TaskFuturePtr<LookupResult<T> > > m_taskFuturesBuffer;
-		std::vector<TaskPtr<LookupResult<T> > > m_tasks;
-	};
-
 	void findCompositionsInRange(const SortedVectorArray<T>& sortedVectorArray,
 			const SortedVectorArrayList<T>& secondarySortedVectorArrays,
 			int vectorIndex,
@@ -58,7 +49,7 @@ protected:
 			const T& target,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
-			TaskFutureBuffer& taskFutureBuffer);
+			TaskFutureBuffer<T>& taskFutureBuffer);
 
 	virtual void releaseSecondarySortedVectorArrays(SortedVectorArrayList<T>& sortedVectorArrays);
 
@@ -71,15 +62,18 @@ protected:
 			T target,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
-			TaskFutureBuffer& taskFutureBuffer);
+			TaskFutureBuffer<T>& taskFutureBuffer);
 
-	virtual TaskPtr<LookupResult<T> > generateCombiningTask(const std::vector<T>& partialElements) = 0;
+	virtual TaskPtr<LookupResult<T> > generateCombiningTask(const std::vector<T>& partialElements,
+			T target,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilon) = 0;
 
 	TaskExecutorPtr<LookupResult<T> > m_pTaskExecutor;
 	CombinerPtr<T> m_pCombiner;
 
 	WrapperComparator<T> m_wrapperComparator;
-	int m_maxResultsNumber;
+	int m_taskFutureBufferSize;
 
 	T m_epsilonElement;
 	combination_counter_t m_combinationCounter;

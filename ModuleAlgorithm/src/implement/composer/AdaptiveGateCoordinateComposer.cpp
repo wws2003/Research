@@ -14,12 +14,25 @@ template class AdaptiveElementComposer<GatePtr, RealCoordinate<GatePtr> >;
 AdaptiveGateCoordinateComposer::AdaptiveGateCoordinateComposer(DistanceCalculatorPtr<RealCoordinate<GatePtr>> pDerivedDistanceCalculator,
 		ComposerPtr<RealCoordinate<GatePtr> > pDerivedComposer,
 		mreal_t derivedComposerEpsilon,
-		ConverterPtr<GatePtr, RealCoordinate<GatePtr> > pConverter) :  AdaptiveElementComposer<GatePtr, RealCoordinate<GatePtr> >(
+		ConverterPtr<GatePtr, RealCoordinate<GatePtr> > pConverter,
+		bool toVerifyDerivedResults) :  AdaptiveElementComposer<GatePtr, RealCoordinate<GatePtr> >(
 				pDerivedDistanceCalculator,
 				pDerivedComposer,
 				derivedComposerEpsilon,
-				pConverter
-		){
+				pConverter,
+				toVerifyDerivedResults
+		) {
+}
+
+AdaptiveGateCoordinateComposer::AdaptiveGateCoordinateComposer(DistanceCalculatorPtr<RealCoordinate<GatePtr>> pDerivedDistanceCalculator,
+				ComposerPtr<RealCoordinate<GatePtr> > pDerivedComposer,
+				ConverterPtr<GatePtr, RealCoordinate<GatePtr> > pConverter,
+				bool toVerifyDerivedResults) :  AdaptiveElementComposer<GatePtr, RealCoordinate<GatePtr> >(
+						pDerivedDistanceCalculator,
+						pDerivedComposer,
+						pConverter,
+						toVerifyDerivedResults
+				) {
 
 }
 

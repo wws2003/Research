@@ -18,16 +18,14 @@
 template<typename T>
 const std::string SimpleParallelElementComposer<T>::LOG_ROOT_FOLDER = "IntermediateLog";
 
-#define TASK_FUTURE_BUFFER_SIZE (100000)
-
 template<typename T>
 SimpleParallelElementComposer<T>::SimpleParallelElementComposer(CombinerPtr<T> pCombiner,
-		int maxResultsNumber,
+		int taskFutureBufferSize,
 		ElementSetLogPtr<T> pElementSetLog,
 		TaskExecutorPtr<LookupResult<T> > pTaskExecutor) {
 
 	m_pCombiner = pCombiner;
-	m_maxResultsNumber = maxResultsNumber;
+	m_taskFutureBufferSize = taskFutureBufferSize;
 	m_pElementSetLog = pElementSetLog;
 	m_logFolderCounter = 0;
 	m_combinationCounter = 0;
@@ -44,7 +42,7 @@ IteratorPtr<LookupResult<T> > SimpleParallelElementComposer<T>::composeApproxima
 		bool toSortResults) {
 
 	std::vector<T> partialElementsBuffer;
-	TaskFutureBuffer taskFutureBuffer(m_pTaskExecutor, TASK_FUTURE_BUFFER_SIZE, m_maxResultsNumber);
+	TaskFutureBuffer<T> taskFutureBuffer(m_pTaskExecutor, m_taskFutureBufferSize, ElementsCombinationVerifyTask<T>::TRC_POSITIVE);
 
 #if OUTPUT_INTERMEDIATE_RESULT
 	m_pElementSetLog->saveElementSets(buildingBlockBuckets);
@@ -92,7 +90,7 @@ void SimpleParallelElementComposer<T>::generateApproximations(std::vector<T>& pa
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		TaskFutureBuffer& taskResultBuffer) {
+		TaskFutureBuffer<T>& taskResultBuffer) {
 
 	if(bucketIndex >= buildingBlockBuckets.size()) {
 		m_combinationCounter++;
@@ -142,7 +140,7 @@ void SimpleParallelElementComposer<T>::evaluateCombination(const std::vector<T>&
 		T pQuery,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		TaskFutureBuffer& taskResultBuffer) {
+		TaskFutureBuffer<T>& taskResultBuffer) {
 
 	TaskPtr<LookupResult<T> > pTask = TaskPtr<LookupResult<T> >(new ElementsCombinationVerifyTask<T>(partialElements,
 			m_pCombiner,
@@ -153,65 +151,3 @@ void SimpleParallelElementComposer<T>::evaluateCombination(const std::vector<T>&
 	TaskFuturePtr<LookupResult<T> > pTaskFuture = m_pTaskExecutor->submitTask(pTask);
 	taskResultBuffer.addTaskFuturePair(pTaskFuture, pTask);
 }
-
-//-------------------Inner class-------------------//
-template<typename T>
-SimpleParallelElementComposer<T>::TaskFutureBuffer::TaskFutureBuffer(TaskExecutorPtr<LookupResult<T> > pSharedTaskExecutor,
-		size_t maxBufferSize,
-		int maxResultsNumber) {
-	m_pSharedTaskExecutor = pSharedTaskExecutor;
-	m_maxBufferSize = maxBufferSize;
-	m_maxResultsNumber = maxResultsNumber;
-}
-
-template<typename T>
-void SimpleParallelElementComposer<T>::TaskFutureBuffer::addTaskFuturePair(TaskFuturePtr<LookupResult<T> > pTaskFuture,
-		TaskPtr<LookupResult<T> > pTask) {
-	m_taskFuturesBuffer.push_back(pTaskFuture);
-	m_tasks.push_back(pTask);
-
-	if(m_taskFuturesBuffer.size() >= m_maxBufferSize) {
-		moveResultsFromFutureBuffers();
-	}
-
-	if(m_maxResultsNumber > 0 && m_results.size() > m_maxResultsNumber) {
-		throw (1);
-	}
-}
-
-template<typename T>
-void SimpleParallelElementComposer<T>::TaskFutureBuffer::collectResults(std::vector<LookupResult<T> >& resultBuffer) {
-	//Retrieve results from remaining futures
-	moveResultsFromFutureBuffers();
-	resultBuffer.reserve(resultBuffer.size() + m_results.size());
-	resultBuffer.insert(resultBuffer.end(), m_results.begin(), m_results.end());
-	m_results.clear();
-}
-
-template<typename T>
-void SimpleParallelElementComposer<T>::TaskFutureBuffer::moveResultsFromFutureBuffers() {
-	m_pSharedTaskExecutor->executeAllRemaining();
-	for(unsigned int i = 0; i < m_taskFuturesBuffer.size(); i++) {
-		TaskFuturePtr<LookupResult<T> > pTaskFuture = m_taskFuturesBuffer[i];
-		TaskPtr<LookupResult<T> > pTask = m_tasks[i];
-
-		//Store verified result
-		pTaskFuture->wait();
-		TaskResult<LookupResult<T> > verifyTaskResult = pTaskFuture->getResult();
-		if(verifyTaskResult.m_resultCode == ElementsCombinationVerifyTask<T>::TRC_POSITIVE) {
-			m_results.push_back(verifyTaskResult.m_executeResult);
-		}
-
-		//Release memory for future and task
-		m_taskFuturesBuffer[i] = NullPtr;
-		m_tasks[i] = NullPtr;
-		_destroy(pTaskFuture);
-		_destroy(pTask);
-	}
-	m_taskFuturesBuffer.clear();
-	m_tasks.clear();
-}
-
-
-
-

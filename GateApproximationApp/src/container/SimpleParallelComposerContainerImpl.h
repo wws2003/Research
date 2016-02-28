@@ -26,7 +26,7 @@
 
 class SimpleParallelComposerContainerImpl: public IComposerContainer {
 public:
-	SimpleParallelComposerContainerImpl(int nbCandidates = 0, int nbThreads = 2);
+	SimpleParallelComposerContainerImpl(int nbCandidates, const ParallelConfig& parallelConfig);
 	virtual ~SimpleParallelComposerContainerImpl();
 
 	//Override
@@ -37,7 +37,7 @@ private:
 	void releaseDependencies();
 
 	int m_nbCandidates;
-	int m_nbThreads;
+	ParallelConfig m_parallelConfig;
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;

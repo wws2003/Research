@@ -23,7 +23,7 @@ ElementsCombinationVerifyTask<T>::ElementsCombinationVerifyTask(const std::vecto
 template<typename T>
 TaskResult<LookupResult<T> > ElementsCombinationVerifyTask<T>::execute() {
 	int resultCode = TaskResultCode::TRC_UNKNOWN;
-	LookupResult<T> lookupResult(NullPtr, LookupResult<T>::DISTANCE_UNKNOWN_VALUE);
+	LookupResult<T> lookupResult;
 
 	T candidate;
 	composeCandidate(m_elements, candidate);

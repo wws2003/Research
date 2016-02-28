@@ -9,9 +9,8 @@
 #include "SimpleComposerContainerImpl.h"
 #include "SimpleParallelComposerContainerImpl.h"
 
-EvaluatingParallelComposerContainerImpl::EvaluatingParallelComposerContainerImpl(int nbThreads) {
-	m_nbThreads = nbThreads;
-	wireDependencies();
+EvaluatingParallelComposerContainerImpl::EvaluatingParallelComposerContainerImpl(const ParallelConfig& parallelConfig) {
+	wireDependencies(parallelConfig);
 }
 
 EvaluatingParallelComposerContainerImpl::~EvaluatingParallelComposerContainerImpl() {
@@ -27,9 +26,9 @@ GateComposerPtr EvaluatingParallelComposerContainerImpl::getEvaluatedGateCompose
 	return m_pEvaluatedComposerContainer->getGateComposer();
 }
 
-void EvaluatingParallelComposerContainerImpl::wireDependencies() {
+void EvaluatingParallelComposerContainerImpl::wireDependencies(const ParallelConfig& parallelConfig) {
 	m_pStandardComposerContainer = ComposerContainerPtr(new SimpleComposerContainerImpl());
-	m_pEvaluatedComposerContainer = ComposerContainerPtr(new SimpleParallelComposerContainerImpl(0, m_nbThreads));
+	m_pEvaluatedComposerContainer = ComposerContainerPtr(new SimpleParallelComposerContainerImpl(0, parallelConfig));
 }
 
 void EvaluatingParallelComposerContainerImpl::releaseDependencies() {

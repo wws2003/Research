@@ -22,8 +22,11 @@ public:
 			const std::vector<ComparatorPtr<RealCoordinate<GatePtr> > >& secondaryComparators,
 			const std::vector<RealCoordinate<GatePtr> > secondaryEpsilonElements);
 
-	//Release
-	void releaseIntermediateResult(RealCoordinate<GatePtr>  coord);
+	//Override
+	bool isValidCandidate(const GateRealCoordinate& candidate);
+
+	//Override
+	void releaseIntermediateResult(GateRealCoordinate&  coord);
 };
 
 #endif /* MULTIPLECOMPARATORCOORDINATEADDITIONALBASEDGATECOMPOSER_H_ */

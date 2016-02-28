@@ -346,6 +346,34 @@ void ConfigReader::readComposerEvaluatorConfigFromTargets(std::string configFile
 	}
 }
 
+void ConfigReader::readParallelConfig(std::string configFile, ParallelConfig* pParallelConfig) {
+	std::cout << "Parallel config" << configFile << ":\n";
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		char prefix[128];
+		std::string line;
+
+		int nbThreads;
+		readLineAndLog(inputStream, line, std::cout);
+		sscanf(line.data(), "%[^:]:%d", prefix, &nbThreads);
+
+		int taskBufferSize;
+		readLineAndLog(inputStream, line, std::cout);
+		sscanf(line.data(), "%[^:]:%d", prefix, &taskBufferSize);
+
+		int taskFutureBufferSize;
+		readLineAndLog(inputStream, line, std::cout);
+		sscanf(line.data(), "%[^:]:%d", prefix, &taskFutureBufferSize);
+
+		pParallelConfig->m_nbThreads = nbThreads;
+		pParallelConfig->m_taskBufferSize = taskBufferSize;
+		pParallelConfig->m_taskFutureBufferSize = taskFutureBufferSize;
+	}
+	else {
+		throw std::logic_error("Can not read parallel config file!");
+	}
+}
+
 void ConfigReader::initLibrarySetNameMap() {
 	m_librarySetNameMap["H-T"] = L_HT;
 	m_librarySetNameMap["H-CV"] = L_HCV;

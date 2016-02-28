@@ -17,7 +17,13 @@ public:
 	AdaptiveGateCoordinateComposer(DistanceCalculatorPtr<RealCoordinate<GatePtr>> pDerivedDistanceCalculator,
 			ComposerPtr<RealCoordinate<GatePtr> > pDerivedComposer,
 			mreal_t derivedComposerEpsilon,
-			ConverterPtr<GatePtr, RealCoordinate<GatePtr> > pConverter);
+			ConverterPtr<GatePtr, RealCoordinate<GatePtr> > pConverter,
+			bool toVerifyDerivedResults = true);
+
+	AdaptiveGateCoordinateComposer(DistanceCalculatorPtr<RealCoordinate<GatePtr>> pDerivedDistanceCalculator,
+				ComposerPtr<RealCoordinate<GatePtr> > pDerivedComposer,
+				ConverterPtr<GatePtr, RealCoordinate<GatePtr> > pConverter,
+				bool toVerifyDerivedResults = true);
 
 protected:
 	//Override

@@ -17,12 +17,13 @@ template<typename T>
 ParallelAdditionBasedElementComposer<T>::ParallelAdditionBasedElementComposer(ComparatorPtr<T> pElementComparator,
 		CombinerPtr<T> pCombiner,
 		T epsilonElement,
-		int maxResultsNumber,
+		int taskFutureBufferSize,
 		TaskExecutorPtr<LookupResult<T> > pTaskExecutor) : m_wrapperComparator(pElementComparator) {
+
 	m_pCombiner = pCombiner;
 	m_pTaskExecutor = pTaskExecutor;
 	m_epsilonElement = epsilonElement;
-	m_maxResultsNumber = maxResultsNumber;
+	m_taskFutureBufferSize = taskFutureBufferSize;
 	m_combinationCounter = 0;
 }
 
@@ -44,9 +45,9 @@ IteratorPtr<LookupResult<T> > ParallelAdditionBasedElementComposer<T>::composeAp
 	std::vector<T> partialTermElements;
 
 	int lastVectorIndex = sortedVectorArray.getNbVectors() - 1;
-	TaskFutureBuffer taskFutureBuffer;
-	m_pTaskExecutor->start();
+	TaskFutureBuffer<T> taskFutureBuffer(m_pTaskExecutor, m_taskFutureBufferSize, 1);
 
+	m_pTaskExecutor->start();
 	findCompositionsInRange(sortedVectorArray,
 			secondarySortedVectorArrays,
 			lastVectorIndex,
@@ -60,10 +61,9 @@ IteratorPtr<LookupResult<T> > ParallelAdditionBasedElementComposer<T>::composeAp
 	std::cout << "Number of combination submitted:" << m_combinationCounter << "\n";
 	m_combinationCounter = 0;
 
-	std::vector<LookupResult<T> > resultBuffer;
 	m_pTaskExecutor->executeAllRemaining();
+	std::vector<LookupResult<T> > resultBuffer;
 	taskFutureBuffer.collectResults(resultBuffer);
-
 	m_pTaskExecutor->shutDown();
 
 	//TODO Filter before/after sort results
@@ -96,7 +96,7 @@ void ParallelAdditionBasedElementComposer<T>::findCompositionsInRange(const Sort
 		const T& finalTarget,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		TaskFutureBuffer& taskFutureBuffer) {
+		TaskFutureBuffer<T>& taskFutureBuffer) {
 
 	if(vectorIndex < 0) {
 		evaluateCombination(partialTermElements,
@@ -162,41 +162,10 @@ void ParallelAdditionBasedElementComposer<T>::evaluateCombination(const std::vec
 		T target,
 		DistanceCalculatorPtr<T> pDistanceCalculator,
 		mreal_t epsilon,
-		TaskFutureBuffer& taskFutureBuffer) {
+		TaskFutureBuffer<T>& taskFutureBuffer) {
 
-	TaskPtr<LookupResult<T> > pCombiningTask = generateCombiningTask(partialElements);
+	TaskPtr<LookupResult<T> > pCombiningTask = generateCombiningTask(partialElements, target, pDistanceCalculator, epsilon);
 	TaskFuturePtr<LookupResult<T> > pTaskFuture = m_pTaskExecutor->submitTask(pCombiningTask);
 	taskFutureBuffer.addTaskFuturePair(pTaskFuture, pCombiningTask);
 	m_combinationCounter++;
 }
-
-//-------------------Inner class-------------------//
-template<typename T>
-void ParallelAdditionBasedElementComposer<T>::TaskFutureBuffer::addTaskFuturePair(TaskFuturePtr<LookupResult<T> > pTaskFuture,
-		TaskPtr<LookupResult<T> > pTask) {
-	m_taskFuturesBuffer.push_back(pTaskFuture);
-	m_tasks.push_back(pTask);
-}
-
-template<typename T>
-void ParallelAdditionBasedElementComposer<T>::TaskFutureBuffer::collectResults(std::vector<LookupResult<T> >& resultBuffer) {
-	for(unsigned int i = 0; i < m_taskFuturesBuffer.size(); i++) {
-		TaskFuturePtr<LookupResult<T> > pTaskFuture = m_taskFuturesBuffer[i];
-		TaskPtr<LookupResult<T> > pTask = m_tasks[i];
-
-		//Store verified result
-		pTaskFuture->wait();
-		TaskResult<LookupResult<T> > taskResult = pTaskFuture->getResult();
-		resultBuffer.push_back(taskResult.m_executeResult);
-
-		//Release memory for future and task
-		m_taskFuturesBuffer[i] = NullPtr;
-		m_tasks[i] = NullPtr;
-		_destroy(pTaskFuture);
-		_destroy(pTask);
-	}
-	m_taskFuturesBuffer.clear();
-	m_tasks.clear();
-}
-
-

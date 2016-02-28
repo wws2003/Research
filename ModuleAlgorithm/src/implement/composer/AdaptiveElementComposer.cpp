@@ -21,12 +21,27 @@ template<typename T1, typename T2>
 AdaptiveElementComposer<T1, T2>::AdaptiveElementComposer(DistanceCalculatorPtr<T2> pDerivedDistanceCalculator,
 		ComposerPtr<T2> pDerivedComposer,
 		mreal_t derivedComposerEpsilon,
-		ConverterPtr<T1, T2> pConverter) {
+		ConverterPtr<T1, T2> pConverter,
+		bool toVerifyDerivedResults) {
 
 	m_pDerivedDistanceCalculator = pDerivedDistanceCalculator;
 	m_pDerivedComposer = pDerivedComposer;
 	m_derivedComposerEpsilon = derivedComposerEpsilon;
 	m_pConverter = pConverter;
+	m_toVerifyDerivedResults = toVerifyDerivedResults;
+}
+
+template<typename T1, typename T2>
+AdaptiveElementComposer<T1, T2>::AdaptiveElementComposer(DistanceCalculatorPtr<T2> pDerivedDistanceCalculator,
+		ComposerPtr<T2> pDerivedComposer,
+		ConverterPtr<T1, T2> pConverter,
+		bool toVerifyDerivedResults) {
+
+	m_pDerivedDistanceCalculator = pDerivedDistanceCalculator;
+	m_pDerivedComposer = pDerivedComposer;
+	m_derivedComposerEpsilon = -1.0;
+	m_pConverter = pConverter;
+	m_toVerifyDerivedResults = toVerifyDerivedResults;
 }
 
 template<typename T1, typename T2>
@@ -46,7 +61,7 @@ IteratorPtr<LookupResult<T1> > AdaptiveElementComposer<T1, T2>::composeApproxima
 	IteratorPtr<LookupResult<T2> > pDerivedResultIter = m_pDerivedComposer->composeApproximations(derivedBuildingBlockBuckets,
 			derivedTarget,
 			m_pDerivedDistanceCalculator,
-			m_derivedComposerEpsilon,
+			m_derivedComposerEpsilon >= 0.0 ? m_derivedComposerEpsilon : epsilon,
 			false);
 
 	IteratorPtr<LookupResult<T1> > pResultIter = NullPtr;
@@ -110,10 +125,15 @@ void AdaptiveElementComposer<T1, T2>::convertToOriginalResultIter(const Iterator
 			m_pConverter->convert21(pDerivedIter->getObj().m_resultElement, t1);
 
 			if(t1 != NullPtr) {
-				//Re-check distance to original target to make sure
-				mreal_t distanceToTarget = pDistanceCalculator->distance(t1, target);
-				if(distanceToTarget <= epsilon) {
-					results.push_back(LookupResult<T1>(t1->clone(), distanceToTarget));
+				//Re-check distance to original target to make sure if necessary
+				if(m_toVerifyDerivedResults) {
+					mreal_t distanceToTarget = pDistanceCalculator->distance(t1, target);
+					if(distanceToTarget <= epsilon) {
+						results.push_back(LookupResult<T1>(t1->clone(), distanceToTarget));
+					}
+				}
+				else {
+					results.push_back(LookupResult<T1>(t1->clone(), pDerivedIter->getObj().m_distanceToTarget));
 				}
 				//Release later
 				/*else {

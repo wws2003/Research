@@ -17,7 +17,7 @@ class EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl: public IEva
 public:
 	EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl(const CoordinateAdditionalBasedComposerConfig& cabConfig,
 			const CollectionConfig& collectionConfig,
-			int nbThreads);
+			const ParallelConfig& parallelConfig);
 
 	virtual ~EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl();
 
@@ -30,7 +30,7 @@ public:
 private:
 	void wireDependencies(const CoordinateAdditionalBasedComposerConfig& cabConfig,
 			const CollectionConfig& collectionConfig,
-			int nbThreads);
+			const ParallelConfig& parallelConfig);
 
 	void releaseDependencies();
 

@@ -11,8 +11,9 @@
 
 EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl::EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl(const CoordinateAdditionalBasedComposerConfig& cabConfig,
 		const CollectionConfig& collectionConfig,
-		int nbThreads) {
-	wireDependencies(cabConfig, collectionConfig, nbThreads);
+		const ParallelConfig& parallelConfig) {
+
+	wireDependencies(cabConfig, collectionConfig, parallelConfig);
 }
 
 EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl::~EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl() {
@@ -29,9 +30,9 @@ GateComposerPtr EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl::g
 
 void EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl::wireDependencies(const CoordinateAdditionalBasedComposerConfig& cabConfig,
 		const CollectionConfig& collectionConfig,
-		int nbThreads) {
+		const ParallelConfig& parallelConfig) {
 	m_pStandardComposerContainer = ComposerContainerPtr(new GateCoordinateAdditionBasedComposerContainerImpl(cabConfig, collectionConfig));
-	m_pEvaluatedComposerContainer = ComposerContainerPtr(new ParallelGateCoordinateAdditionBasedComposerContainerImpl(cabConfig, collectionConfig, nbThreads));
+	m_pEvaluatedComposerContainer = ComposerContainerPtr(new ParallelGateCoordinateAdditionBasedComposerContainerImpl(cabConfig, collectionConfig, parallelConfig));
 }
 
 void EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl::releaseDependencies() {

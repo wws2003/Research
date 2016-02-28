@@ -245,6 +245,7 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
  ../../ModuleAlgorithm/include/implement/composer/AdditionBasedElementComposer.h \
  ../../ModuleAlgorithm/include/interface/abstract/IComposer.h \
  ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h \
+ ../../ModuleAlgorithm/include/implement/composer/SortedVectorArray.hpp \
  ../../ModuleAlgorithm/include/implement/comparator/DictionaryOrderCoordinateComparator.hpp \
  ../../ModuleAlgorithm/include/implement/combiner/GateCoordinateCombinerImpl.h \
  ../../ModuleAlgorithm/include/implement/filter/SetBasedGateLookupResultProcessor.h \
@@ -744,6 +745,8 @@ src/FullTestSuite.d: ../src/FullTestSuite.cpp ../src/FullTestSuite.h \
 ../../ModuleAlgorithm/include/interface/abstract/IComposer.h:
 
 ../../ModuleAlgorithm/include/internal-abstract/comparator/IElementComparator.h:
+
+../../ModuleAlgorithm/include/implement/composer/SortedVectorArray.hpp:
 
 ../../ModuleAlgorithm/include/implement/comparator/DictionaryOrderCoordinateComparator.hpp:
 

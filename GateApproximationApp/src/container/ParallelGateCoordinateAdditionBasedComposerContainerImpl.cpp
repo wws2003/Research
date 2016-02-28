@@ -12,8 +12,8 @@
 
 ParallelGateCoordinateAdditionBasedComposerContainerImpl::ParallelGateCoordinateAdditionBasedComposerContainerImpl(const CoordinateAdditionalBasedComposerConfig& cabConfig,
 		const CollectionConfig& collectionConfig,
-		int nbThreads) : GateCoordinateAdditionBasedComposerContainerImpl(cabConfig, collectionConfig) {
-	m_nbThreads = nbThreads;
+		const ParallelConfig& parallelConfig) : GateCoordinateAdditionBasedComposerContainerImpl(cabConfig, collectionConfig) {
+	m_parallelConfig = parallelConfig;
 	wireTasksDependencies();
 	overrideCoordinateAdditionalBasedGateComposer();
 }
@@ -37,7 +37,7 @@ void ParallelGateCoordinateAdditionBasedComposerContainerImpl::overrideCoordinat
 	m_pGateCoordinateComposer = ComposerPtr<GateRealCoordinate>(new ParallelMultipleComparatorCoordinateAdditionBasedGateComposer(m_pPrimaryRealCoordinateComparator,
 			m_pGateCoordinateCombiner,
 			epsilonRealCoordinate,
-			-1,
+			m_parallelConfig.m_taskFutureBufferSize,
 			m_secondaryRealCoordinateComparators,
 			epsilonRealCoordinates,
 			m_pTaskExecutor));
@@ -45,9 +45,9 @@ void ParallelGateCoordinateAdditionBasedComposerContainerImpl::overrideCoordinat
 
 void ParallelGateCoordinateAdditionBasedComposerContainerImpl::wireTasksDependencies() {
 	m_pTaskQueue = TaskQueuePtr<QueuedTask<LookupResult<GateRealCoordinate> > >(new GateCoordinateLookupResultNoLockTaskQueueImpl());
-	m_pTaskExecutor = TaskExecutorPtr<LookupResult<GateRealCoordinate> >(new GateCoordinateLookupResultBufferedQueueBasedTaskExecutorImpl(m_nbThreads,
+	m_pTaskExecutor = TaskExecutorPtr<LookupResult<GateRealCoordinate> >(new GateCoordinateLookupResultBufferedQueueBasedTaskExecutorImpl(m_parallelConfig.m_nbThreads,
 			m_pTaskQueue,
-			2300));
+			m_parallelConfig.m_taskBufferSize));
 }
 
 void ParallelGateCoordinateAdditionBasedComposerContainerImpl::releaseTasksDependencies() {

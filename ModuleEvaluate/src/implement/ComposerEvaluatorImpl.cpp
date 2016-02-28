@@ -129,7 +129,7 @@ void ComposerEvaluatorImpl<T>::evaluateComposerForTarget(ComposerPtr<T> pEvaluat
 			&evalFactors2);
 	evalFactors2.printInfo(m_ostream, "Standard composer");
 
-	evalFactors1.printCompareToInfo(m_ostream, evalFactors2);
+	//evalFactors1.printCompareToInfo(m_ostream, evalFactors2);
 
 	releaseBuildingBlocksBuckets(buildingBlockBuckets);
 }

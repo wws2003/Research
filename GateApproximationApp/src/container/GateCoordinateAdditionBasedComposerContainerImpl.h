@@ -64,7 +64,10 @@ protected:
 
 	CombinerPtr<RealCoordinate<GatePtr> > m_pGateCoordinateCombiner;
 	ConverterPtr<GatePtr, RealCoordinate<GatePtr> > m_pGateCoordinateConveter;
-	DistanceCalculatorPtr<RealCoordinate<GatePtr> > m_pGateCoordinateDistanceCalculator;
+
+	DistanceCalculatorPtr<MatrixPtr> m_pMatrixDistanceCalculator;
+	DistanceCalculatorPtr<GatePtr> m_pGateDistanceCalculator;
+	DistanceCalculatorPtr<GateRealCoordinate> m_pGateCoordinateDistanceCalculator;
 
 	MatrixRealInnerProductCalculatorPtr m_pMatrixRealInnerProductCalculator;
 	MatrixRealCoordinateCalculatorPtr m_pHermitiaRealCoordinateCalculator;
