@@ -45,9 +45,15 @@ void ParallelGateCoordinateAdditionBasedComposerContainerImpl::overrideCoordinat
 
 void ParallelGateCoordinateAdditionBasedComposerContainerImpl::wireTasksDependencies() {
 	m_pTaskQueue = TaskQueuePtr<QueuedTask<LookupResult<GateRealCoordinate> > >(new GateCoordinateLookupResultNoLockTaskQueueImpl());
-	m_pTaskExecutor = TaskExecutorPtr<LookupResult<GateRealCoordinate> >(new GateCoordinateLookupResultBufferedQueueBasedTaskExecutorImpl(m_parallelConfig.m_nbThreads,
-			m_pTaskQueue,
-			m_parallelConfig.m_taskBufferSize));
+	if(m_parallelConfig.m_taskBufferSize == 1) {
+		m_pTaskExecutor = TaskExecutorPtr<LookupResult<GateRealCoordinate> >(new GateCoordinateLookupResultQueueBasedTaskExecutorImpl(m_parallelConfig.m_nbThreads,
+					m_pTaskQueue));
+	}
+	else {
+		m_pTaskExecutor = TaskExecutorPtr<LookupResult<GateRealCoordinate> >(new GateCoordinateLookupResultBufferedQueueBasedTaskExecutorImpl(m_parallelConfig.m_nbThreads,
+				m_pTaskQueue,
+				m_parallelConfig.m_taskBufferSize));
+	}
 }
 
 void ParallelGateCoordinateAdditionBasedComposerContainerImpl::releaseTasksDependencies() {

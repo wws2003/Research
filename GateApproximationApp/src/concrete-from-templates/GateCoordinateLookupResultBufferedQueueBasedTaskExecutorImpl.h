@@ -14,6 +14,7 @@
 #include "BufferedQueueBasedTaskExecutorImpl.h"
 #include "ICollection.h"
 
+typedef class QueueBasedTaskExecutorImpl<LookupResult<GateRealCoordinate> > GateCoordinateLookupResultQueueBasedTaskExecutorImpl;
 typedef class BufferedQueueBasedTaskExecutorImpl<LookupResult<GateRealCoordinate> > GateCoordinateLookupResultBufferedQueueBasedTaskExecutorImpl;
 
 #endif /* GATECOORDINATELOOKUPRESULTBUFFEREDQUEUEBASEDTASKEXECUTORIMPL_H_ */
