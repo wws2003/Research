@@ -1,20 +1,20 @@
 src/implement/ThreadSpawnTaskExecutorImpl.d: \
  ../src/implement/ThreadSpawnTaskExecutorImpl.cpp \
- /home/pham/projects/Research/ModuleParallelism/include/implement/ThreadSpawnTaskExecutorImpl.h \
- /home/pham/projects/Research/ModuleParallelism/include/interface/abstract/ITask.h \
- /home/pham/projects/Research/ModuleParallelism/include/interface/common/TaskCommon.h \
- /home/pham/projects/Research/ModuleParallelism/include/interface/abstract/ITaskExecutor.h \
- /home/pham/projects/Research/ModuleParallelism/include/interface/abstract/ITask.h \
- /home/pham/projects/Research/ModuleParallelism/include/interface/common/TaskConstants.h
+ ../include/implement/ThreadSpawnTaskExecutorImpl.h \
+ ../include/interface/abstract/ITask.h \
+ ../include/interface/common/TaskCommon.h \
+ ../include/interface/abstract/ITaskExecutor.h \
+ ../include/interface/abstract/ITask.h \
+ ../include/interface/common/TaskConstants.h
 
-/home/pham/projects/Research/ModuleParallelism/include/implement/ThreadSpawnTaskExecutorImpl.h:
+../include/implement/ThreadSpawnTaskExecutorImpl.h:
 
-/home/pham/projects/Research/ModuleParallelism/include/interface/abstract/ITask.h:
+../include/interface/abstract/ITask.h:
 
-/home/pham/projects/Research/ModuleParallelism/include/interface/common/TaskCommon.h:
+../include/interface/common/TaskCommon.h:
 
-/home/pham/projects/Research/ModuleParallelism/include/interface/abstract/ITaskExecutor.h:
+../include/interface/abstract/ITaskExecutor.h:
 
-/home/pham/projects/Research/ModuleParallelism/include/interface/abstract/ITask.h:
+../include/interface/abstract/ITask.h:
 
-/home/pham/projects/Research/ModuleParallelism/include/interface/common/TaskConstants.h:
+../include/interface/common/TaskConstants.h:

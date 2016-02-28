@@ -30,10 +30,10 @@
 								<option id="gnu.cpp.compiler.so.debug.option.optimization.level.1855432898" name="Optimization Level" superClass="gnu.cpp.compiler.so.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.so.debug.option.debugging.level.708964946" name="Debug Level" superClass="gnu.cpp.compiler.so.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.131456750" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/include/interface/abstract}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/include/interface/common}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/include/implement}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/include/internal-abstract}&quot;"/>
+									<listOptionValue builtIn="false" value="../include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../include/interface/common"/>
+									<listOptionValue builtIn="false" value="../include/implement"/>
+									<listOptionValue builtIn="false" value="../include/internal-abstract"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.2070043110" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -pthread -std=c++11  -lpthread" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.156608156" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">

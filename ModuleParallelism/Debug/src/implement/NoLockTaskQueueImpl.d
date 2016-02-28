@@ -1,17 +1,17 @@
 src/implement/NoLockTaskQueueImpl.d: \
  ../src/implement/NoLockTaskQueueImpl.cpp \
- /home/pham/projects/Research/ModuleParallelism/include/implement/NoLockTaskQueueImpl.h \
- /home/pham/projects/Research/ModuleParallelism/include/internal-abstract/ITaskQueue.h \
- /home/pham/projects/Research/ModuleParallelism/include/interface/abstract/ITask.h \
- /home/pham/projects/Research/ModuleParallelism/include/interface/common/TaskCommon.h \
- /home/pham/projects/Research/ModuleParallelism/include/internal-abstract/TaskInternal.h
+ ../include/implement/NoLockTaskQueueImpl.h \
+ ../include/internal-abstract/ITaskQueue.h \
+ ../include/interface/abstract/ITask.h \
+ ../include/interface/common/TaskCommon.h \
+ ../include/internal-abstract/TaskInternal.h
 
-/home/pham/projects/Research/ModuleParallelism/include/implement/NoLockTaskQueueImpl.h:
+../include/implement/NoLockTaskQueueImpl.h:
 
-/home/pham/projects/Research/ModuleParallelism/include/internal-abstract/ITaskQueue.h:
+../include/internal-abstract/ITaskQueue.h:
 
-/home/pham/projects/Research/ModuleParallelism/include/interface/abstract/ITask.h:
+../include/interface/abstract/ITask.h:
 
-/home/pham/projects/Research/ModuleParallelism/include/interface/common/TaskCommon.h:
+../include/interface/common/TaskCommon.h:
 
-/home/pham/projects/Research/ModuleParallelism/include/internal-abstract/TaskInternal.h:
+../include/internal-abstract/TaskInternal.h:
