@@ -19,7 +19,7 @@ class ParallelGateCoordinateAdditionBasedComposerContainerImpl: public GateCoord
 public:
 	ParallelGateCoordinateAdditionBasedComposerContainerImpl(const CoordinateAdditionalBasedComposerConfig& cabConfig,
 			const CollectionConfig& collectionConfig,
-			int nbThreads);
+			const ParallelConfig& parallelConfig);
 
 	virtual ~ParallelGateCoordinateAdditionBasedComposerContainerImpl();
 
@@ -32,7 +32,7 @@ private:
 
 	void releaseTasksDependencies();
 
-	int m_nbThreads;
+	ParallelConfig m_parallelConfig;
 	TaskExecutorPtr<LookupResult<GateRealCoordinate> > m_pTaskExecutor;
 	TaskQueuePtr<QueuedTask<LookupResult<GateRealCoordinate> > > m_pTaskQueue;
 };

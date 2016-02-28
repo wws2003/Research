@@ -26,7 +26,7 @@ public:
 	bool isValidCandidate(const GateRealCoordinate& candidate);
 
 	//Override
-	void releaseIntermediateResult(RealCoordinate<GatePtr>  coord);
+	void releaseIntermediateResult(GateRealCoordinate&  coord);
 };
 
 #endif /* MULTIPLECOMPARATORCOORDINATEADDITIONALBASEDGATECOMPOSER_H_ */

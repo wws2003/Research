@@ -29,8 +29,8 @@ bool MultipleComparatorCoordinateAdditionBasedGateComposer::isValidCandidate(con
 	return candidate.getElement() != NullPtr;
 }
 
-void MultipleComparatorCoordinateAdditionBasedGateComposer::releaseIntermediateResult(RealCoordinate<GatePtr> coord) {
-	_destroy(coord.getElement());
+void MultipleComparatorCoordinateAdditionBasedGateComposer::releaseIntermediateResult(GateRealCoordinate& coord) {
+	coord.clear();
 }
 
 

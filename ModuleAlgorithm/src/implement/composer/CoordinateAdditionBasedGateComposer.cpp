@@ -21,6 +21,6 @@ bool CoordinateAdditionBasedGateComposer::isValidCandidate(const GateRealCoordin
 	return candidate.getElement() != NullPtr;
 }
 
-void CoordinateAdditionBasedGateComposer::releaseIntermediateResult(RealCoordinate<GatePtr> coord) {
-	_destroy(coord.getElement());
+void CoordinateAdditionBasedGateComposer::releaseIntermediateResult(GateRealCoordinate& coord) {
+	coord.clear();
 }

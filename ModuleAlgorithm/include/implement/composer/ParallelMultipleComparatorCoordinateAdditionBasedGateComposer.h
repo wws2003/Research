@@ -19,7 +19,7 @@ public:
 	ParallelMultipleComparatorCoordinateAdditionBasedGateComposer(ComparatorPtr<GateRealCoordinate> pElementComparator,
 			CombinerPtr<GateRealCoordinate> pCombiner,
 			GateRealCoordinate epsilonElement,
-			int maxResultsNumber,
+			int taskFutureBufferSize,
 			const std::vector<ComparatorPtr<GateRealCoordinate> >& secondaryComparators,
 			const std::vector<GateRealCoordinate> secondaryEpsilonElements,
 			TaskExecutorPtr<LookupResult<GateRealCoordinate> > pTaskExecutor);

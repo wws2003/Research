@@ -61,7 +61,7 @@ protected:
 
 	void composeCandidate(const std::vector<T>& partialElements, T& result);
 
-	virtual void releaseIntermediateResult(T result) = 0;
+	virtual void releaseIntermediateResult(T& result) = 0;
 
 	virtual bool isValidCandidate(const T& candidate) = 0;
 

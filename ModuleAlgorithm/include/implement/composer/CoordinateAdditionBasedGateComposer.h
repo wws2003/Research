@@ -24,7 +24,7 @@ public:
 	bool isValidCandidate(const GateRealCoordinate& candidate);
 
 	//Override
-	void releaseIntermediateResult(GateRealCoordinate  coord);
+	void releaseIntermediateResult(GateRealCoordinate&  coord);
 };
 
 

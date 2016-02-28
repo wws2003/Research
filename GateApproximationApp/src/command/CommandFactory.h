@@ -27,12 +27,11 @@ public:
 	virtual CommandPtr getCommand(int commandCode, const CommandParams& commandParams);
 
 private:
+	//----------------------------------//
+	//(High-level) Methods to generate command from configuration file
+	//----------------------------------//
 	AbstractCommandPtr getCollectionEvaluationCommandForIdentity(std::string configFileName);
-	AbstractCommandPtr getApproximatorEvaluationCommandForIdentity(std::string evaluationConfigFile,
-			std::string approximatorConfigFileName);
-	AbstractCommandPtr getGenerateAndStoreApproximationsCommandForIdentity(std::string evaluationConfigFile,
-			std::string approximatorConfigFileName,
-			std::string storeFileName);
+
 	AbstractCommandPtr getPersistedCollectionEvaluationCommandForTargets(std::string storeFileName,
 			std::string targetConfigFile);
 
@@ -65,78 +64,61 @@ private:
 
 	AbstractCommandPtr getParallelComposerEvaluationCommandForTargets(std::string collectionConfigFile,
 			std::string cbApprxConfigFile,
-			std::string nbThreadStr,
+			std::string parallelConfigFile,
 			std::string targetConfigFile);
 
 	AbstractCommandPtr getParallelComposerEvaluationCommandForTargets(std::string collectionConfigFile,
 				std::string cbApprxConfigFile,
 				std::string adbComposerConfigFile,
-				std::string nbThreadStr,
+				std::string parallelConfigFile,
 				std::string targetConfigFile);
 
 	//----------------------------------//
 	//Apply config paramters to change containers for concrete instances of collection, approximator, evaluator...
 	//----------------------------------//
 
-	void readCollectionConfig(ConfigReader configReader, std::string configFile, CollectionConfig* pCollectionConfig);
+	void readCollectionConfig(std::string configFile, CollectionConfig* pCollectionConfig);
 
-	void readCollectionAndEvaluatorConfig(ConfigReader configReader,
-			std::string configFile,
-			CollectionConfig* pCollectionConfig,
-			EvaluatorConfig* pEvaluatorConfig);
+	void readCollectionAndEvaluatorConfig(std::string configFile);
 
-	void readApproximatorConfig(ConfigReader configReader,
-			std::string configFile,
-			const CollectionConfig&  collectionConfig,
-			NearIdentityApproximatorConfig* pApproximatorConfig);
+	void readTargetConfig(std::string targetConfigFile);
 
-	void readTargetConfig(ConfigReader configReader,
-			std::string targetConfigFile);
-
-	void readComposerBasedApproximatorConfig(ConfigReader configReader,
-			std::string collectionConfigFile,
+	void readComposerBasedApproximatorConfig(std::string collectionConfigFile,
 			std::string cbApprxConfigFile,
 			std::string targetConfigFile);
 
-	void readComposerBasedApproximatorConfig(ConfigReader configReader,
-			std::string collectionConfigFile,
+	void readComposerBasedApproximatorConfig(std::string collectionConfigFile,
 			std::string cbApprxConfigFile,
 			std::string targetConfigFile,
 			std::string cadbConfigFile);
 
-	void readComposerEvaluationConfig(ConfigReader configReader,
-			std::string collectionConfigFile,
+	void readComposerEvaluationConfig(std::string collectionConfigFile,
 			std::string composerEvalConfigFile,
 			std::string targetConfigFile,
 			std::string cadbConfigFile,
 			bool multiComparatorMode);
 
-	void readParallelComposerEvaluationConfig(ConfigReader configReader,
-			std::string collectionConfigFile,
+	void readParallelComposerEvaluationConfig(std::string collectionConfigFile,
 			std::string composerEvalConfigFile,
-			std::string nbThreadStr,
+			std::string parallelConfigFile,
 			std::string targetConfigFile);
 
-	void readParallelComposerEvaluationConfig(ConfigReader configReader,
-				std::string collectionConfigFile,
+	void readParallelComposerEvaluationConfig(std::string collectionConfigFile,
 				std::string composerEvalConfigFile,
 				std::string cadbConfigFile,
-				std::string nbThreadStr,
+				std::string parallelConfigFile,
 				std::string targetConfigFile);
 
-	void readSKConfig(ConfigReader configReader,
-			std::string collectionConfigFile,
+	void readSKConfig(std::string collectionConfigFile,
 			std::string skApprxConfigFile,
 			std::string targetConfigFile);
 
-	void readSK2Config(ConfigReader configReader,
-			std::string collectionConfigFile,
+	void readSK2Config(std::string collectionConfigFile,
 			std::string cadbComposerConfigFile,
 			std::string skApprxConfigFile,
 			std::string targetConfigFile);
 
-	void readComposerBasedSK2Config(ConfigReader configReader,
-			std::string collectionConfigFile,
+	void readComposerBasedSK2Config(std::string collectionConfigFile,
 			std::string cadbComposerConfigFile,
 			std::string skApprxConfigFile,
 			std::string cbApprxConfigFile,
@@ -145,7 +127,6 @@ private:
 	//-----------------------------------//
 	//Reset container for concrete instances of collection, approximator, evaluator...
 	//-----------------------------------//
-
 	void resetCollectionContainer(const CollectionConfig& collectionConfig);
 
 	void resetEvaluationContainer(const EvaluatorConfig& evaluatorConfig,
@@ -169,11 +150,11 @@ private:
 	void resetEvaluatingComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig,
 			const CollectionConfig& collectionConfig);
 
-	void resetEvaluatingComposerContainer(int nbThreads);
+	void resetEvaluatingComposerContainer(const ParallelConfig& parallelConfig);
 
 	void resetEvaluatingComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig,
 				const CollectionConfig& collectionConfig,
-				int nbThreads);
+				const ParallelConfig& parallelConfig);
 
 	void resetComposerEvaluatorContainer(const ComposerEvaluatorConfig& composerEvalConfig,
 			const CollectionConfig& collectionCofig);
@@ -189,6 +170,13 @@ private:
 			const ComposerBasedApproximatorConfig& cbApproximatorConfig,
 			const CollectionConfig& collectionConfig,
 			const CoordinateAdditionalBasedComposerConfig& cadbConfig);
+
+	//----------------------------------//
+	//Generate commands from container
+	//----------------------------------//
+	AbstractCommandPtr generateCollectionEvaluationCommandForIdentity();
+	AbstractCommandPtr generateApproximatorEvaluationCommandForTargets();
+	AbstractCommandPtr generateComposerEvaluationCommandForTargets();
 
 	CollectionContainerPtr m_pCollectionContainer;
 	ApproximatorContainerPtr m_pApproximatorContainer;

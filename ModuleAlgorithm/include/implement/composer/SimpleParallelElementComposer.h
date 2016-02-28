@@ -14,12 +14,13 @@
 #include "IElementSetLog.h"
 #include "ITaskExecutor.h"
 #include "TaskCommon.h"
+#include "TaskFutureBuffer.hpp"
 
 template<typename T>
 class SimpleParallelElementComposer: public IComposer<T> {
 public:
 	SimpleParallelElementComposer(CombinerPtr<T> pCombiner,
-			int maxResultsNumber,
+			int taskFutureBufferSize,
 			ElementSetLogPtr<T> pElementSetLog,
 			TaskExecutorPtr<LookupResult<T> > pTaskExecutor);
 
@@ -33,33 +34,13 @@ public:
 			bool toSortResults);
 
 private:
-	class TaskFutureBuffer {
-	public:
-		TaskFutureBuffer(TaskExecutorPtr<LookupResult<T> > pSharedTaskExecutor, size_t maxBufferSize, int maxResultsNumber);
-		virtual ~TaskFutureBuffer(){};
-
-		void addTaskFuturePair(TaskFuturePtr<LookupResult<T> > pTaskFuture, TaskPtr<LookupResult<T> > pTask);
-		void collectResults(std::vector<LookupResult<T> >& resultBuffer);
-
-	private:
-		void moveResultsFromFutureBuffers();
-
-		TaskExecutorPtr<LookupResult<T> > m_pSharedTaskExecutor;
-
-		size_t m_maxBufferSize;
-		int m_maxResultsNumber;
-		std::vector<LookupResult<T> > m_results;
-		std::vector<TaskFuturePtr<LookupResult<T> > > m_taskFuturesBuffer;
-		std::vector<TaskPtr<LookupResult<T> > > m_tasks;
-	};
-
 	void generateApproximations(std::vector<T>& partialElementsBuffer,
 			int bucketIndex,
 			const BuildingBlockBuckets<T>& buildingBlockBuckets,
 			T pQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
-			TaskFutureBuffer& taskResultBuffer);
+			TaskFutureBuffer<T>& taskResultBuffer);
 
 	std::string getCurrentLogFolderName();
 
@@ -67,13 +48,13 @@ private:
 			T pQuery,
 			DistanceCalculatorPtr<T> pDistanceCalculator,
 			mreal_t epsilon,
-			TaskFutureBuffer& taskResultBuffer);
+			TaskFutureBuffer<T>& taskResultBuffer);
 
 	static const std::string LOG_ROOT_FOLDER;
 
 	ElementSetLogPtr<T> m_pElementSetLog;
 	CombinerPtr<T> m_pCombiner;
-	int m_maxResultsNumber;
+	int m_taskFutureBufferSize;
 
 	combination_counter_t m_combinationCounter;
 

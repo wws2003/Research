@@ -179,6 +179,9 @@ void AdditionBasedElementComposer<T>::evaluateCombination(const std::vector<T>& 
 			throw (1);
 		}
 	}
+	else {
+		releaseIntermediateResult(candidate);
+	}
 }
 
 template<typename T>
