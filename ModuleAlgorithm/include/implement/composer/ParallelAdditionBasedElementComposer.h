@@ -73,7 +73,10 @@ protected:
 			mreal_t epsilon,
 			TaskFutureBuffer& taskFutureBuffer);
 
-	virtual TaskPtr<LookupResult<T> > generateCombiningTask(const std::vector<T>& partialElements) = 0;
+	virtual TaskPtr<LookupResult<T> > generateCombiningTask(const std::vector<T>& partialElements,
+			T target,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
+			mreal_t epsilon) = 0;
 
 	TaskExecutorPtr<LookupResult<T> > m_pTaskExecutor;
 	CombinerPtr<T> m_pCombiner;

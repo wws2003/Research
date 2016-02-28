@@ -164,7 +164,7 @@ void ParallelAdditionBasedElementComposer<T>::evaluateCombination(const std::vec
 		mreal_t epsilon,
 		TaskFutureBuffer& taskFutureBuffer) {
 
-	TaskPtr<LookupResult<T> > pCombiningTask = generateCombiningTask(partialElements);
+	TaskPtr<LookupResult<T> > pCombiningTask = generateCombiningTask(partialElements, target, pDistanceCalculator, epsilon);
 	TaskFuturePtr<LookupResult<T> > pTaskFuture = m_pTaskExecutor->submitTask(pCombiningTask);
 	taskFutureBuffer.addTaskFuturePair(pTaskFuture, pCombiningTask);
 	m_combinationCounter++;
@@ -187,7 +187,10 @@ void ParallelAdditionBasedElementComposer<T>::TaskFutureBuffer::collectResults(s
 		//Store verified result
 		pTaskFuture->wait();
 		TaskResult<LookupResult<T> > taskResult = pTaskFuture->getResult();
-		resultBuffer.push_back(taskResult.m_executeResult);
+		//FIXME: taskResult.m_resultCode should be compared with specified constant, such as == CODE::NEGATIVE rather than with 0
+		if(taskResult.m_resultCode > 0) {
+			resultBuffer.push_back(taskResult.m_executeResult);
+		}
 
 		//Release memory for future and task
 		m_taskFuturesBuffer[i] = NullPtr;

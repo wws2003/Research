@@ -73,6 +73,12 @@ public:
 		return *this;
 	}
 
+	void clear() {
+		m_coordinates.clear();
+		_destroy(m_element);
+		m_element = NullPtr;
+	}
+
 	mreal_t getNorm() const {
 		mreal_t sqrNorm = 0.0;
 		std::for_each(m_coordinates.begin(), m_coordinates.end(), [&sqrNorm](Field coord){sqrNorm += coord*coord;});

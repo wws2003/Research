@@ -20,7 +20,13 @@ public:
 	AdaptiveElementComposer(DistanceCalculatorPtr<T2> pDerivedDistanceCalculator,
 			ComposerPtr<T2> pDerivedComposer,
 			mreal_t derivedComposerEpsilon,
-			ConverterPtr<T1, T2> pConverter);
+			ConverterPtr<T1, T2> pConverter,
+			bool toVerifyDerivedResults = true);
+
+	AdaptiveElementComposer(DistanceCalculatorPtr<T2> pDerivedDistanceCalculator,
+				ComposerPtr<T2> pDerivedComposer,
+				ConverterPtr<T1, T2> pConverter,
+				bool toVerifyDerivedResults = true);
 
 	virtual ~AdaptiveElementComposer(){};
 
@@ -57,6 +63,8 @@ protected:
 	mreal_t m_derivedComposerEpsilon;
 
 	ConverterPtr<T1, T2> m_pConverter;
+
+	bool m_toVerifyDerivedResults;
 };
 
 

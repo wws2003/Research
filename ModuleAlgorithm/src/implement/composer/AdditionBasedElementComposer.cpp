@@ -167,17 +167,18 @@ void AdditionBasedElementComposer<T>::evaluateCombination(const std::vector<T>& 
 
 	T candidate;
 	composeCandidate(partialElements, candidate);
+	m_combinationCounter++;
 
-	if(pDistanceCalculator == NullPtr || pDistanceCalculator->distance(candidate, target) <= epsilon) {
-		T delta = candidate - target;
-		//FIXME This is implementation-dependent !
-		resultBuffer.push_back(LookupResult<T>(candidate, delta.getNorm()));
+	if(!isValidCandidate(candidate)) {
+		return;
+	}
+	mreal_t distanceToTarget = 0.0;
+	if(pDistanceCalculator == NullPtr || (distanceToTarget = pDistanceCalculator->distance(candidate, target)) <= epsilon) {
+		resultBuffer.push_back(LookupResult<T>(candidate, distanceToTarget));
 		if(m_maxResultsNumber > 0 && resultBuffer.size() >= m_maxResultsNumber) {
 			throw (1);
 		}
 	}
-
-	m_combinationCounter++;
 }
 
 template<typename T>

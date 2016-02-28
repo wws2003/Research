@@ -13,12 +13,8 @@
 #include "OperatorCommon.h"
 #include "Coordinate.hpp"
 
-#define USE_TEMPLATE 1
-
 #include "CoordinateDistanceCalculatorByElementImpl.hpp"
 
-#if USE_TEMPLATE
-
-typedef CoordinateDistanceCalculatorByElementImpl<GatePtr, double> GateCoordinateDistanceCalculator;
+typedef CoordinateDistanceCalculatorByElementImpl<GatePtr, mreal_t> GateCoordinateDistanceCalculator;
 
 #endif /* GATECOORDINATEDISTANCECALCULATOR_H_ */

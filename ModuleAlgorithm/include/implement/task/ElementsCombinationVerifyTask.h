@@ -28,7 +28,7 @@ public:
 
 	ElementsCombinationVerifyTask(const std::vector<T>& elements,
 			CombinerPtr<T> pCombiner,
-			DistanceCalculatorPtr<T> m_pDistanceCalculator,
+			DistanceCalculatorPtr<T> pDistanceCalculator,
 			T target,
 			mreal_t epsilon);
 

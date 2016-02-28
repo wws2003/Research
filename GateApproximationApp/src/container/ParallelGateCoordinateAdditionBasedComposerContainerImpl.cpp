@@ -47,7 +47,7 @@ void ParallelGateCoordinateAdditionBasedComposerContainerImpl::wireTasksDependen
 	m_pTaskQueue = TaskQueuePtr<QueuedTask<LookupResult<GateRealCoordinate> > >(new GateCoordinateLookupResultNoLockTaskQueueImpl());
 	m_pTaskExecutor = TaskExecutorPtr<LookupResult<GateRealCoordinate> >(new GateCoordinateLookupResultBufferedQueueBasedTaskExecutorImpl(m_nbThreads,
 			m_pTaskQueue,
-			2300));
+			200));
 }
 
 void ParallelGateCoordinateAdditionBasedComposerContainerImpl::releaseTasksDependencies() {

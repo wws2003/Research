@@ -7,6 +7,7 @@
 
 #include "ParallelMultipleComparatorCoordinateAdditionBasedGateComposer.h"
 #include "GateCoordinateCombiningTask.h"
+#include "GatesCoordinateCombinationVerifyTask.h"
 #include "ParallelMultipleComparatorAdditionBasedElementComposer.cpp"
 
 template class ParallelMultipleComparatorAdditionBasedElementComposer<GateRealCoordinate>;
@@ -27,6 +28,17 @@ ParallelMultipleComparatorCoordinateAdditionBasedGateComposer::ParallelMultipleC
 
 }
 
-TaskPtr<LookupResult<GateRealCoordinate> > ParallelMultipleComparatorCoordinateAdditionBasedGateComposer::generateCombiningTask(const std::vector<GateRealCoordinate>& partialElements) {
-	return TaskPtr<LookupResult<GateRealCoordinate> >(new GateCoordinateCombiningTask(partialElements, m_pCombiner, false));
+TaskPtr<LookupResult<GateRealCoordinate> > ParallelMultipleComparatorCoordinateAdditionBasedGateComposer::generateCombiningTask(const std::vector<GateRealCoordinate>& partialElements,
+		GateRealCoordinate target,
+		DistanceCalculatorPtr<GateRealCoordinate> pDistanceCalculator,
+		mreal_t epsilon) {
+
+	return TaskPtr<LookupResult<GateRealCoordinate> >(new GatesCoordinateCombinationVerifyTask(partialElements,
+			m_pCombiner,
+			pDistanceCalculator,
+			target,
+			epsilon,
+			false));
+
+	//return TaskPtr<LookupResult<GateRealCoordinate> >(new GateCoordinateCombiningTask(partialElements, m_pCombiner, false));
 }

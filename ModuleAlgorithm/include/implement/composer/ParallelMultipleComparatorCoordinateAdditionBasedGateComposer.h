@@ -27,7 +27,10 @@ public:
 	virtual ~ParallelMultipleComparatorCoordinateAdditionBasedGateComposer(){};
 
 	//Override
-	TaskPtr<LookupResult<GateRealCoordinate> > generateCombiningTask(const std::vector<GateRealCoordinate>& partialElements);
+	TaskPtr<LookupResult<GateRealCoordinate> > generateCombiningTask(const std::vector<GateRealCoordinate>& partialElements,
+			GateRealCoordinate target,
+			DistanceCalculatorPtr<GateRealCoordinate> pDistanceCalculator,
+			mreal_t epsilon);
 };
 
 #endif /* PARALLELMULTIPLECOMPARATORCOORDINATEADDITIONBASEDGATECOMPOSER_H_ */

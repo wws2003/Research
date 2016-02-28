@@ -15,13 +15,16 @@
 
 class CoordinateAdditionBasedGateComposer: public AdditionBasedElementComposer<RealCoordinate<GatePtr> > {
 public:
-	CoordinateAdditionBasedGateComposer(ComparatorPtr<RealCoordinate<GatePtr> > pElementComparator,
-			CombinerPtr<RealCoordinate<GatePtr> > pCombiner,
-			RealCoordinate<GatePtr>  epsilonElement,
+	CoordinateAdditionBasedGateComposer(ComparatorPtr<GateRealCoordinate> pElementComparator,
+			CombinerPtr<GateRealCoordinate> pCombiner,
+			GateRealCoordinate  epsilonElement,
 			int maxResultsNumber);
 
-	//Release
-	void releaseIntermediateResult(RealCoordinate<GatePtr>  coord);
+	//Override
+	bool isValidCandidate(const GateRealCoordinate& candidate);
+
+	//Override
+	void releaseIntermediateResult(GateRealCoordinate  coord);
 };
 
 
