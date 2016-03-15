@@ -96,7 +96,6 @@
 									<listOptionValue builtIn="false" value="ModuleEvaluate"/>
 									<listOptionValue builtIn="false" value="gmp"/>
 									<listOptionValue builtIn="false" value="mpfr"/>
-									<listOptionValue builtIn="false" value="sqlite3"/>
 									<listOptionValue builtIn="false" value="pthread"/>
 									<listOptionValue builtIn="false" value="rt"/>
 								</option>
