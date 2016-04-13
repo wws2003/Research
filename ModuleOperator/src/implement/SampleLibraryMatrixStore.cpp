@@ -28,9 +28,12 @@ SampleLibraryMatrixStore::~SampleLibraryMatrixStore() {
 }
 
 void SampleLibraryMatrixStore::initMap() {
+	//Belows are 1-qubit gates
 	m_map["H"] = getHMatrix(m_pMatrixOperator, m_pMatrixFactory);
 	m_map["T"] = getTMatrix(m_pMatrixOperator, m_pMatrixFactory);
 	m_map["t"] = getInverseTMatrix(m_pMatrixOperator, m_pMatrixFactory);
+
+	//Belows are 2-qubit gates
 	m_map["CNOT1"] = getCNOT1Matrix(m_pMatrixOperator, m_pMatrixFactory);
 	m_map["CNOT2"] = getCNOT2Matrix(m_pMatrixOperator, m_pMatrixFactory);
 	m_map["H1"] = getH1Matrix(m_pMatrixOperator, m_pMatrixFactory);
@@ -83,7 +86,7 @@ MatrixPtr SampleLibraryMatrixStore::getCNOT1Matrix(MatrixOperatorPtr pMatrixOper
 			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0
 			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0};
 
-	MatrixPtr pCNOTMat1 = pMatrixFactory->getMatrixFromValues(2, 2, arrayCNOT1, ROW_SPLICE);
+	MatrixPtr pCNOTMat1 = pMatrixFactory->getMatrixFromValues(4, 4, arrayCNOT1, ROW_SPLICE);
 
 	MatrixPtr pSCNOTMat1 = NullPtr;
 	pMatrixOperator->specialUnitaryFromUnitary(pCNOTMat1, pSCNOTMat1);
@@ -99,7 +102,7 @@ MatrixPtr SampleLibraryMatrixStore::getCNOT2Matrix(MatrixOperatorPtr pMatrixOper
 			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0, (ComplexVal)0.0
 			, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)0.0, (ComplexVal)1.0};
 
-	MatrixPtr pCNOTMat2 = pMatrixFactory->getMatrixFromValues(2, 2, arrayCNOT2, ROW_SPLICE);
+	MatrixPtr pCNOTMat2 = pMatrixFactory->getMatrixFromValues(4, 4, arrayCNOT2, ROW_SPLICE);
 	MatrixPtr pSCNOTMat2 = NullPtr;
 	pMatrixOperator->specialUnitaryFromUnitary(pCNOTMat2, pSCNOTMat2);
 
