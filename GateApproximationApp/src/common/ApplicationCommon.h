@@ -35,7 +35,6 @@ typedef IComposerEvaluatorContainer* ComposerEvaluatorContainerPtr;
 typedef IComposerContainer* ComposerContainerPtr;
 
 typedef std::map<std::string, int> LibrarySetNameMap;
-typedef std::map<int, std::string> LibrarySetFileNameMap;
 typedef std::map<std::string, int> RotationTypeNameMap;
 
 enum CommandCode {

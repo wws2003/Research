@@ -38,6 +38,7 @@
 #include "VectorBasedMatrixCollectionImpl.h"
 #include "MultiNearBalancePartsGateDecomposer.h"
 #include "HarrowGateDecomposer.h"
+#include "FilePathConfig.h"
 #include <stdexcept>
 #include <iostream>
 
@@ -79,11 +80,12 @@ void SampleComposerEvaluatorContainerImpl::wireDependencies() {
 	getTargetsForEvaluation(m_targetGates);
 
 	//Setup distance calculators
+	FilePathConfig pathConfig;
 	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(NullPtr));
 	m_pLibraryMatrixStore = LibraryMatrixStorePtr(new SampleLibraryMatrixStore(m_pMatrixFactory, m_pMatrixOperator));
 	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new SQLiteLazyGateDistanceCalculator(m_pMatrixDistanceCalculator,
 			m_pMatrixFactory,
-			getMatrixDBFileName(m_collectionConfig),
+			pathConfig.getMatrixDBFilePath(m_collectionConfig),
 			m_collectionConfig.m_nbQubits == 1 ? 2 : 4));
 
 	//Setup collections
@@ -142,28 +144,7 @@ void SampleComposerEvaluatorContainerImpl::releaseDependencies() {
 
 void SampleComposerEvaluatorContainerImpl::getTargetsForEvaluation(std::vector<GatePtr>& targets) {
 	targets.clear();
-	if(m_composerEvaluatorConfig.m_rotationTargets.empty()) {
-		//No specified target -> use identity as default target
-		m_pResourceContainer->getIdentityTargets(targets, m_collectionConfig.m_nbQubits);
-	}
-	else {
-		m_pResourceContainer->getRotationTargets(targets, m_composerEvaluatorConfig.m_rotationTargets, m_collectionConfig.m_nbQubits);
-	}
-}
-
-std::string SampleComposerEvaluatorContainerImpl::getMatrixDBFileName(const CollectionConfig& config) {
-#if MPFR_REAL
-	std::string precisionPostFix = "_mpfr";
-#else
-	std::string precisionPostFix = "";
-#endif
-
-	char fullName[256];
-	sprintf(fullName, "db_%d%s.sqlite",
-			config.m_nbQubits,
-			precisionPostFix.c_str());
-
-	return std::string(fullName);
+	m_pResourceContainer->getRotationTargets(targets, m_composerEvaluatorConfig.m_rotationTargets, m_collectionConfig.m_nbQubits);
 }
 
 GateDecomposerPtr SampleComposerEvaluatorContainerImpl::generateDecomposerFromConfig(ComposerEvaluatorConfig evalConfig) {

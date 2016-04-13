@@ -34,7 +34,6 @@ private:
 	void releaseDependencies();
 
 	void getTargetsForEvaluation(std::vector<GatePtr>& targets);
-	std::string getMatrixDBFileName(const CollectionConfig& config);
 
 	GateDecomposerPtr generateDecomposerFromConfig(ComposerEvaluatorConfig evalConfig);
 

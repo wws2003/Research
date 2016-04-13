@@ -9,7 +9,6 @@
 #include "NotAvailableCommand.h"
 #include "SampleCollectionContainerImpl.h"
 #include "SampleEvaluatorContainerImpl.h"
-#include "SampleApproximatorContainerImpl.h"
 #include "EvaluateCollectionCommand.h"
 #include "EvaluateApproximatorCommand.h"
 #include "GenerateAndStoreApproximationsCommand.h"
@@ -427,11 +426,6 @@ void CommandFactory::resetCollectionContainer(const CollectionConfig& collection
 void CommandFactory::resetEvaluationContainer(const EvaluatorConfig& evaluatorConfig, const CollectionConfig& collectionConfig) {
 	_destroy(m_pEvaluatorContainer);
 	m_pEvaluatorContainer = EvaluatorContainerPtr(new SampleEvaluatorContainerImpl(evaluatorConfig, collectionConfig));
-}
-
-void CommandFactory::resetApproximatorContainer(const NearIdentityApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig) {
-	_destroy(m_pApproximatorContainer);
-	m_pApproximatorContainer = ApproximatorContainerPtr(new SampleApproximatorContainerImpl(approximatorConfig, collectionConfig));
 }
 
 void CommandFactory::resetComposerContainer() {

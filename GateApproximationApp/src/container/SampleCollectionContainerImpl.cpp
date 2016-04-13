@@ -32,12 +32,10 @@
 #include "LazyGateDistanceCalculatorImpl.h"
 #include "SQLiteLazyGateDistanceCalculator.h"
 #include "GateDistanceCalculatorByMatrixImpl.h"
+#include "FilePathConfig.h"
 #include <stdexcept>
 
-const std::string SampleCollectionContainerImpl::DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT = "dat";
-
 SampleCollectionContainerImpl::SampleCollectionContainerImpl(const CollectionConfig& collectionConfig) : m_collectionConfig(collectionConfig) {
-	initLibrarySetPersistFileNameMap();
 	wireDependencies();
 }
 
@@ -51,9 +49,8 @@ GateCollectionPtr SampleCollectionContainerImpl::getGateCollection(GateDistanceC
 			m_pBinaryGateReader,
 			m_pGateLookupResultProcessor));
 
-	std::string persitenceFileName = getGateCollectionPersistenceFileFullName(m_collectionConfig,
-			m_librarySetPersistFileNameMap,
-			DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT);
+	FilePathConfig pathConfig;
+	std::string persitenceFileName = pathConfig.getGateCollectionPersistenceFilePath(m_collectionConfig);
 	try {
 		pGateCollection->load(persitenceFileName);
 		std::cout << "Collection loaded from storage. Distance calculator is ignored !\n";
@@ -74,13 +71,6 @@ PersitableGateCollectionPtr SampleCollectionContainerImpl::getPersitableGateColl
 			m_pGateLookupResultProcessor));
 }
 
-void SampleCollectionContainerImpl::initLibrarySetPersistFileNameMap() {
-	m_librarySetPersistFileNameMap[L_HT] = "gnat";
-	m_librarySetPersistFileNameMap[L_HTCNOT] = "gnat";
-	m_librarySetPersistFileNameMap[L_HCV] = "gnat_hv";
-	m_librarySetPersistFileNameMap[L_HTCV] = "gnat_htcv";
-}
-
 void SampleCollectionContainerImpl::wireDependencies() {
 	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
 	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));
@@ -93,7 +83,8 @@ void SampleCollectionContainerImpl::wireDependencies() {
 	m_pBinaryMatrixWriter = MatrixWriterPtr(new BinaryMatrixWriterImpl());
 	m_pBinaryMatrixReader = MatrixReaderPtr(new BinaryMatrixReaderImpl(m_pMatrixFactory));
 
-	std::string matrixDBName = getMatrixDBFileName(m_collectionConfig);
+	FilePathConfig pathConfig;
+	std::string matrixDBName = pathConfig.getMatrixDBFilePath(m_collectionConfig);
 	m_pBinaryGateWriter = GateWriterPtr(new SQLiteGateWriterImpl(NullPtr, matrixDBName));
 	m_pBinaryGateReader = GateReaderPtr(new BinaryGateReaderImpl(NullPtr));
 
@@ -102,7 +93,7 @@ void SampleCollectionContainerImpl::wireDependencies() {
 
 	m_pGateDistanceCalculatorForCollection = GateDistanceCalculatorPtr(new SQLiteLazyGateDistanceCalculator(m_pMatrixDistanceCalculator,
 			m_pMatrixFactory,
-			getMatrixDBFileName(m_collectionConfig),
+			matrixDBName,
 			m_collectionConfig.m_nbQubits == 1 ? 2 : 4));
 
 	//m_pGateLookupResultProcessor = GateLookupResultProcessorPtr(new BackgroundGateLookupResultsFilterProcessor(m_pGateDistanceCalculator));
@@ -143,47 +134,6 @@ void SampleCollectionContainerImpl::releaseDependencies() {
 	_destroy(m_pMatrixFactory);
 }
 
-std::string SampleCollectionContainerImpl::getMatrixDBFileName(const CollectionConfig& config) {
-
-	#if MPFR_REAL
-	std::string precisionPostFix = "_mpfr";
-#else
-	std::string precisionPostFix = "";
-#endif
-
-	char fullName[256];
-	sprintf(fullName, "db_%d%s.sqlite",
-			config.m_nbQubits,
-			precisionPostFix.c_str());
-
-	return std::string(fullName);
-}
-
-std::string SampleCollectionContainerImpl::getGateCollectionPersistenceFileFullName(const CollectionConfig& config,
-		const LibrarySetFileNameMap& librarySetFileNameMap,
-		std::string fileExtension) {
-
-	int nbQubits = config.m_nbQubits;
-	int maxSequenceLength = config.m_maxSequenceLength;
-	std::string fileName = librarySetFileNameMap.find(config.m_librarySet)->second;
-
-#if MPFR_REAL
-	std::string precisionPostFix = "_mpfr";
-#else
-	std::string precisionPostFix = "";
-#endif
-
-	char fullName[256];
-	sprintf(fullName, "%s%s_%d_%d.%s",
-			fileName.c_str(),
-			precisionPostFix.c_str(),
-			nbQubits,
-			maxSequenceLength,
-			fileExtension.c_str());
-
-	return std::string(fullName);
-}
-
 void SampleCollectionContainerImpl::constructGateCollection(GateCollectionPtr pGateCollection,
 		GateDistanceCalculatorPtr pGateDistanceCalculator) {
 	m_pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection,
@@ -193,4 +143,3 @@ void SampleCollectionContainerImpl::constructGateCollection(GateCollectionPtr pG
 	std::cout << "Begin to build data structure for collection of size: " << pGateCollection->size() << std::endl;
 	pGateCollection->rebuildStructure();
 }
-

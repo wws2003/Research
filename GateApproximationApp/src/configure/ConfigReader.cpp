@@ -80,42 +80,6 @@ void ConfigReader::readCollectionAndEvaluatorConfig(std::string configFile, Coll
 	}
 }
 
-void ConfigReader::readNearIdentityApproximatorConfig(std::string configFile, NearIdentityApproximatorConfig* pApproximatorConfig) {
-	std::cout << "NearIdentityApproximator config " << configFile << ":\n";
-	std::ifstream inputStream(configFile, std::ifstream::in);
-	if(inputStream.is_open()) {
-		char prefix[128];
-		std::string line;
-
-		readLineAndLog(inputStream, line, std::cout);
-		double initialEpsilon;
-		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
-		pApproximatorConfig->m_initialEpsilon = (mreal_t)initialEpsilon;
-
-		readLineAndLog(inputStream, line, std::cout);
-		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_maxMergedBinDistance));
-
-		readLineAndLog(inputStream, line, std::cout);
-		double maxCandidateEpsilon;
-		sscanf(line.data(), "%[^:]:%lf", prefix, &maxCandidateEpsilon);
-		pApproximatorConfig->m_maxCandidateEpsilon = (mreal_t)maxCandidateEpsilon;
-
-		readLineAndLog(inputStream, line, std::cout);
-		double maxCandidateEpsilonDecreaseFactor;
-		sscanf(line.data(), "%[^:]:%lf", prefix, &maxCandidateEpsilonDecreaseFactor);
-		pApproximatorConfig->m_maxCandidateEpsilonDecreaseFactor = (mreal_t)maxCandidateEpsilonDecreaseFactor;
-
-		readLineAndLog(inputStream, line, std::cout);
-		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_iterationMaxSteps));
-
-		readLineAndLog(inputStream, line, std::cout);
-		sscanf(line.data(), "%[^:]:%d", prefix, &(pApproximatorConfig->m_maxResultNumber));
-	}
-	else {
-		throw std::logic_error("Can not read config file for approximator!");
-	}
-}
-
 void ConfigReader::readComposerBasedApproximatorConfig(std::string configFile, ComposerBasedApproximatorConfig* pApproximatorConfig) {
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {

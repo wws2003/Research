@@ -6,7 +6,6 @@
  */
 
 #include "SKApproximatorContainerImpl.h"
-#include "SampleApproximatorContainerImpl.h"
 #include "ComposerBasedGateApproximator.h"
 #include "DuplicateGateCancelationCombinerImpl.h"
 #include "ContainerResourceFactory.h"

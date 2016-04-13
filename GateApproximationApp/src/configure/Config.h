@@ -15,6 +15,8 @@ enum LibrarySet {
 	L_HTCNOT,
 	L_HCV,
 	L_HTCV,
+	L_HTS,
+	L_HTSCNOT,
 	L_UNSPECIFIED
 };
 
@@ -51,15 +53,6 @@ struct EvaluatorConfig {
 	double m_collectionEpsilon;
 	double m_approximatorEpsilon;
 	RotationConfigs m_rotationTargets;
-};
-
-struct NearIdentityApproximatorConfig {
-	int m_maxMergedBinDistance;
-	mreal_t m_maxCandidateEpsilon;
-	mreal_t m_maxCandidateEpsilonDecreaseFactor;
-	int m_iterationMaxSteps;
-	int m_maxResultNumber;
-	mreal_t m_initialEpsilon;
 };
 
 struct SKApproximatorConfig {

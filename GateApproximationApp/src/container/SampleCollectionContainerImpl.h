@@ -29,23 +29,11 @@ public:
 	virtual PersitableGateCollectionPtr getPersitableGateCollection();
 
 private:
-	void initLibrarySetNameMap();
-
-	void initLibrarySetPersistFileNameMap();
-
 	void wireDependencies();
-
-	std::string getMatrixDBFileName(const CollectionConfig& config);
-
-	std::string getGateCollectionPersistenceFileFullName(const CollectionConfig& config,
-			const LibrarySetFileNameMap& librarySetFileNameMap,
-			std::string fileExtension);
 
 	void constructGateCollection(GateCollectionPtr pGateCollection, GateDistanceCalculatorPtr pGateDistanceCalculator);
 
 	void releaseDependencies();
-
-	LibrarySetFileNameMap m_librarySetPersistFileNameMap;
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
@@ -71,9 +59,6 @@ private:
 	GateSearchSpaceConstructorPtr m_pGateSearchSpaceConstructor;
 
 	CollectionConfig m_collectionConfig;
-
-	const static std::string DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT;
-
 };
 
 #endif /* SAMPLECOLLECTIONCONTAINERIMPL_H_ */

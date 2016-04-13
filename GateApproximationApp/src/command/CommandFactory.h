@@ -132,9 +132,6 @@ private:
 	void resetEvaluationContainer(const EvaluatorConfig& evaluatorConfig,
 			const CollectionConfig& collectionConfig);
 
-	void resetApproximatorContainer(const NearIdentityApproximatorConfig& approximatorConfig,
-			const CollectionConfig& collectionConfig);
-
 	void resetComposerContainer();
 
 	void resetComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig,

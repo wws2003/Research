@@ -4,13 +4,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../src/configure/ConfigReader.cpp 
+../src/configure/ConfigReader.cpp \
+../src/configure/FilePathConfig.cpp 
 
 OBJS += \
-./src/configure/ConfigReader.o 
+./src/configure/ConfigReader.o \
+./src/configure/FilePathConfig.o 
 
 CPP_DEPS += \
-./src/configure/ConfigReader.d 
+./src/configure/ConfigReader.d \
+./src/configure/FilePathConfig.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
