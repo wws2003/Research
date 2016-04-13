@@ -55,9 +55,6 @@ void initCommands(CommandParser* pCommandParser) {
 	//For -e conf1 -I
 	pCommandParser->provideArgumentPatternForCommandCode(4, ArgumentPositions{1, 3}, Arguments{"-e", "-I"}, EVALUATE_COLLECTION_TO_IDENTITY);
 
-	//For -e -i db -t targetConf.
-	pCommandParser->provideArgumentPatternForCommandCode(6, ArgumentPositions{1, 2, 4}, Arguments{"-e", "-i", "-t"}, EVALUATE_PERSISTED_COLLECTION_TO_TARGET);
-
 	//For -e conf1 -cb conf2 -t targetConf
 	pCommandParser->provideArgumentPatternForCommandCode(7, ArgumentPositions{1, 3, 5}, Arguments{"-e", "-cb", "-t"}, EVALUATE_CB_APPROXIMATOR_TO_TARGET);
 
@@ -93,7 +90,6 @@ void printSyntaxMessage() {
 	std::cout << "-e conf1 -I  -> Evaluate collection for identity." << std::endl;
 
 	std::cout << "\n========For specified-targets stuffs========" << std::endl;
-	std::cout << "-e -i db -t targetConf -> Evaluate collection for target given candidates in database file." << std::endl;
 	std::cout << "-e conf1 -cb conf2 -t targetConf -> Evaluate composer-based approximator." << std::endl;
 	std::cout << "-e conf1 -cb conf2 -m conf3 -t targetConf -> Evaluate (multiple comparators coordinate addition-based composer)-based approximator." << std::endl;
 	std::cout << "-e conf1 -cb conf2 -sk conf3 -m conf4 -t targetConf -> Evaluate SK approximator based on the configured collection, with a smart filter for intermediate results. Initial stage is based on composer-based approximator instead of collection." << std::endl;
@@ -109,6 +105,6 @@ void printSyntaxMessage() {
 
 	std::cout << "\n========For future purposes========" << std::endl;
 	std::cout << "-e conf1 -t targetConf -> Evaluate collection for target" << std::endl;
-	std::cout << "-e conf1 conf2 -t targetConf -> Evaluate collection, approximator for target" << std::endl;
+	std::cout << "-e conf1 conf2 -t targetConf -> Evaluate collection, approximator for target\n" << std::endl;
 
 }

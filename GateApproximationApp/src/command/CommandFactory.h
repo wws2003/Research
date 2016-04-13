@@ -32,9 +32,6 @@ private:
 	//----------------------------------//
 	AbstractCommandPtr getCollectionEvaluationCommandForIdentity(std::string configFileName);
 
-	AbstractCommandPtr getPersistedCollectionEvaluationCommandForTargets(std::string storeFileName,
-			std::string targetConfigFile);
-
 	AbstractCommandPtr getComposerBasedApproximatorEvaluationCommandForTargets(std::string collectionConfigFile,
 			std::string cbApprxConfigFile,
 			std::string targetConfigFile);

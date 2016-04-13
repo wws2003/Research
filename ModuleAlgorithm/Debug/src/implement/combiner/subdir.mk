@@ -4,40 +4,31 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../src/implement/combiner/AbstractMultiplierMatrixCombiner.cpp \
-../src/implement/combiner/DuplicateCancelationMultiplierMatrixCombinerImpl.cpp \
 ../src/implement/combiner/DuplicateGateCancelationCombinerImpl.cpp \
 ../src/implement/combiner/GateCancelationCombinabilityCheckerImpl.cpp \
 ../src/implement/combiner/GateCombinerImpl.cpp \
 ../src/implement/combiner/GateCoordinateCombinerImpl.cpp \
 ../src/implement/combiner/GateCostCombinabilityCheckerImpl.cpp \
 ../src/implement/combiner/GateIdentityCycleCombinabilityCheckerImpl.cpp \
-../src/implement/combiner/GateSelectiveCombinabilityCheckerImpl.cpp \
-../src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.cpp 
+../src/implement/combiner/GateSelectiveCombinabilityCheckerImpl.cpp 
 
 OBJS += \
-./src/implement/combiner/AbstractMultiplierMatrixCombiner.o \
-./src/implement/combiner/DuplicateCancelationMultiplierMatrixCombinerImpl.o \
 ./src/implement/combiner/DuplicateGateCancelationCombinerImpl.o \
 ./src/implement/combiner/GateCancelationCombinabilityCheckerImpl.o \
 ./src/implement/combiner/GateCombinerImpl.o \
 ./src/implement/combiner/GateCoordinateCombinerImpl.o \
 ./src/implement/combiner/GateCostCombinabilityCheckerImpl.o \
 ./src/implement/combiner/GateIdentityCycleCombinabilityCheckerImpl.o \
-./src/implement/combiner/GateSelectiveCombinabilityCheckerImpl.o \
-./src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.o 
+./src/implement/combiner/GateSelectiveCombinabilityCheckerImpl.o 
 
 CPP_DEPS += \
-./src/implement/combiner/AbstractMultiplierMatrixCombiner.d \
-./src/implement/combiner/DuplicateCancelationMultiplierMatrixCombinerImpl.d \
 ./src/implement/combiner/DuplicateGateCancelationCombinerImpl.d \
 ./src/implement/combiner/GateCancelationCombinabilityCheckerImpl.d \
 ./src/implement/combiner/GateCombinerImpl.d \
 ./src/implement/combiner/GateCoordinateCombinerImpl.d \
 ./src/implement/combiner/GateCostCombinabilityCheckerImpl.d \
 ./src/implement/combiner/GateIdentityCycleCombinabilityCheckerImpl.d \
-./src/implement/combiner/GateSelectiveCombinabilityCheckerImpl.d \
-./src/implement/combiner/InverseCancelationMultiplierMatrixCombinerImpl.d 
+./src/implement/combiner/GateSelectiveCombinabilityCheckerImpl.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

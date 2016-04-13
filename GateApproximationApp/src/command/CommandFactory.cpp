@@ -11,8 +11,6 @@
 #include "SampleEvaluatorContainerImpl.h"
 #include "EvaluateCollectionCommand.h"
 #include "EvaluateApproximatorCommand.h"
-#include "GenerateAndStoreApproximationsCommand.h"
-#include "EvaluatePersistedCollectionForTargetsCommand.h"
 #include "EvaluateComposerCommand.h"
 #include "ComposerBasedApproximatorContainer.h"
 #include "IComposer.h"
@@ -53,9 +51,6 @@ CommandPtr CommandFactory::getCommand(int commandCode, const CommandParams& comm
 	{
 		return getCollectionEvaluationCommandForIdentity(commandParams[0]);
 	}
-	case EVALUATE_PERSISTED_COLLECTION_TO_TARGET: {
-		return getPersistedCollectionEvaluationCommandForTargets(commandParams[0], commandParams[1]);
-	}
 	case EVALUATE_CB_APPROXIMATOR_TO_TARGET: {
 		return getComposerBasedApproximatorEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2]);
 	}
@@ -92,17 +87,6 @@ AbstractCommandPtr CommandFactory::getCollectionEvaluationCommandForIdentity(std
 	readCollectionAndEvaluatorConfig(configFileName);
 
 	return generateCollectionEvaluationCommandForIdentity();
-}
-
-AbstractCommandPtr CommandFactory::getPersistedCollectionEvaluationCommandForTargets(std::string storeFileName, std::string targetConfigFile) {
-	readTargetConfig(targetConfigFile);
-
-	PersitableGateCollectionPtr pPersistableCollection = m_pCollectionContainer->getPersitableGateCollection();
-	GateSearchSpaceEvaluatorPtr pEvaluator = m_pEvaluatorContainer->getGateSearchSpaceEvaluator();
-
-	return AbstractCommandPtr(new EvaluatePersistedCollectionForTargetsCommand(pPersistableCollection,
-			pEvaluator,
-			storeFileName));
 }
 
 AbstractCommandPtr CommandFactory::getComposerBasedApproximatorEvaluationCommandForTargets(std::string collectionConfigFile, std::string cbApprxConfigFile, std::string targetConfigFile) {
