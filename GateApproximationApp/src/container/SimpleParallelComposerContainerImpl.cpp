@@ -16,9 +16,9 @@
 #include "GateLookupResultBufferedQueueBasedTaskExecutorImpl.h"
 #include "GateSetLogImpl.h"
 
-SimpleParallelComposerContainerImpl::SimpleParallelComposerContainerImpl(int nbCandidates, int nbThreads) {
+SimpleParallelComposerContainerImpl::SimpleParallelComposerContainerImpl(int nbCandidates, const ParallelConfig& parallelConfig) {
 	m_nbCandidates = nbCandidates;
-	m_nbThreads = nbThreads;
+	m_parallelConfig = parallelConfig;
 	wireDependencies();
 }
 
@@ -28,7 +28,7 @@ SimpleParallelComposerContainerImpl::~SimpleParallelComposerContainerImpl() {
 
 GateComposerPtr SimpleParallelComposerContainerImpl::getGateComposer() {
 	return GateComposerPtr(new SimpleParallelGateComposer(m_pGateCombiner,
-			m_nbCandidates,
+			m_parallelConfig.m_taskFutureBufferSize,
 			m_pGateSetLog,
 			m_pTaskExecutor));
 }
@@ -41,9 +41,9 @@ void SimpleParallelComposerContainerImpl::wireDependencies() {
 	m_pGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(checkers, m_pMatrixOperator));
 
 	m_pTaskQueue = TaskQueuePtr<QueuedTask<LookupResult<GatePtr> > >(new GateLookupResultNoLockTaskQueueImpl());
-	m_pTaskExecutor = TaskExecutorPtr<LookupResult<GatePtr> >(new GateLookupResultBufferedQueueBasedTaskExecutorImpl(m_nbThreads,
+	m_pTaskExecutor = TaskExecutorPtr<LookupResult<GatePtr> >(new GateLookupResultBufferedQueueBasedTaskExecutorImpl(m_parallelConfig.m_nbThreads,
 			m_pTaskQueue,
-			3300));
+			m_parallelConfig.m_taskBufferSize));
 }
 
 void SimpleParallelComposerContainerImpl::releaseDependencies() {

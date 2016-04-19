@@ -8,5 +8,5 @@
 #include "GateLookupResultNoLockTaskQueueImpl.h"
 #include "NoLockTaskQueueImpl.cpp"
 
-template class NoLockTaskQueueImpl<LookupResult<GatePtr> >;
+template class NoLockTaskQueueImpl<QueuedTask<LookupResult<GatePtr> >  >;
 

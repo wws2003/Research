@@ -25,17 +25,17 @@ public:
 
 protected:
 	//Override
-	void initSecondarySortedVectorArrays(typename AdditionBasedElementComposer<T>::SortedVectorArrayList& secondarySortedVectorArrays,
+	void initSecondarySortedVectorArrays(SortedVectorArrayList<T>& secondarySortedVectorArrays,
 			const BuildingBlockBuckets<T>& buildingBlockBuckets);
 
 	//Override
-	bool quickEvaluate(const typename AdditionBasedElementComposer<T>::SortedVectorArrayList& secondarySortedVectorArrays,
+	bool quickEvaluate(const SortedVectorArrayList<T>& secondarySortedVectorArrays,
 				int vectorIndex,
 				const T& rightMostElement,
 				const T& partialTarget) const;
 
 	//Override
-	void releaseSecondarySortedVectorArrays(typename AdditionBasedElementComposer<T>::SortedVectorArrayList& sortedVectorArrays);
+	void releaseSecondarySortedVectorArrays(SortedVectorArrayList<T>& sortedVectorArrays);
 
 private:
 	 std::vector<ComparatorPtr<T> > m_secondaryComparators;

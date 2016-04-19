@@ -20,7 +20,7 @@ public:
 
 	virtual ~CoordinateDistanceCalculatorByElementImpl(){};
 
-	virtual double distance(CoordinatePtr<T,F> pCoord1, CoordinatePtr<T,F> pCoord2);
+	virtual mreal_t distance(CoordinatePtr<T,F> pCoord1, CoordinatePtr<T,F> pCoord2);
 
 private:
 	DistanceCalculatorPtr<T> m_pElementDistanceCalculator;
@@ -32,7 +32,7 @@ CoordinateDistanceCalculatorByElementImpl<T,F>::CoordinateDistanceCalculatorByEl
 }
 
 template<typename T, typename F>
-double CoordinateDistanceCalculatorByElementImpl<T,F>::distance(CoordinatePtr<T,F> pCoord1, CoordinatePtr<T,F> pCoord2) {
+mreal_t CoordinateDistanceCalculatorByElementImpl<T,F>::distance(CoordinatePtr<T,F> pCoord1, CoordinatePtr<T,F> pCoord2) {
 	return m_pElementDistanceCalculator->distance(pCoord1->getElement(), pCoord2->getElement());
 }
 

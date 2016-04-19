@@ -27,32 +27,26 @@ MultipleComparatorAdditionBasedElementComposer<T>::MultipleComparatorAdditionBas
 }
 
 template<typename T>
-void MultipleComparatorAdditionBasedElementComposer<T>::initSecondarySortedVectorArrays(typename AdditionBasedElementComposer<T>::SortedVectorArrayList& secondarySortedVectorArrays,
+void MultipleComparatorAdditionBasedElementComposer<T>::initSecondarySortedVectorArrays(SortedVectorArrayList<T>& secondarySortedVectorArrays,
 		const BuildingBlockBuckets<T>& buildingBlockBuckets) {
-
-	typedef typename AdditionBasedElementComposer<T>::SortedVectorArray SecondarySortedVectorArray;
-	typedef typename AdditionBasedElementComposer<T>::SortedVectorArrayPtr SecondarySortedVectorArrayPtr;
-	typedef typename AdditionBasedElementComposer<T>::WrapperComparator SecondaryWrapperComparator;
 
 	for(unsigned int i = 0; i < m_secondaryComparators.size(); i++) {
 		ComparatorPtr<T> pSecondaryComparator = m_secondaryComparators[i];
-		SecondaryWrapperComparator wrapperSecondaryComparator(pSecondaryComparator);
-		SecondarySortedVectorArrayPtr pSecondarySortVectorArray = new SecondarySortedVectorArray(wrapperSecondaryComparator);
+		WrapperComparator<T> wrapperSecondaryComparator(pSecondaryComparator);
+		SortedVectorArrayPtr<T> pSecondarySortVectorArray = new SortedVectorArray<T>(wrapperSecondaryComparator);
 		pSecondarySortVectorArray->initByVectors(buildingBlockBuckets);
 		secondarySortedVectorArrays.push_back(pSecondarySortVectorArray);
 	}
 }
 
 template<typename T>
-bool MultipleComparatorAdditionBasedElementComposer<T>::quickEvaluate(const typename AdditionBasedElementComposer<T>::SortedVectorArrayList& secondarySortedVectorArrays,
+bool MultipleComparatorAdditionBasedElementComposer<T>::quickEvaluate(const SortedVectorArrayList<T>& secondarySortedVectorArrays,
 		int vectorIndex,
 		const T& rightMostElement,
 		const T& partialTarget) const {
 
-	typedef typename AdditionBasedElementComposer<T>::SortedVectorArrayPtr SecondarySortedVectorArrayPtr;
-
 	for(unsigned int i = 0; i < secondarySortedVectorArrays.size(); i++) {
-		SecondarySortedVectorArrayPtr pSecondarySortedVectorArray = secondarySortedVectorArrays[i];
+		SortedVectorArrayPtr<T> pSecondarySortedVectorArray = secondarySortedVectorArrays[i];
 		ComparatorPtr<T> pSecondaryComparator = m_secondaryComparators[i];
 
 		T secondaryAccumulatedMax = rightMostElement + m_secondaryEpsilonElements[i];
@@ -86,11 +80,10 @@ bool MultipleComparatorAdditionBasedElementComposer<T>::quickEvaluate(const type
 }
 
 template<typename T>
-void MultipleComparatorAdditionBasedElementComposer<T>::releaseSecondarySortedVectorArrays(typename AdditionBasedElementComposer<T>::SortedVectorArrayList& sortedVectorArrays) {
-	typedef typename AdditionBasedElementComposer<T>::SortedVectorArrayPtr SecondarySortedVectorArrayPtr;
+void MultipleComparatorAdditionBasedElementComposer<T>::releaseSecondarySortedVectorArrays(SortedVectorArrayList<T>& sortedVectorArrays) {
 
 	for(unsigned int i = 0; i < sortedVectorArrays.size(); i++) {
-		SecondarySortedVectorArrayPtr pSortedVectorArray = sortedVectorArrays[i];
+		SortedVectorArrayPtr<T> pSortedVectorArray = sortedVectorArrays[i];
 		delete pSortedVectorArray;
 		sortedVectorArrays[i] = NULL;
 	}

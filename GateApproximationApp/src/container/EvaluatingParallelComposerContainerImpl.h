@@ -11,10 +11,11 @@
 #include "IEvaluatingComposerContainer.h"
 #include "ApplicationCommon.h"
 #include "IComposerContainer.h"
+#include "Config.h"
 
 class EvaluatingParallelComposerContainerImpl: public IEvaluatingComposerContainer {
 public:
-	EvaluatingParallelComposerContainerImpl(int nbThreads);
+	EvaluatingParallelComposerContainerImpl(const ParallelConfig& parallelConfig);
 	virtual ~EvaluatingParallelComposerContainerImpl();
 
 	//Override
@@ -24,10 +25,8 @@ public:
 	GateComposerPtr getEvaluatedGateComposer();
 
 private:
-	void wireDependencies();
+	void wireDependencies(const ParallelConfig& parallelConfig);
 	void releaseDependencies();
-
-	int m_nbThreads;
 
 	ComposerContainerPtr m_pStandardComposerContainer;
 	ComposerContainerPtr m_pEvaluatedComposerContainer;

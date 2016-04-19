@@ -119,4 +119,10 @@ struct ComposerEvaluatorConfig {
 	RotationConfigs m_rotationTargets;
 };
 
+struct ParallelConfig {
+	int m_nbThreads;
+	int m_taskBufferSize;
+	int m_taskFutureBufferSize;
+};
+
 #endif /* CONFIG_H_ */

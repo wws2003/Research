@@ -8,6 +8,9 @@
 *.gch
 *.pch
 
+# Auto-gen dependency files
+*/Debug/**/*.d
+
 # Compiled Dynamic libraries
 **/artifact/*.so
 *.dylib

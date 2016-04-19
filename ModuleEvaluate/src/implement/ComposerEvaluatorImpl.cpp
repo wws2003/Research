@@ -67,9 +67,11 @@ void ComposerEvaluatorImpl<T>::ComposerEvaluateFactors::printInfo(std::ostream& 
 
 template<typename T>
 void ComposerEvaluatorImpl<T>::ComposerEvaluateFactors::printCompareToInfo(std::ostream& ostream, const ComposerEvaluateFactors& evalFactors2) {
+	ostream << "Run time = " << m_composeTime / evalFactors2.m_composeTime << "\n";
 	if(evalFactors2.m_nbResults != 0) {
 		ostream << "Recall = " << (float)m_nbResults / evalFactors2.m_nbResults << "\n";
-		if(m_bestDistance > evalFactors2.m_bestDistance) {
+		mreal_t noiseThresold = 1e-9;
+		if(m_bestDistance > evalFactors2.m_bestDistance + noiseThresold) {
 			ostream << "Couldn not reached best result\n";
 		}
 		else {

@@ -148,7 +148,7 @@ FullTestSuite::~FullTestSuite() {
 }
 void FullTestSuite::test(){
 	//testSimpleWriter();
-	/*testSimpleCollection();
+	testSimpleCollection();
 	testSimpleSearchSpaceConstructor();
 	testSimpleEvaluator();
 	testInverseCancelingSearchSpaceConstructor();
@@ -157,7 +157,7 @@ void FullTestSuite::test(){
 	//testGNATCollectionBuild();
 	testGNATCollectionPersistence();
 	testGNATSearch();
-	testFilteredGNATSearch();*/
+	testFilteredGNATSearch();
 	testAddtionBasedCoordinateComposer();
 	//freeTestGateCollectionEvaluator();
 }

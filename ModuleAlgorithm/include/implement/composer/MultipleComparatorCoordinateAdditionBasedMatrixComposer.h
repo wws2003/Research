@@ -23,7 +23,10 @@ public:
 			const std::vector<ComparatorPtr<RealCoordinate<MatrixPtr> > >& secondaryComparators,
 			const std::vector<RealCoordinate<MatrixPtr> > secondaryEpsilonElements);
 
-	//Release
+	//Override
+	bool isValidCandidate(const MatrixRealCoordinate& candidate);
+
+	//Override
 	void releaseIntermediateResult(RealCoordinate<MatrixPtr>  coord);
 };
 

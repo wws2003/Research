@@ -10,8 +10,10 @@
 
 #include "Gate.h"
 #include "ICollection.h"
+#include "MathConceptsCommon.h"
 #include "NoLockTaskQueueImpl.h"
+#include "QueueBasedTaskExecutorImpl.h"
 
-typedef NoLockTaskQueueImpl<LookupResult<GatePtr> > GateLookupResultNoLockTaskQueueImpl;
+typedef NoLockTaskQueueImpl<QueuedTask<LookupResult<GatePtr> >  > GateLookupResultNoLockTaskQueueImpl;
 
 #endif /* GATELOOKUPRESULTNOLOCKTASKQUEUEIMPL_H_ */

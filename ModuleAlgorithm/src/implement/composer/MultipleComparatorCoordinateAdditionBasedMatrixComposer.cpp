@@ -26,6 +26,10 @@ MultipleComparatorCoordinateAdditionBasedMatrixComposer::MultipleComparatorCoord
 
 }
 
+bool MultipleComparatorCoordinateAdditionBasedMatrixComposer::isValidCandidate(const MatrixRealCoordinate& candidate) {
+	return candidate.getElement() != NullPtr;
+}
+
 void MultipleComparatorCoordinateAdditionBasedMatrixComposer::releaseIntermediateResult(RealCoordinate<MatrixPtr> coord) {
 	_destroy(coord.getElement());
 }

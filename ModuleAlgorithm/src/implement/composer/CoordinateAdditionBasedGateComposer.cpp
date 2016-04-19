@@ -10,13 +10,17 @@
 
 template class AdditionBasedElementComposer<RealCoordinate<GatePtr> >;
 
-CoordinateAdditionBasedGateComposer::CoordinateAdditionBasedGateComposer(ComparatorPtr<RealCoordinate<GatePtr> > pElementComparator,
-			CombinerPtr<RealCoordinate<GatePtr> > pCombiner,
-			RealCoordinate<GatePtr>  epsilonElement,
+CoordinateAdditionBasedGateComposer::CoordinateAdditionBasedGateComposer(ComparatorPtr<GateRealCoordinate> pElementComparator,
+			CombinerPtr<GateRealCoordinate> pCombiner,
+			GateRealCoordinate  epsilonElement,
 			int maxResultsNumber) : AdditionBasedElementComposer(pElementComparator, pCombiner, epsilonElement, maxResultsNumber) {
 
 }
 
-void CoordinateAdditionBasedGateComposer::releaseIntermediateResult(RealCoordinate<GatePtr> coord) {
-	_destroy(coord.getElement());
+bool CoordinateAdditionBasedGateComposer::isValidCandidate(const GateRealCoordinate& candidate) {
+	return candidate.getElement() != NullPtr;
+}
+
+void CoordinateAdditionBasedGateComposer::releaseIntermediateResult(GateRealCoordinate& coord) {
+	coord.clear();
 }

@@ -5,7 +5,7 @@
  *      Author: pham
  */
 
-#include "SampleComposerContainerImpl.h"
+#include "SampleEvaluatingComposerContainerImpl.h"
 #include "SimpleGateComposer.h"
 #include "GateSetLogImpl.h"
 #include "SimpleDenseMatrixFactoryImpl.h"
@@ -25,10 +25,13 @@
 #include "DuplicateGateLookupResultFilterImpl.h"
 #include "DictionaryOrderCoordinateComparator.hpp"
 #include "SumCoordinateComparator.hpp"
+#include "MatrixFowlerDistanceCalculator.h"
 #include "OneElementCoordinateComparator.hpp"
 #include "MultipleComparatorCoordinateAdditionBasedGateComposer.h"
 #include "MultiNearBalancePartsGateDecomposer.h"
 #include "GateCoordinateAdditionBasedComposerContainerImpl.h"
+#include "GateDistanceCalculatorByMatrixImpl.h"
+#include "GateCoordinateDistanceCalculator.h"
 
 GateCoordinateAdditionBasedComposerContainerImpl::GateCoordinateAdditionBasedComposerContainerImpl(const CoordinateAdditionalBasedComposerConfig& cabConfig,
 		const CollectionConfig& collectionConfig) : m_coordinateAdditionalBasedComposerConfig(cabConfig),
@@ -41,10 +44,10 @@ GateCoordinateAdditionBasedComposerContainerImpl::~GateCoordinateAdditionBasedCo
 }
 
 GateComposerPtr GateCoordinateAdditionBasedComposerContainerImpl::getGateComposer() {
-	return GateComposerPtr(new AdaptiveGateCoordinateComposer(NullPtr,
+	return GateComposerPtr(new AdaptiveGateCoordinateComposer(m_pGateCoordinateDistanceCalculator,
 			m_pGateCoordinateComposer,
-			0.0,
-			m_pGateCoordinateConveter));
+			m_pGateCoordinateConveter,
+			false));
 }
 
 
@@ -67,6 +70,11 @@ void GateCoordinateAdditionBasedComposerContainerImpl::wireDependencies() {
 	m_pMatrixRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, m_pHermitiaRealCoordinateCalculator));
 	m_pGateRealCoordinateCalculator = GateRealCoordinateCalculatorPtr(new GateCoordinateCalculatorImpl(m_pMatrixRealCoordinateCalculator));
 
+	//Coordinate distance calculator
+	m_pMatrixDistanceCalculator = DistanceCalculatorPtr<MatrixPtr>(new MatrixFowlerDistanceCalculator(NullPtr));
+	m_pGateDistanceCalculator = DistanceCalculatorPtr<GatePtr>(new GateDistanceCalculatorByMatrixImpl(m_pMatrixDistanceCalculator));
+	m_pGateCoordinateDistanceCalculator = DistanceCalculatorPtr<GateRealCoordinate>(new GateCoordinateDistanceCalculator(m_pGateDistanceCalculator));
+
 	//Converter and misc
 	bool phaseIgnored = m_collectionConfig.m_matrixDistanceCalculatorType == MDCT_FOWLER;
 	m_pGateCoordinateConveter = ConverterPtr<GatePtr, RealCoordinate<GatePtr> >(new GateCoordinateConverterImpl(m_pGateRealCoordinateCalculator,
@@ -76,6 +84,10 @@ void GateCoordinateAdditionBasedComposerContainerImpl::wireDependencies() {
 
 void GateCoordinateAdditionBasedComposerContainerImpl::releaseDependencies() {
 	_destroy(m_pGateCoordinateConveter);
+
+	_destroy(m_pGateCoordinateDistanceCalculator);
+	_destroy(m_pGateDistanceCalculator);
+	_destroy(m_pMatrixDistanceCalculator);
 
 	_destroy(m_pGateRealCoordinateCalculator);
 	_destroy(m_pMatrixRealCoordinateCalculator);

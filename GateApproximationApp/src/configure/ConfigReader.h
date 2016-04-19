@@ -40,6 +40,8 @@ public:
 
 	virtual void readComposerEvaluatorConfigFromTargets(std::string configFile, ComposerEvaluatorConfig* pComposerEvaluatorConfig);
 
+	virtual void readParallelConfig(std::string configFile, ParallelConfig* pParallelConfig);
+
 private:
 	void initLibrarySetNameMap();
 	void initRotationSetNameMap();

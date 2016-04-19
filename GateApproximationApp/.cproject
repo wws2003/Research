@@ -59,6 +59,7 @@
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/filter"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/comparator"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/converter"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/task"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/internal-abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/collection"/>
@@ -77,7 +78,7 @@
 									<listOptionValue builtIn="false" value="../../ModuleParallelism/src/implement"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.299868399" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0  -pthread -std=c++11 -fPIC -pg -Wl,--no-as-needed " valueType="string"/>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.1044727360" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols"/>
+								<option id="gnu.cpp.compiler.option.preprocessor.def.1044727360" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1308549997" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1588257134" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug">
@@ -97,6 +98,7 @@
 									<listOptionValue builtIn="false" value="mpfr"/>
 									<listOptionValue builtIn="false" value="sqlite3"/>
 									<listOptionValue builtIn="false" value="pthread"/>
+									<listOptionValue builtIn="false" value="rt"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1547203305" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="../../ModuleMathConcepts/artifact"/>

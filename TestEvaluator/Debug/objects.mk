@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lModuleMathConcepts -lModuleOperator -lModuleIO -lModuleAlgorithm -lModuleEvaluate -lgmp -lmpfr
+LIBS := -lModuleMathConcepts -lModuleOperator -lModuleIO -lModuleParallelism -lModuleAlgorithm -lModuleEvaluate -lgmp -lmpfr -lpthread -lrt
 
