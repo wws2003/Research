@@ -7,7 +7,6 @@
 
 #include "SKApproximatorContainerImpl.h"
 #include "ComposerBasedGateApproximator.h"
-#include "DuplicateGateCancelationCombinerImpl.h"
 #include "ContainerResourceFactory.h"
 #include "DummyGateDecomposer.h"
 #include "ComposerBasedGateApproximator.h"

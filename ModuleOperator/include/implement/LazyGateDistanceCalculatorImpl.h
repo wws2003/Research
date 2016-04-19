@@ -25,10 +25,9 @@ public:
 	virtual mreal_t distance(GatePtr pGate1, GatePtr pGate2);
 
 protected:
-	virtual void provideMatrixToGate(GatePtr pGate);
+	virtual void provideMatrixToGate(GatePtr pGate) = 0;
 
 private:
-	MatrixPtr getMatrixFromGateLabelSequence(const LabelSeq& sequence);
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
 	MatrixOperatorPtr m_pMatrixOperator;
 	LibraryMatrixStorePtr m_pLibraryMatrixStore;

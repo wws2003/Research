@@ -30,7 +30,6 @@
 #include "SystemTimer.h"
 #include "GateSearchSpaceTimerEvaluatorImpl.h"
 #include "MapBasedGateBinCollectionImpl.h"
-#include "DuplicateGateCancelationCombinerImpl.h"
 #include "ContainerResourceFactory.h"
 #include "SampleLibraryMatrixStore.h"
 #include "SQLiteLazyGateDistanceCalculator.h"

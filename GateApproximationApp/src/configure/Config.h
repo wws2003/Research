@@ -29,11 +29,10 @@ enum RotationType {
 	C_RZ //For controlled gate
 };
 
-typedef struct _RotationInfo {
+struct RotationConfig {
 	RotationType m_rotationType;
 	mreal_t m_rotationAngle;
-}
-RotationConfig;
+};
 
 typedef std::vector<RotationConfig> RotationConfigs;
 

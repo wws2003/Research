@@ -19,7 +19,6 @@
 #include "SampleResourceContainerImpl.h"
 #include "GateCombinerImpl.h"
 #include "LabelOnlyGateWriterImpl.h"
-#include "DuplicateGateCancelationCombinerImpl.h"
 #include "ContainerResourceFactory.h"
 #include "SampleLibraryMatrixStore.h"
 #include "PersistableGNATCollectionImpl.h"
