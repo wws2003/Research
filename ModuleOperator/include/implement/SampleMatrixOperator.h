@@ -39,6 +39,8 @@ public:
 	virtual void log(MatrixPtr pm, MatrixPtrRef prLog);
 	virtual void eig(MatrixPtr pm, ComplexVectorRef ppEigVals, MatrixPtrRef ppEigVects);
 
+	virtual void kron(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef kronProduct);
+
 	void sumProduct(const MatrixPtrVector& matrixVector, const ComplexVector& scalaVector, MatrixPtrRef pSum);
 
 	void multiplyConjugateTranspose(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef prProduct);

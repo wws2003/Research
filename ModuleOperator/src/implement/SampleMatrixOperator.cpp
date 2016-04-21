@@ -12,6 +12,7 @@
 #include "eigen3/unsupported/Eigen/src/MatrixFunctions/MatrixExponential.h"
 #include "eigen3/unsupported/Eigen/MatrixFunctions"
 #include "eigen3/unsupported/Eigen/MPRealSupport"
+#include "eigen3/unsupported/Eigen/src/KroneckerProduct/KroneckerTensorProduct.h"
 #include <iostream>
 
 using namespace Eigen;
@@ -28,7 +29,7 @@ void fromLdToMp(const MatrixXcld& mLd, MatrixXcmp& mMp);
 #endif
 
 SampleMatrixOperator::SampleMatrixOperator(MatrixFactoryPtr pMatrixFactory) : m_pMatrixFactory(pMatrixFactory) {
-	 //Eigen::initParallel();
+	//Eigen::initParallel();
 	std::cout << "Number of threads used by eigen:" << Eigen::nbThreads( ) << "\n";
 }
 
@@ -212,6 +213,16 @@ void SampleMatrixOperator::eig(MatrixPtr pm, ComplexVectorRef rEigVals, MatrixPt
 	MatrixXcmp eigenValues = ces.eigenvalues();
 	prEigVects = fromEigenMatrix(eigenVectors);
 	fromEigenMatrix(eigenValues, 0, rEigVals);
+}
+
+void SampleMatrixOperator::kron(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef kronProduct) {
+	MatrixXcmp eigenMat1, eigenMat2;
+	toEigenMatrix(pm1, eigenMat1);
+	toEigenMatrix(pm2, eigenMat2);
+
+	MatrixXcmp eigenKron = kroneckerProduct(eigenMat1, eigenMat2).eval();
+
+	kronProduct = fromEigenMatrix(eigenKron, pm1->getLabel() + "(x)" + pm2->getLabel());
 }
 
 void SampleMatrixOperator::unitaryDediagonalize(MatrixPtr pU, const ComplexVectorRef diag, MatrixPtrRef prRoot) {

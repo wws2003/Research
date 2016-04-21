@@ -65,6 +65,22 @@ inline double toDouble(const mreal_t& v) {
 #endif
 }
 
+inline mreal_t exp(const mreal_t& x) {
+#if MPFR_REAL
+	return mpfr::exp(x);
+#else
+	return std::exp(x);
+#endif
+}
+
+inline ComplexVal exp(const ComplexVal& x) {
+#if MPFR_REAL
+	return mpfr::exp(x.real()) * ComplexVal(mpfr::cos(x.imag()), mpfr::sin(x.imag()));
+#else
+	return ComplexVal(std::exp(x), 0.0);
+#endif
+}
+
 inline bool isNAN(const mreal_t& v) {
 #if MPFR_REAL
 	return mpfr::isnan(v);
