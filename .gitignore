@@ -69,6 +69,7 @@ SharedThirdParties/mpfr
 */Debug/*/.gitignore
 Module*/*/.gitignore
 Module*/.gitignore
+GateApproximationApp/.gitignore
 
 # Misc metadata
 .metadata
