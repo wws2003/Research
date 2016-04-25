@@ -19,8 +19,6 @@
 #include "SearchSpaceConstructorImpl.h"
 #include "MatrixSearchSpaceConstructorImpl.h"
 #include "GateSearchSpaceConstructorImpl.h"
-#include "AlwaysTrueMultiplierMatrixCombinerImpl.h"
-#include "InverseCancelationMultiplierMatrixCombinerImpl.h"
 #include "MapBasedMatrixBinCollectionImpl.h"
 #include "AlgoInternal.h"
 #include "MatrixRealInnerProductByTraceImpl.h"
@@ -55,6 +53,9 @@
 #include "GateCoordinateCombinerImpl.h"
 #include "SetBasedGateLookupResultProcessor.h"
 #include "SumCoordinateComparator.hpp"
+#include "ResourcesTester.h"
+#include "ForTestCoordinateAdditionBasedGateComposer.h"
+#include "ResourcesTester.h"
 #include <iostream>
 #include <cmath>
 #include <cstdio>
@@ -123,14 +124,9 @@ FullTestSuite::FullTestSuite() {
 			m_pMatrixWriter,
 			m_pTimer,
 			std::cout);
-
-	m_pMatrixCombiner = new MultiplierMatrixCombinerImpl(m_pMatrixOperator);
-	m_pSearchSpaceConstructor = new MatrixSearchSpaceConstructorImpl(m_pMatrixCombiner);
 }
 
 FullTestSuite::~FullTestSuite() {
-	delete m_pSearchSpaceConstructor;
-	delete m_pMatrixCombiner;
 	delete m_pSearchSpaceEvaluator;
 	delete m_pTimer;
 	delete m_pMatrixDistanceCalculator;
@@ -147,11 +143,7 @@ FullTestSuite::~FullTestSuite() {
 	std::remove(GNAT_COLLECTION_PERSIST_FILE.c_str());
 }
 void FullTestSuite::test(){
-	//testSimpleWriter();
 	testSimpleCollection();
-	testSimpleSearchSpaceConstructor();
-	testSimpleEvaluator();
-	testInverseCancelingSearchSpaceConstructor();
 	testSampleMatrixBinCollection();
 	testCalculateCoordinatesInSearchSpace();
 	//testGNATCollectionBuild();
@@ -159,6 +151,7 @@ void FullTestSuite::test(){
 	testGNATSearch();
 	testFilteredGNATSearch();
 	testAddtionBasedCoordinateComposer();
+	testResources();
 	//freeTestGateCollectionEvaluator();
 }
 
@@ -246,174 +239,6 @@ void FullTestSuite::testSimpleCollection() {
 	delete pMatrixH;
 
 	delete pMatrixCollection;
-
-	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
-}
-
-void FullTestSuite::testSimpleSearchSpaceConstructor() {
-	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
-
-	double inverSqrt2 = 1 / sqrt(2);
-	ComplexVal arrayH[] = {ComplexVal(inverSqrt2,0), ComplexVal(inverSqrt2,0),
-			ComplexVal(inverSqrt2,0), ComplexVal(-inverSqrt2,0)};
-	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
-
-	ComplexVal arrayT[] = {ComplexVal(1,0), (ComplexVal)0.0,
-			(ComplexVal)0.0, std::exp(ComplexVal(0, M_PI / 4.0))};
-	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
-
-	int universalSetSize = 2;
-	MatrixCollectionPtr pUniversalSet = new VectorBasedMatrixCollectionImpl(m_pMatrixDistanceCalculator);
-	pUniversalSet->addElement(pMatrixH);
-	pUniversalSet->addElement(pMatrixT);
-	assert(pUniversalSet->size() == universalSetSize);
-
-	MatrixCollectionPtr pMatrixCollection = new VectorBasedMatrixCollectionImpl(m_pMatrixDistanceCalculator);
-
-	int maxSequenceLength = 5;
-	int expectedSearchSpaceSize = universalSetSize * (std::pow(universalSetSize, maxSequenceLength) - 1) / (universalSetSize - 1);
-
-	m_pSearchSpaceConstructor->constructSearchSpace(pMatrixCollection, pUniversalSet, maxSequenceLength);
-
-	assert(pMatrixCollection->size() == expectedSearchSpaceSize);
-
-	//Make sure constructed search space (collection) has a certain sequence
-	MatrixPtr pHT = NullPtr;
-	m_pMatrixOperator->multiply(pMatrixH, pMatrixT, pHT);
-	MatrixPtr pHTH = NullPtr;
-	m_pMatrixOperator->multiply(pHT, pMatrixH, pHTH);
-	MatrixPtr pHTHT = NullPtr;
-	m_pMatrixOperator->multiply(pHTH, pMatrixT, pHTHT);
-	MatrixPtr pHTHTH = NullPtr;
-	m_pMatrixOperator->multiply(pHTHT, pMatrixT, pHTHTH);
-
-	MatrixLookupResultIteratorPtr pResultIter = pMatrixCollection->findNearestNeighbours(pHTHTH, 0);
-	assert(pResultIter != NullPtr);
-	pResultIter->toBegin();
-	assert(!pResultIter->isDone());
-
-	//I = H*H
-	MatrixPtr pHH = NullPtr;
-	m_pMatrixOperator->multiply(pMatrixH, pMatrixH, pHH);
-	pResultIter = pMatrixCollection->findNearestNeighbours(pHH, 0);
-	assert(pResultIter != NullPtr);
-	pResultIter->toBegin();
-	assert(!pResultIter->isDone());
-
-	MatrixPtr pI = m_pMatrixFactory->getIdentityMatrix(2);
-	mreal_t dI_HH = m_pMatrixDistanceCalculator->distance(pI, pHH);
-	assert(dI_HH < 1e-30);
-
-	delete pI;
-	delete pHH;
-	delete pHTHTH;
-	delete pHTHT;
-	delete pHTH;
-	delete pHT;
-	delete pMatrixCollection;
-	delete pUniversalSet;
-	delete pMatrixT;
-	delete pMatrixH;
-
-	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
-}
-
-void FullTestSuite::testSimpleEvaluator() {
-	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
-
-	double inverSqrt2 = 1 / sqrt(2);
-	ComplexVal arrayH[] = {ComplexVal(inverSqrt2,0), ComplexVal(inverSqrt2,0),
-			ComplexVal(inverSqrt2,0), ComplexVal(-inverSqrt2,0)};
-	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
-
-	ComplexVal arrayT[] = {ComplexVal(1,0), (ComplexVal)0.0,
-			(ComplexVal)0.0, std::exp(ComplexVal(0, M_PI / 4.0))};
-	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
-
-	int universalSetSize = 2;
-	MatrixCollectionPtr pUniversalSet = new VectorBasedMatrixCollectionImpl(m_pMatrixDistanceCalculator);
-	pUniversalSet->addElement(pMatrixH);
-	pUniversalSet->addElement(pMatrixT);
-	assert(pUniversalSet->size() == universalSetSize);
-
-	MatrixCollectionPtr pMatrixCollection = new VectorBasedMatrixCollectionImpl(m_pMatrixDistanceCalculator);
-
-	int maxSequenceLength = 5;
-
-	m_pSearchSpaceConstructor->constructSearchSpace(pMatrixCollection, pUniversalSet, maxSequenceLength);
-
-	m_pSearchSpaceEvaluator->evaluateCollection(pMatrixCollection);
-
-	delete pMatrixCollection;
-	delete pUniversalSet;
-	delete pMatrixT;
-	delete pMatrixH;
-
-	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
-}
-
-void FullTestSuite::testInverseCancelingSearchSpaceConstructor() {
-	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
-
-	MatrixCombinerPtr pMatrixCombiner = new InverseCancelationMultiplierMatrixCombinerImpl(m_pMatrixOperator);
-	MatrixSearchSpaceConstructorPtr pSearchSpaceConstructor = new MatrixSearchSpaceConstructorImpl(pMatrixCombiner);
-
-	double inverSqrt2 = 1 / sqrt(2);
-
-	ComplexVal arrayH[] = {ComplexVal(inverSqrt2,0), ComplexVal(inverSqrt2,0),
-			ComplexVal(inverSqrt2,0), ComplexVal(-inverSqrt2,0)};
-	MatrixPtr pMatrixH = new SimpleDenseMatrixImpl(arrayH, ROW_SPLICE, 2, 2, "H");
-
-	ComplexVal arrayT[] = {ComplexVal(1,0), (ComplexVal)0.0,
-			(ComplexVal)0.0, std::exp(ComplexVal(0, M_PI / 4.0))};
-	MatrixPtr pMatrixT = new SimpleDenseMatrixImpl(arrayT, ROW_SPLICE, 2, 2, "T");
-
-	MatrixPtr pTmpMatrixInverseH = NullPtr;
-	m_pMatrixOperator->conjugateTranpose(pMatrixH, pTmpMatrixInverseH);
-	ComplexValArray inverseArrayH = NullPtr;
-	pTmpMatrixInverseH->toArray(inverseArrayH);
-	MatrixPtr pMatrixInverseH = new SimpleDenseMatrixImpl(inverseArrayH, ROW_SPLICE, 2, 2, "h");
-	delete[] inverseArrayH;
-	delete pTmpMatrixInverseH;
-
-	MatrixPtr pTmpMatrixInverseT = NullPtr;
-	m_pMatrixOperator->conjugateTranpose(pMatrixT, pTmpMatrixInverseT);
-	ComplexValArray inverseArrayT = NullPtr;
-	pTmpMatrixInverseT->toArray(inverseArrayT);
-	MatrixPtr pMatrixInverseT = new SimpleDenseMatrixImpl(inverseArrayT, ROW_SPLICE, 2, 2, "t");
-	delete[] inverseArrayT;
-	delete pTmpMatrixInverseT;
-	int universalSetSize = 4;
-
-	MatrixCollectionPtr pUniversalSet = new VectorBasedMatrixCollectionImpl(m_pMatrixDistanceCalculator);
-	pUniversalSet->addElement(pMatrixH);
-	pUniversalSet->addElement(pMatrixT);
-	pUniversalSet->addElement(pMatrixInverseH);
-	pUniversalSet->addElement(pMatrixInverseT);
-
-	assert(pUniversalSet->size() == universalSetSize);
-
-	MatrixCollectionPtr pMatrixCollection = new VectorBasedMatrixCollectionImpl(m_pMatrixDistanceCalculator);
-	int maxSequenceLength = 5;
-	int expectedSearchSpaceSize = universalSetSize * (std::pow(universalSetSize - 1, maxSequenceLength) - 1) / (universalSetSize - 2);
-
-	pSearchSpaceConstructor->constructSearchSpace(pMatrixCollection, pUniversalSet, maxSequenceLength);
-
-	/*MatrixIteratorPtr pSearchSpaceMatrixIter = pMatrixCollection->getIteratorPtr();
-
-	while(!pSearchSpaceMatrixIter->isDone()) {
-		m_pMatrixWriter->write(pSearchSpaceMatrixIter->getObj(), std::cout);
-		pSearchSpaceMatrixIter->next();
-	}*/
-
-	assert(pMatrixCollection->size() == expectedSearchSpaceSize);
-
-	delete pMatrixInverseT;
-	delete pMatrixInverseH;
-	delete pMatrixT;
-	delete pMatrixH;
-	delete pSearchSpaceConstructor;
-	delete pMatrixCombiner;
 
 	std::cout << __func__ << " passed " << std::endl << "--------------------------"<<  std::endl ;
 }
@@ -876,13 +701,14 @@ void FullTestSuite::testAddtionBasedCoordinateComposer() {
 	//Epsilon zero
 	real_coordinate_t zeroCoordinate = {0.0,0.0};
 	GateRealCoordinate zeroEpsilon(NullPtr, zeroCoordinate);
-	//Target (1,5)
+	//Target (6,5)
 	GateRealCoordinate target(NullPtr, {6.0, 5.0});
 
 	//Coordinate addition based composer
 	ComparatorPtr<GateRealCoordinate> pCoordinateComparator = new SumCoordinateComparator<GatePtr>();
 	CombinerPtr<GateRealCoordinate> pCoordinateCombiner = new GateCoordinateCombinerImpl(NullPtr);
-	CoordinateAdditionBasedGateComposer additionBasedComposer(pCoordinateComparator,
+
+	ForTestCoordinateAdditionBasedGateComposer additionBasedComposer(pCoordinateComparator,
 			pCoordinateCombiner,
 			zeroEpsilon,
 			0);
@@ -965,6 +791,13 @@ void FullTestSuite::testAddtionBasedCoordinateComposer() {
 	std::cout << __func__ << " passed"  <<  std::endl;
 }
 
+void FullTestSuite::testResources() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
+	ResourcesTester resourceTester;
+	resourceTester.testSimpleHTCombinationChecker();
+	resourceTester.testSimpleHTSCombinationChecker();
+	std::cout << __func__ << " passed"  <<  std::endl;
+}
 
 void FullTestSuite::freeTestGateCollectionEvaluator() {
 	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;

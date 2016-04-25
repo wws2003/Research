@@ -27,6 +27,8 @@ private:
 	GateCombinabilityCheckerPtr getGateIdentityCycleCombinabilityChecker(LibrarySet librarySet);
 	GateCombinabilityCheckerPtr getGateCancelationCombinabilityChecker(LibrarySet librarySet);
 
+	GateCombinabilityCheckerPtr getHTSSelectiveCancelationCombinabilityChecker();
+
 	GateCombinabilityCheckers m_htGateCombinabilityCheckers;
 	GateCombinabilityCheckers m_htsGateCombinabilityCheckers;
 };

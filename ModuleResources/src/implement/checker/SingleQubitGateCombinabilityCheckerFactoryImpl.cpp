@@ -9,6 +9,7 @@
 #include "GateIdentityCycleCombinabilityCheckerImpl.h"
 #include "GateCancelationCombinabilityCheckerImpl.h"
 #include "GateSpecification.h"
+#include "GateSelectiveCombinabilityCheckerImpl.h"
 #include <exception>
 
 SingleQubitGateCombinabilityCheckerFactoryImpl::SingleQubitGateCombinabilityCheckerFactoryImpl() {
@@ -46,9 +47,11 @@ void SingleQubitGateCombinabilityCheckerFactoryImpl::initHTGateCombinabilityChec
 void SingleQubitGateCombinabilityCheckerFactoryImpl::initHTSGateCombinabilityCheckers() {
 	GateCombinabilityCheckerPtr pChecker1 = getGateIdentityCycleCombinabilityChecker(L_HTS);
 	GateCombinabilityCheckerPtr pChecker2 = getGateCancelationCombinabilityChecker(L_HTS);
+	GateCombinabilityCheckerPtr pChecker3 = getHTSSelectiveCancelationCombinabilityChecker();
 
 	m_htsGateCombinabilityCheckers.push_back(pChecker1);
 	m_htsGateCombinabilityCheckers.push_back(pChecker2);
+	m_htsGateCombinabilityCheckers.push_back(pChecker3);
 }
 
 void SingleQubitGateCombinabilityCheckerFactoryImpl::releaseCheckers(GateCombinabilityCheckers& checkers) {
@@ -97,4 +100,25 @@ GateCombinabilityCheckerPtr SingleQubitGateCombinabilityCheckerFactoryImpl::getG
 	return GateCombinabilityCheckerPtr(new GateCancelationCombinabilityCheckerImpl(cancelationMap));
 }
 
+GateCombinabilityCheckerPtr SingleQubitGateCombinabilityCheckerFactoryImpl::getHTSSelectiveCancelationCombinabilityChecker() {
+	using namespace gatespec::sgq;
+	using namespace gatespec::val;
+
+	const std::string T(T::name);
+	const std::string H(H::name);;
+	const std::string S(S::name);
+
+	CombinableGateLabelMap combinableLabelMap;
+	combinableLabelMap.insert(CombinableGateLabelPair(T,H));
+	combinableLabelMap.insert(CombinableGateLabelPair(T,S));
+
+	combinableLabelMap.insert(CombinableGateLabelPair(H,T));
+	combinableLabelMap.insert(CombinableGateLabelPair(H,S));
+
+	combinableLabelMap.insert(CombinableGateLabelPair(S,S));
+	combinableLabelMap.insert(CombinableGateLabelPair(S,H));
+
+	return GateCombinabilityCheckerPtr(new GateSelectiveCombinabilityCheckerImpl(combinableLabelMap));
+
+}
 

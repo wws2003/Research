@@ -57,6 +57,7 @@
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/collection"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/combiner"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/filter"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/src/implement/composer"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/implement"/>
@@ -64,6 +65,11 @@
 									<listOptionValue builtIn="false" value="../../ModuleParallelism/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleParallelism/include/interface/internal-abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleParallelism/include/implement"/>
+									<listOptionValue builtIn="false" value="../../ModuleResources/include/interface/abstract/checker"/>
+									<listOptionValue builtIn="false" value="../../ModuleResources/include/interface/abstract/gate_store"/>
+									<listOptionValue builtIn="false" value="../../ModuleResources/include/interface/common"/>
+									<listOptionValue builtIn="false" value="../../ModuleResources/include/implement/checker"/>
+									<listOptionValue builtIn="false" value="../../ModuleResources/include/implement/gate_store"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.1969211016" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.other.pic.1738298609" name="Position Independent Code (-fPIC)" superClass="gnu.cpp.compiler.option.other.pic" value="false" valueType="boolean"/>
@@ -84,6 +90,7 @@
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/artifact"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/artifact"/>
 									<listOptionValue builtIn="false" value="../../ModuleParallelism/artifact"/>
+									<listOptionValue builtIn="false" value="../../ModuleResources/artifact"/>
 									<listOptionValue builtIn="false" value="../../SharedThirdParties/gmp/lib"/>
 									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfr/lib"/>
 									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfrc++/lib"/>
@@ -95,6 +102,7 @@
 									<listOptionValue builtIn="false" value="ModuleParallelism"/>
 									<listOptionValue builtIn="false" value="ModuleAlgorithm"/>
 									<listOptionValue builtIn="false" value="ModuleEvaluate"/>
+									<listOptionValue builtIn="false" value="ModuleResources"/>
 									<listOptionValue builtIn="false" value="gmp"/>
 									<listOptionValue builtIn="false" value="mpfr"/>
 									<listOptionValue builtIn="false" value="pthread"/>
