@@ -6,6 +6,7 @@ MATRIX_OPERATOR_DIR := $(MAKE_DIR)/ModuleOperator/Debug
 IO_DIR := $(MAKE_DIR)/ModuleIO/Debug
 ALGORITHM_DIR := $(MAKE_DIR)/ModuleAlgorithm/Debug
 PARALLELISM_DIR := $(MAKE_DIR)/ModuleParallelism/Debug
+RESOURCES_DIR := $(MAKE_DIR)/ModuleResources/Debug
 EVALUATE_DIR := $(MAKE_DIR)/ModuleEvaluate/Debug
 TEST_MATRIX_OPERATOR_DIR := $(MAKE_DIR)/TestMatrixOperator/Debug
 TEST_EVALUATE_DIR := $(MAKE_DIR)/TestEvaluator/Debug
@@ -24,7 +25,7 @@ mathConcept: sharedThirdParties
 matrixOperator: sharedThirdParties
 	@$(MAKE) -C $(MATRIX_OPERATOR_DIR) -f $(MAKE_FILE_PATH) all	
 
-testEvaluate: io algorithm parallelism evaluate
+testEvaluate: io algorithm parallelism evaluate resources
 	@$(MAKE) -C $(TEST_EVALUATE_DIR) -f $(MAKE_FILE_PATH) all	
 
 io: sharedThirdParties
@@ -38,6 +39,9 @@ algorithm: sharedThirdParties
 
 parallelism: 
 	@$(MAKE) -C $(PARALLELISM_DIR) -f $(MAKE_FILE_PATH) all	
+
+resources: 
+	@$(MAKE) -C $(RESOURCES_DIR) -f $(MAKE_FILE_PATH) all	
 
 app:
 	@$(MAKE) -C $(APPLICATION_DIR) -f $(MAKE_FILE_PATH) all	
