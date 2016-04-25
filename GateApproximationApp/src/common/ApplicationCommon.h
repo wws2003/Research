@@ -35,15 +35,11 @@ typedef IComposerEvaluatorContainer* ComposerEvaluatorContainerPtr;
 typedef IComposerContainer* ComposerContainerPtr;
 
 typedef std::map<std::string, int> LibrarySetNameMap;
-typedef std::map<int, std::string> LibrarySetFileNameMap;
 typedef std::map<std::string, int> RotationTypeNameMap;
 
 enum CommandCode {
 	UNKNOWN_COMMAND,
-	GENERATE_NEAR_IDENTITY,
 	EVALUATE_COLLECTION_TO_IDENTITY,
-	EVALUATE_COLLECTION_APPROXIMATOR_TO_IDENTITY,
-	EVALUATE_PERSISTED_COLLECTION_TO_TARGET,
 	EVALUATE_CB_APPROXIMATOR_TO_TARGET,
 	EVALUATE_SK_APPROXIMATOR_TO_TARGET,
 	EVALUATE_SK2_APPROXIMATOR_TO_TARGET,

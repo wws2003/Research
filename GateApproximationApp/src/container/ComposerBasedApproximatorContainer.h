@@ -18,12 +18,12 @@
 #include "IMatrixFactory.h"
 #include "IElementSetLog.h"
 #include "ICoordinateCalculator.h"
-#include "IResourceContainer.h"
 #include "ILookupResultFilter.h"
 #include "MatrixRealInnerProductByTraceImpl.h"
 #include "GateCoordinateCalculatorImpl.h"
 #include "CoordinateAdditionBasedGateComposer.h"
 #include "IComposerContainer.h"
+#include "IGateStore.h"
 
 class ComposerBasedApproximatorContainer: public IApproximatorContainer {
 public:
@@ -48,8 +48,8 @@ private:
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
-	ResourceContainerPtr m_pResourceContainer;
 
+	GateStorePtr m_pGateStore;
 	GateComposerPtr m_pGateComposer;
 	ComposerContainerPtr m_pComposerContainer;
 

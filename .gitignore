@@ -67,6 +67,8 @@ SharedThirdParties/mpfr
 # Auto-generated gitignore
 */Debug/src/implement/.gitignore
 */Debug/*/.gitignore
+Module*/*/.gitignore
+Module*/.gitignore
 
 # Misc metadata
 .metadata

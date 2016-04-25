@@ -24,9 +24,6 @@ public:
 private:
 	void testSimpleWriter();
 	void testSimpleCollection();
-	void testSimpleSearchSpaceConstructor();
-	void testSimpleEvaluator();
-	void testInverseCancelingSearchSpaceConstructor();
 	void testSampleMatrixBinCollection();
 	void testCalculateCoordinatesInSearchSpace();
 	void testGNATCollectionBuild();
@@ -34,6 +31,7 @@ private:
 	void testGNATSearch();
 	void testFilteredGNATSearch();
 	void testAddtionBasedCoordinateComposer();
+	void testResources();
 
 	void freeTestGateCollectionEvaluator();
 
@@ -46,9 +44,6 @@ private:
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
 	TimerPtr m_pTimer;
 	MatrixSearchSpaceEvaluatorPtr m_pSearchSpaceEvaluator;
-
-	MatrixCombinerPtr m_pMatrixCombiner;
-	MatrixSearchSpaceConstructorPtr m_pSearchSpaceConstructor;
 
 	const static std::string GNAT_COLLECTION_PERSIST_FILE;
 };

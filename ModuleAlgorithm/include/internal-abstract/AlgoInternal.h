@@ -37,8 +37,6 @@ class IEquivalentQueryGenerator;
 typedef IEquivalentQueryGenerator<GatePtr> IEquivalentGateQueryGenerator;
 typedef IEquivalentQueryGenerator<MatrixPtr> IEquivalentMatrixQueryGenerator;
 
-class IGateCombinabilityChecker;
-
 template<typename T>
 using BinIteratorPtr =  IIterator<BinPtr<T> >*;
 
@@ -52,9 +50,6 @@ using EquivalentQueryGeneratorPtr = IEquivalentQueryGenerator<T>*;
 
 typedef IEquivalentGateQueryGenerator* EquivalentGateQueryGeneratorPtr;
 typedef IEquivalentMatrixQueryGenerator* EquivalentMatrixQueryGeneratorPtr;
-
-typedef IGateCombinabilityChecker* GateCombinabilityCheckerPtr;
-typedef std::vector<GateCombinabilityCheckerPtr> GateCombinabilityCheckers;
 
 template<typename T>
 class GNATCollectionIterator;

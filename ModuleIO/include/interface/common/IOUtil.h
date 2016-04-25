@@ -24,4 +24,9 @@ void createFolder(std::string folderPath);
 //for the error code
 void emptyFolder(std::string folderPath);
 
+//Remove folder as well as all sub elements
+//If there is any error, throws an integer exception
+//for the error code
+void deleteFolder(std::string folderPath);
+
 #endif /* IOUTIL_H_ */

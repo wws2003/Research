@@ -32,9 +32,6 @@ private:
 	//----------------------------------//
 	AbstractCommandPtr getCollectionEvaluationCommandForIdentity(std::string configFileName);
 
-	AbstractCommandPtr getPersistedCollectionEvaluationCommandForTargets(std::string storeFileName,
-			std::string targetConfigFile);
-
 	AbstractCommandPtr getComposerBasedApproximatorEvaluationCommandForTargets(std::string collectionConfigFile,
 			std::string cbApprxConfigFile,
 			std::string targetConfigFile);
@@ -130,9 +127,6 @@ private:
 	void resetCollectionContainer(const CollectionConfig& collectionConfig);
 
 	void resetEvaluationContainer(const EvaluatorConfig& evaluatorConfig,
-			const CollectionConfig& collectionConfig);
-
-	void resetApproximatorContainer(const NearIdentityApproximatorConfig& approximatorConfig,
 			const CollectionConfig& collectionConfig);
 
 	void resetComposerContainer();

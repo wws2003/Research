@@ -6,22 +6,19 @@
  */
 
 #include "SKApproximatorContainerImpl.h"
-#include "SampleApproximatorContainerImpl.h"
 #include "ComposerBasedGateApproximator.h"
-#include "DuplicateGateCancelationCombinerImpl.h"
-#include "ContainerResourceFactory.h"
 #include "DummyGateDecomposer.h"
 #include "ComposerBasedGateApproximator.h"
 #include "SimpleDenseMatrixFactoryImpl.h"
 #include "SampleMatrixOperator.h"
-#include "SampleLibraryMatrixStore.h"
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
-#include "ContainerResourceFactory.h"
 #include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "HarrowGateDecomposer.h"
 #include "SimpleGateComposer.h"
 #include "SimpleComposerContainerImpl.h"
+#include "GateCombinerImpl.h"
 #include "SKGateApproximator.h"
+#include "SampleGateStoreFactoryImpl.h"
 
 SKApproximatorContainerImpl::SKApproximatorContainerImpl(SKApproximatorConfig config,
 		CollectionConfig coreCollectionConfig) : m_approximatorConfig(config), m_coreCollectionConfig(coreCollectionConfig) {
@@ -46,16 +43,15 @@ void SKApproximatorContainerImpl::wireDependencies() {
 	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
 	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));
 
-	ResourceContainerFactory resourceContainerFactory;
-	m_pResourceContainer = resourceContainerFactory.getResourceContainer(m_coreCollectionConfig.m_librarySet,
-			m_pMatrixFactory,
-			m_pMatrixOperator);
-
 	GateCombinabilityCheckers checkers;
 	m_pGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(checkers, m_pMatrixOperator));
 
+	SampleGateStoreFactoryImpl gateStoreFactory(m_pMatrixOperator, m_pMatrixFactory);
+	m_pGateStore = gateStoreFactory.getGateStore(m_coreCollectionConfig.m_nbQubits);
+
 	MatrixPtrVector pBasis;
-	m_pResourceContainer->getMatrixOrthonormalBasis(pBasis, m_coreCollectionConfig.m_nbQubits);
+	m_pGateStore->getMatrixOrthonormalBasis(pBasis);
+
 	m_pMatrixRealInnerProductCalculator = MatrixRealInnerProductCalculatorPtr(new MatrixRealInnerProductByTraceImpl(NullPtr));
 	m_pHermitiaRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new MatrixCoordinateOnOrthonormalBasisCalculatorImpl(m_pMatrixRealInnerProductCalculator, pBasis));
 	m_pMatrixRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, m_pHermitiaRealCoordinateCalculator));
@@ -79,7 +75,8 @@ void SKApproximatorContainerImpl::releaseDependencies() {
 
 	_destroy(m_pGateCombiner);
 
-	_destroy(m_pResourceContainer);
+	_destroy(m_pGateStore);
+
 	_destroy(m_pMatrixOperator);
 	_destroy(m_pMatrixFactory);
 }

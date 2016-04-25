@@ -67,4 +67,9 @@ void emptyFolder(std::string folderPath) {
 	closedir(theFolder);
 }
 
+void deleteFolder(std::string folderPath) {
+	emptyFolder(folderPath);
+	remove(folderPath.c_str());
+}
+
 

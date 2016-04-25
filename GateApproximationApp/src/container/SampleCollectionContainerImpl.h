@@ -12,12 +12,14 @@
 #include "IOCommon.h"
 #include "MathConceptsCommon.h"
 #include "AlgoCommon.h"
-#include "IResourceContainer.h"
 #include "AlgoInternal.h"
 #include "ILookupResultFilter.h"
 #include "ICollectionContainer.h"
 #include "ApplicationCommon.h"
+#include "IGateStore.h"
 #include "Config.h"
+#include "EvaluateCommon.h"
+#include "ISearchSpaceConstructor.h"
 
 class SampleCollectionContainerImpl: public ICollectionContainer {
 public:
@@ -29,28 +31,19 @@ public:
 	virtual PersitableGateCollectionPtr getPersitableGateCollection();
 
 private:
-	void initLibrarySetNameMap();
-
-	void initLibrarySetPersistFileNameMap();
-
 	void wireDependencies();
 
-	std::string getMatrixDBFileName(const CollectionConfig& config);
-
-	std::string getGateCollectionPersistenceFileFullName(const CollectionConfig& config,
-			const LibrarySetFileNameMap& librarySetFileNameMap,
-			std::string fileExtension);
+	void constructGateCombinabilityCheckerFactory();
 
 	void constructGateCollection(GateCollectionPtr pGateCollection, GateDistanceCalculatorPtr pGateDistanceCalculator);
 
 	void releaseDependencies();
 
-	LibrarySetFileNameMap m_librarySetPersistFileNameMap;
-
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
 
-	ResourceContainerPtr m_pResourceContainer;
+	GateStorePtr m_pGateStore;
+	GateCombinabilityCheckerFactoryPtr m_pCheckerFactory;
 
 	GateWriterPtr m_pBinaryGateWriter;
 	GateReaderPtr m_pBinaryGateReader;
@@ -71,9 +64,6 @@ private:
 	GateSearchSpaceConstructorPtr m_pGateSearchSpaceConstructor;
 
 	CollectionConfig m_collectionConfig;
-
-	const static std::string DEFAULT_GATE_COLLECTION_PERSIST_FILE_EXT;
-
 };
 
 #endif /* SAMPLECOLLECTIONCONTAINERIMPL_H_ */

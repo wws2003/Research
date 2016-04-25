@@ -14,9 +14,8 @@
 #include "IOCommon.h"
 #include "MathConceptsCommon.h"
 #include "AlgoCommon.h"
-#include "IResourceContainer.h"
 #include "AlgoInternal.h"
-#include "ILibraryMatrixStore.h"
+#include "IGateStore.h"
 #include "Config.h"
 
 class SampleEvaluatorContainerImpl: public IEvaluatorContainer {
@@ -38,19 +37,16 @@ public:
 private:
 	void wireDependencies();
 
-	std::string getMatrixDBFileName(const CollectionConfig& config);
-
 	void releaseDependencies();
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
 
-	ResourceContainerPtr m_pResourceContainer;
+	GateStorePtr m_pGateStore;
 
 	std::vector<GatePtr> m_targetGates;
 
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
-	LibraryMatrixStorePtr m_pLibraryMatrixStore;
 	GateDistanceCalculatorPtr m_pGateDistanceCalculator;
 
 	GateWriterPtr m_pGateWriterInEvaluator;

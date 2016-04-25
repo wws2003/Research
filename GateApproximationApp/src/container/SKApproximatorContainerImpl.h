@@ -16,9 +16,9 @@
 #include "NearIdentityElementBinBasedComposer.h"
 #include "IDecomposer.h"
 #include "ApplicationCommon.h"
-#include "IResourceContainer.h"
 #include "IComposer.h"
 #include "IComposerContainer.h"
+#include "IGateStore.h"
 
 class SKApproximatorContainerImpl: public IApproximatorContainer {
 public:
@@ -33,7 +33,8 @@ private:
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
-	ResourceContainerPtr m_pResourceContainer;
+
+	GateStorePtr m_pGateStore;
 
 	CombinerPtr<GatePtr> m_pGateCombiner;
 

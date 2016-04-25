@@ -8,7 +8,6 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include src/factory/subdir.mk
 -include src/container/subdir.mk
 -include src/configure/subdir.mk
 -include src/concrete-from-templates/subdir.mk
@@ -49,7 +48,7 @@ all: GateApproximationApp
 GateApproximationApp: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -L../../ModuleMathConcepts/artifact -L../../ModuleOperator/artifact -L../../ModuleIO/artifact -L../../ModuleAlgorithm/artifact -L../../ModuleEvaluate/artifact -L../../SharedThirdParties/gmp/lib -L../../SharedThirdParties/mpfr/lib -L../../SharedThirdParties/mpfrc++/lib -pthread -o "GateApproximationApp" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L../../ModuleMathConcepts/artifact -L../../ModuleOperator/artifact -L../../ModuleIO/artifact -L../../ModuleAlgorithm/artifact -L../../ModuleEvaluate/artifact -L../../ModuleResources/artifact -L../../SharedThirdParties/gmp/lib -L../../SharedThirdParties/mpfr/lib -L../../SharedThirdParties/mpfrc++/lib -pthread -o "GateApproximationApp" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build

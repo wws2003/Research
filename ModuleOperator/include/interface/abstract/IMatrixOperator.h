@@ -98,6 +98,11 @@ public:
 	virtual void eig(MatrixPtr pm, ComplexVectorRef prEigVals, MatrixPtrRef prEigVects) = 0;
 
 	/**
+	 * Calculate the Kronecker product of 2 matrices
+	 */
+	virtual void kron(MatrixPtr pm1, MatrixPtr pm2, MatrixPtrRef kronProduct) = 0;
+
+	/**
 	 * Just an utility operation to calculate S = sum(scalar[i] * U[i])
 	 */
 	virtual void sumProduct(const MatrixPtrVector& matrixVector, const ComplexVector& scalaVector, MatrixPtrRef pSum) = 0;

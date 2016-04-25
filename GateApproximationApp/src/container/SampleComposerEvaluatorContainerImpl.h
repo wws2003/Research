@@ -13,11 +13,11 @@
 #include "ICoordinateCalculator.h"
 #include "IWriter.h"
 #include "ICoordinateWriter.h"
-#include "IResourceContainer.h"
 #include "ICollectionContainer.h"
 #include "IDecomposer.h"
 #include "Config.h"
 #include "ApplicationCommon.h"
+#include "IGateStore.h"
 
 class SampleComposerEvaluatorContainerImpl: public IComposerEvaluatorContainer {
 public:
@@ -34,14 +34,13 @@ private:
 	void releaseDependencies();
 
 	void getTargetsForEvaluation(std::vector<GatePtr>& targets);
-	std::string getMatrixDBFileName(const CollectionConfig& config);
 
 	GateDecomposerPtr generateDecomposerFromConfig(ComposerEvaluatorConfig evalConfig);
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
 
-	ResourceContainerPtr m_pResourceContainer;
+	GateStorePtr m_pGateStore;
 
 	//For targets
 	std::vector<GatePtr> m_targetGates;
@@ -53,7 +52,6 @@ private:
 
 	//For distance calculator
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
-	LibraryMatrixStorePtr m_pLibraryMatrixStore;
 	GateDistanceCalculatorPtr m_pGateDistanceCalculator;
 
 	//For decomposer

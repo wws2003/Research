@@ -38,6 +38,10 @@
 									<listOptionValue builtIn="false" value="../../ModuleIO/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleParallelism/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleParallelism/include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../../ModuleResources/include/interface/abstract"/>
+									<listOptionValue builtIn="false" value="../../ModuleResources/include/interface/abstract/checker"/>
+									<listOptionValue builtIn="false" value="../../ModuleResources/include/interface/abstract/gate_store"/>
+									<listOptionValue builtIn="false" value="../../ModuleResources/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../SharedThirdParties/gmp/include"/>
 									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfr/include"/>
 									<listOptionValue builtIn="false" value="../../SharedThirdParties/mpfrc++/include"/>
