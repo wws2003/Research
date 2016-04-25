@@ -20,6 +20,9 @@ Dependencies: ModuleMathConcepts, ModuleOperator, ModuleIO, ModuleAlgorithm
 6. ***ModuleParallelism***  
 Provide classes to support multi-threaded (task abstract class, task executors, etc.). Most of classes (even concrete ones) are template-based and therefore need to be specified elsewhere in order to build. See GateApproximationApp/src/concrete-from-templates for examples.  
 Dependencies: None
+7. ***ModuleResources***  
+Provide access to library gates set (e.g. Clifford + T or Clifford + T + S), as well as specification (conventional name, cost) for theses gates. This module is designed to be the singular access point to specified gates, to make sure other modules must be able to deal with general ones.  
+Dependencies: ModuleMathConcepts, ModuleOperator
 
 Each module, except for the third party libraries, is built into shared library, generated in the folder *Module*/artifact. Following the principles of OOD, each module only exposes to its client interfaces (normally by abstract classes) located at the folder *Module*/include/interface. Implementing classes are located at the folder *Module*/include/implement.
 
@@ -37,8 +40,7 @@ Library for matrix operations [http://eigen.tuxfamily.org](http://eigen.tuxfamil
 Run $make in the project 's root folder to have the software installed. You need a g++ version supports c++11
 
 ## Executable
-Currently, a part from test cases, there is only one excutable file: GateApproximationApp, located at GateApproximationApp/Debug/.  
-Run it with the LD_LIBRARY_PATH set to $(pwd)/ModuleMathConcepts/artifact:$(pwd)/ModuleOperator/artifact:$(pwd)/ModuleAlgorithm/artifact:$(pwd)/ModuleIO/artifact:$(pwd)/ModuleEvaluate/artifact/:$(pwd)/SharedThirdParties/gmp/lib:$(pwd)/SharedThirdParties/mpfr/lib. At the moment (2015/10/29), not all features are available
+Currently, a part from test cases, after any successful build, the executable file (GateApproximationApp) is located in Experiment folder. Shared libraries are located in Experiment/lib. More detailed manual is coming soon.
 
 ### Misc
 1. This project is based on Eclipse platform.
