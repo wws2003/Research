@@ -21,7 +21,7 @@ void readComplexVal(std::istream &inputStream, ComplexVal* pCVal) ;
 SQLiteLazyGateDistanceCalculator::SQLiteLazyGateDistanceCalculator(MatrixDistanceCalculatorPtr pMatrixDistanceCalculator,
 		MatrixFactoryPtr pMatrixFactory,
 		std::string dbFileName,
-		int matrixSize) : LazyGateDistanceCalculatorImpl(pMatrixDistanceCalculator, NullPtr, NullPtr) {
+		int matrixSize) : LazyGateDistanceCalculatorImpl(pMatrixDistanceCalculator, NullPtr) {
 
 	m_pMatrixFactory = pMatrixFactory;
 	m_matrixSize = matrixSize;
@@ -33,7 +33,7 @@ SQLiteLazyGateDistanceCalculator::SQLiteLazyGateDistanceCalculator(MatrixDistanc
 SQLiteLazyGateDistanceCalculator::SQLiteLazyGateDistanceCalculator(MatrixDistanceCalculatorPtr pMatrixDistanceCalculator,
 		MatrixFactoryPtr pMatrixFactory,
 		sqlite3* pDb,
-		int matrixSize) : LazyGateDistanceCalculatorImpl(pMatrixDistanceCalculator, NullPtr, NullPtr) {
+		int matrixSize) : LazyGateDistanceCalculatorImpl(pMatrixDistanceCalculator, NullPtr) {
 
 	m_pMatrixFactory = pMatrixFactory;
 	m_matrixSize = matrixSize;

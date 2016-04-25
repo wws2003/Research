@@ -10,12 +10,10 @@
 #include "Gate.h"
 
 LazyGateDistanceCalculatorImpl::LazyGateDistanceCalculatorImpl(MatrixDistanceCalculatorPtr pMatrixDistanceCalculator,
-		MatrixOperatorPtr pMatrixOperator,
-		LibraryMatrixStorePtr pLibraryMatrixStore) {
+		MatrixOperatorPtr pMatrixOperator) {
 
 	m_pMatrixDistanceCalculator = pMatrixDistanceCalculator;
 	m_pMatrixOperator = pMatrixOperator;
-	m_pLibraryMatrixStore = pLibraryMatrixStore;
 }
 
 mreal_t LazyGateDistanceCalculatorImpl::distance(GatePtr pGate1, GatePtr pGate2) {

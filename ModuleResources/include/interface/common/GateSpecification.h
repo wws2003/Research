@@ -34,66 +34,75 @@ const ComplexVal minus_image_unit(0.0, -1.0); //-i
 namespace sgq {
 
 struct T {
-	static constexpr char name[] = "T";
-	static constexpr int cost = 100;
+	static const char name[];
+	static const int cost;
 };
+
 struct H {
-	static constexpr char name[] = "H";
-	static constexpr int cost = 10;
+	static const char name[];
+	static const int cost;
 };
+
 struct S {
-	static constexpr char name[] = "S";
-	static constexpr int cost = 20;
+	static const char name[];
+	static const int cost;
 };
+
 struct I {
-	static constexpr char name[] = "I";
-	static constexpr char inverse_name[] = "-I";
+	static const char name[];
+	static const char inverse_name[];
 };
 }
 
 namespace twq {
 
 struct T1 {
-	static constexpr char name[] = "T1";
-	static constexpr int cost = 100;
+	static const char name[];
+	static const int cost;
 };
+
 struct H1 {
-	static constexpr char name[] = "H1";
-	static constexpr int cost = 10;
+	static const char name[];
+	static const int cost;
 };
+
 struct S1 {
-	static constexpr char name[] = "S1";
-	static constexpr int cost = 20;
+	static const char name[];
+	static const int cost;
 };
 
 struct T2 {
-	static constexpr char name[] = "T2";
-	static constexpr int cost = 100;
+	static const char name[];
+	static const int cost;
 };
+
 struct H2 {
-	static constexpr char name[] = "H2";
-	static constexpr int cost = 10;
+	static const char name[];
+	static const int cost;
 };
+
 struct S2 {
-	static constexpr char name[] = "S2";
-	static constexpr int cost = 20;
+	static const char name[];
+	static const int cost;
 };
 
 struct CNOT1 {
-	static constexpr char name[] = "CNOT1";
-	static constexpr int cost = 1;
+	static const char name[];
+	static const int cost;
 };
+
 struct CNOT2 {
-	static constexpr char name[] = "CNOT2";
-	static constexpr int cost = 1;
+	static const char name[];
+	static const int cost;
 };
 
 struct I {
-	static constexpr char name[] = "I";
-	static constexpr char equiv_name1[] = "-I";
-	static constexpr char equiv_name2[] = "iI";
-	static constexpr char equiv_name3[] = "-iI";
+	static const char name[];
+	static const char equiv_name1[];
+	static const char equiv_name2[];
+	static const char equiv_name3[];
 };
+
 }
 
 }  // namespace gatespec

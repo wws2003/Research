@@ -12,13 +12,11 @@
 #include "MathConceptsCommon.h"
 #include "OperatorCommon.h"
 #include "IMatrixOperator.h"
-#include "ILibraryMatrixStore.h"
 
 class LazyGateDistanceCalculatorImpl: public IGateDistanceCalculator {
 public:
 	LazyGateDistanceCalculatorImpl(MatrixDistanceCalculatorPtr pMatrixDistanceCalculator,
-			MatrixOperatorPtr pMatrixOperator,
-			LibraryMatrixStorePtr pLibraryMatrixStore);
+			MatrixOperatorPtr pMatrixOperator);
 
 	virtual ~LazyGateDistanceCalculatorImpl(){};
 
@@ -30,7 +28,6 @@ protected:
 private:
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
 	MatrixOperatorPtr m_pMatrixOperator;
-	LibraryMatrixStorePtr m_pLibraryMatrixStore;
 };
 
 

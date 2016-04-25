@@ -16,11 +16,11 @@
 #include "CoordinateAdditionBasedGateComposer.h"
 #include "IDecomposer.h"
 #include "ApplicationCommon.h"
-#include "IResourceContainer.h"
 #include "IComposer.h"
 #include "IConverter.h"
 #include "IEvaluatingComposerContainer.h"
 #include "IElementComparator.h"
+#include "IGateStore.h"
 
 class SK2ApproximatorContainerImpl: public IApproximatorContainer {
 public:
@@ -40,7 +40,8 @@ protected:
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
-	ResourceContainerPtr m_pResourceContainer;
+
+	GateStorePtr m_pGateStore;
 
 	MatrixRealInnerProductCalculatorPtr m_pMatrixRealInnerProductCalculator;
 	MatrixRealCoordinateCalculatorPtr m_pHermitiaRealCoordinateCalculator;

@@ -9,32 +9,7 @@
 #define CONFIG_H_
 
 #include "MathConceptsCommon.h"
-
-enum LibrarySet {
-	L_HT,
-	L_HTCNOT,
-	L_HCV,
-	L_HTCV,
-	L_HTS,
-	L_HTSCNOT,
-	L_UNSPECIFIED
-};
-
-enum RotationType {
-	R_X,
-	R_Y,
-	R_Z,
-	C_RX,//For controlled gate
-	C_RY,//For controlled gate
-	C_RZ //For controlled gate
-};
-
-struct RotationConfig {
-	RotationType m_rotationType;
-	mreal_t m_rotationAngle;
-};
-
-typedef std::vector<RotationConfig> RotationConfigs;
+#include "ResourcesCommon.h"
 
 enum MatrixDistanceCalculatorType {
 	MDCT_FOWLER = 1,

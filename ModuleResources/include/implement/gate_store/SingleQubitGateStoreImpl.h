@@ -21,7 +21,7 @@ public:
 	virtual ~SingleQubitGateStoreImpl();
 
 	//Implement
-	void getLibraryGates(std::vector<GatePtr>& pLibraryGates, R_LibrarySet librarySet);
+	void getLibraryGates(std::vector<GatePtr>& pLibraryGates, LibrarySet librarySet);
 
 	//Implement
 	void getIdentityGates(std::vector<GatePtr>& pIdentityGates, bool isPhaseIgnored);
@@ -31,14 +31,14 @@ public:
 
 	//Implement
 	void getRotationTargets(std::vector<GatePtr>& targets,
-			const R_RotationConfigs& rotationTargetsConfig);
+			const RotationConfigs& rotationTargetsConfig);
 
 private:
 	void setupOrthonormalBasis();
 	void setupLibraryGates();
 	void setupIdentityGates();
 
-	GatePtr getRotationGate(R_RotationConfig rotationConfig);
+	GatePtr getRotationGate(RotationConfig rotationConfig);
 
 	template<typename T>
 	void releaseVector(std::vector<T>& pElements);

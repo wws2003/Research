@@ -12,7 +12,6 @@
 #include "SampleMatrixOperator.h"
 #include "GateCombinerImpl.h"
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
-#include "ContainerResourceFactory.h"
 #include "MatrixRealInnerProductByTraceImpl.h"
 #include "GateSetLogImpl.h"
 #include "AdaptiveGateCoordinateComposer.h"
@@ -31,6 +30,7 @@
 #include "MultiNearBalancePartsGateDecomposer.h"
 #include "GateCoordinateAdditionBasedComposerContainerImpl.h"
 #include "GateDistanceCalculatorByMatrixImpl.h"
+#include "SampleGateStoreFactoryImpl.h"
 #include "GateCoordinateDistanceCalculator.h"
 
 GateCoordinateAdditionBasedComposerContainerImpl::GateCoordinateAdditionBasedComposerContainerImpl(const CoordinateAdditionalBasedComposerConfig& cabConfig,
@@ -55,16 +55,15 @@ void GateCoordinateAdditionBasedComposerContainerImpl::wireDependencies() {
 	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
 	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));
 
-	ResourceContainerFactory resourceContainerFactory;
-	m_pResourceContainer = resourceContainerFactory.getResourceContainer(m_collectionConfig.m_librarySet,
-			m_pMatrixFactory,
-			m_pMatrixOperator);
-
 	initCoordinateAdditionalBasedGateComposerElements();
+
+	SampleGateStoreFactoryImpl gateStoreFactory(m_pMatrixOperator, m_pMatrixFactory);
+	m_pGateStore = gateStoreFactory.getGateStore(m_collectionConfig.m_nbQubits);
 
 	//Coordinate calculator
 	MatrixPtrVector pBasis;
-	m_pResourceContainer->getMatrixOrthonormalBasis(pBasis, m_collectionConfig.m_nbQubits);
+	m_pGateStore->getMatrixOrthonormalBasis(pBasis);
+
 	m_pMatrixRealInnerProductCalculator = MatrixRealInnerProductCalculatorPtr(new MatrixRealInnerProductByTraceImpl(m_pMatrixOperator));
 	m_pHermitiaRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new MatrixCoordinateOnOrthonormalBasisCalculatorImpl(m_pMatrixRealInnerProductCalculator, pBasis));
 	m_pMatrixRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, m_pHermitiaRealCoordinateCalculator));
@@ -101,7 +100,8 @@ void GateCoordinateAdditionBasedComposerContainerImpl::releaseDependencies() {
 
 	_destroy(m_pGateCombiner);
 
-	_destroy(m_pResourceContainer);
+	_destroy(m_pGateStore);
+
 	_destroy(m_pMatrixOperator);
 	_destroy(m_pMatrixFactory);
 }

@@ -17,7 +17,7 @@ public:
 	virtual ~TwoQubitsGateCombinabilityCheckerFactoryImpl();
 
 	//Implement
-	void getGateCombinabilityCheckers(R_LibrarySet librarySet, GateCombinabilityCheckers& checkers);
+	void getGateCombinabilityCheckers(LibrarySet librarySet, GateCombinabilityCheckers& checkers);
 
 private:
 	void initHTCNOTGateCombinabilityCheckers();
@@ -25,8 +25,8 @@ private:
 
 	void releaseCheckers(GateCombinabilityCheckers& checkers);
 
-	GateCombinabilityCheckerPtr getGateIdentityCycleCombinabilityChecker(R_LibrarySet librarySet);
-	GateCombinabilityCheckerPtr getGateCancelationCombinabilityChecker(R_LibrarySet librarySet);
+	GateCombinabilityCheckerPtr getGateIdentityCycleCombinabilityChecker(LibrarySet librarySet);
+	GateCombinabilityCheckerPtr getGateCancelationCombinabilityChecker(LibrarySet librarySet);
 
 	GateCombinabilityCheckerPtr getHTCNOTGateSelectiveCombinabilityChecker();
 	GateCombinabilityCheckerPtr getHTSCNOTGateSelectiveCombinabilityChecker();

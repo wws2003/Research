@@ -16,11 +16,8 @@
 #include "ICombiner.h"
 #include "GateSearchSpaceConstructorImpl.h"
 #include "VectorBasedCollectionImpl.hpp"
-#include "SampleResourceContainerImpl.h"
 #include "GateCombinerImpl.h"
 #include "LabelOnlyGateWriterImpl.h"
-#include "ContainerResourceFactory.h"
-#include "SampleLibraryMatrixStore.h"
 #include "PersistableGNATCollectionImpl.h"
 #include "IPersistableCollection.h"
 #include "DuplicateGateLookupResultFilterImpl.h"
@@ -31,7 +28,10 @@
 #include "LazyGateDistanceCalculatorImpl.h"
 #include "SQLiteLazyGateDistanceCalculator.h"
 #include "GateDistanceCalculatorByMatrixImpl.h"
+#include "SampleGateStoreFactoryImpl.h"
 #include "FilePathConfig.h"
+#include "SingleQubitGateCombinabilityCheckerFactoryImpl.h"
+#include "TwoQubitsGateCombinabilityCheckerFactoryImpl.h"
 #include <stdexcept>
 
 SampleCollectionContainerImpl::SampleCollectionContainerImpl(const CollectionConfig& collectionConfig) : m_collectionConfig(collectionConfig) {
@@ -74,10 +74,8 @@ void SampleCollectionContainerImpl::wireDependencies() {
 	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
 	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));
 
-	ResourceContainerFactory resourceContainerFactory;
-	m_pResourceContainer = resourceContainerFactory.getResourceContainer(m_collectionConfig.m_librarySet,
-			m_pMatrixFactory,
-			m_pMatrixOperator);
+	SampleGateStoreFactoryImpl gateStoreFactory(m_pMatrixOperator, m_pMatrixFactory);
+	m_pGateStore = gateStoreFactory.getGateStore(m_collectionConfig.m_nbQubits);
 
 	m_pBinaryMatrixWriter = MatrixWriterPtr(new BinaryMatrixWriterImpl());
 	m_pBinaryMatrixReader = MatrixReaderPtr(new BinaryMatrixReaderImpl(m_pMatrixFactory));
@@ -99,16 +97,35 @@ void SampleCollectionContainerImpl::wireDependencies() {
 	m_pGateLookupResultProcessor = GateLookupResultProcessorPtr(new SetBasedGateLookupResultProcessor(m_pGateDistanceCalculator));
 	m_pGateLookupResultProcessor->init();
 
+	std::vector<GatePtr> universalSet;
+	m_pGateStore->getLibraryGates(universalSet, m_collectionConfig.m_librarySet);
 	m_pUniversalSet = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>(m_pGateDistanceCalculator));
-	m_pResourceContainer->getUniversalGates(m_pUniversalSet, m_collectionConfig.m_nbQubits);
+	for(unsigned int i = 0; i < universalSet.size(); i++) {
+		m_pUniversalSet->addElement(universalSet[i]->clone());
+	}
 
 	GateCombinabilityCheckers checkers;
-	m_pResourceContainer->getGateCombinabilityCheckers(checkers, m_collectionConfig.m_nbQubits);
+	constructGateCombinabilityCheckerFactory();
+	m_pCheckerFactory->getGateCombinabilityCheckers(m_collectionConfig.m_librarySet, checkers);
+
 	m_pGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(checkers, m_pMatrixOperator));
 
 	m_pGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorImpl(m_pGateCombiner));
 }
 
+void SampleCollectionContainerImpl::constructGateCombinabilityCheckerFactory() {
+	switch (m_collectionConfig.m_nbQubits) {
+	case 1:
+		m_pCheckerFactory = GateCombinabilityCheckerFactoryPtr(new SingleQubitGateCombinabilityCheckerFactoryImpl());
+		break;
+	case 2:
+		m_pCheckerFactory = GateCombinabilityCheckerFactoryPtr(new TwoQubitsGateCombinabilityCheckerFactoryImpl());
+		break;
+	default:
+		throw std::logic_error("Not available number of qubits");
+		break;
+	}
+}
 void SampleCollectionContainerImpl::releaseDependencies() {
 	_destroy(m_pGateSearchSpaceConstructor);
 
@@ -127,7 +144,8 @@ void SampleCollectionContainerImpl::releaseDependencies() {
 	_destroy(m_pBinaryMatrixReader);
 	_destroy(m_pBinaryMatrixWriter);
 
-	_destroy(m_pResourceContainer);
+	_destroy(m_pCheckerFactory);
+	_destroy(m_pGateStore);
 
 	_destroy(m_pMatrixOperator);
 	_destroy(m_pMatrixFactory);

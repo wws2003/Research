@@ -16,7 +16,6 @@
 #include "GateDistanceCalculatorByMatrixImpl.h"
 #include "GateSearchSpaceConstructorImpl.h"
 #include "VectorBasedCollectionImpl.hpp"
-#include "SampleResourceContainerImpl.h"
 #include "MatrixRealInnerProductByTraceImpl.h"
 #include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
@@ -27,9 +26,8 @@
 #include "CpuTimer.h"
 #include "GateSearchSpaceTimerEvaluatorImpl.h"
 #include "MapBasedGateBinCollectionImpl.h"
-#include "ContainerResourceFactory.h"
-#include "SampleLibraryMatrixStore.h"
 #include "SQLiteLazyGateDistanceCalculator.h"
+#include "SampleGateStoreFactoryImpl.h"
 #include "FilePathConfig.h"
 #include <stdexcept>
 
@@ -59,10 +57,10 @@ void SampleEvaluatorContainerImpl::getTargetsForEvaluation(std::vector<GatePtr>&
 	targets.clear();
 	if(m_evaluatorConfig.m_rotationTargets.empty()) {
 		//No specified target -> use identity as default target
-		m_pResourceContainer->getIdentityTargets(targets, m_collectionConfig.m_nbQubits);
+		m_pGateStore->getIdentityGates(targets, m_collectionConfig.m_matrixDistanceCalculatorType == MDCT_FOWLER);
 	}
 	else {
-		m_pResourceContainer->getRotationTargets(targets, m_evaluatorConfig.m_rotationTargets, m_collectionConfig.m_nbQubits);
+		m_pGateStore->getRotationTargets(targets, m_evaluatorConfig.m_rotationTargets);
 	}
 }
 
@@ -74,15 +72,12 @@ void SampleEvaluatorContainerImpl::wireDependencies() {
 	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
 	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));
 
-	ResourceContainerFactory resourceContainerFactory;
-	m_pResourceContainer = resourceContainerFactory.getResourceContainer(m_collectionConfig.m_librarySet,
-			m_pMatrixFactory,
-			m_pMatrixOperator);
+	SampleGateStoreFactoryImpl gateStoreFactory(m_pMatrixOperator, m_pMatrixFactory);
+	m_pGateStore = gateStoreFactory.getGateStore(m_collectionConfig.m_nbQubits);
 
 	getTargetsForEvaluation(m_targetGates);
 
 	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(NullPtr));
-	m_pLibraryMatrixStore = LibraryMatrixStorePtr(new SampleLibraryMatrixStore(m_pMatrixFactory, m_pMatrixOperator));
 
 	FilePathConfig pathConfig;
 	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new SQLiteLazyGateDistanceCalculator(m_pMatrixDistanceCalculator,
@@ -95,7 +90,8 @@ void SampleEvaluatorContainerImpl::wireDependencies() {
 				m_pLibraryMatrixStore));*/
 
 	MatrixPtrVector pBasis;
-	m_pResourceContainer->getMatrixOrthonormalBasis(pBasis, m_collectionConfig.m_nbQubits);
+	m_pGateStore->getMatrixOrthonormalBasis(pBasis);
+
 	m_pGateWriterInEvaluator = GateWriterPtr(new LabelOnlyGateWriterImpl(","));
 	m_pMatrixRealInnerProductCalculator = MatrixRealInnerProductCalculatorPtr(new MatrixRealInnerProductByTraceImpl(m_pMatrixOperator));
 	m_pHermitiaRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new MatrixCoordinateOnOrthonormalBasisCalculatorImpl(m_pMatrixRealInnerProductCalculator, pBasis));
@@ -117,20 +113,9 @@ void SampleEvaluatorContainerImpl::releaseDependencies() {
 
 	_destroy(m_pGateDistanceCalculator);
 
-	_destroy(m_pLibraryMatrixStore);
-
 	_destroy(m_pMatrixDistanceCalculator);
 
-	//Release generate targets
-	/*for(std::vector<GatePtr>::iterator gIter = m_targetGates.begin(); gIter != m_targetGates.end();) {
-		GatePtr pGate = *gIter;
-		gIter = m_targetGates.erase(gIter);
-		_destroy(pGate);
-	}*/
-	//Try foreach !
-	std::for_each(m_targetGates.begin(), m_targetGates.end(), [](GatePtr pGate){_destroy(pGate);});
-
-	_destroy(m_pResourceContainer);
+	_destroy(m_pGateStore);
 
 	_destroy(m_pMatrixOperator);
 	_destroy(m_pMatrixFactory);

@@ -14,6 +14,8 @@
 #include "Gate.h"
 #include "IMatrixOperator.h"
 #include "OperatorCommon.h"
+#include "ResourcesCommon.h"
+#include "IGateCombinabilityChecker.h"
 #include <vector>
 
 class GateCombinerImpl: public ICombiner<GatePtr> {

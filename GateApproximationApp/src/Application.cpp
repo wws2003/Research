@@ -17,6 +17,9 @@
 #include "ApplicationCommon.h"
 #include "CommandFactory.h"
 #include "ICommand.h"
+#include "Context.h"
+
+#define DRY_MODE (false)
 
 using namespace std;
 
@@ -41,9 +44,12 @@ int main(int argc, char* argv[]) {
 		CommandParams commandParams;
 		commandParser.getCommandCodeAndParams(argc, argv, commandCode, commandParams);
 
+		ContextPtr pContext = Context::setup(DRY_MODE, ".app");
 		CommandPtr pCommand = commandFactory.getCommand(commandCode, commandParams);
 		pCommand->execute();
 		_destroy(pCommand);
+
+		delete pContext;
 	}
 	catch(std::exception const& e) {
 		std::cout << e.what() << std::endl;

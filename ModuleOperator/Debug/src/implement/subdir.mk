@@ -14,7 +14,6 @@ CPP_SRCS += \
 ../src/implement/MatrixRealInnerProductByTraceImpl.cpp \
 ../src/implement/MatrixTraceDistanceCalculator.cpp \
 ../src/implement/SQLiteLazyGateDistanceCalculator.cpp \
-../src/implement/SampleLibraryMatrixStore.cpp \
 ../src/implement/SampleMatrixOperator.cpp \
 ../src/implement/SpecialUnitaryMatrixCoordinateMapper.cpp 
 
@@ -29,7 +28,6 @@ OBJS += \
 ./src/implement/MatrixRealInnerProductByTraceImpl.o \
 ./src/implement/MatrixTraceDistanceCalculator.o \
 ./src/implement/SQLiteLazyGateDistanceCalculator.o \
-./src/implement/SampleLibraryMatrixStore.o \
 ./src/implement/SampleMatrixOperator.o \
 ./src/implement/SpecialUnitaryMatrixCoordinateMapper.o 
 
@@ -44,7 +42,6 @@ CPP_DEPS += \
 ./src/implement/MatrixRealInnerProductByTraceImpl.d \
 ./src/implement/MatrixTraceDistanceCalculator.d \
 ./src/implement/SQLiteLazyGateDistanceCalculator.d \
-./src/implement/SampleLibraryMatrixStore.d \
 ./src/implement/SampleMatrixOperator.d \
 ./src/implement/SpecialUnitaryMatrixCoordinateMapper.d 
 

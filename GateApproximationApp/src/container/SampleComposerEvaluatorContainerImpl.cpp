@@ -18,7 +18,6 @@
 #include "GateDistanceCalculatorByMatrixImpl.h"
 #include "GateSearchSpaceConstructorImpl.h"
 #include "VectorBasedCollectionImpl.hpp"
-#include "SampleResourceContainerImpl.h"
 #include "MatrixRealInnerProductByTraceImpl.h"
 #include "MatrixCoordinateOnOrthonormalBasisCalculatorImpl.h"
 #include "SpecialUnitaryMatrixCoordinateMapper.h"
@@ -30,14 +29,13 @@
 #include "SystemTimer.h"
 #include "GateSearchSpaceTimerEvaluatorImpl.h"
 #include "MapBasedGateBinCollectionImpl.h"
-#include "ContainerResourceFactory.h"
-#include "SampleLibraryMatrixStore.h"
 #include "SQLiteLazyGateDistanceCalculator.h"
 #include "SampleCollectionContainerImpl.h"
 #include "VectorBasedMatrixCollectionImpl.h"
 #include "MultiNearBalancePartsGateDecomposer.h"
 #include "HarrowGateDecomposer.h"
 #include "FilePathConfig.h"
+#include "SampleGateStoreFactoryImpl.h"
 #include <stdexcept>
 #include <iostream>
 
@@ -70,10 +68,8 @@ void SampleComposerEvaluatorContainerImpl::wireDependencies() {
 	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
 	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));
 
-	ResourceContainerFactory resourceContainerFactory;
-	m_pResourceContainer = resourceContainerFactory.getResourceContainer(m_collectionConfig.m_librarySet,
-			m_pMatrixFactory,
-			m_pMatrixOperator);
+	SampleGateStoreFactoryImpl gateStoreFactory(m_pMatrixOperator, m_pMatrixFactory);
+	m_pGateStore = gateStoreFactory.getGateStore(m_collectionConfig.m_nbQubits);
 
 	//Setup targets
 	getTargetsForEvaluation(m_targetGates);
@@ -81,7 +77,6 @@ void SampleComposerEvaluatorContainerImpl::wireDependencies() {
 	//Setup distance calculators
 	FilePathConfig pathConfig;
 	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(NullPtr));
-	m_pLibraryMatrixStore = LibraryMatrixStorePtr(new SampleLibraryMatrixStore(m_pMatrixFactory, m_pMatrixOperator));
 	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new SQLiteLazyGateDistanceCalculator(m_pMatrixDistanceCalculator,
 			m_pMatrixFactory,
 			pathConfig.getMatrixDBFilePath(m_collectionConfig),
@@ -94,7 +89,8 @@ void SampleComposerEvaluatorContainerImpl::wireDependencies() {
 
 	//Setup decomposers
 	MatrixPtrVector pBasis;
-	m_pResourceContainer->getMatrixOrthonormalBasis(pBasis, m_collectionConfig.m_nbQubits);
+	m_pGateStore->getMatrixOrthonormalBasis(pBasis);
+
 	m_pMatrixRealInnerProductCalculator = MatrixRealInnerProductCalculatorPtr(new MatrixRealInnerProductByTraceImpl(m_pMatrixOperator));
 	m_pHermitiaRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new MatrixCoordinateOnOrthonormalBasisCalculatorImpl(m_pMatrixRealInnerProductCalculator, pBasis));
 	m_pMatrixRealCoordinateCalculator = MatrixRealCoordinateCalculatorPtr(new SpecialUnitaryMatrixCoordinateMapper(m_pMatrixOperator, m_pHermitiaRealCoordinateCalculator));
@@ -123,19 +119,10 @@ void SampleComposerEvaluatorContainerImpl::releaseDependencies() {
 	_destroy(m_pCollectionContainer);
 
 	_destroy(m_pGateDistanceCalculator);
-	_destroy(m_pLibraryMatrixStore);
 	_destroy(m_pMatrixDistanceCalculator);
 
 	//Release generate targets
-	/*for(std::vector<GatePtr>::iterator gIter = m_targetGates.begin(); gIter != m_targetGates.end();) {
-			GatePtr pGate = *gIter;
-			gIter = m_targetGates.erase(gIter);
-			_destroy(pGate);
-		}*/
-	//Try foreach !
 	std::for_each(m_targetGates.begin(), m_targetGates.end(), [](GatePtr pGate){_destroy(pGate);});
-
-	_destroy(m_pResourceContainer);
 
 	_destroy(m_pMatrixOperator);
 	_destroy(m_pMatrixFactory);
@@ -143,7 +130,7 @@ void SampleComposerEvaluatorContainerImpl::releaseDependencies() {
 
 void SampleComposerEvaluatorContainerImpl::getTargetsForEvaluation(std::vector<GatePtr>& targets) {
 	targets.clear();
-	m_pResourceContainer->getRotationTargets(targets, m_composerEvaluatorConfig.m_rotationTargets, m_collectionConfig.m_nbQubits);
+	m_pGateStore->getRotationTargets(targets, m_composerEvaluatorConfig.m_rotationTargets);
 }
 
 GateDecomposerPtr SampleComposerEvaluatorContainerImpl::generateDecomposerFromConfig(ComposerEvaluatorConfig evalConfig) {

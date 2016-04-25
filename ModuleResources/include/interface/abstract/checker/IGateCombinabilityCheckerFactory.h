@@ -15,7 +15,7 @@ class IGateCombinabilityCheckerFactory {
 public:
 	virtual ~IGateCombinabilityCheckerFactory(){};
 
-	virtual void getGateCombinabilityCheckers(R_LibrarySet librarySet, GateCombinabilityCheckers& checkers) = 0;
+	virtual void getGateCombinabilityCheckers(LibrarySet librarySet, GateCombinabilityCheckers& checkers) = 0;
 };
 
 

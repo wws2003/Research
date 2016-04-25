@@ -19,12 +19,12 @@
 #include "IMatrixFactory.h"
 #include "IElementSetLog.h"
 #include "ICoordinateCalculator.h"
-#include "IResourceContainer.h"
 #include "ILookupResultFilter.h"
 #include "MatrixRealInnerProductByTraceImpl.h"
 #include "GateCoordinateCalculatorImpl.h"
 #include "CoordinateAdditionBasedGateComposer.h"
 #include "IComposerContainer.h"
+#include "IGateStore.h"
 
 class GateCoordinateAdditionBasedComposerContainerImpl: public IComposerContainer {
 public:
@@ -54,7 +54,8 @@ protected:
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
-	ResourceContainerPtr m_pResourceContainer;
+
+	GateStorePtr m_pGateStore;
 
 	CombinerPtr<GatePtr> m_pGateCombiner;
 

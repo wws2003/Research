@@ -23,7 +23,6 @@ public:
 private:
 	std::string getLibrarySetPrefix(LibrarySet librarySet);
 
-	static const std::string DEFAULT_DATA_ROOT_PATH;
 	static const std::string DEFAULT_COLLECTION_PERSISTED_FILE_PREFIX;
 	static const std::string DEFAULT_COLLECTION_PERSISTED_FILE_EXTENSION;
 };

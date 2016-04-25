@@ -22,7 +22,7 @@ TwoQubitsGateCombinabilityCheckerFactoryImpl::~TwoQubitsGateCombinabilityChecker
 	releaseCheckers(m_htsCNOTGateCombinabilityCheckers);
 }
 
-void TwoQubitsGateCombinabilityCheckerFactoryImpl::getGateCombinabilityCheckers(R_LibrarySet librarySet, GateCombinabilityCheckers& checkers) {
+void TwoQubitsGateCombinabilityCheckerFactoryImpl::getGateCombinabilityCheckers(LibrarySet librarySet, GateCombinabilityCheckers& checkers) {
 	switch (librarySet) {
 	case L_HTCNOT:
 		checkers = m_htCNOTGateCombinabilityCheckers;
@@ -63,7 +63,7 @@ void TwoQubitsGateCombinabilityCheckerFactoryImpl::releaseCheckers(GateCombinabi
 	}
 }
 
-GateCombinabilityCheckerPtr TwoQubitsGateCombinabilityCheckerFactoryImpl::getGateIdentityCycleCombinabilityChecker(R_LibrarySet librarySet) {
+GateCombinabilityCheckerPtr TwoQubitsGateCombinabilityCheckerFactoryImpl::getGateIdentityCycleCombinabilityChecker(LibrarySet librarySet) {
 	using namespace gatespec::twq;
 	using namespace gatespec::val;
 
@@ -83,7 +83,7 @@ GateCombinabilityCheckerPtr TwoQubitsGateCombinabilityCheckerFactoryImpl::getGat
 	return GateCombinabilityCheckerPtr(new GateIdentityCycleCombinabilityCheckerImpl(identityCycleMap));
 }
 
-GateCombinabilityCheckerPtr TwoQubitsGateCombinabilityCheckerFactoryImpl::getGateCancelationCombinabilityChecker(R_LibrarySet librarySet) {
+GateCombinabilityCheckerPtr TwoQubitsGateCombinabilityCheckerFactoryImpl::getGateCancelationCombinabilityChecker(LibrarySet librarySet) {
 	//Possibly there are many other combinations should be cancelled
 	using namespace gatespec::twq;
 	using namespace gatespec::val;

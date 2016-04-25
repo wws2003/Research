@@ -340,8 +340,10 @@ void ConfigReader::readParallelConfig(std::string configFile, ParallelConfig* pP
 
 void ConfigReader::initLibrarySetNameMap() {
 	m_librarySetNameMap["H-T"] = L_HT;
+	m_librarySetNameMap["H-T-S"] = L_HTS;
 	m_librarySetNameMap["H-CV"] = L_HCV;
 	m_librarySetNameMap["H-T-CNOT"] = L_HTCNOT;
+	m_librarySetNameMap["H-T-S-CNOT"] = L_HTSCNOT;
 	m_librarySetNameMap["H-T-CV"] = L_HTCV;
 }
 

@@ -24,7 +24,7 @@ TwoQubitsGateStoreImpl::~TwoQubitsGateStoreImpl() {
 	releaseVector(m_basis4);
 }
 
-void TwoQubitsGateStoreImpl::getLibraryGates(std::vector<GatePtr>& libraryGates, R_LibrarySet librarySet) {
+void TwoQubitsGateStoreImpl::getLibraryGates(std::vector<GatePtr>& libraryGates, LibrarySet librarySet) {
 	using namespace gatespec::val;
 	using namespace gatespec::twq;
 
@@ -73,10 +73,10 @@ void TwoQubitsGateStoreImpl::getMatrixOrthonormalBasis(std::vector<MatrixPtr>& p
 	pBasis.insert(pBasis.end(), m_basis4.begin(), m_basis4.end());
 }
 
-void TwoQubitsGateStoreImpl::getRotationTargets(std::vector<GatePtr>& targets, const R_RotationConfigs& rotationTargetsConfig) {
+void TwoQubitsGateStoreImpl::getRotationTargets(std::vector<GatePtr>& targets, const RotationConfigs& rotationTargetsConfig) {
 	targets.clear();
 	for(unsigned int i = 0; i < rotationTargetsConfig.size(); i++) {
-		R_RotationConfig rotationTargetConfig = rotationTargetsConfig[i];
+		RotationConfig rotationTargetConfig = rotationTargetsConfig[i];
 		GatePtr pGate = getRotationGate(rotationTargetConfig);
 		targets.push_back(pGate);
 	}
@@ -118,7 +118,7 @@ void TwoQubitsGateStoreImpl::setupLibraryGates() {
 		composeGate(gateTs[i], matrixTs[i]);
 		composeGate(gateHs[i], matrixHs[i]);
 		composeGate(gateSs[i], matrixSs[i]);
-		composeGate(gateSs[i], matrixCNOTs[i]);
+		composeGate(gateCNOTs[i], matrixCNOTs[i]);
 	}
 }
 
@@ -146,7 +146,7 @@ void TwoQubitsGateStoreImpl::setupIdentityGates() {
 	}
 }
 
-GatePtr TwoQubitsGateStoreImpl::getRotationGate(R_RotationConfig rotationConfig) {
+GatePtr TwoQubitsGateStoreImpl::getRotationGate(RotationConfig rotationConfig) {
 	//TODO Implement
 	throw std::logic_error("Method hasn't been implemented yet");
 

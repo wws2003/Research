@@ -16,7 +16,7 @@ public:
 	virtual ~SingleQubitGateCombinabilityCheckerFactoryImpl();
 
 	//Implement
-	void getGateCombinabilityCheckers(R_LibrarySet librarySet, GateCombinabilityCheckers& checkers);
+	void getGateCombinabilityCheckers(LibrarySet librarySet, GateCombinabilityCheckers& checkers);
 
 private:
 	void initHTGateCombinabilityCheckers();
@@ -24,8 +24,8 @@ private:
 
 	void releaseCheckers(GateCombinabilityCheckers& checkers);
 
-	GateCombinabilityCheckerPtr getGateIdentityCycleCombinabilityChecker(R_LibrarySet librarySet);
-	GateCombinabilityCheckerPtr getGateCancelationCombinabilityChecker(R_LibrarySet librarySet);
+	GateCombinabilityCheckerPtr getGateIdentityCycleCombinabilityChecker(LibrarySet librarySet);
+	GateCombinabilityCheckerPtr getGateCancelationCombinabilityChecker(LibrarySet librarySet);
 
 	GateCombinabilityCheckers m_htGateCombinabilityCheckers;
 	GateCombinabilityCheckers m_htsGateCombinabilityCheckers;

@@ -23,7 +23,7 @@ SingleQubitGateStoreImpl::~SingleQubitGateStoreImpl() {
 	releaseVector(m_basis2);
 }
 
-void SingleQubitGateStoreImpl::getLibraryGates(std::vector<GatePtr>& libraryGates, R_LibrarySet librarySet) {
+void SingleQubitGateStoreImpl::getLibraryGates(std::vector<GatePtr>& libraryGates, LibrarySet librarySet) {
 	using namespace gatespec::sgq;
 	using namespace gatespec::val;
 
@@ -63,10 +63,10 @@ void SingleQubitGateStoreImpl::getMatrixOrthonormalBasis(std::vector<MatrixPtr>&
 	pBasis.insert(pBasis.end(), m_basis2.begin(), m_basis2.end());
 }
 
-void SingleQubitGateStoreImpl::getRotationTargets(std::vector<GatePtr>& targets, const R_RotationConfigs& rotationTargetsConfig) {
+void SingleQubitGateStoreImpl::getRotationTargets(std::vector<GatePtr>& targets, const RotationConfigs& rotationTargetsConfig) {
 	targets.clear();
 	for(unsigned int i = 0; i < rotationTargetsConfig.size(); i++) {
-		R_RotationConfig rotationTargetConfig = rotationTargetsConfig[i];
+		RotationConfig rotationTargetConfig = rotationTargetsConfig[i];
 		GatePtr pGate = getRotationGate(rotationTargetConfig);
 		targets.push_back(pGate);
 	}
@@ -123,7 +123,7 @@ void SingleQubitGateStoreImpl::setupIdentityGates() {
 	m_identityGates.push_back(pMIGate);
 }
 
-GatePtr SingleQubitGateStoreImpl::getRotationGate(R_RotationConfig rotationConfig) {
+GatePtr SingleQubitGateStoreImpl::getRotationGate(RotationConfig rotationConfig) {
 	mreal_t phi = rotationConfig.m_rotationAngle;
 
 	MatrixPtr pBasis = NullPtr;

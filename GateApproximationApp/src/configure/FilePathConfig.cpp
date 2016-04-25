@@ -6,8 +6,8 @@
  */
 
 #include "FilePathConfig.h"
+#include "Context.h"
 
-const std::string FilePathConfig::DEFAULT_DATA_ROOT_PATH = ".data";
 const std::string FilePathConfig::DEFAULT_COLLECTION_PERSISTED_FILE_PREFIX = "gnat";
 const std::string FilePathConfig::DEFAULT_COLLECTION_PERSISTED_FILE_EXTENSION = "dat";
 
@@ -19,9 +19,11 @@ std::string FilePathConfig::getMatrixDBFilePath(const CollectionConfig& config) 
 #endif
 
 	char fullName[256];
+	ContextPtr pContext = Context::getInstance();
+
 	//E.g. .data/db_ht_mpfr_1.sqlite
 	sprintf(fullName, "%s/db_%s_%s_%d.sqlite",
-			DEFAULT_DATA_ROOT_PATH.c_str(),
+			pContext->getAppDataFolder().c_str(),
 			getLibrarySetPrefix(config.m_librarySet).c_str(),
 			precisionPostFix.c_str(),
 			config.m_nbQubits);
@@ -41,9 +43,11 @@ std::string FilePathConfig::getGateCollectionPersistenceFilePath(const Collectio
 #endif
 
 	char fullName[256];
+	ContextPtr pContext = Context::getInstance();
+
 	//E.g. .data/gnat_ht_mpfr_1_16.dat
 	sprintf(fullName, "%s/%s_%s_%s_%d_%d.%s",
-			DEFAULT_DATA_ROOT_PATH.c_str(),
+			pContext->getAppDataFolder().c_str(),
 			DEFAULT_COLLECTION_PERSISTED_FILE_PREFIX.c_str(),
 			getLibrarySetPrefix(config.m_librarySet).c_str(),
 			precisionPostFix.c_str(),

@@ -21,7 +21,7 @@ SingleQubitGateCombinabilityCheckerFactoryImpl::~SingleQubitGateCombinabilityChe
 	releaseCheckers(m_htsGateCombinabilityCheckers);
 }
 
-void SingleQubitGateCombinabilityCheckerFactoryImpl::getGateCombinabilityCheckers(R_LibrarySet librarySet, GateCombinabilityCheckers& checkers) {
+void SingleQubitGateCombinabilityCheckerFactoryImpl::getGateCombinabilityCheckers(LibrarySet librarySet, GateCombinabilityCheckers& checkers) {
 	switch (librarySet) {
 	case L_HT:
 		checkers = m_htGateCombinabilityCheckers;
@@ -58,7 +58,7 @@ void SingleQubitGateCombinabilityCheckerFactoryImpl::releaseCheckers(GateCombina
 	}
 }
 
-GateCombinabilityCheckerPtr SingleQubitGateCombinabilityCheckerFactoryImpl::getGateIdentityCycleCombinabilityChecker(R_LibrarySet librarySet) {
+GateCombinabilityCheckerPtr SingleQubitGateCombinabilityCheckerFactoryImpl::getGateIdentityCycleCombinabilityChecker(LibrarySet librarySet) {
 	using namespace gatespec::sgq;
 	using namespace gatespec::val;
 
@@ -73,7 +73,7 @@ GateCombinabilityCheckerPtr SingleQubitGateCombinabilityCheckerFactoryImpl::getG
 	return GateCombinabilityCheckerPtr(new GateIdentityCycleCombinabilityCheckerImpl(identityCycleMap));
 }
 
-GateCombinabilityCheckerPtr SingleQubitGateCombinabilityCheckerFactoryImpl::getGateCancelationCombinabilityChecker(R_LibrarySet librarySet) {
+GateCombinabilityCheckerPtr SingleQubitGateCombinabilityCheckerFactoryImpl::getGateCancelationCombinabilityChecker(LibrarySet librarySet) {
 	using namespace gatespec::sgq;
 	using namespace gatespec::val;
 

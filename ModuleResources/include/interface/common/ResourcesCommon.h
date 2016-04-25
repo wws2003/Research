@@ -10,7 +10,7 @@
 
 #include "MathConceptsCommon.h"
 
-enum R_LibrarySet {
+enum LibrarySet {
 	L_HT,//No T^-1
 	L_HTS,//No S^-1
 	L_HTCNOT,
@@ -20,7 +20,7 @@ enum R_LibrarySet {
 	L_UNSPECIFIED
 };
 
-enum R_RotationType {
+enum RotationType {
 	R_X,
 	R_Y,
 	R_Z,
@@ -29,12 +29,12 @@ enum R_RotationType {
 	C_RZ //For controlled gate
 };
 
-struct R_RotationConfig {
-	R_RotationType m_rotationType;
+struct RotationConfig {
+	RotationType m_rotationType;
 	mreal_t m_rotationAngle;
 };
 
-typedef std::vector<R_RotationConfig> R_RotationConfigs;
+typedef std::vector<RotationConfig> RotationConfigs;
 
 class IGateStore;
 typedef IGateStore* GateStorePtr;

@@ -12,12 +12,14 @@
 #include "IOCommon.h"
 #include "MathConceptsCommon.h"
 #include "AlgoCommon.h"
-#include "IResourceContainer.h"
 #include "AlgoInternal.h"
 #include "ILookupResultFilter.h"
 #include "ICollectionContainer.h"
 #include "ApplicationCommon.h"
+#include "IGateStore.h"
 #include "Config.h"
+#include "EvaluateCommon.h"
+#include "ISearchSpaceConstructor.h"
 
 class SampleCollectionContainerImpl: public ICollectionContainer {
 public:
@@ -31,6 +33,8 @@ public:
 private:
 	void wireDependencies();
 
+	void constructGateCombinabilityCheckerFactory();
+
 	void constructGateCollection(GateCollectionPtr pGateCollection, GateDistanceCalculatorPtr pGateDistanceCalculator);
 
 	void releaseDependencies();
@@ -38,7 +42,8 @@ private:
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;
 
-	ResourceContainerPtr m_pResourceContainer;
+	GateStorePtr m_pGateStore;
+	GateCombinabilityCheckerFactoryPtr m_pCheckerFactory;
 
 	GateWriterPtr m_pBinaryGateWriter;
 	GateReaderPtr m_pBinaryGateReader;
