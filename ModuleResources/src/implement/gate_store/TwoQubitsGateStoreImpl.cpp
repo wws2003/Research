@@ -22,6 +22,7 @@ TwoQubitsGateStoreImpl::~TwoQubitsGateStoreImpl() {
 	releaseVector(m_identityGates);
 	releaseMap(m_libraryGates);
 	releaseVector(m_basis4);
+	releaseVector(m_basis2);
 }
 
 void TwoQubitsGateStoreImpl::getLibraryGates(std::vector<GatePtr>& libraryGates, LibrarySet librarySet) {
@@ -83,6 +84,7 @@ void TwoQubitsGateStoreImpl::getRotationTargets(std::vector<GatePtr>& targets, c
 }
 
 void TwoQubitsGateStoreImpl::setupOrthonormalBasis() {
+	m_pMatrixOperator->getTracelessHermitianMatricesBasis(2, m_basis2);
 	m_pMatrixOperator->getTracelessHermitianMatricesBasis(4, m_basis4);
 }
 
@@ -147,11 +149,39 @@ void TwoQubitsGateStoreImpl::setupIdentityGates() {
 }
 
 GatePtr TwoQubitsGateStoreImpl::getRotationGate(RotationConfig rotationConfig) {
-	//TODO Implement
-	throw std::logic_error("Method hasn't been implemented yet");
+	using namespace gatespec::val;
+	mreal_t phi = rotationConfig.m_rotationAngle;
 
-	return NullPtr;
+	MatrixPtr pBasis = NullPtr;
+
+	switch (rotationConfig.m_rotationType) {
+	case R_X:
+		pBasis = m_basis2[0];
+		break;
+	case R_Y:
+		pBasis = m_basis2[1];
+		break;
+	case R_Z:
+		pBasis = m_basis2[2];
+		break;
+	default:
+		throw std::logic_error("No such a valid controlled-rotation");
+		break;
+	}
+
+	MatrixPtr pPartialRotationMatrix;
+	m_pMatrixOperator->getRotationMatrix(pBasis, phi, pPartialRotationMatrix);
+	ComplexVal rotationMatrixArray[] = {one, zero, zero, zero,
+			zero, one, zero, zero,
+			zero, zero, pPartialRotationMatrix->getValue(0, 0), pPartialRotationMatrix->getValue(0, 1),
+			zero, zero, pPartialRotationMatrix->getValue(1, 0), pPartialRotationMatrix->getValue(1, 1)};
+	_destroy(pPartialRotationMatrix);
+
+	MatrixPtr pRotationMatrix = m_pMatrixFactory->getMatrixFromValues(4, 4, rotationMatrixArray, ROW_SPLICE);
+
+	return GatePtr(new Gate(pRotationMatrix, 0, pRotationMatrix->getLabel()));
 }
+
 template<typename T>
 void TwoQubitsGateStoreImpl::releaseVector(std::vector<T>& pElements) {
 	for(typename std::vector<T>::iterator pIter = pElements.begin(); pIter != pElements.end(); ) {

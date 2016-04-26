@@ -29,6 +29,8 @@ private:
 
 	void getEquivalentGates(const RealCoordinatePtr<GatePtr> pGateCoord, std::vector<GatePtr> & equivalentGates);
 
+	void getEquivalentPhaseFactors(std::vector<ComplexVal>& phaseFactors, int matrixSize);
+
 	void releaseEquivalentGates(std::vector<GatePtr> & equivalentGates);
 
 	void releaseEquivalentCoordinates(std::vector<RealCoordinatePtr<GatePtr> >& equivalentCoordinates);

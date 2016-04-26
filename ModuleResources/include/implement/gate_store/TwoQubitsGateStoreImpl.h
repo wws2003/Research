@@ -57,6 +57,7 @@ private:
 	MatrixOperatorPtr m_pMatrixOperator;
 	MatrixFactoryPtr m_pMatrixFactory;
 
+	MatrixPtrVector m_basis2;//Used to calculate controlled-rotation...
 	MatrixPtrVector m_basis4;
 
 	typedef std::map<std::string, GatePtr> LibraryGates;

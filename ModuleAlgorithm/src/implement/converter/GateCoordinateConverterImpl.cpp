@@ -7,6 +7,7 @@
 
 #include "GateCoordinateConverterImpl.h"
 #include "Coordinate.hpp"
+#include "GateSpecification.h"
 #include <algorithm>
 
 template<typename T>
@@ -82,21 +83,37 @@ void GateCoordinateConverterImpl::getEquivalentCoordinates(const GatePtr& pGate,
 
 void GateCoordinateConverterImpl::getEquivalentGates(const RealCoordinatePtr<GatePtr> pGateCoord,
 		std::vector<GatePtr> & equivalentGates) {
+
 	if(m_phaseIgnored) {
 		GatePtr pGate = pGateCoord->getElement();
-		int nbRows, nbColumns;
-		pGate->getMatrix()->getSize(nbRows, nbColumns);
-		if(nbRows == 2) {
-			//Add minus matrix only if neccessary
-			CoordinateNormComparator<GatePtr> comp;
-			mreal_t absCoordSum = comp.getAbsCoordSum(pGateCoord->getCoordinates());
-			if(absCoordSum > 0.5) {
-				MatrixPtr pMinusMatrix = NullPtr;
-				m_pMatrixOperator->multiplyScalar(pGate->getMatrix(), ComplexVal(-1.0, 0), pMinusMatrix);
-				GatePtr pMinusGate(new Gate(pMinusMatrix, pGate->getCost(), pGate->getLabelSeq()));
-				equivalentGates.push_back(pMinusGate);
+
+		CoordinateNormComparator<GatePtr> comp;
+		mreal_t absCoordSum = comp.getAbsCoordSum(pGateCoord->getCoordinates());
+
+		if(absCoordSum > 0.5) {
+			int nbRows, nbColumns;
+			pGate->getMatrix()->getSize(nbRows, nbColumns);
+
+			std::vector<ComplexVal> phaseFactors;
+			getEquivalentPhaseFactors(phaseFactors, nbColumns);
+
+			for(unsigned int i = 0; i < phaseFactors.size(); i++) {
+				MatrixPtr pEquivMatrix = NullPtr;
+				m_pMatrixOperator->multiplyScalar(pGate->getMatrix(), phaseFactors[i], pEquivMatrix);
+				GatePtr pEquivGate(new Gate(pEquivMatrix, pGate->getCost(), pGate->getLabelSeq()));
+				equivalentGates.push_back(pEquivGate);
 			}
 		}
+	}
+}
+
+void GateCoordinateConverterImpl::getEquivalentPhaseFactors(std::vector<ComplexVal>& phaseFactors, int matrixSize) {
+	using namespace gatespec::val;
+	phaseFactors.push_back(minus_one);
+
+	if(matrixSize == 4) {
+		phaseFactors.push_back(image_unit);
+		phaseFactors.push_back(minus_image_unit);
 	}
 }
 
