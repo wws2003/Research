@@ -8,6 +8,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include src/interface/common/subdir.mk
 -include src/implement/gate_store/subdir.mk
 -include src/implement/common/subdir.mk
 -include src/implement/checker/subdir.mk

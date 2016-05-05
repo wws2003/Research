@@ -14,8 +14,6 @@ enum LibrarySet {
 	L_HT,//No T^-1
 	L_HTS,//No S^-1
 	L_HTCNOT,
-	L_HCV,
-	L_HTCV,
 	L_HTSCNOT,
 	L_UNSPECIFIED
 };
@@ -26,7 +24,8 @@ enum RotationType {
 	R_Z,
 	C_RX,//For controlled gate
 	C_RY,//For controlled gate
-	C_RZ //For controlled gate
+	C_RZ, //For controlled gate
+	C_UNSPECIFIED
 };
 
 struct RotationConfig {

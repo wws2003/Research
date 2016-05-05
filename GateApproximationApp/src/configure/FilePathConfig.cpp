@@ -7,6 +7,7 @@
 
 #include "FilePathConfig.h"
 #include "Context.h"
+#include "ResourceNaming.h"
 
 const std::string FilePathConfig::DEFAULT_COLLECTION_PERSISTED_FILE_PREFIX = "gnat";
 const std::string FilePathConfig::DEFAULT_COLLECTION_PERSISTED_FILE_EXTENSION = "dat";
@@ -59,29 +60,6 @@ std::string FilePathConfig::getGateCollectionPersistenceFilePath(const Collectio
 }
 
 std::string FilePathConfig::getLibrarySetPrefix(LibrarySet librarySet) {
-	std::string prefix;
-	switch (librarySet) {
-	case L_HT:
-		prefix = "ht";
-		break;
-	case L_HTCNOT:
-		prefix = "htcnot";
-		break;
-	case L_HCV:
-		prefix = "hcv";
-		break;
-	case L_HTCV:
-		prefix = "htcv";
-		break;
-	case L_HTS:
-		prefix = "hts";
-		break;
-	case L_HTSCNOT:
-		prefix = "htscnot";
-		break;
-	default:
-		prefix = "unknown";
-		break;
-	}
-	return prefix;
+	ResourceNaming resourceNaming;
+	return resourceNaming.getLibrarySetDisplayName(librarySet);
 }

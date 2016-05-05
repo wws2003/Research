@@ -67,6 +67,7 @@
 									<listOptionValue builtIn="false" value="../../ModuleParallelism/include/implement"/>
 									<listOptionValue builtIn="false" value="../../ModuleResources/include/interface/abstract/checker"/>
 									<listOptionValue builtIn="false" value="../../ModuleResources/include/interface/abstract/gate_store"/>
+									<listOptionValue builtIn="false" value="./../ModuleResources/include/interface/abstract/internal-common"/>
 									<listOptionValue builtIn="false" value="../../ModuleResources/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleResources/include/implement/checker"/>
 									<listOptionValue builtIn="false" value="../../ModuleResources/include/implement/gate_store"/>

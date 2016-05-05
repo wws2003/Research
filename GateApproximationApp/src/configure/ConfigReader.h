@@ -10,12 +10,12 @@
 
 #include "Config.h"
 #include "ApplicationCommon.h"
+#include "ResourceNaming.h"
 #include <string>
 #include <istream>
 
 class ConfigReader {
 public:
-	ConfigReader();
 	virtual ~ConfigReader();
 
 	virtual void readCollectionConfig(std::string configFile, CollectionConfig* pCollectionConfig);
@@ -41,15 +41,11 @@ public:
 	virtual void readParallelConfig(std::string configFile, ParallelConfig* pParallelConfig);
 
 private:
-	void initLibrarySetNameMap();
-	void initRotationSetNameMap();
+	ResourceNaming m_resourceNaming;
 
 	void readRotationConfigLine(std::string line, RotationConfig& rotationConfig);
 
 	void readCoordinateComparatorConfig(std::istream& inputStream, CoordinateComparatorConfig* pConfig);
-
-	LibrarySetNameMap m_librarySetNameMap;
-	RotationTypeNameMap m_rotationSetNameMap;
 };
 
 #endif /* CONFIGREADER_H_ */

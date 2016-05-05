@@ -7,7 +7,6 @@
 
 #include "GateCoordinateConverterImpl.h"
 #include "Coordinate.hpp"
-#include "GateSpecification.h"
 #include <algorithm>
 
 template<typename T>
@@ -108,7 +107,10 @@ void GateCoordinateConverterImpl::getEquivalentGates(const RealCoordinatePtr<Gat
 }
 
 void GateCoordinateConverterImpl::getEquivalentPhaseFactors(std::vector<ComplexVal>& phaseFactors, int matrixSize) {
-	using namespace gatespec::val;
+	const ComplexVal minus_one(-1.0, 0); //-1
+	const ComplexVal image_unit(0.0, 1.0); //i
+	const ComplexVal minus_image_unit(0.0, -1.0); //-i
+
 	phaseFactors.push_back(minus_one);
 
 	if(matrixSize == 4) {

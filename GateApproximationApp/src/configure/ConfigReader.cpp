@@ -6,17 +6,14 @@
  */
 
 #include "ConfigReader.h"
+#include "ResourceNaming.h"
 #include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
+#include <exception>
 
 void readLineAndLog(std::istream& inputStream, std::string& line, std::ostream& outstream);
-
-ConfigReader::ConfigReader() {
-	initLibrarySetNameMap();
-	initRotationSetNameMap();
-}
 
 ConfigReader::~ConfigReader() {
 }
@@ -24,6 +21,7 @@ ConfigReader::~ConfigReader() {
 void ConfigReader::readCollectionConfig(std::string configFile, CollectionConfig* pCollectionConfig) {
 	std::cout << "Collection config " << configFile << ":\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
+
 	if(inputStream.is_open()) {
 		char prefix[128];
 		char librarySetName[128];
@@ -32,7 +30,11 @@ void ConfigReader::readCollectionConfig(std::string configFile, CollectionConfig
 		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%[^\n]", prefix, librarySetName);
 		std::string librarySetNameStr(librarySetName);
-		pCollectionConfig->m_librarySet = (LibrarySet)m_librarySetNameMap[librarySetNameStr];
+		LibrarySet librarySet = m_resourceNaming.getLibrarySetFromCanonicalName(librarySetName);
+		if(librarySet == L_UNSPECIFIED) {
+			throw std::logic_error("No such library set");
+		}
+		pCollectionConfig->m_librarySet = librarySet;
 
 		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pCollectionConfig->m_maxSequenceLength));
@@ -51,6 +53,7 @@ void ConfigReader::readCollectionConfig(std::string configFile, CollectionConfig
 void ConfigReader::readCollectionAndEvaluatorConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig) {
 	std::cout << "ReadCollectionAndEvaluator config " << configFile << ":\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
+
 	if(inputStream.is_open()) {
 		char prefix[128];
 		char librarySetName[128];
@@ -59,7 +62,11 @@ void ConfigReader::readCollectionAndEvaluatorConfig(std::string configFile, Coll
 		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%[^\n]", prefix, librarySetName);
 		std::string librarySetNameStr(librarySetName);
-		pCollectionConfig->m_librarySet = (LibrarySet)m_librarySetNameMap[librarySetNameStr];
+		LibrarySet librarySet = m_resourceNaming.getLibrarySetFromCanonicalName(librarySetName);
+		if(librarySet == L_UNSPECIFIED) {
+			throw std::logic_error("No such library set");
+		}
+		pCollectionConfig->m_librarySet = librarySet;
 
 		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &(pCollectionConfig->m_maxSequenceLength));
@@ -338,30 +345,17 @@ void ConfigReader::readParallelConfig(std::string configFile, ParallelConfig* pP
 	}
 }
 
-void ConfigReader::initLibrarySetNameMap() {
-	m_librarySetNameMap["H-T"] = L_HT;
-	m_librarySetNameMap["H-T-S"] = L_HTS;
-	m_librarySetNameMap["H-CV"] = L_HCV;
-	m_librarySetNameMap["H-T-CNOT"] = L_HTCNOT;
-	m_librarySetNameMap["H-T-S-CNOT"] = L_HTSCNOT;
-	m_librarySetNameMap["H-T-CV"] = L_HTCV;
-}
-
-void ConfigReader::initRotationSetNameMap() {
-	m_rotationSetNameMap["X"] = R_X;
-	m_rotationSetNameMap["Y"] = R_Y;
-	m_rotationSetNameMap["Z"] = R_Z;
-	m_rotationSetNameMap["CX"] = C_RX;
-	m_rotationSetNameMap["CY"] = C_RY;
-	m_rotationSetNameMap["CZ"] = C_RZ;
-}
-
 void ConfigReader::readRotationConfigLine(std::string line, RotationConfig& rotationConfig) {
 	char prefix[256];
 	char axis[256];
 	int piDenominator;
+
 	sscanf(line.data(), "%[^:]:%[^ ]%d", prefix, axis, &piDenominator);
-	rotationConfig.m_rotationType = (RotationType)m_rotationSetNameMap[axis];
+	RotationType rotationType = m_resourceNaming.getRotationTypeFromCanonicalName(axis);
+	if(rotationType == C_UNSPECIFIED) {
+		throw std::logic_error("No such rotation type");
+	}
+	rotationConfig.m_rotationType = rotationType;
 	rotationConfig.m_rotationAngle = (mreal_t)(M_PI / piDenominator);
 }
 

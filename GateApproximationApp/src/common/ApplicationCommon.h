@@ -34,9 +34,6 @@ typedef IEvaluatingComposerContainer* EvaluatingComposerContainerPtr;
 typedef IComposerEvaluatorContainer* ComposerEvaluatorContainerPtr;
 typedef IComposerContainer* ComposerContainerPtr;
 
-typedef std::map<std::string, int> LibrarySetNameMap;
-typedef std::map<std::string, int> RotationTypeNameMap;
-
 enum CommandCode {
 	UNKNOWN_COMMAND,
 	EVALUATE_COLLECTION_TO_IDENTITY,
