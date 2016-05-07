@@ -32,6 +32,7 @@ private:
 	void testFilteredGNATSearch();
 	void testAddtionBasedCoordinateComposer();
 	void testResources();
+	void testFowlerGateSpaceConstructor();
 
 	void freeTestGateCollectionEvaluator();
 

@@ -7,6 +7,7 @@
 
 #include "GateCombinerImpl.h"
 #include "IGateCombinabilityChecker.h"
+#include <iostream>
 
 #if MPFR_REAL
 #define IDENTITY_NOISE_THRESOLD 1e-10

@@ -27,7 +27,8 @@ bool GateCancelationCombinabilityCheckerImpl::canCombine(GatePtr pGate1, GatePtr
 		std::string lastSeqShouldBeCancel = lIter->second;
 
 		//Check if lastSeqShouldBeCancel is a suffix of gate1SeqLabel
-		if(gate1SeqLabel.rfind(lastSeqShouldBeCancel) + lastSeqShouldBeCancel.length() == gate1SeqLabel.length()) {
+		size_t rIndex = gate1SeqLabel.rfind(lastSeqShouldBeCancel);
+		if(rIndex != std::string::npos && rIndex + lastSeqShouldBeCancel.length() == gate1SeqLabel.length()) {
 			return false;
 		}
 

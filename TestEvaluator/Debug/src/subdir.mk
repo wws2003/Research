@@ -6,6 +6,7 @@
 CPP_SRCS += \
 ../src/AssemblerUtil.cpp \
 ../src/ForTestCoordinateAdditionBasedGateComposer.cpp \
+../src/FowlerSearchSpaceGeneratorTester.cpp \
 ../src/FullTestSuite.cpp \
 ../src/IOTestSuite.cpp \
 ../src/IntegratingTester.cpp \
@@ -15,6 +16,7 @@ CPP_SRCS += \
 OBJS += \
 ./src/AssemblerUtil.o \
 ./src/ForTestCoordinateAdditionBasedGateComposer.o \
+./src/FowlerSearchSpaceGeneratorTester.o \
 ./src/FullTestSuite.o \
 ./src/IOTestSuite.o \
 ./src/IntegratingTester.o \
@@ -24,6 +26,7 @@ OBJS += \
 CPP_DEPS += \
 ./src/AssemblerUtil.d \
 ./src/ForTestCoordinateAdditionBasedGateComposer.d \
+./src/FowlerSearchSpaceGeneratorTester.d \
 ./src/FullTestSuite.d \
 ./src/IOTestSuite.d \
 ./src/IntegratingTester.d \

@@ -56,6 +56,7 @@
 #include "ResourcesTester.h"
 #include "ForTestCoordinateAdditionBasedGateComposer.h"
 #include "ResourcesTester.h"
+#include "FowlerSearchSpaceGeneratorTester.h"
 #include <iostream>
 #include <cmath>
 #include <cstdio>
@@ -152,6 +153,8 @@ void FullTestSuite::test(){
 	testFilteredGNATSearch();
 	testAddtionBasedCoordinateComposer();
 	testResources();
+	testFowlerGateSpaceConstructor();
+
 	//freeTestGateCollectionEvaluator();
 }
 
@@ -797,6 +800,11 @@ void FullTestSuite::testResources() {
 	resourceTester.testSimpleHTCombinationChecker();
 	resourceTester.testSimpleHTSCombinationChecker();
 	std::cout << __func__ << " passed"  <<  std::endl;
+}
+
+void FullTestSuite::testFowlerGateSpaceConstructor() {
+	FowlerSearchSpaceConstructorTester tester;
+	tester.testFowlerSearchSpaceConstructor();
 }
 
 void FullTestSuite::freeTestGateCollectionEvaluator() {
