@@ -56,6 +56,8 @@ private:
 
 	GateDistanceCalculatorPtr m_pGateDistanceCalculatorForCollection;
 
+	GateLookupResultProcessorPtr m_pGateLookupResultProcessor;
+
 	GateCollectionPtr m_pUniversalSet;
 
 	CombinerPtr<GatePtr> m_pGateCombiner;

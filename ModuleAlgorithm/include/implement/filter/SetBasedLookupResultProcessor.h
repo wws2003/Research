@@ -15,7 +15,7 @@ template<typename T>
 class SetBasedLookupResultProcessor: public ILookupResultProcessor<T> {
 public:
 
-	SetBasedLookupResultProcessor(DistanceCalculatorPtr<T> pDistanceCalculator);
+	SetBasedLookupResultProcessor(DistanceCalculatorPtr<T> pDistanceCalculator, bool isUniqueElements);
 
 	virtual ~SetBasedLookupResultProcessor(){};
 
@@ -42,9 +42,8 @@ protected:
 	virtual bool sameElement(const T& t1, const T& t2) const = 0;
 
 private:
-
+	bool m_isUniqueElements;
 	rmap m_resultMap;
-
 	DistanceCalculatorPtr<T> m_pDistanceCalculator;
 };
 

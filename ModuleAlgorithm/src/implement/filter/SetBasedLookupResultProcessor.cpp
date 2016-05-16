@@ -9,8 +9,9 @@
 #include <algorithm>
 
 template<typename T>
-SetBasedLookupResultProcessor<T>::SetBasedLookupResultProcessor(DistanceCalculatorPtr<T> pDistanceCalculator) {
+SetBasedLookupResultProcessor<T>::SetBasedLookupResultProcessor(DistanceCalculatorPtr<T> pDistanceCalculator, bool isUniqueElements) {
 	m_pDistanceCalculator = pDistanceCalculator;
+	m_isUniqueElements = isUniqueElements;
 }
 
 template<typename T>
@@ -32,10 +33,15 @@ void SetBasedLookupResultProcessor<T>::addLookupResultsBatch(const std::vector<L
 
 template<typename T>
 void SetBasedLookupResultProcessor<T>::addLookupResult(const LookupResult<T>& result) {
-	bool isDuplicate;
-	typename rmap::iterator insertHintIter = checkDuplicateResult(result, isDuplicate);
-	if(!isDuplicate) {
-		m_resultMap.insert(insertHintIter, result);
+	if(!m_isUniqueElements) {
+		bool isDuplicate;
+		typename rmap::iterator insertHintIter = checkDuplicateResult(result, isDuplicate);
+		if(!isDuplicate) {
+			m_resultMap.insert(insertHintIter, result);
+		}
+	}
+	else {
+		m_resultMap.insert(result);
 	}
 }
 

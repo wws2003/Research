@@ -10,7 +10,7 @@
 
 template class SetBasedLookupResultProcessor<GatePtr>;
 
-SetBasedGateLookupResultProcessor::SetBasedGateLookupResultProcessor(DistanceCalculatorPtr<GatePtr> pDistanceCalculator) : SetBasedLookupResultProcessor<GatePtr>(pDistanceCalculator){
+SetBasedGateLookupResultProcessor::SetBasedGateLookupResultProcessor(DistanceCalculatorPtr<GatePtr> pDistanceCalculator, bool isUniqueElements) : SetBasedLookupResultProcessor<GatePtr>(pDistanceCalculator, isUniqueElements) {
 
 }
 

@@ -13,7 +13,7 @@
 
 class SetBasedGateLookupResultProcessor: public SetBasedLookupResultProcessor<GatePtr> {
 public:
-	SetBasedGateLookupResultProcessor(DistanceCalculatorPtr<GatePtr> pDistanceCalculator);
+	SetBasedGateLookupResultProcessor(DistanceCalculatorPtr<GatePtr> pDistanceCalculator, bool isUniqueElements);
 
 	virtual ~SetBasedGateLookupResultProcessor(){};
 
