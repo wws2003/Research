@@ -32,6 +32,7 @@
 #include "FilePathConfig.h"
 #include "SingleQubitGateCombinabilityCheckerFactoryImpl.h"
 #include "TwoQubitsGateCombinabilityCheckerFactoryImpl.h"
+#include "GateSearchSpaceConstructorFowlerImpl.h"
 #include <stdexcept>
 
 SampleCollectionContainerImpl::SampleCollectionContainerImpl(const CollectionConfig& collectionConfig) : m_collectionConfig(collectionConfig) {
@@ -67,7 +68,7 @@ PersitableGateCollectionPtr SampleCollectionContainerImpl::getPersitableGateColl
 	return PersitableGateCollectionPtr(new PersistableGNATGateCollectionImpl(m_pGateDistanceCalculatorForCollection,
 			m_pBinaryGateWriter,
 			m_pBinaryGateReader,
-			m_pGateLookupResultProcessor));
+			NullPtr));
 }
 
 void SampleCollectionContainerImpl::wireDependencies() {
@@ -110,7 +111,7 @@ void SampleCollectionContainerImpl::wireDependencies() {
 
 	m_pGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(checkers, m_pMatrixOperator));
 
-	m_pGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorImpl(m_pGateCombiner));
+	m_pGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner, m_pGateDistanceCalculator));
 }
 
 void SampleCollectionContainerImpl::constructGateCombinabilityCheckerFactory() {
