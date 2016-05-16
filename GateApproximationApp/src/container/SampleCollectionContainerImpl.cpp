@@ -47,7 +47,7 @@ GateCollectionPtr SampleCollectionContainerImpl::getGateCollection(GateDistanceC
 	PersitableGateCollectionPtr pGateCollection = PersitableGateCollectionPtr(new PersistableGNATGateCollectionImpl(pGateDistanceCalculator,
 			m_pBinaryGateWriter,
 			m_pBinaryGateReader,
-			m_pGateLookupResultProcessor));
+			NullPtr));
 
 	FilePathConfig pathConfig;
 	std::string persitenceFileName = pathConfig.getGateCollectionPersistenceFilePath(m_collectionConfig);
@@ -95,8 +95,8 @@ void SampleCollectionContainerImpl::wireDependencies() {
 			m_collectionConfig.m_nbQubits == 1 ? 2 : 4));
 
 	//m_pGateLookupResultProcessor = GateLookupResultProcessorPtr(new BackgroundGateLookupResultsFilterProcessor(m_pGateDistanceCalculator));
-	m_pGateLookupResultProcessor = GateLookupResultProcessorPtr(new SetBasedGateLookupResultProcessor(m_pGateDistanceCalculator));
-	m_pGateLookupResultProcessor->init();
+	//m_pGateLookupResultProcessor = GateLookupResultProcessorPtr(new SetBasedGateLookupResultProcessor(m_pGateDistanceCalculator));
+	//m_pGateLookupResultProcessor->init();
 
 	std::vector<GatePtr> universalSet;
 	m_pGateStore->getLibraryGates(universalSet, m_collectionConfig.m_librarySet);
@@ -136,7 +136,6 @@ void SampleCollectionContainerImpl::releaseDependencies() {
 
 	_destroy(m_pGateDistanceCalculatorForCollection);
 
-	_destroy(m_pGateLookupResultProcessor);
 	_destroy(m_pGateDistanceCalculator);
 	_destroy(m_pMatrixDistanceCalculator);
 
