@@ -65,7 +65,7 @@ void FowlerSearchSpaceConstructorTester::testFowlerSearchSpaceConstructor() {
 	pNormalConstructor->constructSearchSpace(pNormalCollection, pLibraryCollection, maxLength);
 	std::cout << "Normally constructed collection size " << pNormalCollection->size() << "\n";
 
-	GateSearchSpaceConstructorPtr pFowlerConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner, m_pGateDistanceCalculator)) ;
+	GateSearchSpaceConstructorPtr pFowlerConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner, NullPtr, 0, m_pGateDistanceCalculator)) ;
 	GateCollectionPtr pFowlerCollection = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>(m_pGateDistanceCalculator));
 	pFowlerConstructor->constructSearchSpace(pFowlerCollection, pLibraryCollection, maxLength);
 	std::cout << "Fowler constructed collection size " << pFowlerCollection->size() << "\n";

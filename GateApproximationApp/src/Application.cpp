@@ -87,6 +87,9 @@ void initCommands(CommandParser* pCommandParser) {
 
 	//For -e conf1 -cep conf2 -m conf22 -par threadConf -t targetConf
 	pCommandParser->provideArgumentPatternForCommandCode(11, ArgumentPositions{1, 3, 5, 7, 9}, Arguments{"-e", "-cep", "-m", "-par", "-t"}, EVALUATE_PARALLEL_COMPOSER2_TO_TARGET);
+
+	//For -ex conf1 -m conf22
+	pCommandParser->provideArgumentPatternForCommandCode(5, ArgumentPositions{1, 3}, Arguments{"-ex", "-m"}, EVALUATE_EXTERNAL_APPROXIMATOR_COMPOSER_TO_TARGET);
 }
 
 void printSyntaxMessage() {

@@ -26,9 +26,8 @@ public:
 	SampleCollectionContainerImpl(const CollectionConfig& collectionConfig);
 	virtual ~SampleCollectionContainerImpl();
 
+	//Implement
 	virtual GateCollectionPtr getGateCollection(GateDistanceCalculatorPtr pGateDistanceCalculator);
-
-	virtual PersitableGateCollectionPtr getPersitableGateCollection();
 
 private:
 	void wireDependencies();
@@ -36,6 +35,10 @@ private:
 	void constructGateCombinabilityCheckerFactory();
 
 	void constructGateCollection(GateCollectionPtr pGateCollection, GateDistanceCalculatorPtr pGateDistanceCalculator);
+
+	void probeBaseCollection(GateDistanceCalculatorPtr pGateDistanceCalculator);
+
+	void fillBaseCollection(GateCollectionPtr pGateCollection);
 
 	void releaseDependencies();
 
@@ -61,6 +64,8 @@ private:
 	GateCollectionPtr m_pUniversalSet;
 
 	CombinerPtr<GatePtr> m_pGateCombiner;
+	CollectionPtr<GatePtr> m_pBaseCollection;
+	int m_baseSequenceLength;
 	GateSearchSpaceConstructorPtr m_pGateSearchSpaceConstructor;
 
 	CollectionConfig m_collectionConfig;

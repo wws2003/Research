@@ -132,6 +132,7 @@ IteratorPtr<T> GNATCollectionImpl<T>::getReadonlyIteratorPtr() {
 
 	while(!pCurrentIter->isDone()) {
 		buffer.push_back(pCurrentIter->getObj());
+		pCurrentIter->next();
 	}
 
 	_destroy(pCurrentIter);

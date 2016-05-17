@@ -70,6 +70,9 @@ private:
 				std::string parallelConfigFile,
 				std::string targetConfigFile);
 
+	AbstractCommandPtr getComposerForExternalApproximatorEvaluationCommandForTarget(std::string externalApproximatorConfigFile,
+			std::string adbComposerConfigFile);
+
 	//----------------------------------//
 	//Apply config paramters to change containers for concrete instances of collection, approximator, evaluator...
 	//----------------------------------//

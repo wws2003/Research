@@ -6,6 +6,7 @@
 CPP_SRCS += \
 ../src/implement/ComposerEvaluatorImpl.cpp \
 ../src/implement/CpuTimer.cpp \
+../src/implement/ExternalApproximatorBasedComposerEvaluatorImpl.cpp \
 ../src/implement/GateComposerEvaluatorImpl.cpp \
 ../src/implement/GateSearchSpaceConstructorFowlerImpl.cpp \
 ../src/implement/GateSearchSpaceConstructorImpl.cpp \
@@ -22,6 +23,7 @@ CPP_SRCS += \
 OBJS += \
 ./src/implement/ComposerEvaluatorImpl.o \
 ./src/implement/CpuTimer.o \
+./src/implement/ExternalApproximatorBasedComposerEvaluatorImpl.o \
 ./src/implement/GateComposerEvaluatorImpl.o \
 ./src/implement/GateSearchSpaceConstructorFowlerImpl.o \
 ./src/implement/GateSearchSpaceConstructorImpl.o \
@@ -38,6 +40,7 @@ OBJS += \
 CPP_DEPS += \
 ./src/implement/ComposerEvaluatorImpl.d \
 ./src/implement/CpuTimer.d \
+./src/implement/ExternalApproximatorBasedComposerEvaluatorImpl.d \
 ./src/implement/GateComposerEvaluatorImpl.d \
 ./src/implement/GateSearchSpaceConstructorFowlerImpl.d \
 ./src/implement/GateSearchSpaceConstructorImpl.d \

@@ -18,6 +18,7 @@ template<typename T>
 class SearchSpaceConstructorFowlerImpl : public ISearchSpaceConstructor<T> {
 public:
 	SearchSpaceConstructorFowlerImpl(CombinerPtr<T> pCombiner);
+
 	virtual ~SearchSpaceConstructorFowlerImpl(){};
 
 	//Override
@@ -31,6 +32,10 @@ protected:
 
 	//Possibly overriden by sub classes
 	virtual void addToUniqueList(T appendedSequence);
+
+	virtual std::vector<T>* createCurrentMaxLengthSequences();
+
+	virtual int getBaseCollectionMaxSequenceLength();
 
 private:
 	CombinerPtr<T> m_pCombiner;

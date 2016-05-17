@@ -78,6 +78,9 @@ CommandPtr CommandFactory::getCommand(int commandCode, const CommandParams& comm
 	case EVALUATE_PARALLEL_COMPOSER2_TO_TARGET: {
 		return getParallelComposerEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3], commandParams[4]);
 	}
+	case EVALUATE_EXTERNAL_APPROXIMATOR_COMPOSER_TO_TARGET: {
+		return getComposerForExternalApproximatorEvaluationCommandForTarget(commandParams[0], commandParams[1]);
+	}
 	default:
 		return CommandPtr(new NotAvailableCommand());
 	}
@@ -189,6 +192,12 @@ AbstractCommandPtr CommandFactory::getParallelComposerEvaluationCommandForTarget
 			targetConfigFile);
 
 	return generateComposerEvaluationCommandForTargets();
+}
+
+AbstractCommandPtr CommandFactory::getComposerForExternalApproximatorEvaluationCommandForTarget(std::string externalApproximatorConfigFile,
+			std::string adbComposerConfigFile) {
+	//TODO Implement
+	return NullPtr;
 }
 
 //Below are methods to read config files then instantiate proper containers for dependencies

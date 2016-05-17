@@ -19,8 +19,6 @@ public:
 	virtual ~ICollectionContainer(){};
 
 	virtual GateCollectionPtr getGateCollection(GateDistanceCalculatorPtr pGateDistanceCalculator) = 0;
-
-	virtual PersitableGateCollectionPtr getPersitableGateCollection() = 0;
 };
 
 

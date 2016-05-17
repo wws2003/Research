@@ -18,7 +18,10 @@
 
 class GateSearchSpaceConstructorFowlerImpl: public SearchSpaceConstructorFowlerImpl<GatePtr> {
 public:
-	GateSearchSpaceConstructorFowlerImpl(CombinerPtr<GatePtr> pCombiner, GateDistanceCalculatorPtr pGateDistanceCalculator);
+	GateSearchSpaceConstructorFowlerImpl(CombinerPtr<GatePtr> pCombiner,
+			CollectionPtr<GatePtr> pBaseCollection,
+			int baseSequenceLength,
+			GateDistanceCalculatorPtr pGateDistanceCalculator);
 
 	virtual ~GateSearchSpaceConstructorFowlerImpl();
 
@@ -29,9 +32,20 @@ protected:
 	//Override
 	void addToUniqueList(GatePtr pSeqGate);
 
+	//Override
+	std::vector<GatePtr>* createCurrentMaxLengthSequences();
+
+	//Override
+	int getBaseCollectionMaxSequenceLength();
+
 private:
+	void initSequencesSeqNameSet();
+
 	//Check if sub sequences of gates are unique
 	bool areSubSequencesUnique(GatePtr pSeqGate) const;
+
+	//Check if gate is not already in base collection
+	bool isInBaseCollection(GatePtr pSeqGate) const;
 
 	typedef std::pair<std::string, unsigned int> SequenceWithLength;
 	void findSubSequences(GatePtr pSeqGate, std::vector<SequenceWithLength>& subSequences) const;
@@ -54,6 +68,11 @@ private:
 	GatesDistanceMap m_gatesDistanceMapToPivot;
 
 	GatePtr m_pPivot;
+
+	//If the following field are set, search space will be constructed from base collection of
+	//sequences of length up to m_baseSequenceLength
+	CollectionPtr<GatePtr> m_pBaseCollection;
+	int m_baseSequenceLength;
 };
 
 

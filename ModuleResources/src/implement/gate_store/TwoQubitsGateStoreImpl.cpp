@@ -208,6 +208,8 @@ void TwoQubitsGateStoreImpl::computeMatrixTs(std::vector<MatrixPtr>& matrixTs) {
 	MatrixPtr pMatrixT = m_pMatrixFactory->getMatrixFromValues(2, 2, arrayT, ROW_SPLICE);
 
 	computeTensors12(pMatrixT, matrixTs);
+
+	_destroy(pMatrixT);
 }
 
 void TwoQubitsGateStoreImpl::computeMatrixHs(std::vector<MatrixPtr>& matrixHs) {
@@ -220,6 +222,8 @@ void TwoQubitsGateStoreImpl::computeMatrixHs(std::vector<MatrixPtr>& matrixHs) {
 	MatrixPtr pMatrixH = m_pMatrixFactory->getMatrixFromValues(2, 2, arrayH, ROW_SPLICE);
 
 	computeTensors12(pMatrixH, matrixHs);
+
+	_destroy(pMatrixH);
 }
 
 void TwoQubitsGateStoreImpl::computeMatrixSs(std::vector<MatrixPtr>& matrixSs) {
@@ -231,6 +235,8 @@ void TwoQubitsGateStoreImpl::computeMatrixSs(std::vector<MatrixPtr>& matrixSs) {
 	MatrixPtr pMatrixS = m_pMatrixFactory->getMatrixFromValues(2, 2, arrayS, ROW_SPLICE);
 
 	computeTensors12(pMatrixS, matrixSs);
+
+	_destroy(pMatrixS);
 }
 
 void TwoQubitsGateStoreImpl::computeMatrixCNOTs(std::vector<MatrixPtr>& matrixCNOTs) {

@@ -14,9 +14,16 @@ template class SearchSpaceConstructorFowlerImpl<GatePtr>;
 #define DUPLICATED_GATE_MINIMUM_LENGTH (4)
 #define DISTANCE_TO_CONSIDER_AS_ONE (1e-7)
 
-GateSearchSpaceConstructorFowlerImpl::GateSearchSpaceConstructorFowlerImpl(CombinerPtr<GatePtr> pCombiner, GateDistanceCalculatorPtr pGateDistanceCalculator) : SearchSpaceConstructorFowlerImpl<GatePtr>(pCombiner) {
+GateSearchSpaceConstructorFowlerImpl::GateSearchSpaceConstructorFowlerImpl(CombinerPtr<GatePtr> pCombiner,
+		CollectionPtr<GatePtr> pBaseCollection,
+		int baseSequenceLength,
+		GateDistanceCalculatorPtr pGateDistanceCalculator) : SearchSpaceConstructorFowlerImpl<GatePtr>(pCombiner) {
+
 	m_pGateDistanceCalculator = pGateDistanceCalculator;
 	m_pPivot = NullPtr;
+	m_pBaseCollection = pBaseCollection;
+	m_baseSequenceLength = baseSequenceLength;
+	initSequencesSeqNameSet();
 }
 
 GateSearchSpaceConstructorFowlerImpl::~GateSearchSpaceConstructorFowlerImpl() {
@@ -33,12 +40,50 @@ bool GateSearchSpaceConstructorFowlerImpl::isUnique(GatePtr pSeqGate) const {
 		std::cout << "Checking HTHSHSHTH" << "\n";
 	}
 #endif
-	return areSubSequencesUnique(pSeqGate) && isUniqueConfirmed(pSeqGate);
+	return areSubSequencesUnique(pSeqGate) &&
+			(!isInBaseCollection(pSeqGate) && isUniqueConfirmed(pSeqGate));
 }
 
 void GateSearchSpaceConstructorFowlerImpl::addToUniqueList(GatePtr pSeqGate) {
 	addToUniqueSeqNameSet(pSeqGate);
 	addToDistanceMap(pSeqGate);
+}
+
+std::vector<GatePtr>* GateSearchSpaceConstructorFowlerImpl::createCurrentMaxLengthSequences() {
+	if(m_pBaseCollection == NullPtr) {
+		return NullPtr;
+	}
+	else {
+		IteratorPtr<GatePtr> pBaseIter = m_pBaseCollection->getIteratorPtr();
+		std::vector<GatePtr>* pSequences = new std::vector<GatePtr>;
+		if(pBaseIter != NullPtr) {
+			while(!pBaseIter->isDone()) {
+				pSequences->push_back(pBaseIter->getObj()->clone());
+				pBaseIter->next();
+			}
+		}
+		_destroy(pBaseIter);
+		return pSequences;
+	}
+}
+
+int GateSearchSpaceConstructorFowlerImpl::getBaseCollectionMaxSequenceLength() {
+	return m_baseSequenceLength;
+}
+
+//----------------------------MARK: Private methods----------------------------//
+
+void GateSearchSpaceConstructorFowlerImpl::initSequencesSeqNameSet() {
+	if(m_pBaseCollection != NullPtr) {
+		IteratorPtr<GatePtr> pBaseIter = m_pBaseCollection->getIteratorPtr();
+		while(!pBaseIter->isDone()) {
+			addToUniqueSeqNameSet(pBaseIter->getObj());
+			pBaseIter->next();
+		}
+		std::cout << "Added all elements in base collection to label set\n";
+		pBaseIter->toBegin();
+		_destroy(pBaseIter);
+	}
 }
 
 bool GateSearchSpaceConstructorFowlerImpl::areSubSequencesUnique(GatePtr pSeqGate) const {
@@ -67,25 +112,23 @@ bool GateSearchSpaceConstructorFowlerImpl::areSubSequencesUnique(GatePtr pSeqGat
 	return true;
 }
 
+//Check if gate is not already in base collection
+bool GateSearchSpaceConstructorFowlerImpl::isInBaseCollection(GatePtr pSeqGate) const {
+	if(m_pBaseCollection != NullPtr) {
+		IteratorPtr<LookupResult<GatePtr> > pGateIter = m_pBaseCollection->findNearestNeighbours(pSeqGate, DISTANCE_TO_CONSIDER_AS_ONE);
+		bool result = pGateIter != NullPtr && !pGateIter->isDone();
+		_destroy(pGateIter);
+		return result;
+	}
+	return false;
+}
+
 void GateSearchSpaceConstructorFowlerImpl::findSubSequences(GatePtr pSeqGate, std::vector<SequenceWithLength>& subSequences) const {
 	//Note that this method does not need to find all sub sequences but as much as possible
 	LabelSeq gateSeqs = pSeqGate->getLabelSeq();
 	unsigned int nbGateSeqs = gateSeqs.size();
 
 	const std::string delimeter = "_";
-
-	/*for(unsigned int i = 0; i <= nbGateSeqs - DUPLICATED_GATE_MINIMUM_LENGTH; i++) {
-		std::string subSeq = gateSeqs[i];
-
-		for(unsigned int j = i + 1; j < nbGateSeqs - 1; j++) {
-			subSeq += delimeter + gateSeqs[j];
-
-			unsigned int subSeqLength = j - i + 1;
-			if(subSeqLength >= DUPLICATED_GATE_MINIMUM_LENGTH) {
-				subSequences.push_back(SequenceWithLength(subSeq, subSeqLength));
-			}
-		}
-	}*/
 
 	//Only need to check sub sequences end at last element
 	std::string subSeq = gateSeqs[nbGateSeqs - 1];

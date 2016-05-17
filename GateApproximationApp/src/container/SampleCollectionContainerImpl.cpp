@@ -64,13 +64,6 @@ GateCollectionPtr SampleCollectionContainerImpl::getGateCollection(GateDistanceC
 	return pGateCollection;
 }
 
-PersitableGateCollectionPtr SampleCollectionContainerImpl::getPersitableGateCollection() {
-	return PersitableGateCollectionPtr(new PersistableGNATGateCollectionImpl(m_pGateDistanceCalculatorForCollection,
-			m_pBinaryGateWriter,
-			m_pBinaryGateReader,
-			m_pGateLookupResultProcessor));
-}
-
 void SampleCollectionContainerImpl::wireDependencies() {
 	m_pMatrixFactory = MatrixFactoryPtr(new SimpleDenseMatrixFactoryImpl());
 	m_pMatrixOperator = MatrixOperatorPtr(new SampleMatrixOperator(m_pMatrixFactory));
@@ -111,7 +104,9 @@ void SampleCollectionContainerImpl::wireDependencies() {
 
 	m_pGateCombiner = CombinerPtr<GatePtr>(new GateCombinerImpl(checkers, m_pMatrixOperator));
 
-	m_pGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner, m_pGateDistanceCalculator));
+	m_pBaseCollection = NullPtr;
+	m_baseSequenceLength = 0;
+	m_pGateSearchSpaceConstructor = NullPtr;
 }
 
 void SampleCollectionContainerImpl::constructGateCombinabilityCheckerFactory() {
@@ -127,11 +122,14 @@ void SampleCollectionContainerImpl::constructGateCombinabilityCheckerFactory() {
 		break;
 	}
 }
+
 void SampleCollectionContainerImpl::releaseDependencies() {
 	_destroy(m_pGateSearchSpaceConstructor);
+	_destroy(m_pBaseCollection);
 
 	_destroy(m_pGateCombiner);
 
+	m_pUniversalSet->purge();
 	_destroy(m_pUniversalSet);
 
 	_destroy(m_pGateDistanceCalculatorForCollection);
@@ -154,6 +152,14 @@ void SampleCollectionContainerImpl::releaseDependencies() {
 
 void SampleCollectionContainerImpl::constructGateCollection(GateCollectionPtr pGateCollection,
 		GateDistanceCalculatorPtr pGateDistanceCalculator) {
+
+	probeBaseCollection(pGateDistanceCalculator);
+
+	m_pGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner,
+			m_pBaseCollection,
+			m_baseSequenceLength,
+			m_pGateDistanceCalculator));
+
 	m_pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection,
 			m_pUniversalSet,
 			m_collectionConfig.m_maxSequenceLength);
@@ -161,3 +167,65 @@ void SampleCollectionContainerImpl::constructGateCollection(GateCollectionPtr pG
 	std::cout << "Begin to build data structure for collection of size: " << pGateCollection->size() << std::endl;
 	pGateCollection->rebuildStructure();
 }
+
+void SampleCollectionContainerImpl::probeBaseCollection(GateDistanceCalculatorPtr pGateDistanceCalculator) {
+
+	PersitableGateCollectionPtr pBaseCollection = PersitableGateCollectionPtr(new PersistableGNATGateCollectionImpl(pGateDistanceCalculator,
+			m_pBinaryGateWriter,
+			m_pBinaryGateReader,
+			m_pGateLookupResultProcessor));
+
+	int maxSequenceLength = m_collectionConfig.m_maxSequenceLength - 1;
+	FilePathConfig pathConfig;
+
+	while(maxSequenceLength > 0) {
+		CollectionConfig baseCollectionConfig = m_collectionConfig;
+		baseCollectionConfig.m_maxSequenceLength = maxSequenceLength;
+
+		std::string persitenceFileName = pathConfig.getGateCollectionPersistenceFilePath(baseCollectionConfig);
+		try {
+			pBaseCollection->load(persitenceFileName);
+			fillBaseCollection(pBaseCollection);
+			std::cout << "Base collection loaded from storage"
+					<< " size = "
+					<< pBaseCollection->size()
+					<< ", sequence max length = "
+					<< maxSequenceLength
+					<< ". Finished probing\n";
+			break;
+		}
+		catch (std::exception& e) {
+			std::cout << e.what() << ". Couldn't find saved collection with length "
+					<<  maxSequenceLength
+					<< ". Need to probe to length "
+					<< maxSequenceLength - 1
+					<<  "\n";
+			maxSequenceLength--;
+			continue;
+		}
+	}
+
+	if(maxSequenceLength > 0) {
+		m_pBaseCollection = pBaseCollection;
+	}
+	else {
+		_destroy(pBaseCollection);
+	}
+	m_baseSequenceLength = maxSequenceLength;
+}
+
+void SampleCollectionContainerImpl::fillBaseCollection(GateCollectionPtr pGateCollection) {
+	/*Just a manipulation to calculate matrices in base collection
+	(Remember loaded persistable collection only stores null matrtrices
+	until distance calculator is called)
+	*/
+	std::vector<GatePtr> identityGates;
+	m_pGateStore->getIdentityGates(identityGates, false);
+
+	GateIteratorPtr pGateIter = pGateCollection->getIteratorPtr();
+	while(!pGateIter->isDone()) {
+		m_pGateDistanceCalculatorForCollection->distance(pGateIter->getObj(), identityGates[0]);
+		pGateIter->next();
+	}
+}
+

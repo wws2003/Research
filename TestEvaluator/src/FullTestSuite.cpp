@@ -650,7 +650,7 @@ void FullTestSuite::testFilteredGNATSearch() {
 	GateDistanceCalculatorPtr pGateDistanceCalculator = new GateDistanceCalculatorByMatrixImpl(pMatrixDistanceCalculator);
 
 	LookupResultFilterPtr<GatePtr> pGateLookupResultFilter = new DuplicateGateLookupResultFilterImpl();
-	SetBasedGateLookupResultProcessor* pGateLookupResultProcessor = new SetBasedGateLookupResultProcessor(pGateDistanceCalculator);
+	SetBasedGateLookupResultProcessor* pGateLookupResultProcessor = new SetBasedGateLookupResultProcessor(pGateDistanceCalculator, false);
 	GateCollectionPtr pGateGNATCollection = new GNATGateCollectionImpl(pGateDistanceCalculator, pGateLookupResultProcessor);
 
 	int maxSequenceLength = 5;
