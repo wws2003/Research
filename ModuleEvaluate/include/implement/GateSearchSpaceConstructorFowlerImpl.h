@@ -55,20 +55,42 @@ private:
 
 	void addToDistanceMap(GatePtr pSeqGate);
 
-	GateDistanceCalculatorPtr m_pGateDistanceCalculator;
-
 	typedef std::set<std::string> GateSequenceSet;
 	GateSequenceSet m_uniqueGateSequences[MAX_GATE_SEQUENCE_LENGTH];
-
-	typedef std::map<mreal_t, GatePtrVectorPtr> GatesDistanceMap;
-	GatesDistanceMap m_gatesDistanceMapToPivot;
-
-	GatePtr m_pPivot;
 
 	//If the following field are set, search space will be constructed from base collection of
 	//sequences of length up to m_baseSequenceLength
 	CollectionPtr<GatePtr> m_pBaseCollection;
 	int m_baseSequenceLength;
+
+	class Gate2DMap {
+	public:
+		Gate2DMap(GateDistanceCalculatorPtr pGateDistanceCalculator);
+		virtual ~Gate2DMap();
+
+		bool isUniqueGate(GatePtr pGate) const;
+		void addGate(GatePtr pGate);
+
+	private:
+		bool arePivotReady() const;
+		void distanceToPivots(GatePtr pGate, mreal_t& d1, mreal_t& d2) const;
+
+		void addGateWhenPivotsReady(GatePtr pGate);
+
+		void updatePivots(GatePtr pGate);
+
+		typedef std::map<mreal_t, GatePtrVectorPtr> GatesDistanceMap;
+		typedef GatesDistanceMap* GatesDistanceMapPtr;
+		typedef std::map<mreal_t, GatesDistanceMapPtr> GateDistance2DTable;
+		GateDistance2DTable m_distanceTable;
+
+		GatePtr m_pPivot1;
+		GatePtr m_pPivot2;
+
+		GateDistanceCalculatorPtr m_pGateDistanceCalculator;
+	};
+
+	Gate2DMap m_gate2DMap;
 };
 
 
