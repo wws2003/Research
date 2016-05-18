@@ -82,3 +82,6 @@ Experiment/out
 Experiment/lib
 Experiment/GateApproximationApp
 
+# Script files
+delUnExpectedGitIgnore.sh
+

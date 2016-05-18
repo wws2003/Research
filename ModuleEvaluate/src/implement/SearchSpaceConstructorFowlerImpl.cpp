@@ -25,6 +25,13 @@ void SearchSpaceConstructorFowlerImpl<T>::constructSearchSpace(CollectionPtr<T> 
 	IteratorPtr<T> pUniversalSetIter = pUniversalSet->getReadonlyIteratorPtr();
 
 	std::vector<T>* pCurrentMaxLengthSequences = createCurrentMaxLengthSequences();
+	//If there are sequences in pCurrentMaxLengthSequences, add to constructing collection and unique list
+	if(pCurrentMaxLengthSequences != NullPtr) {
+		for(T pSequence : *pCurrentMaxLengthSequences) {
+			pCollection->addElement(pSequence);
+			addToUniqueList(pSequence);
+		}
+	}
 
 	//Compose matrix sequences from universal matrices up to sequence length max
 	for(int i = getBaseCollectionMaxSequenceLength(); i < maxSequenceLength; i++) {

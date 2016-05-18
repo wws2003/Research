@@ -39,13 +39,9 @@ protected:
 	int getBaseCollectionMaxSequenceLength();
 
 private:
-	void initSequencesSeqNameSet();
 
 	//Check if sub sequences of gates are unique
 	bool areSubSequencesUnique(GatePtr pSeqGate) const;
-
-	//Check if gate is not already in base collection
-	bool isInBaseCollection(GatePtr pSeqGate) const;
 
 	typedef std::pair<std::string, unsigned int> SequenceWithLength;
 	void findSubSequences(GatePtr pSeqGate, std::vector<SequenceWithLength>& subSequences) const;

@@ -23,7 +23,6 @@ GateSearchSpaceConstructorFowlerImpl::GateSearchSpaceConstructorFowlerImpl(Combi
 	m_pPivot = NullPtr;
 	m_pBaseCollection = pBaseCollection;
 	m_baseSequenceLength = baseSequenceLength;
-	initSequencesSeqNameSet();
 }
 
 GateSearchSpaceConstructorFowlerImpl::~GateSearchSpaceConstructorFowlerImpl() {
@@ -40,8 +39,7 @@ bool GateSearchSpaceConstructorFowlerImpl::isUnique(GatePtr pSeqGate) const {
 		std::cout << "Checking HTHSHSHTH" << "\n";
 	}
 #endif
-	return areSubSequencesUnique(pSeqGate) &&
-			(!isInBaseCollection(pSeqGate) && isUniqueConfirmed(pSeqGate));
+	return areSubSequencesUnique(pSeqGate) && isUniqueConfirmed(pSeqGate);
 }
 
 void GateSearchSpaceConstructorFowlerImpl::addToUniqueList(GatePtr pSeqGate) {
@@ -73,19 +71,6 @@ int GateSearchSpaceConstructorFowlerImpl::getBaseCollectionMaxSequenceLength() {
 
 //----------------------------MARK: Private methods----------------------------//
 
-void GateSearchSpaceConstructorFowlerImpl::initSequencesSeqNameSet() {
-	if(m_pBaseCollection != NullPtr) {
-		IteratorPtr<GatePtr> pBaseIter = m_pBaseCollection->getIteratorPtr();
-		while(!pBaseIter->isDone()) {
-			addToUniqueSeqNameSet(pBaseIter->getObj());
-			pBaseIter->next();
-		}
-		std::cout << "Added all elements in base collection to label set\n";
-		pBaseIter->toBegin();
-		_destroy(pBaseIter);
-	}
-}
-
 bool GateSearchSpaceConstructorFowlerImpl::areSubSequencesUnique(GatePtr pSeqGate) const {
 	if(pSeqGate->getLabelSeq().size() < DUPLICATED_GATE_MINIMUM_LENGTH) {
 		return true;
@@ -110,17 +95,6 @@ bool GateSearchSpaceConstructorFowlerImpl::areSubSequencesUnique(GatePtr pSeqGat
 	}
 
 	return true;
-}
-
-//Check if gate is not already in base collection
-bool GateSearchSpaceConstructorFowlerImpl::isInBaseCollection(GatePtr pSeqGate) const {
-	if(m_pBaseCollection != NullPtr) {
-		IteratorPtr<LookupResult<GatePtr> > pGateIter = m_pBaseCollection->findNearestNeighbours(pSeqGate, DISTANCE_TO_CONSIDER_AS_ONE);
-		bool result = pGateIter != NullPtr && !pGateIter->isDone();
-		_destroy(pGateIter);
-		return result;
-	}
-	return false;
 }
 
 void GateSearchSpaceConstructorFowlerImpl::findSubSequences(GatePtr pSeqGate, std::vector<SequenceWithLength>& subSequences) const {

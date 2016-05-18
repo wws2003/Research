@@ -15,6 +15,8 @@
 #include "IMatrixOperator.h"
 #include "IDistanceCalculator.h"
 #include "IGateCombinabilityCheckerFactory.h"
+#include "AlgoCommon.h"
+#include "EvaluateCommon.h"
 
 class FowlerSearchSpaceConstructorTester {
 public:
@@ -23,10 +25,17 @@ public:
 
 	void testFowlerSearchSpaceConstructor();
 
+	void testFowlerSearchSpaceConstructorFromBaseCollection();
+
 private:
-	void assertEquivCollections(CollectionPtr<GatePtr> pCollectionConstructedByFowler, CollectionPtr<GatePtr> pSampleCollection);
+	void assertEquivCollections(CollectionPtr<GatePtr> pCollectionConstructedByFowler,
+			CollectionPtr<GatePtr> pSampleCollection);
 
 	void assertUniqueElementsCollections(CollectionPtr<GatePtr> pCollectionConstructedByFowler);
+
+	GateCollectionPtr createSearchSpace(GateSearchSpaceConstructorPtr pSearchSpaceConstructor,
+			GateCollectionPtr pLibraryCollection,
+			int maxLength);
 
 	MatrixFactoryPtr m_pMatrixFactory;
 	MatrixOperatorPtr m_pMatrixOperator;

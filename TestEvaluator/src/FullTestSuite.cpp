@@ -803,8 +803,11 @@ void FullTestSuite::testResources() {
 }
 
 void FullTestSuite::testFowlerGateSpaceConstructor() {
+	std::cout  << "--------------------------"<<  std::endl << __func__ << std::endl;
 	FowlerSearchSpaceConstructorTester tester;
 	tester.testFowlerSearchSpaceConstructor();
+	tester.testFowlerSearchSpaceConstructorFromBaseCollection();
+	std::cout << __func__ << " passed"  <<  std::endl;
 }
 
 void FullTestSuite::freeTestGateCollectionEvaluator() {
