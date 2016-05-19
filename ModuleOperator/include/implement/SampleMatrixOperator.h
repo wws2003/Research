@@ -59,9 +59,6 @@ private:
 	void fromEigenMatrix(MatrixXcmp& eigenMatrix, int coloumn, ComplexVectorRef rComplexVector);
 
 	MatrixFactoryPtr m_pMatrixFactory;
-
-	typedef std::map<int, MatrixPtrVector> HermitianBasisMap;
-	HermitianBasisMap m_hermitianBasisMap;
 };
 
 

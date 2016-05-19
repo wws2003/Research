@@ -270,13 +270,6 @@ void SampleMatrixOperator::getTracelessHermitianMatricesBasis(int dimension, Mat
 	//Ref. http://mathworld.wolfram.com/GeneralizedGell-MannMatrix.html
 	pBasis.clear();
 
-	//Firstly try to find in cache
-	if(m_hermitianBasisMap.find(dimension) != m_hermitianBasisMap.end()) {
-		MatrixPtrVector hermitianBasis = m_hermitianBasisMap[dimension];
-		pBasis.insert(pBasis.end(), hermitianBasis.begin(), hermitianBasis.end());
-		return;
-	}
-
 	ComplexValArray pBuffer = new ComplexVal[dimension * dimension];
 	std::fill(pBuffer, pBuffer + dimension * dimension, ComplexVal(0.0, 0.0));
 
@@ -334,7 +327,6 @@ void SampleMatrixOperator::getTracelessHermitianMatricesBasis(int dimension, Mat
 		//Restore buffer
 		std::fill(pBuffer, pBuffer + dimension * dimension, ComplexVal(0.0, 0.0));
 	}
-	m_hermitianBasisMap[dimension] = pBasis;
 
 	delete[] pBuffer;
 }
