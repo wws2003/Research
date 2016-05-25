@@ -28,11 +28,6 @@ GateSearchSpaceConstructorFowlerImpl::~GateSearchSpaceConstructorFowlerImpl() {
 }
 
 bool GateSearchSpaceConstructorFowlerImpl::isUnique(GatePtr pSeqGate) const {
-#ifdef DEBUG_FL
-	if(pSeqGate->getLabelStr() == "HTHSHSHTH") {
-		std::cout << "Checking HTHSHSHTH" << "\n";
-	}
-#endif
 	return areSubSequencesUnique(pSeqGate) && isUniqueConfirmed(pSeqGate);
 }
 
@@ -79,11 +74,6 @@ bool GateSearchSpaceConstructorFowlerImpl::areSubSequencesUnique(GatePtr pSeqGat
 	for(SequenceWithLength subSequence : subSequences) {
 		GateSequenceSet uniqueSequencesLengthL = m_uniqueGateSequences[subSequence.second];
 		if(uniqueSequencesLengthL.count(subSequence.first) <= 0) {
-#ifdef DEBUG_FL
-			if(pSeqGate->getLabelStr() == "HTHSHSHTH") {
-				std::cout << "Failed due to non-unique sub sequence " << subSequence.first << "\n";
-			}
-#endif
 			return false;
 		}
 	}
@@ -169,6 +159,7 @@ bool GateSearchSpaceConstructorFowlerImpl::Gate2DMap::isUniqueGate(GatePtr pSeqG
 	GateDistance2DTable::const_iterator dLowerIter = m_distanceTable.lower_bound(distanceToPivot1 - eps);
 	GateDistance2DTable::const_iterator dUpperIter2 = m_distanceTable.upper_bound(distanceToPivot1 + eps);
 
+	int distanceCalculateCounter = 0;
 	for(auto dIter = dLowerIter; dIter != dUpperIter2; dIter++) {
 		GatesDistanceMapPtr pSubMap = dIter->second;
 
@@ -179,6 +170,7 @@ bool GateSearchSpaceConstructorFowlerImpl::Gate2DMap::isUniqueGate(GatePtr pSeqG
 			GatePtrVectorPtr pGatesWithSameDistanceToPivot = dSubIter->second;
 
 			for(GatePtr pGate : *pGatesWithSameDistanceToPivot) {
+				distanceCalculateCounter++;
 				//Check if there is one gate too close to the target gate so that can deal as one
 				if(m_pGateDistanceCalculator->distance(pGate, pSeqGate) <= DISTANCE_TO_CONSIDER_AS_ONE) {
 					return false;
@@ -187,6 +179,11 @@ bool GateSearchSpaceConstructorFowlerImpl::Gate2DMap::isUniqueGate(GatePtr pSeqG
 		}
 	}
 
+	/*std::cout << "---For " << pSeqGate->getLabelStr()
+			<< " distance to pivot 1 = " << mreal::toDouble(distanceToPivot1)
+			<< " distance to pivot 2 = " << mreal::toDouble(distanceToPivot2)
+			<< " Number of distance to calculated " << distanceCalculateCounter << "\n";
+	 */
 	return true;
 }
 

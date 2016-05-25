@@ -12,9 +12,12 @@
 #include "AlgoCommon.h"
 #include <vector>
 
+#define PROGRESS_COUNTER (600)
+
 template<typename T>
 SearchSpaceConstructorFowlerImpl<T>::SearchSpaceConstructorFowlerImpl(CombinerPtr<T> pCombiner) {
 	m_pCombiner = pCombiner;
+	m_counter = 0;
 }
 
 template<typename T>
@@ -31,10 +34,12 @@ void SearchSpaceConstructorFowlerImpl<T>::constructSearchSpace(CollectionPtr<T> 
 			pCollection->addElement(pSequence);
 			addToUniqueList(pSequence);
 		}
+		std::cout << "Finished adding base collection with " << pCurrentMaxLengthSequences->size() << " items \n";
 	}
 
 	//Compose matrix sequences from universal matrices up to sequence length max
-	for(int i = getBaseCollectionMaxSequenceLength(); i < maxSequenceLength; i++) {
+	int startCounter = getBaseCollectionMaxSequenceLength();
+	for(int i = startCounter; i < maxSequenceLength; i++) {
 		//Use a buffer to update current max length sequences (i.e. sequences length = i)
 		std::vector<T>* pCurrentMaxLengthSequencesBuffer = new std::vector<T>();
 
@@ -91,6 +96,11 @@ void SearchSpaceConstructorFowlerImpl<T>::addNewSequencesByApplyingUniversalElem
 
 			//Also add newly generated sequence's matrix/gate to buffer of current-max length sequences
 			ppCurrentMaxLengthSequencesBuffer->push_back(pAppendedSequence);
+
+			m_counter++;
+			if(m_counter % PROGRESS_COUNTER == 0) {
+				std::cout <<  "Added " << m_counter << " items \n";
+			}
 		}
 
 		//Go to next universal matrix/gate

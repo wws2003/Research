@@ -246,7 +246,7 @@ void TwoQubitsGateStoreImpl::computeMatrixCNOTs(std::vector<MatrixPtr>& matrixCN
 	using namespace gatespec::twq;
 	using namespace gatespec::val;
 
-	ComplexVal arrayCNOT1[] = {e_pi_4, zero, zero, zero, zero,
+	ComplexVal arrayCNOT1[] = {e_pi_4, zero, zero, zero,
 			zero, e_pi_4, zero, zero,
 			zero, zero, zero, e_pi_4,
 			zero, zero, e_pi_4, zero};
@@ -256,7 +256,7 @@ void TwoQubitsGateStoreImpl::computeMatrixCNOTs(std::vector<MatrixPtr>& matrixCN
 	//CNOT2 = [0 1 0 0;1 0 0 0;0 0 1 0;0 0 0 1]
 	//Rewrite in SU(4)
 	//CNOT2 = CNOT2 * e^(-i*pi/4)
-	ComplexVal arrayCNOT2[] = {zero, e_pi_4, zero, zero, zero,
+	ComplexVal arrayCNOT2[] = {zero, e_pi_4, zero, zero,
 			e_pi_4, zero, zero, zero,
 			zero, zero, e_pi_4, zero,
 			zero, zero, zero, e_pi_4};

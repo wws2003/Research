@@ -39,6 +39,7 @@ protected:
 
 private:
 	CombinerPtr<T> m_pCombiner;
+	int m_counter;
 };
 
 
