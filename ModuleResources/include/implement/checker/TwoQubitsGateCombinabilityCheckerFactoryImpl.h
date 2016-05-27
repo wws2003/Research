@@ -22,6 +22,7 @@ public:
 private:
 	void initHTCNOTGateCombinabilityCheckers();
 	void initHTSCNOTGateCombinabilityCheckers();
+	void initHTtSCNOTGateCombinabilityCheckers();
 
 	void releaseCheckers(GateCombinabilityCheckers& checkers);
 
@@ -31,8 +32,13 @@ private:
 	GateCombinabilityCheckerPtr getHTCNOTGateSelectiveCombinabilityChecker();
 	GateCombinabilityCheckerPtr getHTSCNOTGateSelectiveCombinabilityChecker();
 
+	GateCombinabilityCheckerPtr getHTtCNOTGateIdentityCycleCombinabilityChecker();
+	GateCombinabilityCheckerPtr getHTtCNOTGateCancelationCombinabilityChecker();
+	GateCombinabilityCheckerPtr getHTtSNOTGateSelectiveCombinabilityChecker();
+
 	GateCombinabilityCheckers m_htCNOTGateCombinabilityCheckers;
 	GateCombinabilityCheckers m_htsCNOTGateCombinabilityCheckers;
+	GateCombinabilityCheckers m_hTtCNOTGateCombinabilityCheckers;
 };
 
 

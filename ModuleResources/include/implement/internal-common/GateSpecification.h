@@ -61,6 +61,11 @@ struct T1 {
 	static const int cost;
 };
 
+struct TDagger1 {
+	static const char name[];
+	static const int cost;
+};
+
 struct H1 {
 	static const char name[];
 	static const int cost;
@@ -72,6 +77,11 @@ struct S1 {
 };
 
 struct T2 {
+	static const char name[];
+	static const int cost;
+};
+
+struct TDagger2 {
 	static const char name[];
 	static const int cost;
 };

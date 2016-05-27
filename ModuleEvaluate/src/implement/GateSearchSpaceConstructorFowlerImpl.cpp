@@ -154,7 +154,7 @@ bool GateSearchSpaceConstructorFowlerImpl::Gate2DMap::isUniqueGate(GatePtr pSeqG
 
 	distanceToPivots(pSeqGate, distanceToPivot1, distanceToPivot2);
 
-	mreal_t eps = 2e-6;
+	mreal_t eps = 3e-7;
 
 	GateDistance2DTable::const_iterator dLowerIter = m_distanceTable.lower_bound(distanceToPivot1 - eps);
 	GateDistance2DTable::const_iterator dUpperIter2 = m_distanceTable.upper_bound(distanceToPivot1 + eps);
@@ -180,10 +180,10 @@ bool GateSearchSpaceConstructorFowlerImpl::Gate2DMap::isUniqueGate(GatePtr pSeqG
 	}
 
 	/*std::cout << "---For " << pSeqGate->getLabelStr()
-			<< " distance to pivot 1 = " << mreal::toDouble(distanceToPivot1)
-			<< " distance to pivot 2 = " << mreal::toDouble(distanceToPivot2)
+			//<< " distance to pivot 1 = " << mreal::toDouble(distanceToPivot1)
+			//<< " distance to pivot 2 = " << mreal::toDouble(distanceToPivot2)
 			<< " Number of distance to calculated " << distanceCalculateCounter << "\n";
-	 */
+	*/
 	return true;
 }
 

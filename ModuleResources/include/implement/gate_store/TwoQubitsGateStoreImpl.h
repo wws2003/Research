@@ -41,6 +41,8 @@ private:
 
 	void computeMatrixTs(std::vector<MatrixPtr>& matrixTs);
 
+	void computeMatrixTDaggers(std::vector<MatrixPtr>& matrixTDaggers);
+
 	void computeMatrixHs(std::vector<MatrixPtr>& matrixHs);
 
 	void computeMatrixSs(std::vector<MatrixPtr>& matrixSs);

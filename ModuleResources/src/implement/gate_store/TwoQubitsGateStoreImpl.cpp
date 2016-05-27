@@ -30,11 +30,13 @@ void TwoQubitsGateStoreImpl::getLibraryGates(std::vector<GatePtr>& libraryGates,
 	using namespace gatespec::twq;
 
 	const std::string Ts[] = {T1::name, T2::name};
+	const std::string TDaggers[] = {TDagger1::name, TDagger2::name};
 	const std::string Hs[] = {H1::name, H2::name};
 	const std::string Ss[] = {S1::name, S2::name};
 	const std::string CNOTs[] = {CNOT1::name, CNOT2::name};
 
 	const std::vector<GatePtr> GateTs = {m_libraryGates[Ts[0]], m_libraryGates[Ts[1]]};
+	const std::vector<GatePtr> GateTDaggers = {m_libraryGates[TDaggers[0]], m_libraryGates[TDaggers[1]]};
 	const std::vector<GatePtr> GateHs = {m_libraryGates[Hs[0]], m_libraryGates[Hs[1]]};
 	const std::vector<GatePtr> GateSs = {m_libraryGates[Ss[0]], m_libraryGates[Ss[1]]};
 	const std::vector<GatePtr> GateCNOTs = {m_libraryGates[CNOTs[0]], m_libraryGates[CNOTs[1]]};
@@ -43,6 +45,13 @@ void TwoQubitsGateStoreImpl::getLibraryGates(std::vector<GatePtr>& libraryGates,
 	case L_HTCNOT:
 		//H, T, CNOT
 		libraryGates.insert(libraryGates.end(), GateTs.begin(), GateTs.end());
+		libraryGates.insert(libraryGates.end(), GateHs.begin(), GateHs.end());
+		libraryGates.insert(libraryGates.end(), GateCNOTs.begin(), GateCNOTs.end());
+		break;
+	case L_HTtCNOT:
+		//H, T, T', CNOT
+		libraryGates.insert(libraryGates.end(), GateTs.begin(), GateTs.end());
+		libraryGates.insert(libraryGates.end(), GateTDaggers.begin(), GateTDaggers.end());
 		libraryGates.insert(libraryGates.end(), GateHs.begin(), GateHs.end());
 		libraryGates.insert(libraryGates.end(), GateCNOTs.begin(), GateCNOTs.end());
 		break;
@@ -96,16 +105,19 @@ void TwoQubitsGateStoreImpl::setupLibraryGates() {
 	typedef std::vector<GateExtInfo> GateExtInfos;
 
 	GateExtInfos gateTs = {GateExtInfo(T1::name, T1::cost), GateExtInfo(T2::name, T2::cost)};
+	GateExtInfos gateTDaggers = {GateExtInfo(TDagger1::name, TDagger1::cost), GateExtInfo(TDagger2::name, TDagger2::cost)};
 	GateExtInfos gateHs = {GateExtInfo(H1::name, H1::cost), GateExtInfo(H2::name, H2::cost)};
 	GateExtInfos gateSs = {GateExtInfo(S1::name, S1::cost), GateExtInfo(S2::name, S2::cost)};
 	GateExtInfos gateCNOTs = {GateExtInfo(CNOT1::name, CNOT1::cost), GateExtInfo(CNOT2::name, CNOT2::cost)};
 
 	std::vector<MatrixPtr> matrixTs;
+	std::vector<MatrixPtr> matrixTDaggers;
 	std::vector<MatrixPtr> matrixHs;
 	std::vector<MatrixPtr> matrixSs;
 	std::vector<MatrixPtr> matrixCNOTs;
 
 	computeMatrixTs(matrixTs);
+	computeMatrixTDaggers(matrixTDaggers);
 	computeMatrixHs(matrixHs);
 	computeMatrixSs(matrixSs);
 	computeMatrixCNOTs(matrixCNOTs);
@@ -118,6 +130,7 @@ void TwoQubitsGateStoreImpl::setupLibraryGates() {
 
 	for(int i = 0; i < 2; i++) {
 		composeGate(gateTs[i], matrixTs[i]);
+		composeGate(gateTDaggers[i], matrixTDaggers[i]);
 		composeGate(gateHs[i], matrixHs[i]);
 		composeGate(gateSs[i], matrixSs[i]);
 		composeGate(gateCNOTs[i], matrixCNOTs[i]);
@@ -210,6 +223,19 @@ void TwoQubitsGateStoreImpl::computeMatrixTs(std::vector<MatrixPtr>& matrixTs) {
 	computeTensors12(pMatrixT, matrixTs);
 
 	_destroy(pMatrixT);
+}
+
+void TwoQubitsGateStoreImpl::computeMatrixTDaggers(std::vector<MatrixPtr>& matrixTDaggers) {
+	using namespace gatespec::twq;
+	using namespace gatespec::val;
+
+	//T' = [e^(i*pi/8) 0;0 e^(-i*pi/8)]
+	ComplexVal arrayTDagger[] = {epi_8, zero, zero, e_pi_8};
+	MatrixPtr pMatrixTDagger = m_pMatrixFactory->getMatrixFromValues(2, 2, arrayTDagger, ROW_SPLICE);
+
+	computeTensors12(pMatrixTDagger, matrixTDaggers);
+
+	_destroy(pMatrixTDagger);
 }
 
 void TwoQubitsGateStoreImpl::computeMatrixHs(std::vector<MatrixPtr>& matrixHs) {

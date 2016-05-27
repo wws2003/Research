@@ -27,6 +27,9 @@ namespace twq {
 const char T1::name[] = "T1";
 const int T1::cost = 100;
 
+const char TDagger1::name[] = "t1";
+const int TDagger1::cost = 100;
+
 const char H1::name[] = "H1";
 const int H1::cost = 10;
 
@@ -35,6 +38,9 @@ const int S1::cost = 20;
 
 const char T2::name[] = "T2";
 const int T2::cost = 100;
+
+const char TDagger2::name[] = "t2";
+const int TDagger2::cost = 100;
 
 const char H2::name[] = "H2";
 const int H2::cost = 10;

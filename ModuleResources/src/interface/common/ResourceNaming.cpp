@@ -12,6 +12,7 @@ ResourceNaming::ResourceNaming() {
 	m_librarySetCanonicalNameMap["H-T"] = L_HT;
 	m_librarySetCanonicalNameMap["H-T-S"] = L_HTS;
 	m_librarySetCanonicalNameMap["H-T-CNOT"] = L_HTCNOT;
+	m_librarySetCanonicalNameMap["H-T-t-CNOT"] = L_HTtCNOT;
 	m_librarySetCanonicalNameMap["H-T-S-CNOT"] = L_HTSCNOT;
 
 	//Rotation type canonical names
@@ -53,6 +54,9 @@ std::string ResourceNaming::getLibrarySetDisplayName(LibrarySet librarySet) cons
 		break;
 	case L_HTSCNOT:
 		displayName = "htscnot";
+		break;
+	case L_HTtCNOT:
+		displayName = "httcnot";
 		break;
 	default:
 		displayName = "unknown";

@@ -14,6 +14,7 @@ enum LibrarySet {
 	L_HT,//No T^-1
 	L_HTS,//No S^-1
 	L_HTCNOT,
+	L_HTtCNOT, //With T^-1
 	L_HTSCNOT,
 	L_UNSPECIFIED
 };
