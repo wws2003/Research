@@ -65,13 +65,15 @@ private:
 			std::string targetConfigFile);
 
 	AbstractCommandPtr getParallelComposerEvaluationCommandForTargets(std::string collectionConfigFile,
-				std::string cbApprxConfigFile,
-				std::string adbComposerConfigFile,
-				std::string parallelConfigFile,
-				std::string targetConfigFile);
+			std::string cbApprxConfigFile,
+			std::string adbComposerConfigFile,
+			std::string parallelConfigFile,
+			std::string targetConfigFile);
 
-	AbstractCommandPtr getComposerForExternalApproximatorEvaluationCommandForTarget(std::string externalApproximatorConfigFile,
-			std::string adbComposerConfigFile);
+	AbstractCommandPtr getComposerForSelingerApproximatorEvaluationCommandForTarget(std::string collectionConfigFile,
+			std::string cbApprxConfigFile,
+			std::string adbComposerConfigFile,
+			std::string targetConfigFile);
 
 	//----------------------------------//
 	//Apply config paramters to change containers for concrete instances of collection, approximator, evaluator...
@@ -104,10 +106,10 @@ private:
 			std::string targetConfigFile);
 
 	void readParallelComposerEvaluationConfig(std::string collectionConfigFile,
-				std::string composerEvalConfigFile,
-				std::string cadbConfigFile,
-				std::string parallelConfigFile,
-				std::string targetConfigFile);
+			std::string composerEvalConfigFile,
+			std::string cadbConfigFile,
+			std::string parallelConfigFile,
+			std::string targetConfigFile);
 
 	void readSKConfig(std::string collectionConfigFile,
 			std::string skApprxConfigFile,
@@ -123,6 +125,11 @@ private:
 			std::string skApprxConfigFile,
 			std::string cbApprxConfigFile,
 			std::string targetConfigFile);
+
+	void readSelingerComposerEvaluationConfig(std::string collectionConfigFile,
+			std::string composerEvalConfigFile,
+			std::string targetConfigFile,
+			std::string cadbConfigFile);
 
 	//-----------------------------------//
 	//Reset container for concrete instances of collection, approximator, evaluator...
@@ -150,11 +157,13 @@ private:
 	void resetEvaluatingComposerContainer(const ParallelConfig& parallelConfig);
 
 	void resetEvaluatingComposerContainer(const CoordinateAdditionalBasedComposerConfig& cabConfig,
-				const CollectionConfig& collectionConfig,
-				const ParallelConfig& parallelConfig);
+			const CollectionConfig& collectionConfig,
+			const ParallelConfig& parallelConfig);
 
 	void resetComposerEvaluatorContainer(const ComposerEvaluatorConfig& composerEvalConfig,
 			const CollectionConfig& collectionCofig);
+
+	void resetComposerEvaluatorContainer(const SelingerComposerEvaluatorConfig& composerEvalConfig);
 
 	void resetSKApproximatorContainer(const SKApproximatorConfig& approximatorConfig,
 			const CollectionConfig& collectionConfig);

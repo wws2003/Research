@@ -43,7 +43,6 @@ void ConfigReader::readCollectionConfig(std::string configFile, CollectionConfig
 		readLineAndLog(inputStream, line, std::cout);
 		sscanf(line.data(), "%[^:]:%d", prefix, &nbQubits);
 		pCollectionConfig->m_nbQubits = nbQubits;
-
 	}
 	else {
 		throw std::logic_error("Can not read config file!");
@@ -345,6 +344,71 @@ void ConfigReader::readParallelConfig(std::string configFile, ParallelConfig* pP
 	}
 }
 
+void ConfigReader::readSelingerComposerEvaluatorConfig(std::string configFile, SelingerComposerEvaluatorConfig* pComposerEvaluatorConfig) {
+	std::cout << "Selinger Evaluator config" << configFile << ":\n";
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		char prefix[128];
+		std::string line;
+
+		readLineAndLog(inputStream, line, std::cout);
+		double initialEpsilon;
+		sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
+		pComposerEvaluatorConfig->m_initialEpsilon = (mreal_t)initialEpsilon;
+
+		readLineAndLog(inputStream, line, std::cout);
+		sscanf(line.data(), "%[^:]:%d", prefix, &(pComposerEvaluatorConfig->m_nbCandidates));
+	}
+	else {
+		throw std::logic_error("Can not read config file for approximator!");
+	}
+}
+
+void ConfigReader::readSelingerComposerEvaluatorConfigFromTargets(std::string configFile, SelingerComposerEvaluatorConfig* pComposerEvaluatorConfig) {
+	std::cout << "Selinger Evaluator target config" << configFile << ":\n";
+	std::ifstream inputStream(configFile, std::ifstream::in);
+	if(inputStream.is_open()) {
+		char prefix[128];
+		std::string line;
+
+		char programPath[256];
+		readLineAndLog(inputStream, line, std::cout);
+		sscanf(line.data(), "%[^:]:%[^ ]", prefix, programPath);
+		pComposerEvaluatorConfig->m_selingerProgramPath = std::string(programPath);
+
+		int nbTargets;
+		readLineAndLog(inputStream, line, std::cout);
+		sscanf(line.data(), "%[^:]:%d", prefix, &nbTargets);
+
+		for(int i = 0; i < nbTargets; i++) {
+			SelingerZRotationTarget target;
+
+			double initialEpsilon;
+
+			readLineAndLog(inputStream, line, std::cout);
+			sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
+			target.m_theta1PiDenominators = (mreal_t)initialEpsilon;
+
+			readLineAndLog(inputStream, line, std::cout);
+			sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
+			target.m_theta2PiDenominators = (mreal_t)initialEpsilon;
+
+			readLineAndLog(inputStream, line, std::cout);
+			sscanf(line.data(), "%[^:]:%lf", prefix, &initialEpsilon);
+			target.m_theta3PiDenominators = (mreal_t)initialEpsilon;
+
+			pComposerEvaluatorConfig->m_selingerZRotationTargets.push_back(target);
+		}
+
+		readLineAndLog(inputStream, line, std::cout);
+		sscanf(line.data(), "%[^:]:%lf", prefix, &(pComposerEvaluatorConfig->m_composeEpsilon));
+	}
+	else {
+		throw std::logic_error("Can not read config file for targets!");
+	}
+}
+
+//MARK: Private methods
 void ConfigReader::readRotationConfigLine(std::string line, RotationConfig& rotationConfig) {
 	char prefix[256];
 	char axis[256];

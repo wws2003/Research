@@ -16,29 +16,33 @@
 
 class ConfigReader {
 public:
-	virtual ~ConfigReader();
+	~ConfigReader();
 
-	virtual void readCollectionConfig(std::string configFile, CollectionConfig* pCollectionConfig);
+	void readCollectionConfig(std::string configFile, CollectionConfig* pCollectionConfig);
 
-	virtual void readCollectionAndEvaluatorConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
+	void readCollectionAndEvaluatorConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
 
-	virtual void readComposerBasedApproximatorConfig(std::string configFile, ComposerBasedApproximatorConfig* pApproximatorConfig);
+	void readComposerBasedApproximatorConfig(std::string configFile, ComposerBasedApproximatorConfig* pApproximatorConfig);
 
-	virtual void readSKApproximatorConfig(std::string configFile, SKApproximatorConfig* pApproximatorConfig);
+	void readSKApproximatorConfig(std::string configFile, SKApproximatorConfig* pApproximatorConfig);
 
-	virtual void readCoordinateAddtionalBasedComposerConfig(std::string configFile, CoordinateAdditionalBasedComposerConfig* pComposerConfig);
+	void readCoordinateAddtionalBasedComposerConfig(std::string configFile, CoordinateAdditionalBasedComposerConfig* pComposerConfig);
 
-	virtual void readMultiComparatorCoordinateAddtionalBasedComposerConfig(std::string configFile, CoordinateAdditionalBasedComposerConfig* pComposerConfig);
+	void readMultiComparatorCoordinateAddtionalBasedComposerConfig(std::string configFile, CoordinateAdditionalBasedComposerConfig* pComposerConfig);
 
-	virtual void readTargetsConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
+	void readTargetsConfig(std::string configFile, CollectionConfig* pCollectionConfig, EvaluatorConfig* pEvaluatorConfig);
 
-	virtual void readEvaluatorConfigFromTargets(std::string configFile, EvaluatorConfig* pEvaluatorConfig);
+	void readEvaluatorConfigFromTargets(std::string configFile, EvaluatorConfig* pEvaluatorConfig);
 
-	virtual void readComposerEvaluatorConfig(std::string configFile, ComposerEvaluatorConfig* pComposerEvaluatorConfig);
+	void readComposerEvaluatorConfig(std::string configFile, ComposerEvaluatorConfig* pComposerEvaluatorConfig);
 
-	virtual void readComposerEvaluatorConfigFromTargets(std::string configFile, ComposerEvaluatorConfig* pComposerEvaluatorConfig);
+	void readComposerEvaluatorConfigFromTargets(std::string configFile, ComposerEvaluatorConfig* pComposerEvaluatorConfig);
 
-	virtual void readParallelConfig(std::string configFile, ParallelConfig* pParallelConfig);
+	void readParallelConfig(std::string configFile, ParallelConfig* pParallelConfig);
+
+	void readSelingerComposerEvaluatorConfig(std::string configFile, SelingerComposerEvaluatorConfig* pComposerEvaluatorConfig);
+
+	void readSelingerComposerEvaluatorConfigFromTargets(std::string configFile, SelingerComposerEvaluatorConfig* pComposerEvaluatorConfig);
 
 private:
 	ResourceNaming m_resourceNaming;

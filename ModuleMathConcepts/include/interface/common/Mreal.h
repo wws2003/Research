@@ -81,6 +81,15 @@ inline ComplexVal exp(const ComplexVal& x) {
 #endif
 }
 
+inline mreal_t pow(const mreal_t& base, const mreal_t& exponent) {
+#if MPFR_REAL
+	return mpfr::pow(base, exponent);
+#else
+	return pow(base, exponent);
+#endif
+}
+
+
 inline bool isNAN(const mreal_t& v) {
 #if MPFR_REAL
 	return mpfr::isnan(v);

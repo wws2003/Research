@@ -6,11 +6,11 @@
 CPP_SRCS += \
 ../src/implement/ComposerEvaluatorImpl.cpp \
 ../src/implement/CpuTimer.cpp \
-../src/implement/ExternalApproximatorBasedComposerEvaluatorImpl.cpp \
 ../src/implement/GateComposerEvaluatorImpl.cpp \
 ../src/implement/GateSearchSpaceConstructorFowlerImpl.cpp \
 ../src/implement/GateSearchSpaceConstructorImpl.cpp \
 ../src/implement/GateSearchSpaceTimerEvaluatorImpl.cpp \
+../src/implement/GateSelingerComposerEvaluatorImpl.cpp \
 ../src/implement/MatrixComposerEvaluatorImpl.cpp \
 ../src/implement/MatrixSearchSpaceConstructorImpl.cpp \
 ../src/implement/MatrixSearchSpaceTimerEvaluatorImpl.cpp \
@@ -18,16 +18,17 @@ CPP_SRCS += \
 ../src/implement/SearchSpaceConstructorFowlerImpl.cpp \
 ../src/implement/SearchSpaceConstructorImpl.cpp \
 ../src/implement/SearchSpaceTimerEvaluator.cpp \
+../src/implement/SelingerComposerEvaluatorImpl.cpp \
 ../src/implement/SystemTimer.cpp 
 
 OBJS += \
 ./src/implement/ComposerEvaluatorImpl.o \
 ./src/implement/CpuTimer.o \
-./src/implement/ExternalApproximatorBasedComposerEvaluatorImpl.o \
 ./src/implement/GateComposerEvaluatorImpl.o \
 ./src/implement/GateSearchSpaceConstructorFowlerImpl.o \
 ./src/implement/GateSearchSpaceConstructorImpl.o \
 ./src/implement/GateSearchSpaceTimerEvaluatorImpl.o \
+./src/implement/GateSelingerComposerEvaluatorImpl.o \
 ./src/implement/MatrixComposerEvaluatorImpl.o \
 ./src/implement/MatrixSearchSpaceConstructorImpl.o \
 ./src/implement/MatrixSearchSpaceTimerEvaluatorImpl.o \
@@ -35,16 +36,17 @@ OBJS += \
 ./src/implement/SearchSpaceConstructorFowlerImpl.o \
 ./src/implement/SearchSpaceConstructorImpl.o \
 ./src/implement/SearchSpaceTimerEvaluator.o \
+./src/implement/SelingerComposerEvaluatorImpl.o \
 ./src/implement/SystemTimer.o 
 
 CPP_DEPS += \
 ./src/implement/ComposerEvaluatorImpl.d \
 ./src/implement/CpuTimer.d \
-./src/implement/ExternalApproximatorBasedComposerEvaluatorImpl.d \
 ./src/implement/GateComposerEvaluatorImpl.d \
 ./src/implement/GateSearchSpaceConstructorFowlerImpl.d \
 ./src/implement/GateSearchSpaceConstructorImpl.d \
 ./src/implement/GateSearchSpaceTimerEvaluatorImpl.d \
+./src/implement/GateSelingerComposerEvaluatorImpl.d \
 ./src/implement/MatrixComposerEvaluatorImpl.d \
 ./src/implement/MatrixSearchSpaceConstructorImpl.d \
 ./src/implement/MatrixSearchSpaceTimerEvaluatorImpl.d \
@@ -52,6 +54,7 @@ CPP_DEPS += \
 ./src/implement/SearchSpaceConstructorFowlerImpl.d \
 ./src/implement/SearchSpaceConstructorImpl.d \
 ./src/implement/SearchSpaceTimerEvaluator.d \
+./src/implement/SelingerComposerEvaluatorImpl.d \
 ./src/implement/SystemTimer.d 
 
 

@@ -19,9 +19,15 @@ FullGateWriterImpl::FullGateWriterImpl() {
 void FullGateWriterImpl::write(GatePtr pGate, std::ostream& outputStream) {
 	std::string delimeter = "*";
 	outputStream << "Gate:";
-	for(LabelSeq::const_iterator lIter = pGate->getLabelSeq().begin(); lIter != pGate->getLabelSeq().end(); lIter++) {
-		outputStream  << *lIter  << delimeter;
+
+	unsigned int nbSeq = pGate->getLabelSeq().size();
+	for(unsigned int i = 0; i < nbSeq; i++) {
+		outputStream  << pGate->getLabelSeq()[i];
+		if(i < nbSeq - 1) {
+			outputStream << delimeter;
+		}
 	}
+
 	outputStream << std::endl;
 	outputStream << "--Gate cost:" << pGate->getCost();
 	outputStream << std::endl;
@@ -42,7 +48,7 @@ void FullGateWriterImpl::write(GatePtr pGate, std::ostream& outputStream) {
 }
 
 void printVal(char* printfBuffer, const ComplexVal& val) {
-	sprintf(printfBuffer, "[%.3f %s %.3f i] ", mreal::toDouble(val.real()), mreal::toDouble(val.imag()) > 0 ? "+" : "-", std::abs(mreal::toDouble(val.imag())));
+	sprintf(printfBuffer, "[%.6f %s %.6f i] ", mreal::toDouble(val.real()), mreal::toDouble(val.imag()) > 0 ? "+" : "-", std::abs(mreal::toDouble(val.imag())));
 }
 
 

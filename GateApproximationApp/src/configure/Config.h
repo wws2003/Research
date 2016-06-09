@@ -92,4 +92,20 @@ struct ParallelConfig {
 	int m_taskFutureBufferSize;
 };
 
+struct SelingerZRotationTarget {
+	mreal_t m_theta1PiDenominators;
+	mreal_t m_theta2PiDenominators;
+	mreal_t m_theta3PiDenominators;
+};
+
+typedef std::vector<SelingerZRotationTarget> SelingerZRotationTargets;
+
+struct SelingerComposerEvaluatorConfig {
+	std::string m_selingerProgramPath;
+	mreal_t m_initialEpsilon;
+	int m_nbCandidates;
+	double m_composeEpsilon;
+	SelingerZRotationTargets m_selingerZRotationTargets;
+};
+
 #endif /* CONFIG_H_ */

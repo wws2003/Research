@@ -76,10 +76,10 @@ void initCommands(CommandParser* pCommandParser) {
 	//For -e conf1 -sk conf2 -m conf3 -t targetConf
 	pCommandParser->provideArgumentPatternForCommandCode(9, ArgumentPositions{1, 3, 5, 7}, Arguments{"-e", "-sk", "-m", "-t"}, EVALUATE_SK2_APPROXIMATOR_TO_TARGET);
 
-	//For -e1 conf1 -ce conf21 -s conf22 -t targetConf
+	//For -e conf1 -ce conf21 -s conf22 -t targetConf
 	pCommandParser->provideArgumentPatternForCommandCode(9, ArgumentPositions{1, 3, 5, 7}, Arguments{"-e", "-ce", "-s", "-t"}, EVALUATE_COMPOSER_TO_TARGET);
 
-	//For -e1 conf1 -ce conf21 -m conf22 -t targetConf
+	//For -e conf1 -ce conf21 -m conf22 -t targetConf
 	pCommandParser->provideArgumentPatternForCommandCode(9, ArgumentPositions{1, 3, 5, 7}, Arguments{"-e", "-ce", "-m", "-t"}, EVALUATE_COMPOSER2_TO_TARGET);
 
 	//For -e conf1 -cep conf2 -par threadConf -t targetConf
@@ -88,8 +88,8 @@ void initCommands(CommandParser* pCommandParser) {
 	//For -e conf1 -cep conf2 -m conf22 -par threadConf -t targetConf
 	pCommandParser->provideArgumentPatternForCommandCode(11, ArgumentPositions{1, 3, 5, 7, 9}, Arguments{"-e", "-cep", "-m", "-par", "-t"}, EVALUATE_PARALLEL_COMPOSER2_TO_TARGET);
 
-	//For -ex conf1 -m conf22
-	pCommandParser->provideArgumentPatternForCommandCode(5, ArgumentPositions{1, 3}, Arguments{"-ex", "-m"}, EVALUATE_EXTERNAL_APPROXIMATOR_COMPOSER_TO_TARGET);
+	//For -e conf1 -cex conf21 -m conf22 -t selinger_targetConf
+	pCommandParser->provideArgumentPatternForCommandCode(9, ArgumentPositions{1, 3, 5, 7}, Arguments{"-e", "-cex", "-m", "-t"}, EVALUATE_SELINGER_APPROXIMATOR_COMPOSER_TO_TARGET);
 }
 
 void printSyntaxMessage() {
@@ -108,6 +108,7 @@ void printSyntaxMessage() {
 
 	std::cout << "-e conf1 -ce conf2 -s conf3 -t targetConf -> Evaluate single comparator coordinate addition-based gate composer vs full-combination gate composer. " << std::endl;
 	std::cout << "-e conf1 -ce conf2 -m conf3 -t targetConf -> Evaluate multiple comparators coordinate addition-based gate composer vs full-combination gate composer. " << std::endl;
+	std::cout << "-e conf1 -cex conf2 -m conf3 -t targetConf -> Evaluate multiple comparators coordinate addition-based gate composer vs full-combination gate composer. vs Selinger best-effort composer" << std::endl;
 
 	std::cout << "-e conf1 -cep conf2 -par threadConf -t targetConf -> Evaluate multi-threaded full-combination gate composer vs full-combination gate composer. " << std::endl;
 	std::cout << "-e conf1 -cep conf2 -m conf3 -par threadConf -t targetConf -> Evaluate multi-threaded multiple comparators coordinate addition-based gate composer vs multiple comparators coordinate addition-based gate composer. " << std::endl;

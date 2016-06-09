@@ -20,5 +20,4 @@ public:
 			ComposerPtr<T> pStandardComposer) = 0;
 };
 
-
 #endif /* IGATEDECOMPOSEREVALUATOR_H_ */

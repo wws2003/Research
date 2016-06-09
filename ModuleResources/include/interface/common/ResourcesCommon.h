@@ -32,6 +32,16 @@ enum RotationType {
 struct RotationConfig {
 	RotationType m_rotationType;
 	mreal_t m_rotationAngle;
+
+	RotationConfig() {
+		m_rotationType = C_UNSPECIFIED;
+		m_rotationAngle = 0;
+	}
+
+	RotationConfig(RotationType rotationType, mreal_t rotationAngle) {
+		m_rotationType = rotationType;
+		m_rotationAngle = rotationAngle;
+	}
 };
 
 typedef std::vector<RotationConfig> RotationConfigs;

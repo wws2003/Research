@@ -16,6 +16,7 @@ CPP_SRCS += \
 ../src/container/SampleComposerEvaluatorContainerImpl.cpp \
 ../src/container/SampleEvaluatingComposerContainerImpl.cpp \
 ../src/container/SampleEvaluatorContainerImpl.cpp \
+../src/container/SelingerComposerEvaluatorContainerImpl.cpp \
 ../src/container/SimpleComposerContainerImpl.cpp \
 ../src/container/SimpleParallelComposerContainerImpl.cpp 
 
@@ -32,6 +33,7 @@ OBJS += \
 ./src/container/SampleComposerEvaluatorContainerImpl.o \
 ./src/container/SampleEvaluatingComposerContainerImpl.o \
 ./src/container/SampleEvaluatorContainerImpl.o \
+./src/container/SelingerComposerEvaluatorContainerImpl.o \
 ./src/container/SimpleComposerContainerImpl.o \
 ./src/container/SimpleParallelComposerContainerImpl.o 
 
@@ -48,6 +50,7 @@ CPP_DEPS += \
 ./src/container/SampleComposerEvaluatorContainerImpl.d \
 ./src/container/SampleEvaluatingComposerContainerImpl.d \
 ./src/container/SampleEvaluatorContainerImpl.d \
+./src/container/SelingerComposerEvaluatorContainerImpl.d \
 ./src/container/SimpleComposerContainerImpl.d \
 ./src/container/SimpleParallelComposerContainerImpl.d 
 

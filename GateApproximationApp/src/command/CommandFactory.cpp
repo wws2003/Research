@@ -23,6 +23,7 @@
 #include "SampleComposerEvaluatorContainerImpl.h"
 #include "EvaluatingParallelCoordinateAddtionBasedComposerContainerImpl.h"
 #include "EvaluatingParallelComposerContainerImpl.h"
+#include "SelingerComposerEvaluatorContainerImpl.h"
 #include "ConfigReader.h"
 #include <cstdio>
 
@@ -78,8 +79,8 @@ CommandPtr CommandFactory::getCommand(int commandCode, const CommandParams& comm
 	case EVALUATE_PARALLEL_COMPOSER2_TO_TARGET: {
 		return getParallelComposerEvaluationCommandForTargets(commandParams[0], commandParams[1], commandParams[2], commandParams[3], commandParams[4]);
 	}
-	case EVALUATE_EXTERNAL_APPROXIMATOR_COMPOSER_TO_TARGET: {
-		return getComposerForExternalApproximatorEvaluationCommandForTarget(commandParams[0], commandParams[1]);
+	case EVALUATE_SELINGER_APPROXIMATOR_COMPOSER_TO_TARGET: {
+		return getComposerForSelingerApproximatorEvaluationCommandForTarget(commandParams[0], commandParams[1], commandParams[2], commandParams[3]);
 	}
 	default:
 		return CommandPtr(new NotAvailableCommand());
@@ -194,10 +195,14 @@ AbstractCommandPtr CommandFactory::getParallelComposerEvaluationCommandForTarget
 	return generateComposerEvaluationCommandForTargets();
 }
 
-AbstractCommandPtr CommandFactory::getComposerForExternalApproximatorEvaluationCommandForTarget(std::string externalApproximatorConfigFile,
-			std::string adbComposerConfigFile) {
-	//TODO Implement
-	return NullPtr;
+AbstractCommandPtr CommandFactory::getComposerForSelingerApproximatorEvaluationCommandForTarget(std::string collectionConfigFile,
+		std::string cbApprxConfigFile,
+		std::string adbComposerConfigFile,
+		std::string targetConfigFile) {
+
+	readSelingerComposerEvaluationConfig(collectionConfigFile, cbApprxConfigFile, targetConfigFile, adbComposerConfigFile);
+
+	return generateComposerEvaluationCommandForTargets();
 }
 
 //Below are methods to read config files then instantiate proper containers for dependencies
@@ -407,6 +412,26 @@ void CommandFactory::readComposerBasedSK2Config(std::string collectionConfigFile
 	resetEvaluationContainer(evaluatorConfig, collectionConfig);
 }
 
+void CommandFactory::readSelingerComposerEvaluationConfig(std::string collectionConfigFile,
+		std::string composerEvalConfigFile,
+		std::string targetConfigFile,
+		std::string cadbConfigFile) {
+
+	ConfigReader configReader;
+
+	CollectionConfig collectionConfig;
+	CoordinateAdditionalBasedComposerConfig cadbConfig;
+	SelingerComposerEvaluatorConfig composerEvalConfig;
+
+	configReader.readCollectionConfig(collectionConfigFile, &collectionConfig);
+	configReader.readMultiComparatorCoordinateAddtionalBasedComposerConfig(cadbConfigFile, &cadbConfig);
+	configReader.readSelingerComposerEvaluatorConfig(composerEvalConfigFile, &composerEvalConfig);
+	configReader.readSelingerComposerEvaluatorConfigFromTargets(targetConfigFile, &composerEvalConfig);
+
+	resetEvaluatingComposerContainer(cadbConfig, collectionConfig);
+	resetComposerEvaluatorContainer(composerEvalConfig);
+}
+
 //-----------------------------------//
 //Reset container for concrete instances of collection, approximator, evaluator...
 //-----------------------------------//
@@ -462,6 +487,11 @@ void CommandFactory::resetEvaluatingComposerContainer(const CoordinateAdditional
 void CommandFactory::resetComposerEvaluatorContainer(const ComposerEvaluatorConfig& composerEvalConfig, const CollectionConfig& collectionCofig) {
 	_destroy(m_pComposerEvaluatorContainer);
 	m_pComposerEvaluatorContainer = ComposerEvaluatorContainerPtr(new SampleComposerEvaluatorContainerImpl(composerEvalConfig, collectionCofig));
+}
+
+void CommandFactory::resetComposerEvaluatorContainer(const SelingerComposerEvaluatorConfig& composerEvalConfig) {
+	_destroy(m_pComposerEvaluatorContainer);
+	m_pComposerEvaluatorContainer = ComposerEvaluatorContainerPtr(new SelingerComposerEvaluatorContainerImpl(composerEvalConfig));
 }
 
 void CommandFactory::resetSKApproximatorContainer(const SKApproximatorConfig& approximatorConfig, const CollectionConfig& collectionConfig) {
