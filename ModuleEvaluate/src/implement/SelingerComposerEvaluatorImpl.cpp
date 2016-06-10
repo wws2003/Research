@@ -169,7 +169,7 @@ void SelingerComposerEvaluatorImpl<T>::evaluateBestEffortPartialResults(Building
 	}
 
 	T candidate;
-	generateTarget(partials, modifier, candidate);
+	generateTarget(partials, NullPtr, candidate);
 	m_ostream << "---------------------------------------------\n";
 	m_ostream << "Best approximation:\n";
 	m_pWriter->write(candidate, m_ostream);

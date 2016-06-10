@@ -14,6 +14,7 @@
 #include "IMatrixFactory.h"
 #include "MathConceptsCommon.h"
 #include "ICollection.h"
+#include "SelingerProgramAdapter.h"
 #include <map>
 
 #define UV_ARRAY_SIZE (5)
@@ -60,60 +61,6 @@ private:
 	std::string m_selingerProgramPath;
 
 	CollectionPtr<GatePtr> m_pHelperCollection;
-
-	class SelingerProgramAdapter {
-	public:
-		SelingerProgramAdapter(MatrixFactoryPtr pMatrixFactory);
-
-		virtual ~SelingerProgramAdapter(){};
-
-		void initState();
-
-		void consumeOutputLine(std::string line);
-
-		bool isOutputMatrixAvailable() const;
-
-		LookupResult<MatrixPtr> getOutputMatrix() const;
-
-	private:
-		void initContants();
-
-		enum State{
-			ST_INIT,
-			ST_READING_LABEL,
-			ST_READING_U,
-			ST_READING_T,
-			ST_READING_EPS
-		};
-
-		State getNextState(State currentState) const;
-
-		//Methods to read proper values from line
-		std::string readLabelFromLine(std::string line);
-		void readValuesFromLine(std::string line, int* values);
-		mreal_t readErrorFromLine(std::string line);
-
-		MatrixPtr createMatrixFromUT(const int *u, const int *t) const;
-
-		ComplexVal calculateComplexValFromRingParam(const int *params) const;
-
-		ComplexVal getReverseSqrt2Pow(int pow) const;
-
-		//Fields to remember read values
-		State m_state;
-		std::string m_label;
-		int m_us[UV_ARRAY_SIZE];
-		int m_ts[UV_ARRAY_SIZE];
-		mreal_t m_error;
-
-		MatrixFactoryPtr m_pMatrixFactory;
-
-		//Constants values
-		std::map<int, mreal_t> m_factorMap;
-		ComplexVal omega;
-		ComplexVal omega2;
-		ComplexVal omega3;
-	};
 
 	SelingerProgramAdapter m_selingerProgramAdapter;
 

@@ -345,7 +345,7 @@ void ConfigReader::readParallelConfig(std::string configFile, ParallelConfig* pP
 }
 
 void ConfigReader::readSelingerComposerEvaluatorConfig(std::string configFile, SelingerComposerEvaluatorConfig* pComposerEvaluatorConfig) {
-	std::cout << "Selinger Evaluator config" << configFile << ":\n";
+	std::cout << "Selinger Evaluator config " << configFile << ":\n";
 	std::ifstream inputStream(configFile, std::ifstream::in);
 	if(inputStream.is_open()) {
 		char prefix[128];
