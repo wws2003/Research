@@ -61,6 +61,7 @@
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/implement"/>
+									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/implement/internal"/>
 									<listOptionValue builtIn="false" value="../../ModuleParallelism/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleParallelism/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleParallelism/include/interface/internal-abstract"/>

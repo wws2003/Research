@@ -34,7 +34,7 @@ FowlerSearchSpaceConstructorTester::FowlerSearchSpaceConstructorTester() {
 
 	m_pGateCombiner = (CombinerPtr<GatePtr>)(new GateCombinerImpl(combinabilityCheckers, m_pMatrixOperator));
 
-	m_pMatrixDistanceCalculator = (MatrixDistanceCalculatorPtr)(new MatrixFowlerDistanceCalculator(m_pMatrixOperator));
+	m_pMatrixDistanceCalculator = (MatrixDistanceCalculatorPtr)(new MatrixFowlerDistanceCalculator(NullPtr));
 	m_pGateDistanceCalculator = (GateDistanceCalculatorPtr)(new GateDistanceCalculatorByMatrixImpl(m_pMatrixDistanceCalculator));
 }
 
@@ -66,7 +66,10 @@ void FowlerSearchSpaceConstructorTester::testFowlerSearchSpaceConstructor() {
 	pNormalConstructor->constructSearchSpace(pNormalCollection, pLibraryCollection, maxLength);
 	std::cout << "Normally constructed collection size " << pNormalCollection->size() << "\n";
 
-	GateSearchSpaceConstructorPtr pFowlerConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner, NullPtr, 0, m_pGateDistanceCalculator)) ;
+	GateSearchSpaceConstructorPtr pFowlerConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner,
+			NullPtr,
+			0,
+			m_pGateDistanceCalculator)) ;
 	GateCollectionPtr pFowlerCollection = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>(m_pGateDistanceCalculator));
 	pFowlerConstructor->constructSearchSpace(pFowlerCollection, pLibraryCollection, maxLength);
 	std::cout << "Fowler constructed collection size " << pFowlerCollection->size() << "\n";
@@ -92,23 +95,36 @@ void FowlerSearchSpaceConstructorTester::testFowlerSearchSpaceConstructorFromBas
 	int maxLength = baseLength + 1;
 
 	SystemTimer systemTimer;
+	double t1, t2;
 
-	GateSearchSpaceConstructorPtr pFowlerBaseConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner, NullPtr, 0, m_pGateDistanceCalculator)) ;
-	GateCollectionPtr pBaseCollection = createSearchSpace(pFowlerBaseConstructor, pLibraryCollection, baseLength);
-	std::cout << "Fowler constructed base collection size " << pBaseCollection->size() << "\n";
-
-	double t1 = systemTimer.getTimeInMs();
-	GateSearchSpaceConstructorPtr pFowlerMaxLengthConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner, NullPtr, 0, m_pGateDistanceCalculator)) ;
+	t1 = systemTimer.getTimeInMs();
+	GateSearchSpaceConstructorPtr pFowlerMaxLengthConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner,
+			NullPtr,
+			0,
+			m_pGateDistanceCalculator)) ;
 	GateCollectionPtr pMaxLengthCollection = createSearchSpace(pFowlerMaxLengthConstructor, pLibraryCollection, maxLength);
-	double t2 = systemTimer.getTimeInMs();
+	t2 = systemTimer.getTimeInMs();
 	std::cout << "Fowler constructed max length collection size "
 			<< pMaxLengthCollection->size()
 			<< ". Construction time:"
 			<< (t2 - t1)
 			<< " ms\n";
 
+	_destroy(pMaxLengthCollection);
+	_destroy(pFowlerMaxLengthConstructor);
+
+	GateSearchSpaceConstructorPtr pFowlerBaseConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner,
+			NullPtr,
+			0,
+			m_pGateDistanceCalculator)) ;
+	GateCollectionPtr pBaseCollection = createSearchSpace(pFowlerBaseConstructor, pLibraryCollection, baseLength);
+	std::cout << "Fowler constructed base collection size " << pBaseCollection->size() << "\n";
+
 	t1 = systemTimer.getTimeInMs();
-	GateSearchSpaceConstructorPtr pFowlerMaxLengthConstructorFromBaseCollection = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner, pBaseCollection, baseLength, m_pGateDistanceCalculator)) ;
+	GateSearchSpaceConstructorPtr pFowlerMaxLengthConstructorFromBaseCollection = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner,
+			pBaseCollection,
+			baseLength,
+			m_pGateDistanceCalculator)) ;
 	GateCollectionPtr pMaxLengthCollectionFromBaseCollection = createSearchSpace(pFowlerMaxLengthConstructorFromBaseCollection, pLibraryCollection, maxLength);
 	t2 = systemTimer.getTimeInMs();
 	std::cout << "Fowler constructed max length collection from base collection size "
@@ -117,15 +133,14 @@ void FowlerSearchSpaceConstructorTester::testFowlerSearchSpaceConstructorFromBas
 			<< (t2 - t1)
 			<< " ms\n";
 
-	assertEquivCollections(pMaxLengthCollectionFromBaseCollection, pMaxLengthCollection);
+	//assertEquivCollections(pMaxLengthCollectionFromBaseCollection, pMaxLengthCollection);
 
 	_destroy(pMaxLengthCollectionFromBaseCollection);
-	_destroy(pMaxLengthCollection);
 	_destroy(pBaseCollection);
 
 	_destroy(pFowlerMaxLengthConstructorFromBaseCollection);
-	_destroy(pFowlerMaxLengthConstructor);
 	_destroy(pFowlerBaseConstructor);
+
 	_destroy(pLibraryCollection);
 }
 
