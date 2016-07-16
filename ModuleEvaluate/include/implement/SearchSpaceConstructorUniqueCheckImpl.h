@@ -1,5 +1,5 @@
 /*
- * SearchSpaceConstructorFowlerImpl.h
+ * SearchSpaceConstructorUniqueCheckImpl.h
  *
  *  Created on: May 6, 2016
  *      Author: pham
@@ -15,11 +15,11 @@
 #include "ICombiner.h"
 
 template<typename T>
-class SearchSpaceConstructorFowlerImpl : public ISearchSpaceConstructor<T> {
+class SearchSpaceConstructorUniqueCheckImpl : public ISearchSpaceConstructor<T> {
 public:
-	SearchSpaceConstructorFowlerImpl(CombinerPtr<T> pCombiner);
+	SearchSpaceConstructorUniqueCheckImpl(CombinerPtr<T> pCombiner);
 
-	virtual ~SearchSpaceConstructorFowlerImpl(){};
+	virtual ~SearchSpaceConstructorUniqueCheckImpl(){};
 
 	//Override
 	virtual void constructSearchSpace(CollectionPtr<T> pCollection, CollectionPtr<T> pUniversalSet, int maxSequenceLength);

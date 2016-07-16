@@ -1,11 +1,11 @@
 /*
- * SearchSpaceConstructorFowlerImpl.cpp
+ * SearchSpaceConstructorUniqueCheckImpl.cpp
  *
  *  Created on: May 6, 2016
  *      Author: pham
  */
 
-#include "SearchSpaceConstructorFowlerImpl.h"
+#include "SearchSpaceConstructorUniqueCheckImpl.h"
 #include "ICollection.h"
 #include "ICombiner.h"
 #include "IIterator.h"
@@ -15,13 +15,13 @@
 #define PROGRESS_COUNTER (600)
 
 template<typename T>
-SearchSpaceConstructorFowlerImpl<T>::SearchSpaceConstructorFowlerImpl(CombinerPtr<T> pCombiner) {
+SearchSpaceConstructorUniqueCheckImpl<T>::SearchSpaceConstructorUniqueCheckImpl(CombinerPtr<T> pCombiner) {
 	m_pCombiner = pCombiner;
 	m_counter = 0;
 }
 
 template<typename T>
-void SearchSpaceConstructorFowlerImpl<T>::constructSearchSpace(CollectionPtr<T> pCollection, CollectionPtr<T> pUniversalSet, int maxSequenceLength) {
+void SearchSpaceConstructorUniqueCheckImpl<T>::constructSearchSpace(CollectionPtr<T> pCollection, CollectionPtr<T> pUniversalSet, int maxSequenceLength) {
 	//Firstly add all single matrices in universal set into the persistable collection
 	pCollection->clear();
 
@@ -62,7 +62,7 @@ void SearchSpaceConstructorFowlerImpl<T>::constructSearchSpace(CollectionPtr<T> 
 }
 
 template<typename T>
-void SearchSpaceConstructorFowlerImpl<T>::addNewSequencesByApplyingUniversalElements(T pSequence,
+void SearchSpaceConstructorUniqueCheckImpl<T>::addNewSequencesByApplyingUniversalElements(T pSequence,
 		IteratorPtr<T> pUniversalSetIter,
 		CombinerPtr<T> pCombiner,
 		std::vector<T>* ppCurrentMaxLengthSequencesBuffer,
@@ -112,21 +112,21 @@ void SearchSpaceConstructorFowlerImpl<T>::addNewSequencesByApplyingUniversalElem
 }
 
 template<typename T>
-bool SearchSpaceConstructorFowlerImpl<T>::isUnique(T appendedSequence) const {
+bool SearchSpaceConstructorUniqueCheckImpl<T>::isUnique(T appendedSequence) const {
 	return true;
 }
 
 template<typename T>
-void SearchSpaceConstructorFowlerImpl<T>::addToUniqueList(T appendedSequence) {
+void SearchSpaceConstructorUniqueCheckImpl<T>::addToUniqueList(T appendedSequence) {
 	//Do nothing
 }
 
 template<typename T>
-std::vector<T>* SearchSpaceConstructorFowlerImpl<T>::createCurrentMaxLengthSequences() {
+std::vector<T>* SearchSpaceConstructorUniqueCheckImpl<T>::createCurrentMaxLengthSequences() {
 	return NullPtr;
 }
 
 template<typename T>
-int SearchSpaceConstructorFowlerImpl<T>::getBaseCollectionMaxSequenceLength() {
+int SearchSpaceConstructorUniqueCheckImpl<T>::getBaseCollectionMaxSequenceLength() {
 	return 0;
 }

@@ -33,6 +33,7 @@
 #include "SingleQubitGateCombinabilityCheckerFactoryImpl.h"
 #include "TwoQubitsGateCombinabilityCheckerFactoryImpl.h"
 #include "GateSearchSpaceConstructorFowlerImpl.h"
+#include "TwoPivotsGateSetImpl.h"
 #include <stdexcept>
 
 SampleCollectionContainerImpl::SampleCollectionContainerImpl(const CollectionConfig& collectionConfig) : m_collectionConfig(collectionConfig) {
@@ -81,6 +82,8 @@ void SampleCollectionContainerImpl::wireDependencies() {
 
 	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(NullPtr));
 	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new GateDistanceCalculatorByMatrixImpl(m_pMatrixDistanceCalculator));
+
+	m_pGateSet = (GateSetPtr)(new TwoPivotsGateSetImpl(m_pGateDistanceCalculator));
 
 	m_pGateDistanceCalculatorForCollection = GateDistanceCalculatorPtr(new SQLiteLazyGateDistanceCalculator(m_pMatrixDistanceCalculator,
 			m_pMatrixFactory,
@@ -135,6 +138,9 @@ void SampleCollectionContainerImpl::releaseDependencies() {
 	_destroy(m_pGateDistanceCalculatorForCollection);
 
 	_destroy(m_pGateLookupResultProcessor);
+
+	_destroy(m_pGateSet);
+
 	_destroy(m_pGateDistanceCalculator);
 	_destroy(m_pMatrixDistanceCalculator);
 
@@ -158,7 +164,7 @@ void SampleCollectionContainerImpl::constructGateCollection(GateCollectionPtr pG
 	m_pGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner,
 			m_pBaseCollection,
 			m_baseSequenceLength,
-			m_pGateDistanceCalculator));
+			m_pGateSet));
 
 	m_pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection,
 			m_pUniversalSet,

@@ -48,6 +48,20 @@ class IPersistableCollection;
 template<typename T>
 using PersistableCollectionPtr = IPersistableCollection<T>*;
 
+template<typename T>
+class ISet;
+
+template<typename T>
+using SetPtr = ISet<T>*;
+
+typedef SetPtr<GatePtr> GateSetPtr;
+
+template<typename T>
+class IEqualChecker;
+
+template<typename T>
+using EqualCheckerPtr = IEqualChecker<T>*;
+
 typedef ICollection<MatrixRealCoordinatePtr> MatrixRealCoordinateCollection;
 typedef ICollection<GateRealCoordinatePtr> GateRealCoordinateCollection;
 typedef ICollection<MatrixPtr> IMatrixCollection;

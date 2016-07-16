@@ -20,6 +20,7 @@
 #include "Config.h"
 #include "EvaluateCommon.h"
 #include "ISearchSpaceConstructor.h"
+#include "ISet.h"
 
 class SampleCollectionContainerImpl: public ICollectionContainer {
 public:
@@ -56,6 +57,8 @@ private:
 
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
 	GateDistanceCalculatorPtr m_pGateDistanceCalculator;
+
+	GateSetPtr m_pGateSet;
 
 	GateDistanceCalculatorPtr m_pGateDistanceCalculatorForCollection;
 

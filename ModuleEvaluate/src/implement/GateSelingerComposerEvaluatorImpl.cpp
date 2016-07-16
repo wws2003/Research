@@ -15,6 +15,8 @@
 #define MAX_COMMAND_LENGTH (1000)
 #define READ_BUFFER_SIZE (1000)
 
+//#define DEBUGGING_SEL
+
 GateSelingerComposerEvaluatorImpl::GateSelingerComposerEvaluatorImpl(const std::vector<std::vector<GatePtr> > partialTargets,
 		const std::vector<GatePtr> modifiers,
 		int buildingBlocksBucketMaxSize,
@@ -94,6 +96,11 @@ IteratorPtr<GatePtr> GateSelingerComposerEvaluatorImpl::getIterFromBuffer(const 
 }
 
 std::string GateSelingerComposerEvaluatorImpl::getSelingerProgramCommand(GatePtr pPartialTarget) {
+#ifdef DEBUGGING_SEL
+	std::string targetStr = pPartialTarget->getLabelStr();
+	targetStr.replace(2, 1, "_");
+	return targetStr + ".txt";
+#else
 	char command[MAX_COMMAND_LENGTH];
 
 	//MARK This implementation requires gate label set correctly
@@ -108,6 +115,7 @@ std::string GateSelingerComposerEvaluatorImpl::getSelingerProgramCommand(GatePtr
 
 	std::string commandstr(command);
 	return commandstr;
+#endif
 }
 
 void GateSelingerComposerEvaluatorImpl::executeSelingerProgramForResults(std::string programCommand,
@@ -118,7 +126,11 @@ void GateSelingerComposerEvaluatorImpl::executeSelingerProgramForResults(std::st
 	const char* command = programCommand.c_str();
 	printf("+++++++++++++++++++++++++++++++++\nTo execute command %s\n", command);
 
+#ifdef DEBUGGING_SEL
+	FILE* commandOut = fopen(command, "r");
+#else
 	FILE* commandOut = popen(command, "r");
+#endif
 	if(commandOut == NULL) {
 		throw new std::runtime_error("In child process something went wrong");
 	}
@@ -133,7 +145,7 @@ void GateSelingerComposerEvaluatorImpl::executeSelingerProgramForResults(std::st
 		if(count == 0) {
 			break;
 		}
-		printf("[Sel]%s", buffLine);
+		//printf("[Sel]%s", buffLine);
 		//Process retrieved line for results
 		processSelingerProgramOutputLineForResults(buffLine, resultBuffer);
 	}

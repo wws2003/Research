@@ -15,8 +15,8 @@ CPP_SRCS += \
 ../src/implement/MatrixSearchSpaceConstructorImpl.cpp \
 ../src/implement/MatrixSearchSpaceTimerEvaluatorImpl.cpp \
 ../src/implement/ScopeTimer.cpp \
-../src/implement/SearchSpaceConstructorFowlerImpl.cpp \
 ../src/implement/SearchSpaceConstructorImpl.cpp \
+../src/implement/SearchSpaceConstructorUniqueCheckImpl.cpp \
 ../src/implement/SearchSpaceTimerEvaluator.cpp \
 ../src/implement/SelingerComposerEvaluatorImpl.cpp \
 ../src/implement/SystemTimer.cpp 
@@ -33,8 +33,8 @@ OBJS += \
 ./src/implement/MatrixSearchSpaceConstructorImpl.o \
 ./src/implement/MatrixSearchSpaceTimerEvaluatorImpl.o \
 ./src/implement/ScopeTimer.o \
-./src/implement/SearchSpaceConstructorFowlerImpl.o \
 ./src/implement/SearchSpaceConstructorImpl.o \
+./src/implement/SearchSpaceConstructorUniqueCheckImpl.o \
 ./src/implement/SearchSpaceTimerEvaluator.o \
 ./src/implement/SelingerComposerEvaluatorImpl.o \
 ./src/implement/SystemTimer.o 
@@ -51,8 +51,8 @@ CPP_DEPS += \
 ./src/implement/MatrixSearchSpaceConstructorImpl.d \
 ./src/implement/MatrixSearchSpaceTimerEvaluatorImpl.d \
 ./src/implement/ScopeTimer.d \
-./src/implement/SearchSpaceConstructorFowlerImpl.d \
 ./src/implement/SearchSpaceConstructorImpl.d \
+./src/implement/SearchSpaceConstructorUniqueCheckImpl.d \
 ./src/implement/SearchSpaceTimerEvaluator.d \
 ./src/implement/SelingerComposerEvaluatorImpl.d \
 ./src/implement/SystemTimer.d 
