@@ -34,6 +34,9 @@
 #include "TwoQubitsGateCombinabilityCheckerFactoryImpl.h"
 #include "GateSearchSpaceConstructorFowlerImpl.h"
 #include "TwoPivotsGateSetImpl.h"
+#include "SimpleGateKDTree.h"
+#include "TreeBasedGateRealSet.h"
+#include "TreeBasedGateDoubleSet.h"
 #include <stdexcept>
 
 SampleCollectionContainerImpl::SampleCollectionContainerImpl(const CollectionConfig& collectionConfig) : m_collectionConfig(collectionConfig) {
@@ -83,7 +86,7 @@ void SampleCollectionContainerImpl::wireDependencies() {
 	m_pMatrixDistanceCalculator = MatrixDistanceCalculatorPtr(new MatrixFowlerDistanceCalculator(NullPtr));
 	m_pGateDistanceCalculator = GateDistanceCalculatorPtr(new GateDistanceCalculatorByMatrixImpl(m_pMatrixDistanceCalculator));
 
-	m_pGateSet = (GateSetPtr)(new TwoPivotsGateSetImpl(m_pGateDistanceCalculator));
+	setupGateSet();
 
 	m_pGateDistanceCalculatorForCollection = GateDistanceCalculatorPtr(new SQLiteLazyGateDistanceCalculator(m_pMatrixDistanceCalculator,
 			m_pMatrixFactory,
@@ -110,6 +113,59 @@ void SampleCollectionContainerImpl::wireDependencies() {
 	m_pBaseCollection = NullPtr;
 	m_baseSequenceLength = 0;
 	m_pGateSearchSpaceConstructor = NullPtr;
+}
+
+void SampleCollectionContainerImpl::setupGateSet() {
+
+	std::vector<GatePtr> pivots;
+
+	MatrixPtrVector pBases;
+	m_pGateStore->getMatrixOrthonormalBasis(pBases);
+	for(MatrixPtr pBasis : pBases) {
+		MatrixPtr pBasisMI = NullPtr;
+		//pBasisMI = pBasis * -i
+		m_pMatrixOperator->multiplyScalar(pBasis, ComplexVal(0, -1), pBasisMI);
+
+		//pExpBasisMI = expm(pBasisMI)
+		MatrixPtr pExpBasisMI = NullPtr;
+		m_pMatrixOperator->exponential(pBasisMI, pExpBasisMI);
+
+		_destroy(pBasisMI);
+
+		GatePtr pPivot = (GatePtr)(new Gate(pExpBasisMI, 1, "#"));
+		pivots.push_back(pPivot);
+	}
+
+	//Add Identity too
+	std::vector<GatePtr> identityGates;
+	m_pGateStore->getIdentityGates(identityGates, false);
+	pivots.push_back(identityGates[0]);
+
+	int nbPivots = pivots.size();
+
+#ifdef USE_APPRX_DOUBLE
+	double distanceToConsiderAsOne = 1e-7;
+	std::vector<double> coordinateRanges(nbPivots, 3e-7);
+	m_pGateTree = (RangeSearchTreePtr<GatePtr, double>)(new SimpleDoubleGateKDTree(nbPivots, 0.0));
+	m_pGateTree->init();
+
+	m_pGateSet = (GateSetPtr)(new TreeBasedGateDoubleSet(pivots,
+			m_pGateDistanceCalculator,
+			(mreal_t)distanceToConsiderAsOne,
+			m_pGateTree,
+			coordinateRanges));
+#else
+	mreal_t distanceToConsiderAsOne = 1e-7;
+	std::vector<mreal_t> coordinateRanges(nbPivots, 3e-7);
+	m_pGateTree = (RangeSearchTreePtr<GatePtr, mreal_t>)(new SimpleRealGateKDTree(nbPivots, 0.0));
+	m_pGateTree->init();
+
+	m_pGateSet = (GateSetPtr)(new TreeBasedGateRealSet(pivots,
+			m_pGateDistanceCalculator,
+			distanceToConsiderAsOne,
+			m_pGateTree,
+			coordinateRanges));
+#endif
 }
 
 void SampleCollectionContainerImpl::constructGateCombinabilityCheckerFactory() {
@@ -139,6 +195,7 @@ void SampleCollectionContainerImpl::releaseDependencies() {
 
 	_destroy(m_pGateLookupResultProcessor);
 
+	_destroy(m_pGateTree);
 	_destroy(m_pGateSet);
 
 	_destroy(m_pGateDistanceCalculator);
@@ -224,7 +281,7 @@ void SampleCollectionContainerImpl::fillBaseCollection(GateCollectionPtr pGateCo
 	/*Just a manipulation to calculate matrices in base collection
 	(Remember loaded persistable collection only stores null matrtrices
 	until distance calculator is called)
-	*/
+	 */
 	std::vector<GatePtr> identityGates;
 	m_pGateStore->getIdentityGates(identityGates, false);
 

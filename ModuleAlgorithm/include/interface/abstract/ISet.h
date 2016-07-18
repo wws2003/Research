@@ -37,7 +37,4 @@ public:
 };
 
 
-
-
-
 #endif /* ISET_H_ */

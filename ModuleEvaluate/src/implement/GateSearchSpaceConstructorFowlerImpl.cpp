@@ -34,7 +34,7 @@ bool GateSearchSpaceConstructorFowlerImpl::isUnique(GatePtr pSeqGate) const {
 
 void GateSearchSpaceConstructorFowlerImpl::addToUniqueList(GatePtr pSeqGate) {
 	addToUniqueSeqNameSet(pSeqGate);
-	addToDistanceMap(pSeqGate);
+	addToUniqueSet(pSeqGate);
 }
 
 std::vector<GatePtr>* GateSearchSpaceConstructorFowlerImpl::createCurrentMaxLengthSequences() {
@@ -110,7 +110,7 @@ void GateSearchSpaceConstructorFowlerImpl::addToUniqueSeqNameSet(GatePtr pSeqGat
 	m_uniqueGateSequences[pSeqGate->getLabelSeq().size()].insert(gateSeqStr);
 }
 
-void GateSearchSpaceConstructorFowlerImpl::addToDistanceMap(GatePtr pSeqGate) {
+void GateSearchSpaceConstructorFowlerImpl::addToUniqueSet(GatePtr pSeqGate) {
 	m_pGateSet->addElement(pSeqGate);
 }
 

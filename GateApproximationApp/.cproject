@@ -69,6 +69,7 @@
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/comparator"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/converter"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/filter"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/tree"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/common"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/implement"/>

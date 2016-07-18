@@ -54,7 +54,7 @@ private:
 
 	void addToUniqueSeqNameSet(GatePtr pSeqGate);
 
-	void addToDistanceMap(GatePtr pSeqGate);
+	void addToUniqueSet(GatePtr pSeqGate);
 
 	typedef std::set<std::string> GateSequenceSet;
 	GateSequenceSet m_uniqueGateSequences[MAX_GATE_SEQUENCE_LENGTH];
