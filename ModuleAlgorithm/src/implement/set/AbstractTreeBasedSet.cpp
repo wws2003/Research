@@ -34,7 +34,6 @@ AbstractTreeBasedSet<T,F>::~AbstractTreeBasedSet() {
 template<typename T, typename F>
 bool AbstractTreeBasedSet<T,F>::isUnique(T element) {
 	m_uniqueCheckCounter++;
-	//Currently don't have mechanism to remember result
 
 	//Calculate query coordinate ranges. Consider coords = {targets to pivots}
 	std::vector<F> distancesToPivots;
@@ -54,17 +53,29 @@ bool AbstractTreeBasedSet<T,F>::isUnique(T element) {
 		}
 	}
 
+	//Work-around: Add to tree right after check unique to avoid re calculate distances to pivots later
+	m_pRangeSearchTree->insert(coord);
+
 	return true;
 }
 
 template<typename T, typename F>
 void AbstractTreeBasedSet<T,F>::addElement(T element) {
 	//Calculate query coordinate ranges
+	/*std::string elementCacheKey = getElementDistanceCacheKey(element);
+	typename DistanceCache::const_iterator eIter = m_distanceCache.find(elementCacheKey);
 	std::vector<F> distancesToPivots;
-	calculateDistancesToPivots(element, distancesToPivots);
+	if(eIter != m_distanceCache.end()) {
+		distancesToPivots = eIter->second;
+	}
+	else {
+		calculateDistancesToPivots(element, distancesToPivots);
+	}
+
+
 	Coordinate<T,F> coord(element, distancesToPivots);
 
-	m_pRangeSearchTree->insert(coord);
+	m_pRangeSearchTree->insert(coord);*/
 }
 
 template<typename T, typename F>

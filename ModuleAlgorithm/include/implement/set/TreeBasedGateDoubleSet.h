@@ -14,19 +14,40 @@
 class TreeBasedGateDoubleSet : public AbstractTreeBasedSet<GatePtr, double> {
 public:
 	TreeBasedGateDoubleSet(const std::vector<GatePtr>& pivots,
-				DistanceCalculatorPtr<GatePtr> pDistanceCalculator,
-				mreal_t distanceToConsiderAsOne,
-				RangeSearchTreePtr<GatePtr, double> pRangeSearchTree,
-				const std::vector<double>& coordinateRanges);
+			DistanceCalculatorPtr<GatePtr> pDistanceCalculator,
+			mreal_t distanceToConsiderAsOne,
+			RangeSearchTreePtr<GatePtr, double> pRangeSearchTree,
+			const std::vector<double>& coordinateRanges);
 
-	virtual ~TreeBasedGateDoubleSet(){};
+	virtual ~TreeBasedGateDoubleSet();
 
 protected:
 	//Override
 	void calculateDistancesToPivots(GatePtr element, std::vector<double>& distances);
 
+	//Override
+	std::string getElementDistanceCacheKey(GatePtr element);
+
 private:
-	double getApprxDistance(MatrixPtr pMatrix1, MatrixPtr pMatrix2);
+	typedef std::complex<double> DoubleComplex;
+
+	class ApprxDoubleComplexMatrix {
+	public:
+		ApprxDoubleComplexMatrix(MatrixPtr pMatrix);
+		virtual ~ApprxDoubleComplexMatrix();
+
+		DoubleComplex getValue(int row, int col);
+
+	private:
+		DoubleComplex* m_array;
+		int m_nbRows;
+		int m_nbColumns;
+	};
+	typedef ApprxDoubleComplexMatrix* ApprxDoubleComplexMatrixPtr;
+
+	double getApprxDistance(ApprxDoubleComplexMatrixPtr pMatrix1, MatrixPtr pMatrix2);
+
+	std::vector<ApprxDoubleComplexMatrixPtr> m_apprxPivots;
 };
 
 

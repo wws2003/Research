@@ -13,6 +13,7 @@
 #include "SearchSpaceConstructorUniqueCheckImpl.h"
 #include "ISet.h"
 #include <set>
+#include <unordered_set>
 #include <map>
 
 #define MAX_GATE_SEQUENCE_LENGTH (128)
@@ -56,7 +57,7 @@ private:
 
 	void addToUniqueSet(GatePtr pSeqGate);
 
-	typedef std::set<std::string> GateSequenceSet;
+	typedef std::unordered_set<std::string> GateSequenceSet;
 	GateSequenceSet m_uniqueGateSequences[MAX_GATE_SEQUENCE_LENGTH];
 
 	//If the following field are set, search space will be constructed from base collection of

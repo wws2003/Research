@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
 		CommandParams commandParams;
 		commandParser.getCommandCodeAndParams(argc, argv, commandCode, commandParams);
 
-		ContextPtr pContext = Context::setup(DRY_MODE, ".2app");
+		ContextPtr pContext = Context::setup(DRY_MODE, ".3app");
 		CommandPtr pCommand = commandFactory.getCommand(commandCode, commandParams);
 		pCommand->execute();
 		_destroy(pCommand);

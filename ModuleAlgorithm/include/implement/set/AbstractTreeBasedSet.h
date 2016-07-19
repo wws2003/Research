@@ -11,6 +11,7 @@
 #include "ISet.h"
 #include "AlgoInternal.h"
 #include "IRangeSearchTree.h"
+#include <map>
 
 template<typename T, typename F>
 class AbstractTreeBasedSet: public ISet<T> {
@@ -36,6 +37,8 @@ protected:
 	//Does not require distance type must be mreal_t
 	virtual void calculateDistancesToPivots(T element, std::vector<F>& distances) = 0;
 
+	virtual std::string getElementDistanceCacheKey(T element) = 0;
+
 	std::vector<T> m_pivots;
 	DistanceCalculatorPtr<T> m_pDistanceCalculator;
 	mreal_t m_distanceToConsiderAsOne;
@@ -43,6 +46,9 @@ protected:
 private:
 	RangeSearchTreePtr<T, F> m_pRangeSearchTree;
 	std::vector<F> m_coordinateRanges;
+
+	typedef std::map<std::string, std::vector<F> > DistanceCache;
+	DistanceCache m_distanceCache;
 
 	int m_uniqueCheckCounter;
 	int m_distanceCalculateCounter;

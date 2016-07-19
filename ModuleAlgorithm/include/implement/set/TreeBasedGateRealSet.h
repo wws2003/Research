@@ -24,6 +24,9 @@ public:
 protected:
 	//Override
 	void calculateDistancesToPivots(GatePtr element, std::vector<mreal_t>& distances);
+
+	//Override
+	std::string getElementDistanceCacheKey(GatePtr element);
 };
 
 

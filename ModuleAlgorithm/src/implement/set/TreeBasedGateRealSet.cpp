@@ -32,4 +32,7 @@ void TreeBasedGateRealSet::calculateDistancesToPivots(GatePtr element, std::vect
 	}
 }
 
+std::string TreeBasedGateRealSet::getElementDistanceCacheKey(GatePtr element) {
+	return element->getLabelStr();
+}
 

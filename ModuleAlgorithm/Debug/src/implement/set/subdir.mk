@@ -5,16 +5,22 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/implement/set/AbstractTreeBasedSet.cpp \
+../src/implement/set/TreeBasedGateDoubleSet.cpp \
+../src/implement/set/TreeBasedGateRealSet.cpp \
 ../src/implement/set/TwoPivotsGateSetImpl.cpp \
 ../src/implement/set/TwoPivotsSetImpl.cpp 
 
 OBJS += \
 ./src/implement/set/AbstractTreeBasedSet.o \
+./src/implement/set/TreeBasedGateDoubleSet.o \
+./src/implement/set/TreeBasedGateRealSet.o \
 ./src/implement/set/TwoPivotsGateSetImpl.o \
 ./src/implement/set/TwoPivotsSetImpl.o 
 
 CPP_DEPS += \
 ./src/implement/set/AbstractTreeBasedSet.d \
+./src/implement/set/TreeBasedGateDoubleSet.d \
+./src/implement/set/TreeBasedGateRealSet.d \
 ./src/implement/set/TwoPivotsGateSetImpl.d \
 ./src/implement/set/TwoPivotsSetImpl.d 
 

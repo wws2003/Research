@@ -5,21 +5,15 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/implement/tree/\ SimpleGateKDTree.cpp \
-../src/implement/tree/SimpleKDTree.cpp \
-../src/implement/tree/TreeBasedGateDoubleSet.cpp \
-../src/implement/tree/TreeBasedGateRealSet.cpp 
+../src/implement/tree/SimpleKDTree.cpp 
 
 OBJS += \
 ./src/implement/tree/\ SimpleGateKDTree.o \
-./src/implement/tree/SimpleKDTree.o \
-./src/implement/tree/TreeBasedGateDoubleSet.o \
-./src/implement/tree/TreeBasedGateRealSet.o 
+./src/implement/tree/SimpleKDTree.o 
 
 CPP_DEPS += \
 ./src/implement/tree/\ SimpleGateKDTree.d \
-./src/implement/tree/SimpleKDTree.d \
-./src/implement/tree/TreeBasedGateDoubleSet.d \
-./src/implement/tree/TreeBasedGateRealSet.d 
+./src/implement/tree/SimpleKDTree.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
