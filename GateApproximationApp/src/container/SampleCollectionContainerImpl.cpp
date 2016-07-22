@@ -218,9 +218,9 @@ void SampleCollectionContainerImpl::constructGateCollection(GateCollectionPtr pG
 
 	probeBaseCollection(pGateDistanceCalculator);
 
-	m_pGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner,
-			m_pBaseCollection,
+	m_pGateSearchSpaceConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pBaseCollection,
 			m_baseSequenceLength,
+			m_pGateCombiner,
 			m_pGateSet));
 
 	m_pGateSearchSpaceConstructor->constructSearchSpace(pGateCollection,

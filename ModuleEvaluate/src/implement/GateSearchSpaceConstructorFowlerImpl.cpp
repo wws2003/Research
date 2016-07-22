@@ -7,20 +7,24 @@
 
 #include "GateSearchSpaceConstructorFowlerImpl.h"
 #include "SearchSpaceConstructorUniqueCheckImpl.cpp"
+#include "Gate.h"
 #include <iostream>
 
 template class SearchSpaceConstructorUniqueCheckImpl<GatePtr>;
 
 #define DUPLICATED_GATE_MINIMUM_LENGTH (4)
-#define DISTANCE_TO_CONSIDER_AS_ONE (1e-7)
+
+GateSearchSpaceConstructorFowlerImpl::GateSearchSpaceConstructorFowlerImpl(CollectionPtr<GatePtr> pBaseCollection,
+		int baseSequenceLength,
+		CombinerPtr<GatePtr> pCombiner,
+		SetPtr<GatePtr> pGateSet) : SearchSpaceConstructorUniqueCheckImpl<GatePtr>(pBaseCollection, baseSequenceLength, pCombiner) {
+
+	m_pGateSet = pGateSet;
+}
 
 GateSearchSpaceConstructorFowlerImpl::GateSearchSpaceConstructorFowlerImpl(CombinerPtr<GatePtr> pCombiner,
-		CollectionPtr<GatePtr> pBaseCollection,
-		int baseSequenceLength,
 		SetPtr<GatePtr> pGateSet) : SearchSpaceConstructorUniqueCheckImpl<GatePtr>(pCombiner) {
 
-	m_pBaseCollection = pBaseCollection;
-	m_baseSequenceLength = baseSequenceLength;
 	m_pGateSet = pGateSet;
 }
 
@@ -30,33 +34,18 @@ GateSearchSpaceConstructorFowlerImpl::~GateSearchSpaceConstructorFowlerImpl() {
 
 bool GateSearchSpaceConstructorFowlerImpl::isUnique(GatePtr pSeqGate) const {
 	return areSubSequencesUnique(pSeqGate) && isUniqueConfirmed(pSeqGate);
+	//return isUniqueConfirmed(pSeqGate);
 }
 
-void GateSearchSpaceConstructorFowlerImpl::addToUniqueList(GatePtr pSeqGate) {
-	addToUniqueSeqNameSet(pSeqGate);
+void GateSearchSpaceConstructorFowlerImpl::addToUniqueList(GatePtr pSeqGate, bool isMaxLengReached) {
+	if(!isMaxLengReached) {
+		addToUniqueSeqNameSet(pSeqGate);
+	}
 	addToUniqueSet(pSeqGate);
 }
 
-std::vector<GatePtr>* GateSearchSpaceConstructorFowlerImpl::createCurrentMaxLengthSequences() {
-	if(m_pBaseCollection == NullPtr) {
-		return NullPtr;
-	}
-	else {
-		IteratorPtr<GatePtr> pBaseIter = m_pBaseCollection->getIteratorPtr();
-		std::vector<GatePtr>* pSequences = new std::vector<GatePtr>;
-		if(pBaseIter != NullPtr) {
-			while(!pBaseIter->isDone()) {
-				pSequences->push_back(pBaseIter->getObj()->clone());
-				pBaseIter->next();
-			}
-		}
-		_destroy(pBaseIter);
-		return pSequences;
-	}
-}
-
-int GateSearchSpaceConstructorFowlerImpl::getBaseCollectionMaxSequenceLength() {
-	return m_baseSequenceLength;
+bool GateSearchSpaceConstructorFowlerImpl::isMaxLengthBaseElement(GatePtr pBaseGate) const {
+	return m_baseLength == (int)pBaseGate->getLabelSeq().size();
 }
 
 //----------------------------MARK: Private methods----------------------------//
@@ -73,8 +62,7 @@ bool GateSearchSpaceConstructorFowlerImpl::areSubSequencesUnique(GatePtr pSeqGat
 
 	//Sub sequences e.g HTT-3, H1T1T2-3
 	for(SequenceWithLength subSequence : subSequences) {
-		GateSequenceSet uniqueSequencesLengthL = m_uniqueGateSequences[subSequence.second];
-		if(uniqueSequencesLengthL.count(subSequence.first) <= 0) {
+		if(m_uniqueGateSequences[subSequence.second].count(subSequence.first) <= 0) {
 			return false;
 		}
 	}
@@ -95,7 +83,7 @@ void GateSearchSpaceConstructorFowlerImpl::findSubSequences(GatePtr pSeqGate, st
 		subSeq = gateSeqs[i] + delimeter + subSeq; //Prepend to sub-sequence
 
 		unsigned int subSeqLength = nbGateSeqs - i;
-		if(subSeqLength >= DUPLICATED_GATE_MINIMUM_LENGTH && subSeqLength < nbGateSeqs) {
+		if(subSeqLength >= DUPLICATED_GATE_MINIMUM_LENGTH && subSeqLength < nbGateSeqs && i == 1) {
 			subSequences.push_back(SequenceWithLength(subSeq, subSeqLength));
 		}
 	}

@@ -20,10 +20,13 @@
 
 class GateSearchSpaceConstructorFowlerImpl: public SearchSpaceConstructorUniqueCheckImpl<GatePtr> {
 public:
-	GateSearchSpaceConstructorFowlerImpl(CombinerPtr<GatePtr> pCombiner,
-			CollectionPtr<GatePtr> pBaseCollection,
+	GateSearchSpaceConstructorFowlerImpl(CollectionPtr<GatePtr> pBaseCollection,
 			int baseSequenceLength,
+			CombinerPtr<GatePtr> pCombiner,
 			SetPtr<GatePtr> pGateSet);
+
+	GateSearchSpaceConstructorFowlerImpl(CombinerPtr<GatePtr> pCombiner,
+				SetPtr<GatePtr> pGateSet);
 
 	virtual ~GateSearchSpaceConstructorFowlerImpl();
 
@@ -32,13 +35,10 @@ protected:
 	bool isUnique(GatePtr pSeqGate) const;
 
 	//Override
-	void addToUniqueList(GatePtr pSeqGate);
+	void addToUniqueList(GatePtr pSeqGate, bool isMaxLengReached);
 
 	//Override
-	std::vector<GatePtr>* createCurrentMaxLengthSequences();
-
-	//Override
-	int getBaseCollectionMaxSequenceLength();
+	bool isMaxLengthBaseElement(GatePtr pBaseGate) const;
 
 private:
 
@@ -59,11 +59,6 @@ private:
 
 	typedef std::unordered_set<std::string> GateSequenceSet;
 	GateSequenceSet m_uniqueGateSequences[MAX_GATE_SEQUENCE_LENGTH];
-
-	//If the following field are set, search space will be constructed from base collection of
-	//sequences of length up to m_baseSequenceLength
-	CollectionPtr<GatePtr> m_pBaseCollection;
-	int m_baseSequenceLength;
 
 	SetPtr<GatePtr> m_pGateSet;
 };

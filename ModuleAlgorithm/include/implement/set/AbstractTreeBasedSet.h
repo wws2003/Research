@@ -34,6 +34,8 @@ public:
 	void getAllUniqueElements(std::vector<T>& elements);
 
 protected:
+	void calculateDistancesToPivotsWithCache(T element, std::vector<F>& distances);
+
 	//Does not require distance type must be mreal_t
 	virtual void calculateDistancesToPivots(T element, std::vector<F>& distances) = 0;
 
@@ -47,11 +49,25 @@ private:
 	RangeSearchTreePtr<T, F> m_pRangeSearchTree;
 	std::vector<F> m_coordinateRanges;
 
-	typedef std::map<std::string, std::vector<F> > DistanceCache;
-	DistanceCache m_distanceCache;
-
 	int m_uniqueCheckCounter;
 	int m_distanceCalculateCounter;
+
+	class DistanceCache {
+	public:
+		DistanceCache();
+		virtual ~DistanceCache(){};
+
+		bool checkCachedElement(std::string elementKey, std::vector<F>& distances);
+
+		void addToCache(std::string elementKey, const std::vector<F>& distances);
+
+	private:
+		//Just remember one element only
+		std::string m_rememeberedElementKey;
+		std::vector<F> m_rememberedDistances;
+	};
+
+	DistanceCache m_distanceCache;
 };
 
 

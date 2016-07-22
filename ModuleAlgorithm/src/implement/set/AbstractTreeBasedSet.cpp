@@ -37,7 +37,7 @@ bool AbstractTreeBasedSet<T,F>::isUnique(T element) {
 
 	//Calculate query coordinate ranges. Consider coords = {targets to pivots}
 	std::vector<F> distancesToPivots;
-	calculateDistancesToPivots(element, distancesToPivots);
+	calculateDistancesToPivotsWithCache(element, distancesToPivots);
 	Coordinate<T,F> coord(element, distancesToPivots);
 
 	//Find elements in ranges
@@ -53,29 +53,18 @@ bool AbstractTreeBasedSet<T,F>::isUnique(T element) {
 		}
 	}
 
-	//Work-around: Add to tree right after check unique to avoid re calculate distances to pivots later
-	m_pRangeSearchTree->insert(coord);
-
 	return true;
 }
 
 template<typename T, typename F>
 void AbstractTreeBasedSet<T,F>::addElement(T element) {
 	//Calculate query coordinate ranges
-	/*std::string elementCacheKey = getElementDistanceCacheKey(element);
-	typename DistanceCache::const_iterator eIter = m_distanceCache.find(elementCacheKey);
 	std::vector<F> distancesToPivots;
-	if(eIter != m_distanceCache.end()) {
-		distancesToPivots = eIter->second;
-	}
-	else {
-		calculateDistancesToPivots(element, distancesToPivots);
-	}
-
+	calculateDistancesToPivotsWithCache(element, distancesToPivots);
 
 	Coordinate<T,F> coord(element, distancesToPivots);
 
-	m_pRangeSearchTree->insert(coord);*/
+	m_pRangeSearchTree->insert(coord);
 }
 
 template<typename T, typename F>
@@ -83,3 +72,38 @@ void AbstractTreeBasedSet<T,F>::getAllUniqueElements(std::vector<T>& elements) {
 	//TODO Implement
 }
 
+//MARK: Protected methods
+template<typename T, typename F>
+void AbstractTreeBasedSet<T,F>::calculateDistancesToPivotsWithCache(T element,
+		std::vector<F>& distances) {
+
+	std::string elementCacheKey = getElementDistanceCacheKey(element);
+	if(m_distanceCache.checkCachedElement(elementCacheKey, distances)) {
+		return;
+	}
+	else {
+		calculateDistancesToPivots(element, distances);
+		m_distanceCache.addToCache(elementCacheKey, distances);
+	}
+}
+
+//MARK: Private class
+template<typename T, typename F>
+AbstractTreeBasedSet<T,F>::DistanceCache::DistanceCache() : m_rememeberedElementKey(""){
+
+}
+
+template<typename T, typename F>
+bool AbstractTreeBasedSet<T,F>::DistanceCache::checkCachedElement(std::string elementKey, std::vector<F>& distances) {
+	if(elementKey == m_rememeberedElementKey) {
+		distances = m_rememberedDistances;
+		return true;
+	}
+	return false;
+}
+
+template<typename T, typename F>
+void AbstractTreeBasedSet<T,F>::DistanceCache::addToCache(std::string elementKey, const std::vector<F>& distances) {
+	m_rememeberedElementKey = elementKey;
+	m_rememberedDistances = distances;
+}
