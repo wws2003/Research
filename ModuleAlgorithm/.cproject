@@ -59,6 +59,7 @@
 									<listOptionValue builtIn="false" value="../include/implement/persistable"/>
 									<listOptionValue builtIn="false" value="../include/implement/filter"/>
 									<listOptionValue builtIn="false" value="../include/implement/task"/>
+									<listOptionValue builtIn="false" value="../include/implement/set"/>
 									<listOptionValue builtIn="false" value="../include/internal-abstract"/>
 									<listOptionValue builtIn="false" value="../include/internal-abstract/collection"/>
 									<listOptionValue builtIn="false" value="../include/internal-abstract/combiner"/>
@@ -67,12 +68,15 @@
 									<listOptionValue builtIn="false" value="../include/internal-abstract/comparator"/>
 									<listOptionValue builtIn="false" value="../include/internal-abstract/converter"/>
 									<listOptionValue builtIn="false" value="../include/internal-abstract/bin"/>
+									<listOptionValue builtIn="false" value="../include/internal-abstract/tree"/>
 									<listOptionValue builtIn="false" value="../src/implement/approximator"/>
 									<listOptionValue builtIn="false" value="../src/implement/collection"/>
 									<listOptionValue builtIn="false" value="../src/implement/converter"/>
 									<listOptionValue builtIn="false" value="../src/implement/composer"/>
 									<listOptionValue builtIn="false" value="../src/implement/persitable"/>
 									<listOptionValue builtIn="false" value="../src/implement/task"/>
+									<listOptionValue builtIn="false" value="../src/implement/set"/>
+									<listOptionValue builtIn="false" value="../src/implement/tree"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.1870982613" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11 -fPIC -pg -pthread" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.other.pic.1786971405" name="Position Independent Code (-fPIC)" superClass="gnu.cpp.compiler.option.other.pic" value="false" valueType="boolean"/>

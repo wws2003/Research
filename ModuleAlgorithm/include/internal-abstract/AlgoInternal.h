@@ -100,4 +100,10 @@ class IConverter;
 template<typename T1, typename T2>
 using ConverterPtr = IConverter<T1, T2>*;
 
+template<typename E, typename Field>
+class IRangeSearchTree;
+
+template<typename E, typename Field>
+using RangeSearchTreePtr = IRangeSearchTree<E, Field>*;
+
 #endif /* ALGOINTERNAL_H_ */
