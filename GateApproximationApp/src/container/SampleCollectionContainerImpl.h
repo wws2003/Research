@@ -20,6 +20,10 @@
 #include "Config.h"
 #include "EvaluateCommon.h"
 #include "ISearchSpaceConstructor.h"
+#include "IRangeSearchTree.h"
+#include "ISet.h"
+
+#define USE_APPRX_DOUBLE (1)
 
 class SampleCollectionContainerImpl: public ICollectionContainer {
 public:
@@ -31,6 +35,8 @@ public:
 
 private:
 	void wireDependencies();
+
+	void setupGateSet();
 
 	void constructGateCombinabilityCheckerFactory();
 
@@ -56,6 +62,13 @@ private:
 
 	MatrixDistanceCalculatorPtr m_pMatrixDistanceCalculator;
 	GateDistanceCalculatorPtr m_pGateDistanceCalculator;
+
+#ifdef USE_APPRX_DOUBLE
+	RangeSearchTreePtr<GatePtr, double> m_pGateTree;
+#else
+	RangeSearchTreePtr<GatePtr, mreal_t> m_pGateTree;
+#endif
+	GateSetPtr m_pGateSet;
 
 	GateDistanceCalculatorPtr m_pGateDistanceCalculatorForCollection;
 

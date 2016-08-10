@@ -18,6 +18,7 @@
 #include "GateDistanceCalculatorByMatrixImpl.h"
 #include "MatrixFowlerDistanceCalculator.h"
 #include "SystemTimer.h"
+#include "TwoPivotsGateSetImpl.h"
 #include <VectorBasedCollectionImpl.hpp>
 #include <iostream>
 #include <cassert>
@@ -66,10 +67,12 @@ void FowlerSearchSpaceConstructorTester::testFowlerSearchSpaceConstructor() {
 	pNormalConstructor->constructSearchSpace(pNormalCollection, pLibraryCollection, maxLength);
 	std::cout << "Normally constructed collection size " << pNormalCollection->size() << "\n";
 
-	GateSearchSpaceConstructorPtr pFowlerConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner,
-			NullPtr,
+	GateSetPtr pGateSet = GateSetPtr(new TwoPivotsGateSetImpl(m_pGateDistanceCalculator));
+	GateSearchSpaceConstructorPtr pFowlerConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(NullPtr,
 			0,
-			m_pGateDistanceCalculator)) ;
+			m_pGateCombiner,
+			pGateSet)) ;
+
 	GateCollectionPtr pFowlerCollection = GateCollectionPtr(new VectorBasedCollectionImpl<GatePtr>(m_pGateDistanceCalculator));
 	pFowlerConstructor->constructSearchSpace(pFowlerCollection, pLibraryCollection, maxLength);
 	std::cout << "Fowler constructed collection size " << pFowlerCollection->size() << "\n";
@@ -77,6 +80,8 @@ void FowlerSearchSpaceConstructorTester::testFowlerSearchSpaceConstructor() {
 	assertEquivCollections(pFowlerCollection, pNormalCollection);
 	assertUniqueElementsCollections(pFowlerCollection);
 
+	_destroy(pFowlerConstructor);
+	_destroy(pGateSet);
 	_destroy(pLibraryCollection);
 	_destroy(pNormalCollection);
 	_destroy(pFowlerCollection);
@@ -98,10 +103,12 @@ void FowlerSearchSpaceConstructorTester::testFowlerSearchSpaceConstructorFromBas
 	double t1, t2;
 
 	t1 = systemTimer.getTimeInMs();
-	GateSearchSpaceConstructorPtr pFowlerMaxLengthConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner,
-			NullPtr,
+	GateSetPtr pGateSet = GateSetPtr(new TwoPivotsGateSetImpl(m_pGateDistanceCalculator));
+
+	GateSearchSpaceConstructorPtr pFowlerMaxLengthConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(NullPtr,
 			0,
-			m_pGateDistanceCalculator)) ;
+			m_pGateCombiner,
+			pGateSet)) ;
 	GateCollectionPtr pMaxLengthCollection = createSearchSpace(pFowlerMaxLengthConstructor, pLibraryCollection, maxLength);
 	t2 = systemTimer.getTimeInMs();
 	std::cout << "Fowler constructed max length collection size "
@@ -113,18 +120,18 @@ void FowlerSearchSpaceConstructorTester::testFowlerSearchSpaceConstructorFromBas
 	_destroy(pMaxLengthCollection);
 	_destroy(pFowlerMaxLengthConstructor);
 
-	GateSearchSpaceConstructorPtr pFowlerBaseConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner,
-			NullPtr,
+	GateSearchSpaceConstructorPtr pFowlerBaseConstructor = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(NullPtr,
 			0,
-			m_pGateDistanceCalculator)) ;
+			m_pGateCombiner,
+			pGateSet)) ;
 	GateCollectionPtr pBaseCollection = createSearchSpace(pFowlerBaseConstructor, pLibraryCollection, baseLength);
 	std::cout << "Fowler constructed base collection size " << pBaseCollection->size() << "\n";
 
 	t1 = systemTimer.getTimeInMs();
-	GateSearchSpaceConstructorPtr pFowlerMaxLengthConstructorFromBaseCollection = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(m_pGateCombiner,
-			pBaseCollection,
+	GateSearchSpaceConstructorPtr pFowlerMaxLengthConstructorFromBaseCollection = GateSearchSpaceConstructorPtr(new GateSearchSpaceConstructorFowlerImpl(pBaseCollection,
 			baseLength,
-			m_pGateDistanceCalculator)) ;
+			m_pGateCombiner,
+			pGateSet)) ;
 	GateCollectionPtr pMaxLengthCollectionFromBaseCollection = createSearchSpace(pFowlerMaxLengthConstructorFromBaseCollection, pLibraryCollection, maxLength);
 	t2 = systemTimer.getTimeInMs();
 	std::cout << "Fowler constructed max length collection from base collection size "
@@ -135,6 +142,7 @@ void FowlerSearchSpaceConstructorTester::testFowlerSearchSpaceConstructorFromBas
 
 	//assertEquivCollections(pMaxLengthCollectionFromBaseCollection, pMaxLengthCollection);
 
+	_destroy(pGateSet);
 	_destroy(pMaxLengthCollectionFromBaseCollection);
 	_destroy(pBaseCollection);
 

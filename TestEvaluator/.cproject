@@ -52,11 +52,14 @@
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/bin"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/internal-abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/task"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/set"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/implement/tree"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/comparator"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/collection"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/combiner"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/filter"/>
+									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/include/internal-abstract/tree"/>
 									<listOptionValue builtIn="false" value="../../ModuleAlgorithm/src/implement/composer"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/abstract"/>
 									<listOptionValue builtIn="false" value="../../ModuleEvaluate/include/interface/common"/>

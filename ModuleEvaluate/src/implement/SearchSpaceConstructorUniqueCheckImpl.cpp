@@ -1,11 +1,11 @@
 /*
- * SearchSpaceConstructorFowlerImpl.cpp
+ * SearchSpaceConstructorUniqueCheckImpl.cpp
  *
  *  Created on: May 6, 2016
  *      Author: pham
  */
 
-#include "SearchSpaceConstructorFowlerImpl.h"
+#include "SearchSpaceConstructorUniqueCheckImpl.h"
 #include "ICollection.h"
 #include "ICombiner.h"
 #include "IIterator.h"
@@ -15,41 +15,65 @@
 #define PROGRESS_COUNTER (600)
 
 template<typename T>
-SearchSpaceConstructorFowlerImpl<T>::SearchSpaceConstructorFowlerImpl(CombinerPtr<T> pCombiner) {
+SearchSpaceConstructorUniqueCheckImpl<T>::SearchSpaceConstructorUniqueCheckImpl(CollectionPtr<T> pBaseCollection,
+		int baseLength,
+		CombinerPtr<T> pCombiner) {
+
+	m_pBaseCollection = pBaseCollection;
+	m_baseLength = baseLength;
+
 	m_pCombiner = pCombiner;
 	m_counter = 0;
 }
 
 template<typename T>
-void SearchSpaceConstructorFowlerImpl<T>::constructSearchSpace(CollectionPtr<T> pCollection, CollectionPtr<T> pUniversalSet, int maxSequenceLength) {
-	//Firstly add all single matrices in universal set into the persistable collection
+SearchSpaceConstructorUniqueCheckImpl<T>::SearchSpaceConstructorUniqueCheckImpl(CombinerPtr<T> pCombiner) {
+	m_pBaseCollection = NullPtr;
+	m_baseLength = 0;
+
+	m_pCombiner = pCombiner;
+	m_counter = 0;
+}
+
+template<typename T>
+void SearchSpaceConstructorUniqueCheckImpl<T>::constructSearchSpace(CollectionPtr<T> pCollection,
+		CollectionPtr<T> pUniversalSet,
+		int maxSequenceLength) {
+
 	pCollection->clear();
 
-	IteratorPtr<T> pUniversalSetIter = pUniversalSet->getReadonlyIteratorPtr();
+	//Firstly add all elements in base collection if applicable
+	//Also remember (add to unique list elements in base collection if applicable)
+	std::vector<T>* pCurrentMaxLengthSequences = NullPtr;
 
-	std::vector<T>* pCurrentMaxLengthSequences = createCurrentMaxLengthSequences();
-	//If there are sequences in pCurrentMaxLengthSequences, add to constructing collection and unique list
-	if(pCurrentMaxLengthSequences != NullPtr) {
-		for(T pSequence : *pCurrentMaxLengthSequences) {
-			pCollection->addElement(pSequence);
-			addToUniqueList(pSequence);
-		}
-		std::cout << "Finished adding base collection with " << pCurrentMaxLengthSequences->size() << " items \n";
-	}
+	processBaseCollection(pCollection, pCurrentMaxLengthSequences);
 
 	//Compose matrix sequences from universal matrices up to sequence length max
-	int startCounter = getBaseCollectionMaxSequenceLength();
+	IteratorPtr<T> pUniversalSetIter = pUniversalSet->getReadonlyIteratorPtr();
+
+	int startCounter = m_baseLength;
 	for(int i = startCounter; i < maxSequenceLength; i++) {
 		//Use a buffer to update current max length sequences (i.e. sequences length = i)
 		std::vector<T>* pCurrentMaxLengthSequencesBuffer = new std::vector<T>();
 
 		//Calculate buffer of current max length sequences along with search space (matrix/gate collection)
+		bool isMaxLengthReached = (i >= maxSequenceLength - 1);
 		if(pCurrentMaxLengthSequences == NullPtr) {
-			addNewSequencesByApplyingUniversalElements(NullPtr, pUniversalSetIter, m_pCombiner, pCurrentMaxLengthSequencesBuffer, pCollection);
+			addNewSequencesByApplyingUniversalElements(NullPtr,
+					pUniversalSetIter,
+					m_pCombiner,
+					pCurrentMaxLengthSequencesBuffer,
+					isMaxLengthReached,
+					pCollection);
 		}
 		else {
 			for(T pSequence: *(pCurrentMaxLengthSequences)) {
-				addNewSequencesByApplyingUniversalElements(pSequence, pUniversalSetIter, m_pCombiner, pCurrentMaxLengthSequencesBuffer, pCollection);
+				addNewSequencesByApplyingUniversalElements(pSequence,
+						pUniversalSetIter,
+						m_pCombiner,
+						pCurrentMaxLengthSequencesBuffer,
+						isMaxLengthReached,
+						pCollection);
 			}
 			delete pCurrentMaxLengthSequences;
 		}
@@ -62,10 +86,11 @@ void SearchSpaceConstructorFowlerImpl<T>::constructSearchSpace(CollectionPtr<T> 
 }
 
 template<typename T>
-void SearchSpaceConstructorFowlerImpl<T>::addNewSequencesByApplyingUniversalElements(T pSequence,
+void SearchSpaceConstructorUniqueCheckImpl<T>::addNewSequencesByApplyingUniversalElements(T pSequence,
 		IteratorPtr<T> pUniversalSetIter,
 		CombinerPtr<T> pCombiner,
 		std::vector<T>* ppCurrentMaxLengthSequencesBuffer,
+		bool isMaxLengReached,
 		CollectionPtr<T> pCollection) {
 
 	pUniversalSetIter->toBegin();
@@ -92,7 +117,7 @@ void SearchSpaceConstructorFowlerImpl<T>::addNewSequencesByApplyingUniversalElem
 			pCollection->addElement(pAppendedSequence);
 
 			//Also add to unique list to check later
-			addToUniqueList(pAppendedSequence);
+			addToUniqueList(pAppendedSequence, isMaxLengReached);
 
 			//Also add newly generated sequence's matrix/gate to buffer of current-max length sequences
 			ppCurrentMaxLengthSequencesBuffer->push_back(pAppendedSequence);
@@ -111,22 +136,29 @@ void SearchSpaceConstructorFowlerImpl<T>::addNewSequencesByApplyingUniversalElem
 	pUniversalSetIter->toBegin();
 }
 
+//MARK: Private methods
 template<typename T>
-bool SearchSpaceConstructorFowlerImpl<T>::isUnique(T appendedSequence) const {
-	return true;
-}
+void SearchSpaceConstructorUniqueCheckImpl<T>::processBaseCollection(CollectionPtr<T> pTargetCollection,
+		std::vector<T>*& pCurrentMaxLengthSequences) {
 
-template<typename T>
-void SearchSpaceConstructorFowlerImpl<T>::addToUniqueList(T appendedSequence) {
-	//Do nothing
-}
+	if(m_pBaseCollection != NullPtr) {
+		pCurrentMaxLengthSequences = new std::vector<T>();
 
-template<typename T>
-std::vector<T>* SearchSpaceConstructorFowlerImpl<T>::createCurrentMaxLengthSequences() {
-	return NullPtr;
-}
+		IteratorPtr<T> pBaseIter = m_pBaseCollection->getIteratorPtr();
+		if(pBaseIter != NullPtr) {
+			while(!pBaseIter->isDone()) {
+				T baseElement = pBaseIter->getObj()->clone();
 
-template<typename T>
-int SearchSpaceConstructorFowlerImpl<T>::getBaseCollectionMaxSequenceLength() {
-	return 0;
+				pTargetCollection->addElement(baseElement);
+				addToUniqueList(baseElement, false);
+
+				if(isMaxLengthBaseElement(baseElement)) {
+					pCurrentMaxLengthSequences->push_back(baseElement);
+				}
+
+				pBaseIter->next();
+			}
+		}
+		_destroy(pBaseIter);
+	}
 }
